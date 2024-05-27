@@ -93,6 +93,7 @@
     "encode-utf8": "^2.0.0",
     "eslint-plugin-typescript-sort-keys": "^3.2.0",
     "event-iterator": "^2.0.0",
+    "execa": "^9.1.0",
     "fast-content-type-parse": "^1.1.0",
     "fast-glob": "^3.3.2",
     "fflate": "^0.8.1",
