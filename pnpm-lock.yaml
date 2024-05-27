@@ -110,6 +110,9 @@ importers:
       assert:
         specifier: ^2.1.0
         version: 2.1.0
+      axios:
+        specifier: ^1.7.2
+        version: 1.7.2(debug@4.3.4)
       basic-ftp:
         specifier: ^5.0.4
         version: 5.0.4
@@ -323,6 +326,9 @@ importers:
       tape:
         specifier: ^5.7.5
         version: 5.7.5
+      tar:
+        specifier: ^7.1.0
+        version: 7.1.0
       tmp-promise:
         specifier: ^3.0.3
         version: 3.0.3
@@ -462,6 +468,9 @@ importers:
       webpack-cli:
         specifier: ^5.1.4
         version: 5.1.4(webpack-dev-server@5.0.2)(webpack@5.90.3)
+      webpack-dev-middleware:
+        specifier: ^7.2.1
+        version: 7.2.1(webpack@5.90.3(webpack-cli@5.1.4))
       webpack-dev-server:
         specifier: ^5.0.2
         version: 5.0.2(debug@4.3.4)(webpack-cli@5.1.4)(webpack@5.90.3)
@@ -897,6 +906,10 @@ packages:
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
+
+  '@isaacs/fs-minipass@4.0.1':
+    resolution: {integrity: sha512-wgm9Ehl2jpeqP3zw/7mo3kRHFp5MEDhqAdwy1fTGkHAwnkGOVsgpvQhL8B5n1qlb01jV3n/bI0ZfZp5lWA1k4w==}
+    engines: {node: '>=18.0.0'}
 
   '@jridgewell/gen-mapping@0.3.3':
     resolution: {integrity: sha512-HLhSWOLRi875zjjMG/r+Nv0oCW8umGb0BgEhyX3dDX3egwZtB8PqLnjz3yedt8R5StBrzcg4aBpnh8UA9D1BoQ==}
@@ -1745,6 +1758,9 @@ packages:
     resolution: {integrity: sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==}
     engines: {node: '>=4'}
 
+  axios@1.7.2:
+    resolution: {integrity: sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==}
+
   axobject-query@3.2.1:
     resolution: {integrity: sha512-jsyHu61e6N4Vbz/v18DHwWYKK0bSWLqn47eeDSKPB7m8tqMHF9YJ+mhIk2lVteyZrY8tnSj/jHOv4YiTCuCJgg==}
 
@@ -1884,6 +1900,10 @@ packages:
   chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
     engines: {node: '>= 8.10.0'}
+
+  chownr@3.0.0:
+    resolution: {integrity: sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g==}
+    engines: {node: '>=18'}
 
   chrome-trace-event@1.0.3:
     resolution: {integrity: sha512-p3KULyQg4S7NIHixdwbGX+nFHkoBiA4YQmyWtjb8XngSKV124nJmRysgAeujbUVb15vh+RvFUfCPqU7rXk+hZg==}
@@ -2755,6 +2775,15 @@ packages:
 
   follow-redirects@1.15.5:
     resolution: {integrity: sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+
+  follow-redirects@1.15.6:
+    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -3751,6 +3780,14 @@ packages:
     resolution: {integrity: sha512-jYofLM5Dam9279rdkWzqHozUo4ybjdZmCsDHePy5V/PbBcVMiSZR97gmAy45aqi8CK1lG2ECd356FU86avfwUQ==}
     engines: {node: '>=16 || 14 >=14.17'}
 
+  minipass@7.1.2:
+    resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
+    engines: {node: '>=16 || 14 >=14.17'}
+
+  minizlib@3.0.1:
+    resolution: {integrity: sha512-umcy022ILvb5/3Djuu8LWeqUa8D68JaBzlttKeMWen48SjabqS3iY5w/vzeMzMUNhLDifyhbOwKDSznB1vvrwg==}
+    engines: {node: '>= 18'}
+
   mitt@3.0.1:
     resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
 
@@ -3760,6 +3797,11 @@ packages:
 
   mkdirp-classic@0.5.3:
     resolution: {integrity: sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==}
+
+  mkdirp@3.0.1:
+    resolution: {integrity: sha512-+NsyUUAZDmo6YVHzL/stxSu3t9YS1iljliy3BSDrXJ/dkn1KYdmtZODGGjLcc9XLgVVpH4KshHB8XmZgMhaBXg==}
+    engines: {node: '>=10'}
+    hasBin: true
 
   mock-property@1.0.3:
     resolution: {integrity: sha512-2emPTb1reeLLYwHxyVx993iYyCHEiRRO+y8NFXFPL5kl5q14sgTK76cXyEKkeKCHeRw35SfdkUJ10Q1KfHuiIQ==}
@@ -4915,6 +4957,10 @@ packages:
   tar-stream@3.1.6:
     resolution: {integrity: sha512-B/UyjYwPpMBv+PaFSWAmtYjwdrlEaZQEhMIBFNC5oEG8lpiW8XjcSdmEaClj28ArfKScKHs2nshz3k2le6crsg==}
 
+  tar@7.1.0:
+    resolution: {integrity: sha512-ENhg4W6BmjYxl8GTaE7/h99f0aXiSWv4kikRZ9n2/JRxypZniE84ILZqimAhxxX7Zb8Px6pFdheW3EeHfhnXQQ==}
+    engines: {node: '>=18'}
+
   terser-webpack-plugin@5.3.10:
     resolution: {integrity: sha512-BKFPWlPDndPs+NGGCr1U59t0XScL5317Y0UReNrHaw9/FwhPENlq6bfgs+4yPfyP51vqC1bQ4rp1EfXW5ZSH9w==}
     engines: {node: '>= 10.13.0'}
@@ -5243,8 +5289,8 @@ packages:
       webpack-dev-server:
         optional: true
 
-  webpack-dev-middleware@7.0.0:
-    resolution: {integrity: sha512-tZ5hqsWwww/8DislmrzXE3x+4f+v10H1z57mA2dWFrILb4i3xX+dPhTkcdR0DLyQztrhF2AUmO5nN085UYjd/Q==}
+  webpack-dev-middleware@7.2.1:
+    resolution: {integrity: sha512-hRLz+jPQXo999Nx9fXVdKlg/aehsw1ajA9skAneGmT03xwmyuhvF93p6HUKKbWhXdcERtGTzUCtIQr+2IQegrA==}
     engines: {node: '>= 18.12.0'}
     peerDependencies:
       webpack: ^5.0.0
@@ -5393,6 +5439,10 @@ packages:
 
   yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
+
+  yallist@5.0.0:
+    resolution: {integrity: sha512-YgvUTfwqyc7UXVMrB+SImsVYSmTS8X/tSrtdNZMImM+n7+QTriRXyXim0mBrTXNeqzVF0KWGgHPeiyViFFrNDw==}
+    engines: {node: '>=18'}
 
   yaml@2.4.0:
     resolution: {integrity: sha512-j9iR8g+/t0lArF4V6NE/QCfT+CO7iLqrXAHZbJdo+LfjqP1vR8Fg5bSiaq6Q2lOD1AUEVrEVIgABvBFYojJVYQ==}
@@ -5799,6 +5849,10 @@ snapshots:
       strip-ansi-cjs: strip-ansi@6.0.1
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
+
+  '@isaacs/fs-minipass@4.0.1':
+    dependencies:
+      minipass: 7.1.2
 
   '@jridgewell/gen-mapping@0.3.3':
     dependencies:
@@ -6846,6 +6900,14 @@ snapshots:
 
   axe-core@4.7.0: {}
 
+  axios@1.7.2(debug@4.3.4):
+    dependencies:
+      follow-redirects: 1.15.6(debug@4.3.4)
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
   axobject-query@3.2.1:
     dependencies:
       dequal: 2.0.3
@@ -7012,6 +7074,8 @@ snapshots:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.3
+
+  chownr@3.0.0: {}
 
   chrome-trace-event@1.0.3: {}
 
@@ -8159,6 +8223,10 @@ snapshots:
   flatted@3.2.9: {}
 
   follow-redirects@1.15.5(debug@4.3.4):
+    optionalDependencies:
+      debug: 4.3.4
+
+  follow-redirects@1.15.6(debug@4.3.4):
     optionalDependencies:
       debug: 4.3.4
 
@@ -9319,6 +9387,13 @@ snapshots:
 
   minipass@7.0.4: {}
 
+  minipass@7.1.2: {}
+
+  minizlib@3.0.1:
+    dependencies:
+      minipass: 7.1.2
+      rimraf: 5.0.5
+
   mitt@3.0.1: {}
 
   mixin-object@2.0.1:
@@ -9327,6 +9402,8 @@ snapshots:
       is-extendable: 0.1.1
 
   mkdirp-classic@0.5.3: {}
+
+  mkdirp@3.0.1: {}
 
   mock-property@1.0.3:
     dependencies:
@@ -10654,6 +10731,15 @@ snapshots:
       fast-fifo: 1.3.2
       streamx: 2.15.6
 
+  tar@7.1.0:
+    dependencies:
+      '@isaacs/fs-minipass': 4.0.1
+      chownr: 3.0.0
+      minipass: 7.1.2
+      minizlib: 3.0.1
+      mkdirp: 3.0.1
+      yallist: 5.0.0
+
   terser-webpack-plugin@5.3.10(webpack@5.90.3(webpack-cli@5.1.4)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.21
@@ -11016,11 +11102,12 @@ snapshots:
     optionalDependencies:
       webpack-dev-server: 5.0.2(debug@4.3.4)(webpack-cli@5.1.4)(webpack@5.90.3)
 
-  webpack-dev-middleware@7.0.0(webpack@5.90.3(webpack-cli@5.1.4)):
+  webpack-dev-middleware@7.2.1(webpack@5.90.3(webpack-cli@5.1.4)):
     dependencies:
       colorette: 2.0.20
       memfs: 4.7.6
       mime-types: 2.1.35
+      on-finished: 2.4.1
       range-parser: 1.2.1
       schema-utils: 4.2.0
     optionalDependencies:
@@ -11056,7 +11143,7 @@ snapshots:
       serve-index: 1.9.1
       sockjs: 0.3.24
       spdy: 4.0.2
-      webpack-dev-middleware: 7.0.0(webpack@5.90.3(webpack-cli@5.1.4))
+      webpack-dev-middleware: 7.2.1(webpack@5.90.3(webpack-cli@5.1.4))
       ws: 8.16.0
     optionalDependencies:
       webpack: 5.90.3(webpack-cli@5.1.4)
@@ -11225,6 +11312,8 @@ snapshots:
   y18n@5.0.8: {}
 
   yallist@4.0.0: {}
+
+  yallist@5.0.0: {}
 
   yaml@2.4.0: {}
 
