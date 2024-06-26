@@ -1,5 +1,5 @@
 import Observable from 'zen-observable'
-import { Output, WorkFileAsBlob } from '~/code/tool/shared/work'
+import { Output, WorkFileAsBlob } from '~/code/tool/shared/work.js'
 
 export async function resolve<T extends any>(
   observable: Observable<Output<T>>,

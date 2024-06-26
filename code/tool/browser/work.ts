@@ -1,21 +1,17 @@
-import Observable from 'zen-observable'
 import {
   Request,
   RequestResponseCycle,
   fetchWithTimeout,
-} from '../shared/request'
-import { NativeOptions } from '~/code/tool/shared/request'
+} from '../shared/request.js'
+import { NativeOptions } from '~/code/tool/shared/request.js'
 import {
-  Output,
-  Ping,
-  Processing,
   Work,
   WorkFile,
   WorkFileAsBlob,
   handleWorkRequestComplete,
-} from '~/code/tool/shared/work'
+} from '~/code/tool/shared/work.js'
 import Kink, { KinkMesh } from '@termsurf/kink'
-import kink from '../shared/kink'
+import kink from '../shared/kink.js'
 
 export async function callXhrBrowser(
   request: Request,

@@ -1,5 +1,5 @@
 import { Form, List } from '@termsurf/form'
-import { baseCommonFormat, buildFormatForms } from './tool/source'
+import { baseCommonFormat, buildFormatForms } from './tool/source.js'
 import _ from 'lodash'
 
 export const prettier_prose_wrap_option: List = {

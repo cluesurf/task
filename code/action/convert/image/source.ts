@@ -1,4 +1,4 @@
-import { buildConvertForms } from '../../../tool/shared/source'
+import { buildConvertForms } from '../../../tool/shared/source.js'
 
 // convert_image_with_image_magick_forms
 

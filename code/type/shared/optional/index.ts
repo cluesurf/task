@@ -248,7 +248,7 @@ import {
   WastInputFormat,
   WastOutputFormat,
   WordSet,
-} from '~/code/type/shared/index'
+} from '~/code/type/shared/index.js'
 
 export type AddAudioToVideoWithFfmpegOptional = {
   inputVideoPath?: string

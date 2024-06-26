@@ -1,26 +1,26 @@
-import * as MESH from '~/code/source'
+import * as MESH from '~/code/source.js'
 import {
   makeLineCallLinkHash,
   makeLineCallLinkList,
   makeLineHash,
   makeLinkHash,
-} from '~/code/cli/parse'
+} from '~/code/cli/parse.js'
 import {
   logCompiled,
   logCompiling,
   logHelp,
   setLoggingStyle,
-} from '~/code/cli/logging'
-import { closeAllBrowsers } from '~/code/tool/node/browser'
-import { CallLinkMesh } from '../type'
+} from '~/code/cli/logging.js'
+import { closeAllBrowsers } from '~/code/tool/node/browser.js'
+import { CallLinkMesh } from '../type.js'
 import { Form } from '@termsurf/form'
-import { exitWithError } from '../process'
+import { exitWithError } from '../process.js'
 // import { compile } from '~/code/action/compile/code/node'
-import { COMPILE_CODE_HINT } from '../hint'
+import { COMPILE_CODE_HINT } from '../hint.js'
 import {
   CompileCliBase,
   CompileCliBaseParser,
-} from '~/code/type/shared/parser'
+} from '~/code/type/shared/parser.js'
 
 export async function compileCli({
   format,

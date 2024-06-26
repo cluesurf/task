@@ -370,7 +370,7 @@ import {
   ConvertArcsecond,
   ConvertUnit,
   ConvertUnitParser,
-} from '~/code/type/shared/parser'
+} from '~/code/type/shared/parser.js'
 
 export function convertUnit(source: ConvertUnit) {
   const input = ConvertUnitParser().parse(source) as any

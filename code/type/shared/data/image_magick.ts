@@ -3,7 +3,7 @@ import {
   ImageMagickColorSpaceContent,
   ImageMagickCompressionContent,
   ImageMagickFormatContent,
-} from '~/code/type/shared/image_magick'
+} from '~/code/type/shared/image_magick.js'
 
 export const IMAGE_MAGICK_CHANNEL_CONTENT: ImageMagickChannelContent = {
   red: {

@@ -1,13 +1,13 @@
 import {
   ConvertImageWithImageMagickCommandInput,
   ConvertImageWithInkscapeCommandInput,
-} from '~/code/type/shared'
+} from '~/code/type/shared/index.js'
 import {
   getCommand,
   buildCommandSequence,
-} from '~/code/tool/shared/command'
-import { resolvePathRelativeToScope } from '~/code/tool/shared/file'
-import { getConfig } from '~/code/tool/shared/config'
+} from '~/code/tool/shared/command.js'
+import { resolvePathRelativeToScope } from '~/code/tool/shared/file.js'
+import { getConfig } from '~/code/tool/shared/config.js'
 
 // export function BatchProcessImages() {
 //   const cmd = [

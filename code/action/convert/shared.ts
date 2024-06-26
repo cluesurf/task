@@ -1,7 +1,7 @@
-import { ConvertApi } from '~/code/type/shared'
-import { buildRemoteRequest } from '~/code/tool/shared/request'
-import { omitNested } from '~/code/tool/shared/object'
-import { serializeToFormData } from '~/code/tool/shared/form'
+import { ConvertApi } from '~/code/type/shared/index.js'
+import { buildRemoteRequest } from '~/code/tool/shared/request.js'
+import { omitNested } from '~/code/tool/shared/object.js'
+import { serializeToFormData } from '~/code/tool/shared/form.js'
 
 export async function convertArchive(source) {
   // const input = IOConvertArchive.parse(source)

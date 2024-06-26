@@ -8,9 +8,9 @@ import {
   ConvertLatexToPngInputFormat,
   ConvertLatexToPngOutputFormat,
   PuppeteerOutputFormat,
-} from '~/code/type/shared'
-import { testConvertFileInputOutput } from '../shared'
-import { getConfig } from '~/code/tool/shared/config'
+} from '~/code/type/shared/index.js'
+import { testConvertFileInputOutput } from '../shared.js'
+import { getConfig } from '~/code/tool/shared/config.js'
 
 export function testConvertLatexToPng(input: any) {
   if (!testConvertFileInputOutput(input)) {

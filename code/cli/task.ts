@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import kink from '~/code/tool/shared/kink'
-import { convertCli } from './action/convert'
-import { Call } from './type'
-import { logGenericTaskHelp } from './logging'
-import { verifyCli } from './action/verify'
-import { formatCli } from './action/format'
-import { compileCli } from './action/compile'
+import kink from '~/code/tool/shared/kink.js'
+import { convertCli } from './action/convert.js'
+import { Call } from './type.js'
+import { logGenericTaskHelp } from './logging.js'
+import { verifyCli } from './action/verify.js'
+import { formatCli } from './action/format.js'
+import { compileCli } from './action/compile.js'
 
-import '~/code/tool/node/bootstrap'
+import '~/code/tool/node/bootstrap.js'
 
 // --verbose logging
 // task <Downloading ${url}>

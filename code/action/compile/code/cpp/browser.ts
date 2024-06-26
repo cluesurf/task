@@ -4,12 +4,12 @@ import {
   CompileCppBrowserLocalInput,
   CompileCppBrowserOutputParser,
   CompileCppBrowserRemoteInput,
-} from '~/code/type/browser/parser'
-import { buildFormDataRequestToCompile } from '~/code/action/compile/code/shared'
-import kink from '~/code/tool/shared/kink'
-import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
-import { NativeOptions } from '~/code/tool/shared/request'
-import { WorkFileAsBlob } from '~/code/tool/shared/work'
+} from '~/code/type/browser/parser.js'
+import { buildFormDataRequestToCompile } from '~/code/action/compile/code/shared.js'
+import kink from '~/code/tool/shared/kink.js'
+import { resolveWorkFileAsBlob } from '~/code/tool/browser/work.js'
+import { NativeOptions } from '~/code/tool/shared/request.js'
+import { WorkFileAsBlob } from '~/code/tool/shared/work.js'
 
 export async function compileCppBrowser(
   source: CompileCppBrowserInput,

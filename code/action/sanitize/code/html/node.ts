@@ -10,16 +10,16 @@ import {
   SanitizeHtmlNodeLocalInputParser,
   SanitizeHtmlNodeRemoteInput,
   SanitizeHtmlNodeClientInputParser,
-} from '~/code/type/node/parser'
+} from '~/code/type/node/parser.js'
 import {
   resolveInputForSanitizeLocalExternalNode,
   resolveInputForSanitizeLocalInternalNode,
   resolveInputForSanitizeRemoteNode,
-} from '~/code/action/sanitize/code/tool/node'
-import { extend } from '~/code/tool/shared/object'
-import { buildRequestToSanitize, testSanitize } from '../shared'
-import { resolveWorkFileNode } from '~/code/tool/node/request'
-import { NativeOptions } from '~/code/tool/shared/request'
+} from '~/code/action/sanitize/code/tool/node.js'
+import { extend } from '~/code/tool/shared/object.js'
+import { buildRequestToSanitize, testSanitize } from '../shared.js'
+import { resolveWorkFileNode } from '~/code/tool/node/request.js'
+import { NativeOptions } from '~/code/tool/shared/request.js'
 
 let window
 let purify

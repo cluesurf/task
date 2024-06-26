@@ -1,1 +1,1 @@
-export * from '../shared/data'
+export * from '../shared/data.js'

@@ -1,5 +1,5 @@
 import { Form } from '@termsurf/form'
-import { buildConvertForms } from '~/code/tool/shared/source'
+import { buildConvertForms } from '~/code/tool/shared/source.js'
 
 const convert_archive_forms = buildConvertForms(
   'convert_archive',

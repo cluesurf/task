@@ -1,4 +1,4 @@
-import { fitCommandToScreen } from '../shared/screen'
+import { fitCommandToScreen } from '../shared/screen.js'
 import prettier from 'prettier/standalone'
 
 const PRETTIER = {

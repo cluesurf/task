@@ -1,6 +1,6 @@
 import snakeCase from 'lodash/snakeCase'
-import { ChildProcessError, exec } from '~/code/tool/node/process'
-import { Command } from '~/code/type/shared'
+import { ChildProcessError, exec } from '~/code/tool/node/process.js'
+import { Command } from '~/code/type/shared/index.js'
 
 export async function runConvertCommand(cmd: Command) {
   try {

@@ -1,6 +1,6 @@
-import { getBrowser } from '~/code/tool/node/browser'
+import { getBrowser } from '~/code/tool/node/browser.js'
 import fsp from 'fs/promises'
-import { wait } from '~/code/tool/shared/timer'
+import { wait } from '~/code/tool/shared/timer.js'
 
 export async function inspectWebpage(source) {
   const b = await getBrowser(undefined)

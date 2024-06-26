@@ -1,4 +1,7 @@
-import { FileContent, FileReaderEncoding } from '~/code/type/shared'
+import {
+  FileContent,
+  FileReaderEncoding,
+} from '~/code/type/shared/index.js'
 
 export async function readFileContentAsString(
   content: FileContent,

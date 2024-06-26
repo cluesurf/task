@@ -10,26 +10,26 @@ import {
   ConvertArchiveNodeClientInputParser,
   ExtractWithUnarchiverParser,
   ArchiveParser,
-} from '~/code/type/node/parser'
-import { runCommandSequence } from '~/code/tool/node/command'
+} from '~/code/type/node/parser.js'
+import { runCommandSequence } from '~/code/tool/node/command.js'
 import {
   resolveInputForConvertLocalExternalNode,
   resolveInputForConvertLocalInternalNode,
   resolveInputForConvertRemoteNode,
-} from '../tool/node'
-import { extend } from '~/code/tool/shared/object'
-import { buildRequestToConvert } from '../shared'
-import { resolveWorkFileNode } from '~/code/tool/node/request'
-import { NativeOptions } from '~/code/tool/shared/request'
-import { buildCommandToExtractWithUnarchiver } from '../../extract/archive/command'
+} from '../tool/node.js'
+import { extend } from '~/code/tool/shared/object.js'
+import { buildRequestToConvert } from '../shared.js'
+import { resolveWorkFileNode } from '~/code/tool/node/request.js'
+import { NativeOptions } from '~/code/tool/shared/request.js'
+import { buildCommandToExtractWithUnarchiver } from '../../extract/archive/command.js'
 import {
   generateTemporaryDirectoryPath,
   removeDirectory,
-} from '~/code/tool/node/file'
+} from '~/code/tool/node/file.js'
 import merge from 'lodash/merge'
-import { buildCommandToArchiveWithRar } from '../../archive/command'
-import kink from '~/code/tool/shared/kink'
-import { testConvertArchive } from './shared'
+import { buildCommandToArchiveWithRar } from '../../archive/command.js'
+import kink from '~/code/tool/shared/kink.js'
+import { testConvertArchive } from './shared.js'
 
 export async function convertArchiveNode(
   source: ConvertArchiveNodeInput,

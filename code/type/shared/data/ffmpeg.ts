@@ -8,7 +8,7 @@ import {
   FfmpegFormatContent,
   FfmpegFormatContentKey,
   FfmpegStrictOptionContent,
-} from '~/code/type/shared/ffmpeg'
+} from '~/code/type/shared/ffmpeg.js'
 
 export const FFMPEG_CODEC_CONTENT_KEY: ReadonlyArray<FfmpegCodecContentKey> =
   [

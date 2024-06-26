@@ -7,18 +7,18 @@ import {
   getScopeDirectory,
   readRemoteFileNode,
   resolveRemoteFile,
-} from '~/code/tool/node/file'
-import debug from '~/code/tool/shared/debug'
+} from '~/code/tool/node/file.js'
+import debug from '~/code/tool/shared/debug.js'
 import {
   parsePath,
   resolvePathRelativeToScope,
-} from '~/code/tool/shared/file'
-import { cloneOptions } from '~/code/tool/shared/object'
+} from '~/code/tool/shared/file.js'
+import { cloneOptions } from '~/code/tool/shared/object.js'
 import {
   ResolveInputForFormatLocalExternal,
   ResolveInputForFormatLocalInternal,
   ResolveInputForFormatRemote,
-} from '~/code/type/shared'
+} from '~/code/type/shared/index.js'
 
 /**
  * 1. Format local files into streams.

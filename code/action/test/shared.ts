@@ -1,5 +1,4 @@
-import { ConvertFileTest } from '../convert/shared'
-import { Action, Object, Tool } from '../shared'
+import { Action, Object, Tool } from '../shared.js'
 
 // export type TestExtension = {
 //   'convert:ffmpeg:video': ConvertFileTest

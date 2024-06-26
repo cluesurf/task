@@ -1,7 +1,7 @@
 import { serialize as serializeToFormData } from 'object-to-formdata'
-import { omitNested } from '~/code/tool/shared/object'
-import { buildRemoteRequest } from '~/code/tool/shared/request'
-import { CompileApi } from '~/code/type/shared'
+import { omitNested } from '~/code/tool/shared/object.js'
+import { buildRemoteRequest } from '~/code/tool/shared/request.js'
+import { CompileApi } from '~/code/type/shared/index.js'
 
 export type CompileFileTest = {
   input: {

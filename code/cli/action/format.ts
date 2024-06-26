@@ -1,10 +1,10 @@
-import * as MESH from '~/code/source'
+import * as MESH from '~/code/source.js'
 import {
   makeLineCallLinkHash,
   makeLineCallLinkList,
   makeLineHash,
   makeLinkHash,
-} from '~/code/cli/parse'
+} from '~/code/cli/parse.js'
 import {
   logConverted,
   logConverting,
@@ -12,13 +12,13 @@ import {
   logFormatting,
   logHelp,
   setLoggingStyle,
-} from '~/code/cli/logging'
+} from '~/code/cli/logging.js'
 import {
   ConvertCliBase,
   ConvertCliBaseParser,
   FormatCliBase,
   FormatCliBaseParser,
-} from '~/code/type/shared/parser'
+} from '~/code/type/shared/parser.js'
 // import { convert } from '~/code/action/node'
 import {
   testConvertDocumentWithCalibreNode,
@@ -26,7 +26,7 @@ import {
   testConvertDocumentWithPandocNode,
   testConvertMarkdownWithPuppeteerNode,
   testConvertTxtWithPuppeteerNode,
-} from '~/code/action/convert/document/node'
+} from '~/code/action/convert/document/node.js'
 import {
   CONVERT_ARCHIVE_HINT,
   CONVERT_DOCUMENT_PANDOC_HINT,
@@ -36,18 +36,11 @@ import {
   CONVERT_VIDEO_HINT,
   FORMAT_CODE_HINT,
   FORMAT_C_CODE_HINT,
-} from '../hint'
-import { closeAllBrowsers } from '~/code/tool/node/browser'
-import { CallLinkMesh } from '../type'
+} from '../hint.js'
+import { closeAllBrowsers } from '~/code/tool/node/browser.js'
+import { CallLinkMesh } from '../type.js'
 import { Form } from '@termsurf/form'
-import { testConvertFontWithFontForgeNode } from '~/code/action/convert/font/node'
-import {
-  testConvertImageWithImageMagickNode,
-  testConvertImageWithInkscapeNode,
-} from '~/code/action/convert/image/node'
-import { testConvertVideoWithFfmpegNode } from '~/code/action/convert/video/ffmpeg/node'
-import { testConvertArchiveNode } from '~/code/action/convert/archive/node'
-import { exitWithError } from '../process'
+import { exitWithError } from '../process.js'
 // import { format } from '~/code/action/format/node'
 
 export async function formatCli({

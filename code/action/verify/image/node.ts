@@ -1,11 +1,11 @@
 import {
   ImageMagickFormat,
   VerifyImageWithImageMagick,
-} from '~/code/type/node/parser'
-import { buildCommandToVerifyImageWithImageMagick } from './command'
-import { testVerifyImageWithImageMagick } from './shared'
-import { runCommandSequence } from '~/code/tool/node/command'
-import { getConfig } from '~/code/tool/shared/config'
+} from '~/code/type/node/parser.js'
+import { buildCommandToVerifyImageWithImageMagick } from './command.js'
+import { testVerifyImageWithImageMagick } from './shared.js'
+import { runCommandSequence } from '~/code/tool/node/command.js'
+import { getConfig } from '~/code/tool/shared/config.js'
 
 const IMAGEMAGICK_FORMAT_VARIANT_NAME: Record<string, Array<string>> = {
   jpeg: ['jpg'],

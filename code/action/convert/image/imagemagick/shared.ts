@@ -1,9 +1,9 @@
 import {
   ImageMagickInputFormat,
   ImageMagickOutputFormat,
-} from '~/code/type/shared'
-import { testConvertFileInputOutput } from '../../shared'
-import { getConfig } from '~/code/tool/shared/config'
+} from '~/code/type/shared/index.js'
+import { testConvertFileInputOutput } from '../../shared.js'
+import { getConfig } from '~/code/tool/shared/config.js'
 
 export function testConvertImageWithImageMagick(input: any) {
   if (!testConvertFileInputOutput(input)) {

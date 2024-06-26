@@ -1,6 +1,6 @@
-import { ChildProcessError, exec } from '~/code/tool/node/process'
-import kink from '~/code/tool/shared/kink'
-import { Command } from '~/code/type/node/parser'
+import { ChildProcessError, exec } from '~/code/tool/node/process.js'
+import kink from '~/code/tool/shared/kink.js'
+import { Command } from '~/code/type/node/parser.js'
 
 export async function runClangCommand(cmd: Command) {
   await exec(cmd.link)

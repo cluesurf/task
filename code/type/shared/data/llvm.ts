@@ -3,7 +3,7 @@ import {
   LlvmArchitectureContent,
   LlvmCpuContent,
   LlvmFeatureContent,
-} from '~/code/type/shared/llvm'
+} from '~/code/type/shared/llvm.js'
 
 export const BACKEND_COMPILATION_OUTPUT_CONTENT: BackendCompilationOutputContent =
   {

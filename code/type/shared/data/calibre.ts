@@ -1,7 +1,7 @@
 import {
   CalibreInputFormatContent,
   CalibreOutputFormatContent,
-} from '~/code/type/shared/calibre'
+} from '~/code/type/shared/calibre.js'
 
 export const CALIBRE_INPUT_FORMAT_CONTENT: CalibreInputFormatContent = {
   azw4: {

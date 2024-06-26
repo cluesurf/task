@@ -1,20 +1,20 @@
-import * as MESH from '~/code/source'
+import * as MESH from '~/code/source.js'
 import {
   makeLineCallLinkHash,
   makeLineCallLinkList,
   makeLineHash,
   makeLinkHash,
-} from '~/code/cli/parse'
+} from '~/code/cli/parse.js'
 import {
   logConverted,
   logConverting,
   logHelp,
   setLoggingStyle,
-} from '~/code/cli/logging'
+} from '~/code/cli/logging.js'
 import {
   ConvertCliBase,
   ConvertCliBaseParser,
-} from '~/code/type/shared/parser'
+} from '~/code/type/shared/parser.js'
 // import { convert } from '~/code/action/node'
 import {
   testConvertDocumentWithCalibreNode,
@@ -22,7 +22,7 @@ import {
   testConvertDocumentWithPandocNode,
   testConvertMarkdownWithPuppeteerNode,
   testConvertTxtWithPuppeteerNode,
-} from '~/code/action/convert/document/node'
+} from '~/code/action/convert/document/node.js'
 import {
   CONVERT_ARCHIVE_HINT,
   CONVERT_DOCUMENT_PANDOC_HINT,
@@ -31,19 +31,17 @@ import {
   CONVERT_IMAGE_HINT,
   CONVERT_UNIT_HINT,
   CONVERT_VIDEO_HINT,
-} from '../hint'
-import { closeAllBrowsers } from '~/code/tool/node/browser'
+} from '../hint.js'
+import { closeAllBrowsers } from '~/code/tool/node/browser.js'
 import { CallLinkMesh } from '../type'
 import { Form } from '@termsurf/form'
-import { testConvertFontWithFontForgeNode } from '~/code/action/convert/font/node'
-import {
-  testConvertImageWithImageMagickNode,
-  testConvertImageWithInkscapeNode,
-} from '~/code/action/convert/image/node'
-import { testConvertVideoWithFfmpegNode } from '~/code/action/convert/video/ffmpeg/node'
-import { testConvertArchiveNode } from '~/code/action/convert/archive/node'
-import { exitWithError } from '../process'
-import { testConvertUnit } from '~/code/action/convert/unit/shared'
+import { testConvertFontWithFontForgeNode } from '~/code/action/convert/font/node.js'
+import { testConvertImageWithImageMagickNode } from '~/code/action/convert/image/imagemagick/node.js'
+import { testConvertImageWithInkscapeNode } from '~/code/action/convert/image/inkscape/node.js'
+import { testConvertVideoWithFfmpegNode } from '~/code/action/convert/video/ffmpeg/node.js'
+import { testConvertArchiveNode } from '~/code/action/convert/archive/node.js'
+import { exitWithError } from '../process.js'
+import { testConvertUnit } from '~/code/action/convert/unit/shared.js'
 
 export async function convertCli({
   inputFormat,

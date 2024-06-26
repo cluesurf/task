@@ -1,6 +1,6 @@
-import { FfmpegFormat } from '~/code/type/shared'
-import { testConvertFileInputOutput } from '../../shared'
-import { getConfig } from '~/code/tool/shared/config'
+import { FfmpegFormat } from '~/code/type/shared/index.js'
+import { testConvertFileInputOutput } from '../../shared.js'
+import { getConfig } from '~/code/tool/shared/config.js'
 
 export function testConvertVideoWithFfmpeg(input: any) {
   if (!testConvertFileInputOutput(input)) {

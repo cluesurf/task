@@ -4,14 +4,13 @@ import {
   ConvertFontWithFontForgeBrowserLocalInput,
   ConvertFontWithFontForgeBrowserOutputParser,
   ConvertFontWithFontForgeBrowserRemoteInput,
-} from '~/code/type/browser/parser'
-import { buildFormDataRequestToConvert } from '../shared'
-import { WorkFileAsBlob } from '~/code/tool/shared/work'
-import { NativeOptions } from '~/code/tool/shared/request'
-import kink from '~/code/tool/shared/kink'
-import { testConvertFontWithFontForge } from './shared'
-import Observable from 'zen-observable'
-import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
+} from '~/code/type/browser/parser.js'
+import { buildFormDataRequestToConvert } from '../shared.js'
+import { WorkFileAsBlob } from '~/code/tool/shared/work.js'
+import { NativeOptions } from '~/code/tool/shared/request.js'
+import kink from '~/code/tool/shared/kink.js'
+import { testConvertFontWithFontForge } from './shared.js'
+import { resolveWorkFileAsBlob } from '~/code/tool/browser/work.js'
 
 export async function convertFontWithFontForgeBrowser(
   source: ConvertFontWithFontForgeBrowserInput,

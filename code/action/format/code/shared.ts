@@ -1,6 +1,6 @@
 import omit from 'lodash/omit'
 import { serialize as serializeToFormData } from 'object-to-formdata'
-import prettier from 'prettier/standalone'
+import prettier from 'prettier/standalone.js'
 import {
   FormatApi,
   FormatCodeWithPrettier,
@@ -24,10 +24,10 @@ import {
   FormatYamlWithPrettier,
   FormatYamlWithPrettierParser,
   PrettierPlugin,
-} from '~/code/type/shared/parser'
-import * as prettierPluginEstree from 'prettier/plugins/estree'
-import { buildRemoteRequest } from '~/code/tool/shared/request'
-import { omitNested } from '~/code/tool/shared/object'
+} from '~/code/type/shared/parser.js'
+import * as prettierPluginEstree from 'prettier/plugins/estree.js'
+import { buildRemoteRequest } from '~/code/tool/shared/request.js'
+import { omitNested } from '~/code/tool/shared/object.js'
 
 export enum Format {
   Graphql = 'graphql',

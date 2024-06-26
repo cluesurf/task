@@ -6,7 +6,7 @@ import {
   FfmpegFormatData,
   FfmpegStrictOption,
   FfmpegStrictOptionData,
-} from '~/code/type/shared/index'
+} from '~/code/type/shared/index.js'
 
 export type FfmpegCodecContentValue = FfmpegCodecData
 

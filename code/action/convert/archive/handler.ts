@@ -1,5 +1,5 @@
-import { exec } from '~/code/tool/node/process'
-import { Command } from '~/code/type/shared'
+import { exec } from '~/code/tool/node/process.js'
+import { Command } from '~/code/type/shared/index.js'
 
 export async function handleZipCommand(cmd: Command) {
   return await exec(cmd.link)

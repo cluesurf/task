@@ -6,18 +6,18 @@ import {
   FormatKotlinNodeRemoteInput,
   FormatKotlinNodeClientInputParser,
   FormatKotlinNodeLocalInputParser,
-} from '~/code/type/node/parser'
-import { buildCommandToFormatKotlin } from '../command'
-import { buildRequestToFormat } from '../shared'
-import { runCommandSequence } from '~/code/tool/node/command'
-import { NativeOptions } from '~/code/tool/shared/request'
+} from '~/code/type/node/parser.js'
+import { buildCommandToFormatKotlin } from '../command.js'
+import { buildRequestToFormat } from '../shared.js'
+import { runCommandSequence } from '~/code/tool/node/command.js'
+import { NativeOptions } from '~/code/tool/shared/request.js'
 import {
   resolveInputForFormatLocalExternalNode,
   resolveInputForFormatLocalInternalNode,
   resolveInputForFormatRemoteNode,
-} from '../tool/node'
-import { extend } from '~/code/tool/shared/object'
-import { resolveWorkFileNode } from '~/code/tool/node/request'
+} from '../tool/node.js'
+import { extend } from '~/code/tool/shared/object.js'
+import { resolveWorkFileNode } from '~/code/tool/node/request.js'
 
 export async function formatKotlinNode(
   source: FormatKotlinNodeInput,

@@ -1,3 +1,3 @@
-export * from '../shared'
-export * from '~/code/type/browser/index'
-export * from '~/code/type/browser/optional/index'
+export * from '../shared/index.js'
+export * from '~/code/type/browser/index.js'
+export * from '~/code/type/browser/optional/index.js'

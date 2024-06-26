@@ -274,8 +274,8 @@ import {
   WAST_INPUT_FORMAT,
   WAST_OUTPUT_FORMAT,
   WORD_SET,
-} from '~/code/type/node/data'
-import { configure } from '~/code/tool/shared/config'
+} from '~/code/type/node/data.js'
+import { configure } from '~/code/tool/shared/config.js'
 
 configure('archive_format', ARCHIVE_FORMAT)
 configure('assembly_syntax', ASSEMBLY_SYNTAX)

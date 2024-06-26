@@ -2,8 +2,8 @@ import {
   Command,
   CommandName,
   CommandSequenceParser,
-} from '~/code/type/shared/parser'
-import kink from './kink'
+} from '~/code/type/shared/parser.js'
+import kink from './kink.js'
 
 export const COMMAND: Record<CommandName, Array<string> | undefined> = {
   ffmpeg: ['ffmpeg'],

@@ -3,7 +3,7 @@ import {
   ExiftoolFamilyData,
   ExiftoolImageFormatData,
   ExiftoolTagData,
-} from '~/code/type/shared/index'
+} from '~/code/type/shared/index.js'
 
 export type ExiftoolFamilyContentValue = ExiftoolFamilyData
 

@@ -1,6 +1,6 @@
 {
   "name": "@termsurf/task",
-  "version": "0.4.2",
+  "version": "0.4.6",
   "type": "module",
   "main": "./host/code/node.js",
   "browser": "./host/code/browser.js",
@@ -50,7 +50,7 @@
     "@prettier/plugin-pug": "^3.0.0",
     "@prettier/plugin-ruby": "^4.0.4",
     "@prettier/plugin-xml": "^3.2.2",
-    "@termsurf/form": "^0.9.20",
+    "@termsurf/form": "^0.9.22",
     "@termsurf/kink": "^0.1.6",
     "@termsurf/kink-site": "^0.0.12",
     "@termsurf/kink-text": "^0.0.10",

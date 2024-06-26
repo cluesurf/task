@@ -5,7 +5,7 @@ import {
   CalculateGematria,
   CalculateGematriaParser,
   GematriaSystemCalculation,
-} from '~/code/type/node/parser'
+} from '~/code/type/node/parser.js'
 
 export function calculateTibetanGematria(source: CalculateGematria) {
   const input = CalculateGematriaParser().parse(source)

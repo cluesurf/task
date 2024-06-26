@@ -1,7 +1,7 @@
 import assert from 'assert'
-import { getConfig } from './config'
+import { getConfig } from './config.js'
 import Kink from '@termsurf/kink'
-import { wait } from './timer'
+import { wait } from './timer.js'
 
 export type RequestBody = FormData | object
 

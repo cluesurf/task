@@ -1,13 +1,13 @@
 import {
   buildCommandSequence,
   getCommand,
-} from '~/code/tool/shared/command'
-import { IOPath } from '~/code/type'
+} from '~/code/tool/shared/command.js'
+import { IOPath } from '~/code/type/index.js'
 import {
   ConvertMp4ToGifWithFfmpegParser,
   ConvertVideoWithFfmpegCommandInput,
   FfmpegCodecAudio,
-} from '~/code/type/shared/parser'
+} from '~/code/type/shared/parser.js'
 
 // ffmpeg -filters
 // https://ffmpeg.org/ffmpeg-filters.html

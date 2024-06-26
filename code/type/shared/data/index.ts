@@ -280,7 +280,7 @@ import {
   WastOutputFormat,
   WordSet,
   WordSetContent,
-} from '~/code/type/shared/index'
+} from '~/code/type/shared/index.js'
 
 export const ARCHIVE_FORMAT: ReadonlyArray<ArchiveFormat> = [
   'zip',

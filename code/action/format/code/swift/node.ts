@@ -6,18 +6,18 @@ import {
   FormatSwiftNodeRemoteInput,
   FormatSwiftNodeClientInputParser,
   FormatSwiftNodeLocalInputParser,
-} from '~/code/type/node/parser'
-import { buildCommandToFormatSwift } from '../command'
-import { buildRequestToFormat } from '../shared'
-import { runCommandSequence } from '~/code/tool/node/command'
-import { NativeOptions } from '~/code/tool/shared/request'
+} from '~/code/type/node/parser.js'
+import { buildCommandToFormatSwift } from '../command.js'
+import { buildRequestToFormat } from '../shared.js'
+import { runCommandSequence } from '~/code/tool/node/command.js'
+import { NativeOptions } from '~/code/tool/shared/request.js'
 import {
   resolveInputForFormatLocalExternalNode,
   resolveInputForFormatLocalInternalNode,
   resolveInputForFormatRemoteNode,
-} from '../tool/node'
-import { extend } from '~/code/tool/shared/object'
-import { resolveWorkFileNode } from '~/code/tool/node/request'
+} from '../tool/node.js'
+import { extend } from '~/code/tool/shared/object.js'
+import { resolveWorkFileNode } from '~/code/tool/node/request.js'
 
 // https://github.com/realm/SwiftLint
 // https://github.com/realm/SwiftLint/blob/main/Dockerfile

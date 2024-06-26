@@ -1,6 +1,6 @@
-import { getConfig } from '~/code/tool/shared/config'
-import { ImageMagickFormat } from '~/code/type/shared'
-import { testVerify } from '../shared'
+import { getConfig } from '~/code/tool/shared/config.js'
+import { ImageMagickFormat } from '~/code/type/shared/index.js'
+import { testVerify } from '../shared.js'
 
 export function testVerifyImageWithImageMagick(source) {
   if (!testVerify(source)) {

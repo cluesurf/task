@@ -5,7 +5,7 @@ import decodeUtf8 from 'decode-utf8'
 import {
   buildCommandSequence,
   getCommand,
-} from '~/code/tool/shared/command'
+} from '~/code/tool/shared/command.js'
 import {
   FormatAssemblyCommandInput,
   FormatCodeWithClangFormatCommandInput,
@@ -15,7 +15,7 @@ import {
   FormatRustCommandInput,
   FormatSqlWithContent,
   FormatSwiftCommandInput,
-} from '~/code/type/shared'
+} from '~/code/type/shared/index.js'
 
 export function buildCommandToFormatCodeWithClangFormat(
   input: FormatCodeWithClangFormatCommandInput,

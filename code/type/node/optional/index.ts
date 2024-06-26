@@ -41,7 +41,7 @@ import {
   SwiftInputFormat,
   WastInputFormat,
   WastOutputFormat,
-} from '~/code/type/shared/index'
+} from '~/code/type/shared/index.js'
 import {
   FileContentOptional,
   FileContentWithSha256Optional,
@@ -52,8 +52,8 @@ import {
   LocalPathOptional,
   RemoteInputPathOptional,
   TextStyleOptional,
-} from '~/code/type/shared/optional/index'
-import { ClangStyleAllOptional } from '~/code/type/shared/optional/clang-format'
+} from '~/code/type/shared/optional/index.js'
+import { ClangStyleAllOptional } from '~/code/type/shared/optional/clang-format.js'
 
 export type CompileCNodeClientInputOptional = {
   handle?: 'client'

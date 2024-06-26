@@ -1,4 +1,4 @@
-import { UnarchiverFormatContent } from '~/code/type/shared/unarchiver'
+import { UnarchiverFormatContent } from '~/code/type/shared/unarchiver.js'
 
 export const UNARCHIVER_FORMAT_CONTENT: UnarchiverFormatContent = {
   zip: {

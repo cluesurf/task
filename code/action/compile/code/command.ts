@@ -6,15 +6,15 @@
 import {
   buildCommandSequence,
   getCommand,
-} from '~/code/tool/shared/command'
-import { getConfig } from '~/code/tool/shared/config'
+} from '~/code/tool/shared/command.js'
+import { getConfig } from '~/code/tool/shared/config.js'
 import {
   CompileCCommandInput,
   CompileCppCommandInput,
   CompileLlvmIrToAssembly,
   CompileRustCommandInput,
   CompileSwiftCommandInput,
-} from '~/code/type/shared'
+} from '~/code/type/shared/index.js'
 
 // @.str = private unnamed_addr constant [14 x i8] c"Hello, World!\00", align 1
 export async function buildCommandToCompileC(

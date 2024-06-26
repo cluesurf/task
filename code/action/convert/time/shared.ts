@@ -1,7 +1,7 @@
 import {
   ConvertTimeZone,
   ConvertTimeZoneParser,
-} from '~/code/type/shared/parser'
+} from '~/code/type/shared/parser.js'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'

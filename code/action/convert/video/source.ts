@@ -1,5 +1,5 @@
 import { Form } from '@termsurf/form'
-import { buildConvertForms } from '~/code/tool/shared/source'
+import { buildConvertForms } from '~/code/tool/shared/source.js'
 
 export const convert_video_to_audio_with_ffmpeg: Form = {
   form: 'form',

@@ -50,8 +50,8 @@ import {
   TextStyle,
   WastInputFormat,
   WastOutputFormat,
-} from '~/code/type/shared/index'
-import { ClangStyleAll } from '~/code/type/shared/clang-format'
+} from '~/code/type/shared/index.js'
+import { ClangStyleAll } from '~/code/type/shared/clang-format.js'
 
 export type CompileCNodeClientInput = {
   handle: 'client'

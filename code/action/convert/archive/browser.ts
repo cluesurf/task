@@ -2,15 +2,14 @@ import {
   ConvertArchiveBrowserInput,
   ConvertArchiveBrowserInputParser,
   ConvertArchiveBrowserLocalInput,
-  ConvertArchiveBrowserOutputParser,
   ConvertArchiveBrowserRemoteInput,
-} from '~/code/type/browser/parser'
-import { buildFormDataRequestToConvert } from '../shared'
-import kink from '~/code/tool/shared/kink'
-import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
-import { NativeOptions } from '~/code/tool/shared/request'
-import { testConvertArchive } from './shared'
-import { WorkFileAsBlob } from '~/code/tool/shared/work'
+} from '~/code/type/browser/parser.js'
+import { buildFormDataRequestToConvert } from '../shared.js'
+import kink from '~/code/tool/shared/kink.js'
+import { resolveWorkFileAsBlob } from '~/code/tool/browser/work.js'
+import { NativeOptions } from '~/code/tool/shared/request.js'
+import { testConvertArchive } from './shared.js'
+import { WorkFileAsBlob } from '~/code/tool/shared/work.js'
 
 export async function convertArchiveBrowser(
   source: ConvertArchiveBrowserInput,

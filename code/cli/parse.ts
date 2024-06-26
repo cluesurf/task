@@ -1,8 +1,8 @@
 import { Form, FormLink, BaseHash } from '@termsurf/form'
-import { Call, Bond, CallLinkMesh } from './type'
+import { Call, Bond, CallLinkMesh } from './type.js'
 import set from 'lodash/set'
 import kebabCase from 'lodash/kebabCase'
-import kink from '../tool/shared/kink'
+import kink from '../tool/shared/kink.js'
 
 export type LineCallLink = {
   line: Array<string>

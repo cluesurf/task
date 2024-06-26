@@ -3,7 +3,7 @@
 //   buildCommandToConvertDocumentWithCalibre,
 //   buildCommandToConvertDocumentWithPandoc,
 //   buildCommandToConvertLatexWithPdfLatex,
-// } from '../command'
+// } from '../command.js'
 // import _ from 'lodash'
 // import path from 'node:path'
 // import __dirname from '~/code/tool/shared/directory'
@@ -13,14 +13,14 @@
 //   getBrowser,
 //   inactivateBrowser,
 // } from '~/code/tool/node/browser'
-// import { runCommandSequence } from '~/code/tool/node/command'
+// import { runCommandSequence } from '~/code/tool/node/command.js'
 // import {
 //   ConvertDocumentWithCalibreNodeInput,
 //   ConvertDocumentWithLibreOfficeNodeInput,
 //   ConvertDocumentWithPandocNodeInput,
 //   ConvertDocumentWithPuppeteerNodeInput,
 //   ConvertLatexWithPdfLatexNodeInput,
-// } from '~/code/type/shared'
+// } from '~/code/type/shared/index.js'
 // import {
 //   ConvertDocumentWithCalibreNodeCommandInputParser,
 //   ConvertDocumentWithLibreOfficeNodeCommandInputParser,

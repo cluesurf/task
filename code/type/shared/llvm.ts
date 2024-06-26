@@ -8,7 +8,7 @@ import {
   LlvmCpuData,
   LlvmFeature,
   LlvmFeatureData,
-} from '~/code/type/shared/index'
+} from '~/code/type/shared/index.js'
 
 export type BackendCompilationOutputContentValue =
   BackendCompilationOutputData

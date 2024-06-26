@@ -4,11 +4,11 @@ import {
   ConvertDocumentWithPandocBrowserLocalInput,
   ConvertDocumentWithPandocBrowserOutputParser,
   ConvertDocumentWithPandocBrowserRemoteInput,
-} from '~/code/type/browser/parser'
-import { buildFormDataRequestToConvert } from '../../shared'
-import kink from '~/code/tool/shared/kink'
-import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
-import { NativeOptions } from '~/code/tool/shared/request'
+} from '~/code/type/browser/parser.js'
+import { buildFormDataRequestToConvert } from '../../shared.js'
+import kink from '~/code/tool/shared/kink.js'
+import { resolveWorkFileAsBlob } from '~/code/tool/browser/work.js'
+import { NativeOptions } from '~/code/tool/shared/request.js'
 
 export async function convertDocumentWithPandocBrowser(
   source: ConvertDocumentWithPandocBrowserInput,

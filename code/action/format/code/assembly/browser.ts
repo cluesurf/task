@@ -1,14 +1,14 @@
-import { buildFormDataRequestToFormat } from '../shared'
+import { buildFormDataRequestToFormat } from '../shared.js'
 import {
   FormatAssemblyBrowserInput,
   FormatAssemblyBrowserInputParser,
   FormatAssemblyBrowserLocalInput,
   FormatAssemblyBrowserRemoteInput,
-} from '~/code/type/browser/parser'
-import kink from '~/code/tool/shared/kink'
-import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
-import { NativeOptions } from '~/code/tool/shared/request'
-import { WorkFileAsBlob } from '~/code/tool/shared/work'
+} from '~/code/type/browser/parser.js'
+import kink from '~/code/tool/shared/kink.js'
+import { resolveWorkFileAsBlob } from '~/code/tool/browser/work.js'
+import { NativeOptions } from '~/code/tool/shared/request.js'
+import { WorkFileAsBlob } from '~/code/tool/shared/work.js'
 
 export async function formatAssemblyBrowser(
   source: FormatAssemblyBrowserInput,

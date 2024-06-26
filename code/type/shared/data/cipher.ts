@@ -1,4 +1,4 @@
-import { CipherContent } from '~/code/type/shared/cipher'
+import { CipherContent } from '~/code/type/shared/cipher.js'
 
 export const CIPHER_CONTENT: CipherContent = {
   aes_ecb: {

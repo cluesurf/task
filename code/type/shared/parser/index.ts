@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { LOAD, MAKE, TEST } from '@termsurf/form'
-import * as code from '~/code/type/code'
+import * as code from '~/code/type/code.js'
 
 import {
   AddAudioToVideoWithFfmpeg,
@@ -616,7 +616,7 @@ import {
   WordSet,
   WordSetData,
   WriteMetadataToImage,
-} from '~/code/type/shared/index'
+} from '~/code/type/shared/index.js'
 
 let AddAudioToVideoWithFfmpegModel: z.ZodType<AddAudioToVideoWithFfmpeg>
 

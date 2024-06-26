@@ -1,4 +1,4 @@
-import makeTree from '@termsurf/form/host/make'
+import makeTree from '@termsurf/form/host/make/index.js'
 import * as MESH from '~/code/source'
 import NAME from '~/code/object/name'
 // import '~/code/shared/type/source/call/convert'
@@ -39,7 +39,7 @@ async function makeBrowser(hold: Hold) {
 async function makeForm(hold: Hold, type: string, test: Test) {
   const link: BaseHash = makeMesh(test)
   const tree = await makeTree({
-    testLink: `~/code/type/code`,
+    testLink: `~/code/type/code.js`,
     baseLink: `~/code/type/${type}`,
     link,
     mesh: MESH,
@@ -52,7 +52,7 @@ async function makeForm(hold: Hold, type: string, test: Test) {
   const castLoad: Record<string, boolean> = {}
 
   if (type !== 'shared') {
-    castLoad[`export * from '../shared'`] = true
+    castLoad[`export * from '../shared/index.js'`] = true
   }
 
   for (const name in tree.cast) {
@@ -63,7 +63,7 @@ async function makeForm(hold: Hold, type: string, test: Test) {
       await fsp.mkdir(base, { recursive: true })
       await fsp.writeFile(`${link}.ts`, text)
 
-      castLoad[`export * from '${name}'`] = true
+      castLoad[`export * from '${name}.js'`] = true
     }
   }
 
@@ -75,10 +75,10 @@ async function makeForm(hold: Hold, type: string, test: Test) {
   const takeLoad: Record<string, boolean> = {}
 
   if (type !== 'shared') {
-    takeLoad[`export * from '../shared/parser'`] = true
+    takeLoad[`export * from '../shared/parser.js'`] = true
   }
 
-  takeLoad[`export * from './form'`] = true
+  takeLoad[`export * from './form.js'`] = true
 
   for (const name in tree.take) {
     const text = tree.take[name]
@@ -88,7 +88,7 @@ async function makeForm(hold: Hold, type: string, test: Test) {
       await fsp.mkdir(base, { recursive: true })
       await fsp.writeFile(`${link}.ts`, text)
 
-      takeLoad[`export * from '${name}'`] = true
+      takeLoad[`export * from '${name}.js'`] = true
     }
   }
 
@@ -100,7 +100,7 @@ async function makeForm(hold: Hold, type: string, test: Test) {
   const baseLoad: Record<string, boolean> = {}
 
   if (type !== 'shared') {
-    baseLoad[`export * from '../shared/data'`] = true
+    baseLoad[`export * from '../shared/data.js'`] = true
   }
 
   for (const name in tree.base) {
@@ -111,7 +111,7 @@ async function makeForm(hold: Hold, type: string, test: Test) {
       await fsp.mkdir(base, { recursive: true })
       await fsp.writeFile(`${link}.ts`, text)
 
-      baseLoad[`export * from '${name}'`] = true
+      baseLoad[`export * from '${name}.js'`] = true
     }
   }
 

@@ -15,11 +15,11 @@ import {
   GematriaSystemCalculation,
   GematriaSystemCalculationResult,
   SharedGematriaLanguage,
-} from '~/code/type/shared/parser'
+} from '~/code/type/shared/parser.js'
 import { detect as detectScript } from '@termsurf/talk/host/code/script/detect'
-import kink from '~/code/tool/shared/kink'
+import kink from '~/code/tool/shared/kink.js'
 import merge from 'lodash/merge'
-import { getConfig } from '~/code/tool/shared/config'
+import { getConfig } from '~/code/tool/shared/config.js'
 
 export function calculateGematria(source: CalculateGematria) {
   const input = CalculateGematriaParser().parse(source)

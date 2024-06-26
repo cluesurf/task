@@ -1,4 +1,4 @@
-import { logError } from './logging'
+import { logError } from './logging.js'
 
 export function exitWithError(e) {
   logError(e)

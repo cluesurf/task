@@ -8,7 +8,7 @@ import {
   ImageMagickCompressionData,
   ImageMagickFormat,
   ImageMagickFormatData,
-} from '~/code/type/shared/index'
+} from '~/code/type/shared/index.js'
 
 export type ImageMagickChannelContentValue = ImageMagickChannelData
 

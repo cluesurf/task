@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { LOAD, MAKE, TEST } from '@termsurf/form'
-import * as code from '~/code/type/code'
+import * as code from '~/code/type/code.js'
 
 import {
   CompileCNodeClientInput,
@@ -219,7 +219,7 @@ import {
   SanitizeHtmlNodeLocalInternalInput,
   SanitizeHtmlNodeOutput,
   SanitizeHtmlNodeRemoteInput,
-} from '~/code/type/node/index'
+} from '~/code/type/node/index.js'
 import {
   ArchiveFormatParser,
   AssemblySyntaxParser,
@@ -271,8 +271,8 @@ import {
   TextStyleParser,
   WastInputFormatParser,
   WastOutputFormatParser,
-} from '~/code/type/shared/parser/index'
-import { ClangStyleAllParser } from '~/code/type/shared/parser/clang-format'
+} from '~/code/type/shared/parser/index.js'
+import { ClangStyleAllParser } from '~/code/type/shared/parser/clang-format.js'
 
 let CompileCNodeClientInputModel: z.ZodType<CompileCNodeClientInput>
 

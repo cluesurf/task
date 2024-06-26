@@ -2,8 +2,8 @@ import camelCase from 'lodash/camelCase'
 import {
   buildCommandSequence,
   getCommand,
-} from '~/code/tool/shared/command'
-import { InspectMetadataFromImage } from '~/code/type/node/parser'
+} from '~/code/tool/shared/command.js'
+import { InspectMetadataFromImage } from '~/code/type/node/parser.js'
 
 export function buildCommandToInspectMetadataFromImage(
   input: InspectMetadataFromImage,

@@ -1,4 +1,4 @@
-import { buildConvertForms } from '~/code/tool/shared/source'
+import { buildConvertForms } from '~/code/tool/shared/source.js'
 
 const convert_font_with_font_forge_forms = buildConvertForms(
   'convert_font_with_font_forge',

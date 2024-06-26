@@ -1,24 +1,23 @@
 import {
   CompileCNodeInput,
   CompileCNodeInputParser,
-  CompileCNodeOutputParser,
   CompileCNodeLocalInternalInput,
   CompileCNodeLocalExternalInput,
   CompileCNodeLocalInputParser,
   CompileCNodeRemoteInput,
   CompileCNodeClientInputParser,
-} from '~/code/type/node/parser'
-import { buildCommandToCompileC } from '../command'
-import { runCommandSequence } from '~/code/tool/node/command'
+} from '~/code/type/node/parser.js'
+import { buildCommandToCompileC } from '../command.js'
+import { runCommandSequence } from '~/code/tool/node/command.js'
 import {
   resolveInputForCompileLocalExternalNode,
   resolveInputForCompileLocalInternalNode,
   resolveInputForCompileRemoteNode,
-} from '~/code/action/compile/code/tool/node'
-import { extend } from '~/code/tool/shared/object'
-import { buildRequestToCompile } from '~/code/action/compile/code/shared'
-import { resolveWorkFileNode } from '~/code/tool/node/request'
-import { NativeOptions } from '~/code/tool/shared/request'
+} from '~/code/action/compile/code/tool/node.js'
+import { extend } from '~/code/tool/shared/object.js'
+import { buildRequestToCompile } from '~/code/action/compile/code/shared.js'
+import { resolveWorkFileNode } from '~/code/tool/node/request.js'
+import { NativeOptions } from '~/code/tool/shared/request.js'
 
 export async function compileCNode(
   source: CompileCNodeInput,

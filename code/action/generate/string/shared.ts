@@ -1,5 +1,5 @@
-import { getRandomBytes } from '~/code/tool/node/bytes'
-import { getConfig } from '~/code/tool/shared/config'
+import { getRandomBytes } from '~/code/tool/node/bytes.js'
+import { getConfig } from '~/code/tool/shared/config.js'
 import {
   generateCumulativeWeightedRandomArray,
   getRandomIntegerBetween,
@@ -16,7 +16,7 @@ import {
   NamedWordSet,
   WeightedSymbolSet,
   WeightedWordSet,
-} from '~/code/type/shared/parser'
+} from '~/code/type/shared/parser.js'
 
 export function generateRandomSymbols(source: GenerateRandomSymbols) {
   const input = GenerateRandomSymbolsParser().parse(source)

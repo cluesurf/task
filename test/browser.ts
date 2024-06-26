@@ -1,4 +1,4 @@
-import { configure } from '~/code/tool/shared/config'
+import { configure } from '~/code/tool/shared/config.js'
 import test from 'tape'
 import testConvertFontWithFontForgeBrowser from './convert/font/fontforge/browser'
 import testConvertImageWithImageMagickBrowser from './convert/image/imagemagick/browser'

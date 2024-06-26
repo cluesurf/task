@@ -1,9 +1,9 @@
 #!/usr/bin/env -S node --no-warnings=ExperimentalWarning
 
-import * as task from './task'
-import { Task } from '~/code/type/node/parser'
-import { read } from './parse'
-import { logError } from './logging'
+import * as task from './task.js'
+import { Task } from '~/code/type/node/parser.js'
+import { read } from './parse.js'
+import { logError } from './logging.js'
 
 process.on('uncaughtException', kink => {
   logError(kink)

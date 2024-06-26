@@ -1,11 +1,11 @@
 import {
   buildCommandSequence,
   getCommand,
-} from '~/code/tool/shared/command'
+} from '~/code/tool/shared/command.js'
 import {
   ExtractWith7Z,
   ExtractWithUnarchiver,
-} from '~/code/type/shared'
+} from '~/code/type/shared/index.js'
 
 // check if corrupted
 // zip -T filename.zip

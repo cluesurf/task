@@ -1,12 +1,12 @@
 import stripAnsi from 'strip-ansi'
 import tint, { Tint } from '@termsurf/tint-text'
 import ora from 'ora'
-import { log, logWithSpace } from '~/code/tool/shared/logger'
+import { log, logWithSpace } from '~/code/tool/shared/logger.js'
 import isObject from 'lodash/isObject'
 import kebabCase from 'lodash/kebabCase'
 import makeSiteKinkText from '@termsurf/kink-site'
 import { Form, BaseHash } from '@termsurf/form'
-import { makeLineCallLinkList } from './parse'
+import { makeLineCallLinkList } from './parse.js'
 
 const M: Tint = { tone: 'magenta' }
 const C: Tint = { tone: 'cyan' }

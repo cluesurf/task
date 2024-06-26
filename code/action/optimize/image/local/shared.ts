@@ -1,8 +1,8 @@
 import {
   buildCommandSequence,
   getCommand,
-} from '~/code/tool/shared/command'
-import { BuildCommandToOptimizeGifWithGifsicle } from '~/code/type/shared'
+} from '~/code/tool/shared/command.js'
+import { BuildCommandToOptimizeGifWithGifsicle } from '~/code/type/shared/index.js'
 
 export function buildCommandToOptimizeGifWithGifsicle(
   input: BuildCommandToOptimizeGifWithGifsicle,

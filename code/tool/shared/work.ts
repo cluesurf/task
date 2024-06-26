@@ -1,8 +1,7 @@
 import Kink, { KinkMesh } from '@termsurf/kink'
-import { NativeOptions, getRemote } from './request'
-import { wait } from './timer'
-import kink from './kink'
-import { Request } from './request'
+import { Request, NativeOptions, getRemote } from './request.js'
+import { wait } from './timer.js'
+import kink from './kink.js'
 
 export type WorkFile = {
   file: {

@@ -1,7 +1,7 @@
 import {
   PandocFormatContent,
   PandocFormatContentKey,
-} from '~/code/type/shared/pandoc'
+} from '~/code/type/shared/pandoc.js'
 
 export const PANDOC_FORMAT_CONTENT_KEY: ReadonlyArray<PandocFormatContentKey> =
   [

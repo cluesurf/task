@@ -1,3 +1,3 @@
-export * from './form'
-export * from '~/code/type/shared/parser/index'
-export * from '~/code/type/shared/parser/clang-format'
+export * from './form.js'
+export * from '~/code/type/shared/parser/index.js'
+export * from '~/code/type/shared/parser/clang-format.js'

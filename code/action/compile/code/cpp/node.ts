@@ -7,18 +7,18 @@ import {
   CompileCppNodeLocalInputParser,
   CompileCppNodeRemoteInput,
   CompileCppNodeClientInputParser,
-} from '~/code/type/node/parser'
-import { buildCommandToCompileCpp } from '../command'
-import { runCommandSequence } from '~/code/tool/node/command'
+} from '~/code/type/node/parser.js'
+import { buildCommandToCompileCpp } from '../command.js'
+import { runCommandSequence } from '~/code/tool/node/command.js'
 import {
   resolveInputForCompileLocalExternalNode,
   resolveInputForCompileLocalInternalNode,
   resolveInputForCompileRemoteNode,
-} from '~/code/action/compile/code/tool/node'
-import { extend } from '~/code/tool/shared/object'
-import { buildRequestToCompile } from '~/code/action/compile/code/shared'
-import { resolveWorkFileNode } from '~/code/tool/node/request'
-import { NativeOptions } from '~/code/tool/shared/request'
+} from '~/code/action/compile/code/tool/node.js'
+import { extend } from '~/code/tool/shared/object.js'
+import { buildRequestToCompile } from '~/code/action/compile/code/shared.js'
+import { resolveWorkFileNode } from '~/code/tool/node/request.js'
+import { NativeOptions } from '~/code/tool/shared/request.js'
 
 export async function compileCppNode(
   source: CompileCppNodeInput,

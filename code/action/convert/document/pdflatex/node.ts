@@ -7,19 +7,19 @@ import {
   ConvertLatexWithPdfLatexNodeLocalInputParser,
   ConvertLatexWithPdfLatexNodeRemoteInput,
   ConvertLatexWithPdfLatexNodeClientInputParser,
-} from '~/code/type/node/parser'
-import { buildCommandToConvertLatexWithPdfLatex } from '../command'
-import { runCommandSequence } from '~/code/tool/node/command'
+} from '~/code/type/node/parser.js'
+import { buildCommandToConvertLatexWithPdfLatex } from '../command.js'
+import { runCommandSequence } from '~/code/tool/node/command.js'
 import {
   resolveInputForConvertLocalExternalNode,
   resolveInputForConvertLocalInternalNode,
   resolveInputForConvertRemoteNode,
-} from '../../tool/node'
-import { extend } from '~/code/tool/shared/object'
-import { buildRequestToConvert } from '../../shared'
-import { resolveWorkFileNode } from '~/code/tool/node/request'
+} from '../../tool/node.js'
+import { extend } from '~/code/tool/shared/object.js'
+import { buildRequestToConvert } from '../../shared.js'
+import { resolveWorkFileNode } from '~/code/tool/node/request.js'
 import path from 'path'
-import { NativeOptions } from '~/code/tool/shared/request'
+import { NativeOptions } from '~/code/tool/shared/request.js'
 
 export async function convertLatexWithPdfLatexNode(
   source: ConvertLatexWithPdfLatexNodeInput,

@@ -1,25 +1,25 @@
 import set from 'lodash/set'
 import unset from 'lodash/unset'
 import fsp from 'fs/promises'
-import debug from '~/code/tool/shared/debug'
+import debug from '~/code/tool/shared/debug.js'
 import {
   createStreamableFile,
   getFallbackFilePath,
   getScopeDirectory,
   readRemoteFileNode,
   resolveRemoteFile,
-} from '~/code/tool/node/file'
+} from '~/code/tool/node/file.js'
 import {
   parsePath,
   resolvePathRelativeToScope,
-} from '~/code/tool/shared/file'
-import { cloneOptions } from '~/code/tool/shared/object'
+} from '~/code/tool/shared/file.js'
+import { cloneOptions } from '~/code/tool/shared/object.js'
 import {
   ResolveInputForCompileLocalExternal,
   ResolveInputForCompileLocalInternal,
   ResolveInputForCompileRemote,
-} from '~/code/type/node/parser'
-// import debug from '~/code/tool/shared/debug'
+} from '~/code/type/node/parser.js'
+// import debug from '~/code/tool/shared/debug.js'
 
 // https://www.npmjs.com/package/ftp
 

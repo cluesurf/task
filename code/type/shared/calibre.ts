@@ -3,7 +3,7 @@ import {
   CalibreFormatData,
   CalibreInputFormat,
   CalibreOutputFormat,
-} from '~/code/type/shared/index'
+} from '~/code/type/shared/index.js'
 
 export type CalibreInputFormatContentValue = CalibreFormatData
 

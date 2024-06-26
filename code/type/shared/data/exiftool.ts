@@ -5,7 +5,7 @@ import {
   ExiftoolImageFormatContentKey,
   ExiftoolTagContent,
   ExiftoolTagContentKey,
-} from '~/code/type/shared/exiftool'
+} from '~/code/type/shared/exiftool.js'
 
 export const EXIFTOOL_FAMILY_CONTENT_KEY: ReadonlyArray<ExiftoolFamilyContentKey> =
   [

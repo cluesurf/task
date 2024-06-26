@@ -1,28 +1,28 @@
-import * as MESH from '~/code/source'
+import * as MESH from '~/code/source.js'
 import {
   makeLineCallLinkHash,
   makeLineCallLinkList,
   makeLineHash,
   makeLinkHash,
-} from '~/code/cli/parse'
+} from '~/code/cli/parse.js'
 import {
   logHelp,
   logVerificationStatus,
   logVerifying,
   setLoggingStyle,
-} from '~/code/cli/logging'
-import { VERIFY_IMAGE_HINT } from '~/code/cli/hint'
-import { CallLinkMesh } from '~/code/cli/type'
+} from '~/code/cli/logging.js'
+import { VERIFY_IMAGE_HINT } from '~/code/cli/hint.js'
+import { CallLinkMesh } from '~/code/cli/type.js'
 import {
   VerifyCliBase,
   VerifyCliBaseParser,
   VerifyImageWithImageMagickParser,
-} from '~/code/type/shared/parser'
-import { testVerifyImageWithImageMagickNode } from '~/code/action/verify/image/node'
+} from '~/code/type/shared/parser.js'
+import { testVerifyImageWithImageMagickNode } from '~/code/action/verify/image/node.js'
 import { Form } from '@termsurf/form'
-import { closeAllBrowsers } from '~/code/tool/node/browser'
+import { closeAllBrowsers } from '~/code/tool/node/browser.js'
 // import { verify } from '~/code/action/verify/node'
-import { exitWithError } from '../process'
+import { exitWithError } from '../process.js'
 
 export async function verifyCli({
   format,

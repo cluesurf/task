@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { LOAD, MAKE, TEST } from '@termsurf/form'
-import * as code from '~/code/type/code'
+import * as code from '~/code/type/code.js'
 
 import {
   ClangStyleAll,
@@ -8,7 +8,7 @@ import {
   ClangStyleJava,
   ClangStyleJavascript,
   ClangStyleObjc,
-} from '~/code/type/shared/clang-format'
+} from '~/code/type/shared/clang-format.js'
 
 let ClangStyleAllModel: z.ZodType<ClangStyleAll>
 

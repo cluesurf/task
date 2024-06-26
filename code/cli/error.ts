@@ -1,6 +1,6 @@
 import Kink, { KinkList } from '@termsurf/kink'
-import { logWithSpace } from '~/code/tool/shared/logger'
 import { makeBaseKinkText, makeKinkText } from '@termsurf/kink-text'
+import { logWithSpace } from '~/code/tool/shared/logger.js'
 
 export function logError(kink) {
   if (kink instanceof KinkList) {

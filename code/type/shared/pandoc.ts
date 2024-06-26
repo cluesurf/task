@@ -1,5 +1,5 @@
 import merge from 'lodash/merge'
-import { PandocFormatData } from '~/code/type/shared/index'
+import { PandocFormatData } from '~/code/type/shared/index.js'
 
 export type PandocFormatContentValue = PandocFormatData
 

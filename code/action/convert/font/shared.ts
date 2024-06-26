@@ -1,14 +1,14 @@
 import {
   ConvertFontWithFontForgeCommandInput,
   FontFormat,
-} from '~/code/type/shared'
+} from '~/code/type/shared/index.js'
 import {
   buildCommandSequence,
   getCommand,
-} from '~/code/tool/shared/command'
-import debug from '~/code/tool/shared/debug'
-import { testConvertFileInputOutput } from '../shared'
-import { getConfig } from '~/code/tool/shared/config'
+} from '~/code/tool/shared/command.js'
+import debug from '~/code/tool/shared/debug.js'
+import { testConvertFileInputOutput } from '../shared.js'
+import { getConfig } from '~/code/tool/shared/config.js'
 
 export async function buildCommandToConvertFontWithFontForge(
   input: ConvertFontWithFontForgeCommandInput,

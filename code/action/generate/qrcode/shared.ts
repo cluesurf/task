@@ -2,7 +2,7 @@ import QRCode from 'qrcode'
 import {
   GenerateQrCode,
   GenerateQrCodeParser,
-} from '~/code/type/shared/parser'
+} from '~/code/type/shared/parser.js'
 import mimeType from 'mime-types'
 
 export async function generateQrCode(source: GenerateQrCode) {

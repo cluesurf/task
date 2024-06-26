@@ -3,13 +3,13 @@ import {
   ConvertImageWithImageMagickBrowserInputParser,
   ConvertImageWithImageMagickBrowserLocalInput,
   ConvertImageWithImageMagickBrowserRemoteInput,
-} from '~/code/type/browser/parser'
-import { buildFormDataRequestToConvert } from '../../shared'
-import kink from '~/code/tool/shared/kink'
-import { testConvertImageWithImageMagick } from './shared'
-import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
-import { NativeOptions } from '~/code/tool/shared/request'
-import { WorkFileAsBlob } from '~/code/tool/shared/work'
+} from '~/code/type/browser/parser.js'
+import { buildFormDataRequestToConvert } from '../../shared.js'
+import kink from '~/code/tool/shared/kink.js'
+import { testConvertImageWithImageMagick } from './shared.js'
+import { resolveWorkFileAsBlob } from '~/code/tool/browser/work.js'
+import { NativeOptions } from '~/code/tool/shared/request.js'
+import { WorkFileAsBlob } from '~/code/tool/shared/work.js'
 
 export async function convertImageWithImageMagickBrowser(
   source: ConvertImageWithImageMagickBrowserInput,

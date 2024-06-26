@@ -1,5 +1,5 @@
 import merge from 'lodash/merge'
-import { Cipher, CipherData } from '~/code/type/shared/index'
+import { Cipher, CipherData } from '~/code/type/shared/index.js'
 
 export type CipherContentValue = CipherData
 

@@ -3,7 +3,7 @@ import {
   buildConvertForms,
   buildConvertFormsToStringContent,
   buildConvertFormsWithOutputDirectory,
-} from '~/code/tool/shared/source'
+} from '~/code/tool/shared/source.js'
 
 const convert_document_with_jupyter_forms = buildConvertForms(
   'convert_document_with_jupyter',

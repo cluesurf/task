@@ -4,12 +4,15 @@ import {
   SanitizeHtmlBrowserInputParser,
   SanitizeHtmlBrowserLocalInput,
   SanitizeHtmlBrowserRemoteInput,
-} from '~/code/type/browser/parser'
-import { testSanitize, buildFormDataRequestToSanitize } from '../shared'
-import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
-import { NativeOptions } from '~/code/tool/shared/request'
-import { WorkFileAsBlob } from '~/code/tool/shared/work'
-import { readFileContentAsString } from '~/code/tool/browser/file'
+} from '~/code/type/browser/parser.js'
+import {
+  testSanitize,
+  buildFormDataRequestToSanitize,
+} from '../shared.js'
+import { resolveWorkFileAsBlob } from '~/code/tool/browser/work.js'
+import { NativeOptions } from '~/code/tool/shared/request.js'
+import { WorkFileAsBlob } from '~/code/tool/shared/work.js'
+import { readFileContentAsString } from '~/code/tool/browser/file.js'
 
 export async function sanitizeHtmlBrowser(
   source: SanitizeHtmlBrowserInput,

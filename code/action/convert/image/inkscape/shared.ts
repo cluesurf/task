@@ -1,4 +1,4 @@
-import { testConvertFileInputOutput } from '../../shared'
+import { testConvertFileInputOutput } from '../../shared.js'
 
 export function testConvertImageWithInkscape(input: any) {
   if (!testConvertFileInputOutput(input)) {

@@ -6,21 +6,21 @@ import {
   FormatCodeWithClangFormatNodeRemoteInput,
   FormatCodeWithClangFormatNodeClientInputParser,
   FormatCodeWithClangFormatNodeLocalInputParser,
-} from '~/code/type/node/parser'
+} from '~/code/type/node/parser.js'
 import fsp from 'fs/promises'
 import YAML from 'yaml'
-import { buildCommandToFormatCodeWithClangFormat } from '../command'
-import { buildRequestToFormat } from '../shared'
-import { runCommandSequence } from '~/code/tool/node/command'
-import { generateTemporaryFilePath } from '~/code/tool/node/file'
-import { NativeOptions } from '~/code/tool/shared/request'
+import { buildCommandToFormatCodeWithClangFormat } from '../command.js'
+import { buildRequestToFormat } from '../shared.js'
+import { runCommandSequence } from '~/code/tool/node/command.js'
+import { generateTemporaryFilePath } from '~/code/tool/node/file.js'
+import { NativeOptions } from '~/code/tool/shared/request.js'
 import {
   resolveInputForFormatLocalExternalNode,
   resolveInputForFormatLocalInternalNode,
   resolveInputForFormatRemoteNode,
-} from '../tool/node'
-import { extend } from '~/code/tool/shared/object'
-import { resolveWorkFileNode } from '~/code/tool/node/request'
+} from '../tool/node.js'
+import { extend } from '~/code/tool/shared/object.js'
+import { resolveWorkFileNode } from '~/code/tool/node/request.js'
 
 export async function formatCodeWithClangFormatNode(
   source: FormatCodeWithClangFormatNodeInput,
