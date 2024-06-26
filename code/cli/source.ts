@@ -12,7 +12,7 @@ const cli_base = {
 
 export const compile_cli_base: Form = {
   form: 'form',
-  leak: true,
+  // leak: true,
   link: {
     input: {
       link: {
@@ -40,7 +40,7 @@ export const compile_cli_base: Form = {
 
 export const convert_cli_base: Form = {
   form: 'form',
-  leak: true,
+  // leak: true,
   link: {
     input: {
       link: {
@@ -68,7 +68,7 @@ export const convert_cli_base: Form = {
 
 export const format_cli_base: Form = {
   form: 'form',
-  leak: true,
+  // leak: true,
   link: {
     format: { like: 'string', name: { mark: 'I' } },
     input: {
@@ -95,7 +95,7 @@ export const format_cli_base: Form = {
 
 export const verify_cli_base: Form = {
   form: 'form',
-  leak: true,
+  // leak: true,
   link: {
     format: { like: 'string', name: { mark: 'I' } },
     file: {

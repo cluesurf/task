@@ -6,7 +6,6 @@ import {
   getCommand,
   buildCommandSequence,
 } from '~/code/tool/shared/command'
-import _ from 'lodash'
 import { resolvePathRelativeToScope } from '~/code/tool/shared/file'
 import { getConfig } from '~/code/tool/shared/config'
 
@@ -55,7 +54,7 @@ export function buildCommandToConvertImageWithImageMagick(
 
   if (input.colorSpace) {
     const IMAGE_MAGICK_COLOR_SPACE_CONTENT = getConfig(
-      'image-magick-color-space-content',
+      'image_magick_color_space_content',
     )
     cmd.link.push(
       `-colorspace`,
@@ -65,7 +64,7 @@ export function buildCommandToConvertImageWithImageMagick(
 
   if (input.compression) {
     const IMAGE_MAGICK_COMPRESSION_CONTENT = getConfig(
-      'image-magick-compression-content',
+      'image_magick_compression_content',
     )
     cmd.link.push(
       `-compress`,
@@ -133,7 +132,7 @@ export function buildCommandToConvertImageWithImageMagick(
 
 // export async function ResizeImageWithImageMagick(source) {
 //   const { inputPath, outputPath, width, height, stretch, gravity } =
-//     ResizeImageWithImageMagickResolver().parse(source)
+//     ResizeImageWithImageMagickParser().parse(source)
 
 //   let scale: string = ''
 //   if (width) {

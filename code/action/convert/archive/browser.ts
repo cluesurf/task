@@ -1,10 +1,10 @@
 import {
   ConvertArchiveBrowserInput,
-  ConvertArchiveBrowserInputResolver,
+  ConvertArchiveBrowserInputParser,
   ConvertArchiveBrowserLocalInput,
-  ConvertArchiveBrowserOutputResolver,
+  ConvertArchiveBrowserOutputParser,
   ConvertArchiveBrowserRemoteInput,
-} from '~/code/type/browser'
+} from '~/code/type/browser/parser'
 import { buildFormDataRequestToConvert } from '../shared'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
@@ -16,7 +16,7 @@ export async function convertArchiveBrowser(
   source: ConvertArchiveBrowserInput,
   native?: NativeOptions,
 ) {
-  const input = ConvertArchiveBrowserInputResolver().parse(source)
+  const input = ConvertArchiveBrowserInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':

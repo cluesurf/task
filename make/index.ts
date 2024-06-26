@@ -3,10 +3,9 @@ import * as MESH from '~/code/source'
 import NAME from '~/code/object/name'
 // import '~/code/shared/type/source/call/convert'
 import fsp from 'fs/promises'
-import _ from 'lodash'
 import { BaseHash } from '@termsurf/form'
 import path from 'path'
-import { Hold } from '@termsurf/form/host/make/cast'
+import { Hold } from '@termsurf/form/host/make/type'
 
 export type Test = (text: string) => boolean
 
@@ -53,10 +52,8 @@ async function makeForm(hold: Hold, type: string, test: Test) {
   const castLoad: Record<string, boolean> = {}
 
   if (type !== 'shared') {
-    castLoad[`export * from '../shared/cast'`] = true
+    castLoad[`export * from '../shared'`] = true
   }
-
-  castLoad[`export * from './base/cast'`] = true
 
   for (const name in tree.cast) {
     const text = tree.cast[name]
@@ -71,15 +68,17 @@ async function makeForm(hold: Hold, type: string, test: Test) {
   }
 
   await fsp.writeFile(
-    `./code/type/${type}/cast.ts`,
+    `./code/type/${type}/form.ts`,
     Object.keys(castLoad).join('\n'),
   )
 
   const takeLoad: Record<string, boolean> = {}
 
   if (type !== 'shared') {
-    takeLoad[`export * from '../shared/take'`] = true
+    takeLoad[`export * from '../shared/parser'`] = true
   }
+
+  takeLoad[`export * from './form'`] = true
 
   for (const name in tree.take) {
     const text = tree.take[name]
@@ -94,14 +93,14 @@ async function makeForm(hold: Hold, type: string, test: Test) {
   }
 
   await fsp.writeFile(
-    `./code/type/${type}/take.ts`,
+    `./code/type/${type}/parser.ts`,
     Object.keys(takeLoad).join('\n'),
   )
 
   const baseLoad: Record<string, boolean> = {}
 
   if (type !== 'shared') {
-    baseLoad[`export * from '../shared/base'`] = true
+    baseLoad[`export * from '../shared/data'`] = true
   }
 
   for (const name in tree.base) {
@@ -117,17 +116,8 @@ async function makeForm(hold: Hold, type: string, test: Test) {
   }
 
   await fsp.writeFile(
-    `./code/type/${type}/base.ts`,
+    `./code/type/${type}/data.ts`,
     Object.keys(baseLoad).join('\n'),
-  )
-
-  await fsp.writeFile(
-    `./code/type/${type}/index.ts`,
-    `export * from './cast'
-export * from './take'
-export * from '../code'
-export * from '../bond'
-export * from '..'`,
   )
 }
 

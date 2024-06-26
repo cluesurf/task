@@ -1,20 +1,20 @@
 import { buildFormDataRequestToFormat } from '../shared'
 import {
   FormatSwiftBrowserInput,
-  FormatSwiftBrowserInputResolver,
+  FormatSwiftBrowserInputParser,
   FormatSwiftBrowserLocalInput,
   FormatSwiftBrowserRemoteInput,
-} from '~/code/type/browser'
+} from '~/code/type/browser/parser'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
 import { NativeOptions } from '~/code/tool/shared/request'
-import { WorkFileAsBlob } from '~/code/action/browser'
+import { WorkFileAsBlob } from '~/code/tool/shared/work'
 
 export async function formatSwiftBrowser(
   source: FormatSwiftBrowserInput,
   native?: NativeOptions,
 ) {
-  const input = FormatSwiftBrowserInputResolver().parse(source)
+  const input = FormatSwiftBrowserInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':

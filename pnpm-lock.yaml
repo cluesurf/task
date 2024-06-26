@@ -36,8 +36,8 @@ importers:
         specifier: ^3.2.2
         version: 3.2.2(prettier@3.2.5)
       '@termsurf/form':
-        specifier: ^0.6.2
-        version: 0.6.2(zod@3.22.4)
+        specifier: ^0.9.20
+        version: 0.9.20(zod@3.22.4)
       '@termsurf/kink':
         specifier: ^0.1.6
         version: 0.1.6
@@ -1106,8 +1106,8 @@ packages:
   '@taplo/lib@0.4.0-alpha.2':
     resolution: {integrity: sha512-DV/Re3DPVY+BhBtLZ3dmP4mP6YMLSsgq9qGLXwOV38lvNF/fBlgvQswzlXmzCEefL/3q2eMoefZpOI/+GLuCNA==}
 
-  '@termsurf/form@0.6.2':
-    resolution: {integrity: sha512-gHS28YDGocZp4ERhBaTMvuXjOQdV9I+1XjPkrNifP5L22awIWmGrdDW2Wh3hMcKt9ISxLUw3isIuloRV6WxSJQ==}
+  '@termsurf/form@0.9.20':
+    resolution: {integrity: sha512-+y5jNu2gQZ0cpPFFWnaei/znK7KyyYltEzdCcPGO3CqbNIXhocomfQ16Vv33G5HmmmieEtimbe3vOQarfjOc8w==}
     peerDependencies:
       zod: ^3.22.4
 
@@ -6036,7 +6036,7 @@ snapshots:
     dependencies:
       '@taplo/core': 0.1.1
 
-  '@termsurf/form@0.6.2(zod@3.22.4)':
+  '@termsurf/form@0.9.20(zod@3.22.4)':
     dependencies:
       '@termsurf/have': 0.2.0
       '@termsurf/kink': 0.1.6

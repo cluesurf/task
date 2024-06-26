@@ -1,18 +1,18 @@
 import { peak, sum } from '@lancejpollard/gematria.js/host/index'
 import * as chinese from '@lancejpollard/gematria.js/host/language/chinese'
-import _ from 'lodash'
+import merge from 'lodash/merge'
 import {
   CalculateGematria,
-  CalculateGematriaResolver,
+  CalculateGematriaParser,
   GematriaSystemCalculation,
-} from '~/code/type/node'
+} from '~/code/type/node/parser'
 
 export function calculateTibetanGematria(source: CalculateGematria) {
-  const input = CalculateGematriaResolver().parse(source)
+  const input = CalculateGematriaParser().parse(source)
 
   const encoded = input.input.string.decoded.replace(/[\s]+/g, '+')
 
-  _.merge(input, {
+  merge(input, {
     input: {
       string: { encoded },
     },

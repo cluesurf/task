@@ -1,5 +1,5 @@
 import { getCommand } from '~/code/tool/shared/command'
-import { DisassembleBinaryWithObjdump } from '~/code/type/node'
+import { DisassembleBinaryWithObjdump } from '~/code/type/node/parser'
 
 export async function buildCommandToDisassembleBinaryWithObjdump(
   input: DisassembleBinaryWithObjdump,

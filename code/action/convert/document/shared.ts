@@ -18,11 +18,11 @@ export function testConvertLatexToPng(input: any) {
   }
 
   const CONVERT_LATEX_TO_PNG_INPUT_FORMAT = getConfig(
-    'convert-latex-to-png-input-format',
+    'convert_latex_to_png_input_format',
   )
 
   const CONVERT_LATEX_TO_PNG_OUTPUT_FORMAT = getConfig(
-    'convert-latex-to-png-output-format',
+    'convert_latex_to_png_output_format',
   )
 
   const {
@@ -66,7 +66,7 @@ export function testConvertMarkdownWithPuppeteer(input: any) {
     return false
   }
 
-  const PUPPETEER_OUTPUT_FORMAT = getConfig('puppeteer-output-format')
+  const PUPPETEER_OUTPUT_FORMAT = getConfig('puppeteer_output_format')
   if (!PUPPETEER_OUTPUT_FORMAT.includes(b as PuppeteerOutputFormat)) {
     return false
   }
@@ -88,7 +88,7 @@ export function testConvertTxtWithPuppeteer(input: any) {
   if (a !== 'txt') {
     return false
   }
-  const PUPPETEER_OUTPUT_FORMAT = getConfig('puppeteer-output-format')
+  const PUPPETEER_OUTPUT_FORMAT = getConfig('puppeteer_output_format')
   if (!PUPPETEER_OUTPUT_FORMAT.includes(b as PuppeteerOutputFormat)) {
     return false
   }
@@ -107,8 +107,8 @@ export function testConvertDocumentWithCalibre(input: any) {
   if (a === b) {
     return false
   }
-  const CALIBRE_INPUT_FORMAT = getConfig('calibre-input-format')
-  const CALIBRE_OUTPUT_FORMAT = getConfig('calibre-output-format')
+  const CALIBRE_INPUT_FORMAT = getConfig('calibre_input_format')
+  const CALIBRE_OUTPUT_FORMAT = getConfig('calibre_output_format')
 
   if (!CALIBRE_INPUT_FORMAT.includes(a as CalibreInputFormat)) {
     return false
@@ -132,8 +132,8 @@ export function testConvertDocumentWithPandoc(input: any) {
     return false
   }
 
-  const PANDOC_INPUT_FORMAT = getConfig('pandoc-input-format')
-  const PANDOC_OUTPUT_FORMAT = getConfig('pandoc-output-format')
+  const PANDOC_INPUT_FORMAT = getConfig('pandoc_input_format')
+  const PANDOC_OUTPUT_FORMAT = getConfig('pandoc_output_format')
 
   if (!PANDOC_INPUT_FORMAT.includes(a as PandocInputFormat)) {
     return false
@@ -158,10 +158,10 @@ export function testConvertDocumentWithLibreOffice(input: any) {
   }
 
   const LIBRE_OFFICE_INPUT_FORMAT = getConfig(
-    'libre-office-input-format',
+    'libre_office_input_format',
   )
   const LIBRE_OFFICE_OUTPUT_FORMAT = getConfig(
-    'libre-office-output-format',
+    'libre_office_output_format',
   )
 
   if (

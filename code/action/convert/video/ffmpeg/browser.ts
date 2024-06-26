@@ -1,10 +1,10 @@
 import {
   ConvertVideoWithFfmpegBrowserInput,
-  ConvertVideoWithFfmpegBrowserInputResolver,
+  ConvertVideoWithFfmpegBrowserInputParser,
   ConvertVideoWithFfmpegBrowserLocalInput,
-  ConvertVideoWithFfmpegBrowserOutputResolver,
+  ConvertVideoWithFfmpegBrowserOutputParser,
   ConvertVideoWithFfmpegBrowserRemoteInput,
-} from '~/code/type/browser'
+} from '~/code/type/browser/parser'
 import { buildFormDataRequestToConvert } from '../../shared'
 import kink from '~/code/tool/shared/kink'
 import { testConvertVideoWithFfmpeg } from './shared'
@@ -13,8 +13,7 @@ import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
 export async function convertVideoWithFfmpegBrowser(
   source: ConvertVideoWithFfmpegBrowserInput,
 ) {
-  const input =
-    ConvertVideoWithFfmpegBrowserInputResolver().parse(source)
+  const input = ConvertVideoWithFfmpegBrowserInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':

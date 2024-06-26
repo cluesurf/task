@@ -1,13 +1,13 @@
 import {
   ConvertTxtWithPuppeteerBrowserInput,
-  ConvertTxtWithPuppeteerBrowserInputResolver,
+  ConvertTxtWithPuppeteerBrowserInputParser,
   ConvertTxtWithPuppeteerBrowserLocalInput,
   ConvertTxtWithPuppeteerBrowserRemoteInput,
   ConvertMarkdownWithPuppeteerBrowserInput,
-  ConvertMarkdownWithPuppeteerBrowserInputResolver,
+  ConvertMarkdownWithPuppeteerBrowserInputParser,
   ConvertMarkdownWithPuppeteerBrowserLocalInput,
   ConvertMarkdownWithPuppeteerBrowserRemoteInput,
-} from '~/code/type/browser'
+} from '~/code/type/browser/parser'
 import { buildFormDataRequestToConvert } from '../../shared'
 import { WorkFileAsBlob } from '~/code/tool/shared/work'
 import { NativeOptions } from '~/code/tool/shared/request'
@@ -19,7 +19,7 @@ export async function convertTxtWithPuppeteerBrowser(
   native?: NativeOptions,
 ): Promise<WorkFileAsBlob> {
   const input =
-    ConvertTxtWithPuppeteerBrowserInputResolver().parse(source)
+    ConvertTxtWithPuppeteerBrowserInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -51,7 +51,7 @@ export async function convertMarkdownWithPuppeteerBrowser(
   native?: NativeOptions,
 ): Promise<WorkFileAsBlob> {
   const input =
-    ConvertMarkdownWithPuppeteerBrowserInputResolver().parse(source)
+    ConvertMarkdownWithPuppeteerBrowserInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':

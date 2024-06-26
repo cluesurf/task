@@ -1,11 +1,16 @@
-import { Hash, List } from '@termsurf/form'
+import { Form, Hash, List } from '@termsurf/form'
+
+export const pandoc_format_data: Form = {
+  form: 'form',
+  link: {
+    head: { like: 'string' },
+  },
+}
 
 export const pandoc_format_content: Hash = {
   form: 'hash',
   file: 'pandoc',
-  bond: {
-    head: { like: 'string' },
-  },
+  bond: { like: 'pandoc_format_data' },
   hash: {
     bibtex: { head: 'BibTeX bibliography' },
     biblatex: { head: 'BibLaTeX bibliography' },

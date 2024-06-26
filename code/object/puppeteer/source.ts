@@ -1,4 +1,4 @@
-import { Hash, List } from '@termsurf/form'
+import { Form, Hash, List } from '@termsurf/form'
 
 export const puppeteer_life_cycle_event: List = {
   form: 'list',
@@ -25,11 +25,18 @@ export const puppeteer_markdown_input_format: List = {
   list: ['md'],
 }
 
+export const puppeteer_life_cycle_event_data: Form = {
+  form: 'form',
+  link: {
+    note: { like: 'string' },
+  },
+}
+
 export const puppeteer_life_cycle_event_content: Hash = {
   form: 'hash',
   link: 'puppeteer_life_cycle_event',
   bond: {
-    note: { like: 'string' },
+    like: 'puppeteer_life_cycle_event_data',
   },
   hash: {
     load: { note: `Waits for the 'load' event.` },

@@ -1,12 +1,12 @@
 import QRCode from 'qrcode'
 import {
   GenerateQrCode,
-  GenerateQrCodeResolver,
-} from '~/code/type/shared'
+  GenerateQrCodeParser,
+} from '~/code/type/shared/parser'
 import mimeType from 'mime-types'
 
 export async function generateQrCode(source: GenerateQrCode) {
-  const input = GenerateQrCodeResolver().parse(source)
+  const input = GenerateQrCodeParser().parse(source)
   const opts: any = {}
   if (input.errorCorrectionLevel) {
     opts.errorCorrectionLevel = input.errorCorrectionLevel

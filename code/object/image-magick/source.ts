@@ -271,11 +271,9 @@ export const image_magick_format: List = {
   ],
 }
 
-export const image_magick_format_content: Hash = {
-  form: 'hash',
-  file: 'image_magick',
-  link: 'image_magick_format',
-  bond: {
+export const image_magick_format_data: Form = {
+  form: 'form',
+  link: {
     head: { like: 'string' },
     note: { like: 'string', need: false },
     read: { like: 'boolean', need: false },
@@ -283,6 +281,13 @@ export const image_magick_format_content: Hash = {
     multiple: { like: 'boolean', need: false },
     supportsBlob: { like: 'boolean', need: false },
   },
+}
+
+export const image_magick_format_content: Hash = {
+  form: 'hash',
+  file: 'image_magick',
+  link: 'image_magick_format',
+  bond: { like: 'image_magick_format_data' },
   hash: IMAGE_MAGICK_FORMAT,
 }
 
@@ -323,14 +328,19 @@ export const image_magick_channel: List = {
   ],
 }
 
+export const image_magick_channel_data: Form = {
+  form: 'form',
+  link: {
+    head: { like: 'string' },
+  },
+}
+
 // https://imagemagick.org/script/command-line-options.php#channel
 export const image_magick_channel_content: Hash = {
   form: 'hash',
   file: 'image_magick',
   link: 'image_magick_channel',
-  bond: {
-    head: { like: 'string' },
-  },
+  bond: { like: 'image_magick_channel_data' },
   hash: {
     red: { head: 'Red' },
     green: { head: 'Green' },
@@ -350,12 +360,19 @@ export const image_magick_channel_content: Hash = {
   },
 }
 
+export const image_magick_compression_data: Form = {
+  form: 'form',
+  link: {
+    head: { like: 'string' },
+  },
+}
+
 export const image_magick_compression_content: Hash = {
   form: 'hash',
   file: 'image_magick',
   link: 'image_magick_compression',
   bond: {
-    head: { like: 'string' },
+    like: 'image_magick_compression_data',
   },
   hash: {
     none: { head: 'None' },
@@ -428,14 +445,19 @@ export const image_magick_color_space: List = {
   ],
 }
 
+export const image_magick_color_space_data: Form = {
+  form: 'form',
+  link: {
+    head: { like: 'string' },
+    note: { like: 'string', need: false },
+  },
+}
+
 export const image_magick_color_space_content: Hash = {
   form: 'hash',
   file: 'image_magick',
   link: 'image_magick_color_space',
-  bond: {
-    head: { like: 'string' },
-    note: { like: 'string', need: false },
-  },
+  bond: { like: 'image_magick_color_space_data' },
   hash: {
     cmy: { head: 'CMY', note: 'Cyan, Magenta, Yellow' },
     cmyk: { head: 'CMYK', note: 'Cyan, Magenta, Yellow, Key (Black)' },

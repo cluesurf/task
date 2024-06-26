@@ -19,10 +19,10 @@ export function testConvertImageWithImageMagick(input: any) {
     return false
   }
   const IMAGE_MAGICK_INPUT_FORMAT = getConfig(
-    'image-magick-input-format',
+    'image_magick_input_format',
   )
   const IMAGE_MAGICK_OUTPUT_FORMAT = getConfig(
-    'image-magick-output-format',
+    'image_magick_output_format',
   )
   if (
     !IMAGE_MAGICK_INPUT_FORMAT.includes(a as ImageMagickInputFormat)

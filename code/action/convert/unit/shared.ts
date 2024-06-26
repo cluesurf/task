@@ -1,189 +1,189 @@
 import convertUnits from 'convert-units'
 import {
-  ConvertMillimeterResolver,
-  ConvertCentimeterResolver,
-  ConvertMeterResolver,
-  ConvertKilometerResolver,
-  ConvertInchResolver,
-  ConvertYardResolver,
-  ConvertUsSurveyFootResolver,
-  ConvertFootResolver,
-  ConvertMileResolver,
-  ConvertSquareMillimeterResolver,
-  ConvertSquareCentimeterResolver,
-  ConvertSquareMeterResolver,
-  ConvertHectareResolver,
-  ConvertSquareKilometerResolver,
-  ConvertSquareInchResolver,
-  ConvertSquareYardResolver,
-  ConvertSquareFootResolver,
-  ConvertAcreResolver,
-  ConvertSquareMileResolver,
-  ConvertMicrogramResolver,
-  ConvertMilligramResolver,
-  ConvertGramResolver,
-  ConvertKilogramResolver,
-  ConvertMetricTonneResolver,
-  ConvertOunceResolver,
-  ConvertPoundResolver,
-  ConvertTonResolver,
-  ConvertCubicMillimeterResolver,
-  ConvertCubicCentimeterResolver,
-  ConvertMillilitreResolver,
-  ConvertCentilitreResolver,
-  ConvertDecilitreResolver,
-  ConvertLitreResolver,
-  ConvertKilolitreResolver,
-  ConvertCubicMeterResolver,
-  ConvertCubicKilometerResolver,
-  ConvertTeskedResolver,
-  ConvertMatskedResolver,
-  ConvertKaffekoppResolver,
-  ConvertGlasResolver,
-  ConvertKannaResolver,
-  ConvertTeaspoonResolver,
-  ConvertTablespoonResolver,
-  ConvertCubicInchResolver,
-  ConvertFluidOunceResolver,
-  ConvertCupResolver,
-  ConvertPintResolver,
-  ConvertQuartResolver,
-  ConvertGallonResolver,
-  ConvertCubicFootResolver,
-  ConvertCubicYardResolver,
-  ConvertEachResolver,
-  ConvertDozenResolver,
-  ConvertCelsiusResolver,
-  ConvertKelvinResolver,
-  ConvertFahrenheitResolver,
-  ConvertRankineResolver,
-  ConvertNanosecondResolver,
-  ConvertMicrosecondResolver,
-  ConvertMillisecondResolver,
-  ConvertSecondResolver,
-  ConvertMinuteResolver,
-  ConvertHourResolver,
-  ConvertDayResolver,
-  ConvertWeekResolver,
-  ConvertMonthResolver,
-  ConvertYearResolver,
-  ConvertBitResolver,
-  ConvertKilobitResolver,
-  ConvertMegabitResolver,
-  ConvertGigabitResolver,
-  ConvertTerabitResolver,
-  ConvertByteResolver,
-  ConvertKilobyteResolver,
-  ConvertMegabyteResolver,
-  ConvertGigabyteResolver,
-  ConvertTerabyteResolver,
-  ConvertPartPerMillionResolver,
-  ConvertPartPerBillionResolver,
-  ConvertPartPerTrillionResolver,
-  ConvertPartPerQuadrillionResolver,
-  ConvertMetrePerSecondResolver,
-  ConvertKilometrePerHourResolver,
-  ConvertMilePerHourResolver,
-  ConvertKnotResolver,
-  ConvertFootPerSecondResolver,
-  ConvertMinutePerKilometreResolver,
-  ConvertSecondPerMetreResolver,
-  ConvertMinutePerMileResolver,
-  ConvertSecondPerFootResolver,
-  ConvertPascalResolver,
-  ConvertKilopascalResolver,
-  ConvertMegapascalResolver,
-  ConvertHectopascalResolver,
-  ConvertBarResolver,
-  ConvertTorrResolver,
-  ConvertPoundPerSquareInchResolver,
-  ConvertKilopoundPerSquareInchResolver,
-  ConvertAmpereResolver,
-  ConvertMilliampereResolver,
-  ConvertKiloampereResolver,
-  ConvertVoltResolver,
-  ConvertMillivoltResolver,
-  ConvertKilovoltResolver,
-  ConvertWattResolver,
-  ConvertMilliwattResolver,
-  ConvertKilowattResolver,
-  ConvertMegawattResolver,
-  ConvertGigawattResolver,
-  ConvertVoltAmpereReactiveResolver,
-  ConvertMillivoltAmpereReactiveResolver,
-  ConvertKilovoltAmpereReactiveResolver,
-  ConvertMegavoltAmpereReactiveResolver,
-  ConvertGigavoltAmpereReactiveResolver,
-  ConvertVoltAmpereResolver,
-  ConvertMillivoltAmpereResolver,
-  ConvertKilovoltAmpereResolver,
-  ConvertMegavoltAmpereResolver,
-  ConvertGigavoltAmpereResolver,
-  ConvertWattHourResolver,
-  ConvertMilliwattHourResolver,
-  ConvertKilowattHourResolver,
-  ConvertMegawattHourResolver,
-  ConvertGigawattHourResolver,
-  ConvertJouleResolver,
-  ConvertKilojouleResolver,
-  ConvertVoltAmpereReactiveHourResolver,
-  ConvertMillivoltAmpereReactiveHourResolver,
-  ConvertKilovoltAmpereReactiveHourResolver,
-  ConvertMegavoltAmpereReactiveHourResolver,
-  ConvertGigavoltAmpereReactiveHourResolver,
-  ConvertCubicMillimeterPerSecondResolver,
-  ConvertCubicCentimeterPerSecondResolver,
-  ConvertMillilitrePerSecondResolver,
-  ConvertCentilitrePerSecondResolver,
-  ConvertDecilitrePerSecondResolver,
-  ConvertLitrePerSecondResolver,
-  ConvertLitrePerMinuteResolver,
-  ConvertLitrePerHourResolver,
-  ConvertKilolitrePerSecondResolver,
-  ConvertKilolitrePerMinuteResolver,
-  ConvertKilolitrePerHourResolver,
-  ConvertCubicMeterPerSecondResolver,
-  ConvertCubicMeterPerMinuteResolver,
-  ConvertCubicMeterPerHourResolver,
-  ConvertCubicKilometerPerSecondResolver,
-  ConvertTeaspoonPerSecondResolver,
-  ConvertTablespoonPerSecondResolver,
-  ConvertCubicInchPerSecondResolver,
-  ConvertCubicInchPerMinuteResolver,
-  ConvertCubicInchPerHourResolver,
-  ConvertFluidOuncePerSecondResolver,
-  ConvertFluidOuncePerMinuteResolver,
-  ConvertFluidOuncePerHourResolver,
-  ConvertCupPerSecondResolver,
-  ConvertPintPerSecondResolver,
-  ConvertPintPerMinuteResolver,
-  ConvertPintPerHourResolver,
-  ConvertQuartPerSecondResolver,
-  ConvertGallonPerSecondResolver,
-  ConvertGallonPerMinuteResolver,
-  ConvertGallonPerHourResolver,
-  ConvertCubicFootPerSecondResolver,
-  ConvertCubicFootPerMinuteResolver,
-  ConvertCubicFootPerHourResolver,
-  ConvertCubicYardPerSecondResolver,
-  ConvertCubicYardPerMinuteResolver,
-  ConvertCubicYardPerHourResolver,
-  ConvertLuxResolver,
-  ConvertFootCandleResolver,
-  ConvertMillihertzResolver,
-  ConvertHertzResolver,
-  ConvertKilohertzResolver,
-  ConvertMegahertzResolver,
-  ConvertGigahertzResolver,
-  ConvertTerahertzResolver,
-  ConvertRotationPerMinuteResolver,
-  ConvertDegreePerSecondResolver,
-  ConvertRadianPerSecondResolver,
-  ConvertRadianResolver,
-  ConvertDegreeResolver,
-  ConvertGradianResolver,
-  ConvertArcminuteResolver,
-  ConvertArcsecondResolver,
+  ConvertMillimeterParser,
+  ConvertCentimeterParser,
+  ConvertMeterParser,
+  ConvertKilometerParser,
+  ConvertInchParser,
+  ConvertYardParser,
+  ConvertUsSurveyFootParser,
+  ConvertFootParser,
+  ConvertMileParser,
+  ConvertSquareMillimeterParser,
+  ConvertSquareCentimeterParser,
+  ConvertSquareMeterParser,
+  ConvertHectareParser,
+  ConvertSquareKilometerParser,
+  ConvertSquareInchParser,
+  ConvertSquareYardParser,
+  ConvertSquareFootParser,
+  ConvertAcreParser,
+  ConvertSquareMileParser,
+  ConvertMicrogramParser,
+  ConvertMilligramParser,
+  ConvertGramParser,
+  ConvertKilogramParser,
+  ConvertMetricTonneParser,
+  ConvertOunceParser,
+  ConvertPoundParser,
+  ConvertTonParser,
+  ConvertCubicMillimeterParser,
+  ConvertCubicCentimeterParser,
+  ConvertMillilitreParser,
+  ConvertCentilitreParser,
+  ConvertDecilitreParser,
+  ConvertLitreParser,
+  ConvertKilolitreParser,
+  ConvertCubicMeterParser,
+  ConvertCubicKilometerParser,
+  ConvertTeskedParser,
+  ConvertMatskedParser,
+  ConvertKaffekoppParser,
+  ConvertGlasParser,
+  ConvertKannaParser,
+  ConvertTeaspoonParser,
+  ConvertTablespoonParser,
+  ConvertCubicInchParser,
+  ConvertFluidOunceParser,
+  ConvertCupParser,
+  ConvertPintParser,
+  ConvertQuartParser,
+  ConvertGallonParser,
+  ConvertCubicFootParser,
+  ConvertCubicYardParser,
+  ConvertEachParser,
+  ConvertDozenParser,
+  ConvertCelsiusParser,
+  ConvertKelvinParser,
+  ConvertFahrenheitParser,
+  ConvertRankineParser,
+  ConvertNanosecondParser,
+  ConvertMicrosecondParser,
+  ConvertMillisecondParser,
+  ConvertSecondParser,
+  ConvertMinuteParser,
+  ConvertHourParser,
+  ConvertDayParser,
+  ConvertWeekParser,
+  ConvertMonthParser,
+  ConvertYearParser,
+  ConvertBitParser,
+  ConvertKilobitParser,
+  ConvertMegabitParser,
+  ConvertGigabitParser,
+  ConvertTerabitParser,
+  ConvertByteParser,
+  ConvertKilobyteParser,
+  ConvertMegabyteParser,
+  ConvertGigabyteParser,
+  ConvertTerabyteParser,
+  ConvertPartPerMillionParser,
+  ConvertPartPerBillionParser,
+  ConvertPartPerTrillionParser,
+  ConvertPartPerQuadrillionParser,
+  ConvertMetrePerSecondParser,
+  ConvertKilometrePerHourParser,
+  ConvertMilePerHourParser,
+  ConvertKnotParser,
+  ConvertFootPerSecondParser,
+  ConvertMinutePerKilometreParser,
+  ConvertSecondPerMetreParser,
+  ConvertMinutePerMileParser,
+  ConvertSecondPerFootParser,
+  ConvertPascalParser,
+  ConvertKilopascalParser,
+  ConvertMegapascalParser,
+  ConvertHectopascalParser,
+  ConvertBarParser,
+  ConvertTorrParser,
+  ConvertPoundPerSquareInchParser,
+  ConvertKilopoundPerSquareInchParser,
+  ConvertAmpereParser,
+  ConvertMilliampereParser,
+  ConvertKiloampereParser,
+  ConvertVoltParser,
+  ConvertMillivoltParser,
+  ConvertKilovoltParser,
+  ConvertWattParser,
+  ConvertMilliwattParser,
+  ConvertKilowattParser,
+  ConvertMegawattParser,
+  ConvertGigawattParser,
+  ConvertVoltAmpereReactiveParser,
+  ConvertMillivoltAmpereReactiveParser,
+  ConvertKilovoltAmpereReactiveParser,
+  ConvertMegavoltAmpereReactiveParser,
+  ConvertGigavoltAmpereReactiveParser,
+  ConvertVoltAmpereParser,
+  ConvertMillivoltAmpereParser,
+  ConvertKilovoltAmpereParser,
+  ConvertMegavoltAmpereParser,
+  ConvertGigavoltAmpereParser,
+  ConvertWattHourParser,
+  ConvertMilliwattHourParser,
+  ConvertKilowattHourParser,
+  ConvertMegawattHourParser,
+  ConvertGigawattHourParser,
+  ConvertJouleParser,
+  ConvertKilojouleParser,
+  ConvertVoltAmpereReactiveHourParser,
+  ConvertMillivoltAmpereReactiveHourParser,
+  ConvertKilovoltAmpereReactiveHourParser,
+  ConvertMegavoltAmpereReactiveHourParser,
+  ConvertGigavoltAmpereReactiveHourParser,
+  ConvertCubicMillimeterPerSecondParser,
+  ConvertCubicCentimeterPerSecondParser,
+  ConvertMillilitrePerSecondParser,
+  ConvertCentilitrePerSecondParser,
+  ConvertDecilitrePerSecondParser,
+  ConvertLitrePerSecondParser,
+  ConvertLitrePerMinuteParser,
+  ConvertLitrePerHourParser,
+  ConvertKilolitrePerSecondParser,
+  ConvertKilolitrePerMinuteParser,
+  ConvertKilolitrePerHourParser,
+  ConvertCubicMeterPerSecondParser,
+  ConvertCubicMeterPerMinuteParser,
+  ConvertCubicMeterPerHourParser,
+  ConvertCubicKilometerPerSecondParser,
+  ConvertTeaspoonPerSecondParser,
+  ConvertTablespoonPerSecondParser,
+  ConvertCubicInchPerSecondParser,
+  ConvertCubicInchPerMinuteParser,
+  ConvertCubicInchPerHourParser,
+  ConvertFluidOuncePerSecondParser,
+  ConvertFluidOuncePerMinuteParser,
+  ConvertFluidOuncePerHourParser,
+  ConvertCupPerSecondParser,
+  ConvertPintPerSecondParser,
+  ConvertPintPerMinuteParser,
+  ConvertPintPerHourParser,
+  ConvertQuartPerSecondParser,
+  ConvertGallonPerSecondParser,
+  ConvertGallonPerMinuteParser,
+  ConvertGallonPerHourParser,
+  ConvertCubicFootPerSecondParser,
+  ConvertCubicFootPerMinuteParser,
+  ConvertCubicFootPerHourParser,
+  ConvertCubicYardPerSecondParser,
+  ConvertCubicYardPerMinuteParser,
+  ConvertCubicYardPerHourParser,
+  ConvertLuxParser,
+  ConvertFootCandleParser,
+  ConvertMillihertzParser,
+  ConvertHertzParser,
+  ConvertKilohertzParser,
+  ConvertMegahertzParser,
+  ConvertGigahertzParser,
+  ConvertTerahertzParser,
+  ConvertRotationPerMinuteParser,
+  ConvertDegreePerSecondParser,
+  ConvertRadianPerSecondParser,
+  ConvertRadianParser,
+  ConvertDegreeParser,
+  ConvertGradianParser,
+  ConvertArcminuteParser,
+  ConvertArcsecondParser,
   ConvertMillimeter,
   ConvertCentimeter,
   ConvertMeter,
@@ -369,11 +369,11 @@ import {
   ConvertArcminute,
   ConvertArcsecond,
   ConvertUnit,
-  ConvertUnitResolver,
-} from '~/code/type/shared'
+  ConvertUnitParser,
+} from '~/code/type/shared/parser'
 
 export function convertUnit(source: ConvertUnit) {
-  const input = ConvertUnitResolver().parse(source) as any
+  const input = ConvertUnitParser().parse(source) as any
 
   switch (source.input.format) {
     case 'millimeter':
@@ -748,63 +748,63 @@ export function convertUnit(source: ConvertUnit) {
 }
 
 export function convertMillimeter(source: ConvertMillimeter) {
-  const input = ConvertMillimeterResolver().parse(source)
+  const input = ConvertMillimeterParser().parse(source)
   return convertUnits(input.input)
     .from('mm')
     .to(input.output.format) as number
 }
 
 export function convertCentimeter(source: ConvertCentimeter) {
-  const input = ConvertCentimeterResolver().parse(source)
+  const input = ConvertCentimeterParser().parse(source)
   return convertUnits(input.input)
     .from('cm')
     .to(input.output.format) as number
 }
 
 export function convertMeter(source: ConvertMeter) {
-  const input = ConvertMeterResolver().parse(source)
+  const input = ConvertMeterParser().parse(source)
   return convertUnits(input.input)
     .from('m')
     .to(input.output.format) as number
 }
 
 export function convertKilometer(source: ConvertKilometer) {
-  const input = ConvertKilometerResolver().parse(source)
+  const input = ConvertKilometerParser().parse(source)
   return convertUnits(input.input)
     .from('km')
     .to(input.output.format) as number
 }
 
 export function convertInch(source: ConvertInch) {
-  const input = ConvertInchResolver().parse(source)
+  const input = ConvertInchParser().parse(source)
   return convertUnits(input.input)
     .from('in')
     .to(input.output.format) as number
 }
 
 export function convertYard(source: ConvertYard) {
-  const input = ConvertYardResolver().parse(source)
+  const input = ConvertYardParser().parse(source)
   return convertUnits(input.input)
     .from('yd')
     .to(input.output.format) as number
 }
 
 export function convertUsSurveyFoot(source: ConvertUsSurveyFoot) {
-  const input = ConvertUsSurveyFootResolver().parse(source)
+  const input = ConvertUsSurveyFootParser().parse(source)
   return convertUnits(input.input)
     .from('ft-us')
     .to(input.output.format) as number
 }
 
 export function convertFoot(source: ConvertFoot) {
-  const input = ConvertFootResolver().parse(source)
+  const input = ConvertFootParser().parse(source)
   return convertUnits(input.input)
     .from('ft')
     .to(input.output.format) as number
 }
 
 export function convertMile(source: ConvertMile) {
-  const input = ConvertMileResolver().parse(source)
+  const input = ConvertMileParser().parse(source)
   return convertUnits(input.input)
     .from('mi')
     .to(input.output.format) as number
@@ -813,7 +813,7 @@ export function convertMile(source: ConvertMile) {
 export function convertSquareMillimeter(
   source: ConvertSquareMillimeter,
 ) {
-  const input = ConvertSquareMillimeterResolver().parse(source)
+  const input = ConvertSquareMillimeterParser().parse(source)
   return convertUnits(input.input)
     .from('mm2')
     .to(input.output.format) as number
@@ -822,490 +822,490 @@ export function convertSquareMillimeter(
 export function convertSquareCentimeter(
   source: ConvertSquareCentimeter,
 ) {
-  const input = ConvertSquareCentimeterResolver().parse(source)
+  const input = ConvertSquareCentimeterParser().parse(source)
   return convertUnits(input.input)
     .from('cm2')
     .to(input.output.format) as number
 }
 
 export function convertSquareMeter(source: ConvertSquareMeter) {
-  const input = ConvertSquareMeterResolver().parse(source)
+  const input = ConvertSquareMeterParser().parse(source)
   return convertUnits(input.input)
     .from('m2')
     .to(input.output.format) as number
 }
 
 export function convertHectare(source: ConvertHectare) {
-  const input = ConvertHectareResolver().parse(source)
+  const input = ConvertHectareParser().parse(source)
   return convertUnits(input.input)
     .from('ha')
     .to(input.output.format) as number
 }
 
 export function convertSquareKilometer(source: ConvertSquareKilometer) {
-  const input = ConvertSquareKilometerResolver().parse(source)
+  const input = ConvertSquareKilometerParser().parse(source)
   return convertUnits(input.input)
     .from('km2')
     .to(input.output.format) as number
 }
 
 export function convertSquareInch(source: ConvertSquareInch) {
-  const input = ConvertSquareInchResolver().parse(source)
+  const input = ConvertSquareInchParser().parse(source)
   return convertUnits(input.input)
     .from('in2')
     .to(input.output.format) as number
 }
 
 export function convertSquareYard(source: ConvertSquareYard) {
-  const input = ConvertSquareYardResolver().parse(source)
+  const input = ConvertSquareYardParser().parse(source)
   return convertUnits(input.input)
     .from('yd2')
     .to(input.output.format) as number
 }
 
 export function convertSquareFoot(source: ConvertSquareFoot) {
-  const input = ConvertSquareFootResolver().parse(source)
+  const input = ConvertSquareFootParser().parse(source)
   return convertUnits(input.input)
     .from('ft2')
     .to(input.output.format) as number
 }
 
 export function convertAcre(source: ConvertAcre) {
-  const input = ConvertAcreResolver().parse(source)
+  const input = ConvertAcreParser().parse(source)
   return convertUnits(input.input)
     .from('ac')
     .to(input.output.format) as number
 }
 
 export function convertSquareMile(source: ConvertSquareMile) {
-  const input = ConvertSquareMileResolver().parse(source)
+  const input = ConvertSquareMileParser().parse(source)
   return convertUnits(input.input)
     .from('mi2')
     .to(input.output.format) as number
 }
 
 export function convertMicrogram(source: ConvertMicrogram) {
-  const input = ConvertMicrogramResolver().parse(source)
+  const input = ConvertMicrogramParser().parse(source)
   return convertUnits(input.input)
     .from('mcg')
     .to(input.output.format) as number
 }
 
 export function convertMilligram(source: ConvertMilligram) {
-  const input = ConvertMilligramResolver().parse(source)
+  const input = ConvertMilligramParser().parse(source)
   return convertUnits(input.input)
     .from('mg')
     .to(input.output.format) as number
 }
 
 export function convertGram(source: ConvertGram) {
-  const input = ConvertGramResolver().parse(source)
+  const input = ConvertGramParser().parse(source)
   return convertUnits(input.input)
     .from('g')
     .to(input.output.format) as number
 }
 
 export function convertKilogram(source: ConvertKilogram) {
-  const input = ConvertKilogramResolver().parse(source)
+  const input = ConvertKilogramParser().parse(source)
   return convertUnits(input.input)
     .from('kg')
     .to(input.output.format) as number
 }
 
 export function convertMetricTonne(source: ConvertMetricTonne) {
-  const input = ConvertMetricTonneResolver().parse(source)
+  const input = ConvertMetricTonneParser().parse(source)
   return convertUnits(input.input)
     .from('mt')
     .to(input.output.format) as number
 }
 
 export function convertOunce(source: ConvertOunce) {
-  const input = ConvertOunceResolver().parse(source)
+  const input = ConvertOunceParser().parse(source)
   return convertUnits(input.input)
     .from('oz')
     .to(input.output.format) as number
 }
 
 export function convertPound(source: ConvertPound) {
-  const input = ConvertPoundResolver().parse(source)
+  const input = ConvertPoundParser().parse(source)
   return convertUnits(input.input)
     .from('lb')
     .to(input.output.format) as number
 }
 
 export function convertTon(source: ConvertTon) {
-  const input = ConvertTonResolver().parse(source)
+  const input = ConvertTonParser().parse(source)
   return convertUnits(input.input)
     .from('t')
     .to(input.output.format) as number
 }
 
 export function convertCubicMillimeter(source: ConvertCubicMillimeter) {
-  const input = ConvertCubicMillimeterResolver().parse(source)
+  const input = ConvertCubicMillimeterParser().parse(source)
   return convertUnits(input.input)
     .from('mm3')
     .to(input.output.format) as number
 }
 
 export function convertCubicCentimeter(source: ConvertCubicCentimeter) {
-  const input = ConvertCubicCentimeterResolver().parse(source)
+  const input = ConvertCubicCentimeterParser().parse(source)
   return convertUnits(input.input)
     .from('cm3')
     .to(input.output.format) as number
 }
 
 export function convertMillilitre(source: ConvertMillilitre) {
-  const input = ConvertMillilitreResolver().parse(source)
+  const input = ConvertMillilitreParser().parse(source)
   return convertUnits(input.input)
     .from('ml')
     .to(input.output.format) as number
 }
 
 export function convertCentilitre(source: ConvertCentilitre) {
-  const input = ConvertCentilitreResolver().parse(source)
+  const input = ConvertCentilitreParser().parse(source)
   return convertUnits(input.input)
     .from('cl')
     .to(input.output.format) as number
 }
 
 export function convertDecilitre(source: ConvertDecilitre) {
-  const input = ConvertDecilitreResolver().parse(source)
+  const input = ConvertDecilitreParser().parse(source)
   return convertUnits(input.input)
     .from('dl')
     .to(input.output.format) as number
 }
 
 export function convertLitre(source: ConvertLitre) {
-  const input = ConvertLitreResolver().parse(source)
+  const input = ConvertLitreParser().parse(source)
   return convertUnits(input.input)
     .from('l')
     .to(input.output.format) as number
 }
 
 export function convertKilolitre(source: ConvertKilolitre) {
-  const input = ConvertKilolitreResolver().parse(source)
+  const input = ConvertKilolitreParser().parse(source)
   return convertUnits(input.input)
     .from('kl')
     .to(input.output.format) as number
 }
 
 export function convertCubicMeter(source: ConvertCubicMeter) {
-  const input = ConvertCubicMeterResolver().parse(source)
+  const input = ConvertCubicMeterParser().parse(source)
   return convertUnits(input.input)
     .from('m3')
     .to(input.output.format) as number
 }
 
 export function convertCubicKilometer(source: ConvertCubicKilometer) {
-  const input = ConvertCubicKilometerResolver().parse(source)
+  const input = ConvertCubicKilometerParser().parse(source)
   return convertUnits(input.input)
     .from('km3')
     .to(input.output.format) as number
 }
 
 export function convertTesked(source: ConvertTesked) {
-  const input = ConvertTeskedResolver().parse(source)
+  const input = ConvertTeskedParser().parse(source)
   return convertUnits(input.input)
     .from('tsk')
     .to(input.output.format) as number
 }
 
 export function convertMatsked(source: ConvertMatsked) {
-  const input = ConvertMatskedResolver().parse(source)
+  const input = ConvertMatskedParser().parse(source)
   return convertUnits(input.input)
     .from('msk')
     .to(input.output.format) as number
 }
 
 export function convertKaffekopp(source: ConvertKaffekopp) {
-  const input = ConvertKaffekoppResolver().parse(source)
+  const input = ConvertKaffekoppParser().parse(source)
   return convertUnits(input.input)
     .from('kkp')
     .to(input.output.format) as number
 }
 
 export function convertGlas(source: ConvertGlas) {
-  const input = ConvertGlasResolver().parse(source)
+  const input = ConvertGlasParser().parse(source)
   return convertUnits(input.input)
     .from('glas')
     .to(input.output.format) as number
 }
 
 export function convertKanna(source: ConvertKanna) {
-  const input = ConvertKannaResolver().parse(source)
+  const input = ConvertKannaParser().parse(source)
   return convertUnits(input.input)
     .from('kanna')
     .to(input.output.format) as number
 }
 
 export function convertTeaspoon(source: ConvertTeaspoon) {
-  const input = ConvertTeaspoonResolver().parse(source)
+  const input = ConvertTeaspoonParser().parse(source)
   return convertUnits(input.input)
     .from('tsp')
     .to(input.output.format) as number
 }
 
 export function convertTablespoon(source: ConvertTablespoon) {
-  const input = ConvertTablespoonResolver().parse(source)
+  const input = ConvertTablespoonParser().parse(source)
   return convertUnits(input.input)
     .from('Tbs')
     .to(input.output.format) as number
 }
 
 export function convertCubicInch(source: ConvertCubicInch) {
-  const input = ConvertCubicInchResolver().parse(source)
+  const input = ConvertCubicInchParser().parse(source)
   return convertUnits(input.input)
     .from('in3')
     .to(input.output.format) as number
 }
 
 export function convertFluidOunce(source: ConvertFluidOunce) {
-  const input = ConvertFluidOunceResolver().parse(source)
+  const input = ConvertFluidOunceParser().parse(source)
   return convertUnits(input.input)
     .from('fl-oz')
     .to(input.output.format) as number
 }
 
 export function convertCup(source: ConvertCup) {
-  const input = ConvertCupResolver().parse(source)
+  const input = ConvertCupParser().parse(source)
   return convertUnits(input.input)
     .from('cup')
     .to(input.output.format) as number
 }
 
 export function convertPint(source: ConvertPint) {
-  const input = ConvertPintResolver().parse(source)
+  const input = ConvertPintParser().parse(source)
   return convertUnits(input.input)
     .from('pnt')
     .to(input.output.format) as number
 }
 
 export function convertQuart(source: ConvertQuart) {
-  const input = ConvertQuartResolver().parse(source)
+  const input = ConvertQuartParser().parse(source)
   return convertUnits(input.input)
     .from('qt')
     .to(input.output.format) as number
 }
 
 export function convertGallon(source: ConvertGallon) {
-  const input = ConvertGallonResolver().parse(source)
+  const input = ConvertGallonParser().parse(source)
   return convertUnits(input.input)
     .from('gal')
     .to(input.output.format) as number
 }
 
 export function convertCubicFoot(source: ConvertCubicFoot) {
-  const input = ConvertCubicFootResolver().parse(source)
+  const input = ConvertCubicFootParser().parse(source)
   return convertUnits(input.input)
     .from('ft3')
     .to(input.output.format) as number
 }
 
 export function convertCubicYard(source: ConvertCubicYard) {
-  const input = ConvertCubicYardResolver().parse(source)
+  const input = ConvertCubicYardParser().parse(source)
   return convertUnits(input.input)
     .from('yd3')
     .to(input.output.format) as number
 }
 
 export function convertEach(source: ConvertEach) {
-  const input = ConvertEachResolver().parse(source)
+  const input = ConvertEachParser().parse(source)
   return convertUnits(input.input)
     .from('ea')
     .to(input.output.format) as number
 }
 
 export function convertDozen(source: ConvertDozen) {
-  const input = ConvertDozenResolver().parse(source)
+  const input = ConvertDozenParser().parse(source)
   return convertUnits(input.input)
     .from('dz')
     .to(input.output.format) as number
 }
 
 export function convertCelsius(source: ConvertCelsius) {
-  const input = ConvertCelsiusResolver().parse(source)
+  const input = ConvertCelsiusParser().parse(source)
   return convertUnits(input.input)
     .from('C')
     .to(input.output.format) as number
 }
 
 export function convertKelvin(source: ConvertKelvin) {
-  const input = ConvertKelvinResolver().parse(source)
+  const input = ConvertKelvinParser().parse(source)
   return convertUnits(input.input)
     .from('K')
     .to(input.output.format) as number
 }
 
 export function convertFahrenheit(source: ConvertFahrenheit) {
-  const input = ConvertFahrenheitResolver().parse(source)
+  const input = ConvertFahrenheitParser().parse(source)
   return convertUnits(input.input)
     .from('F')
     .to(input.output.format) as number
 }
 
 export function convertRankine(source: ConvertRankine) {
-  const input = ConvertRankineResolver().parse(source)
+  const input = ConvertRankineParser().parse(source)
   return convertUnits(input.input)
     .from('R')
     .to(input.output.format) as number
 }
 
 export function convertNanosecond(source: ConvertNanosecond) {
-  const input = ConvertNanosecondResolver().parse(source)
+  const input = ConvertNanosecondParser().parse(source)
   return convertUnits(input.input)
     .from('ns')
     .to(input.output.format) as number
 }
 
 export function convertMicrosecond(source: ConvertMicrosecond) {
-  const input = ConvertMicrosecondResolver().parse(source)
+  const input = ConvertMicrosecondParser().parse(source)
   return convertUnits(input.input)
     .from('mu')
     .to(input.output.format) as number
 }
 
 export function convertMillisecond(source: ConvertMillisecond) {
-  const input = ConvertMillisecondResolver().parse(source)
+  const input = ConvertMillisecondParser().parse(source)
   return convertUnits(input.input)
     .from('ms')
     .to(input.output.format) as number
 }
 
 export function convertSecond(source: ConvertSecond) {
-  const input = ConvertSecondResolver().parse(source)
+  const input = ConvertSecondParser().parse(source)
   return convertUnits(input.input)
     .from('s')
     .to(input.output.format) as number
 }
 
 export function convertMinute(source: ConvertMinute) {
-  const input = ConvertMinuteResolver().parse(source)
+  const input = ConvertMinuteParser().parse(source)
   return convertUnits(input.input)
     .from('min')
     .to(input.output.format) as number
 }
 
 export function convertHour(source: ConvertHour) {
-  const input = ConvertHourResolver().parse(source)
+  const input = ConvertHourParser().parse(source)
   return convertUnits(input.input)
     .from('h')
     .to(input.output.format) as number
 }
 
 export function convertDay(source: ConvertDay) {
-  const input = ConvertDayResolver().parse(source)
+  const input = ConvertDayParser().parse(source)
   return convertUnits(input.input)
     .from('d')
     .to(input.output.format) as number
 }
 
 export function convertWeek(source: ConvertWeek) {
-  const input = ConvertWeekResolver().parse(source)
+  const input = ConvertWeekParser().parse(source)
   return convertUnits(input.input)
     .from('week')
     .to(input.output.format) as number
 }
 
 export function convertMonth(source: ConvertMonth) {
-  const input = ConvertMonthResolver().parse(source)
+  const input = ConvertMonthParser().parse(source)
   return convertUnits(input.input)
     .from('month')
     .to(input.output.format) as number
 }
 
 export function convertYear(source: ConvertYear) {
-  const input = ConvertYearResolver().parse(source)
+  const input = ConvertYearParser().parse(source)
   return convertUnits(input.input)
     .from('year')
     .to(input.output.format) as number
 }
 
 export function convertBit(source: ConvertBit) {
-  const input = ConvertBitResolver().parse(source)
+  const input = ConvertBitParser().parse(source)
   return convertUnits(input.input)
     .from('b')
     .to(input.output.format) as number
 }
 
 export function convertKilobit(source: ConvertKilobit) {
-  const input = ConvertKilobitResolver().parse(source)
+  const input = ConvertKilobitParser().parse(source)
   return convertUnits(input.input)
     .from('Kb')
     .to(input.output.format) as number
 }
 
 export function convertMegabit(source: ConvertMegabit) {
-  const input = ConvertMegabitResolver().parse(source)
+  const input = ConvertMegabitParser().parse(source)
   return convertUnits(input.input)
     .from('Mb')
     .to(input.output.format) as number
 }
 
 export function convertGigabit(source: ConvertGigabit) {
-  const input = ConvertGigabitResolver().parse(source)
+  const input = ConvertGigabitParser().parse(source)
   return convertUnits(input.input)
     .from('Gb')
     .to(input.output.format) as number
 }
 
 export function convertTerabit(source: ConvertTerabit) {
-  const input = ConvertTerabitResolver().parse(source)
+  const input = ConvertTerabitParser().parse(source)
   return convertUnits(input.input)
     .from('Tb')
     .to(input.output.format) as number
 }
 
 export function convertByte(source: ConvertByte) {
-  const input = ConvertByteResolver().parse(source)
+  const input = ConvertByteParser().parse(source)
   return convertUnits(input.input)
     .from('B')
     .to(input.output.format) as number
 }
 
 export function convertKilobyte(source: ConvertKilobyte) {
-  const input = ConvertKilobyteResolver().parse(source)
+  const input = ConvertKilobyteParser().parse(source)
   return convertUnits(input.input)
     .from('KB')
     .to(input.output.format) as number
 }
 
 export function convertMegabyte(source: ConvertMegabyte) {
-  const input = ConvertMegabyteResolver().parse(source)
+  const input = ConvertMegabyteParser().parse(source)
   return convertUnits(input.input)
     .from('MB')
     .to(input.output.format) as number
 }
 
 export function convertGigabyte(source: ConvertGigabyte) {
-  const input = ConvertGigabyteResolver().parse(source)
+  const input = ConvertGigabyteParser().parse(source)
   return convertUnits(input.input)
     .from('GB')
     .to(input.output.format) as number
 }
 
 export function convertTerabyte(source: ConvertTerabyte) {
-  const input = ConvertTerabyteResolver().parse(source)
+  const input = ConvertTerabyteParser().parse(source)
   return convertUnits(input.input)
     .from('TB')
     .to(input.output.format) as number
 }
 
 export function convertPartPerMillion(source: ConvertPartPerMillion) {
-  const input = ConvertPartPerMillionResolver().parse(source)
+  const input = ConvertPartPerMillionParser().parse(source)
   return convertUnits(input.input)
     .from('ppm')
     .to(input.output.format) as number
 }
 
 export function convertPartPerBillion(source: ConvertPartPerBillion) {
-  const input = ConvertPartPerBillionResolver().parse(source)
+  const input = ConvertPartPerBillionParser().parse(source)
   return convertUnits(input.input)
     .from('ppb')
     .to(input.output.format) as number
 }
 
 export function convertPartPerTrillion(source: ConvertPartPerTrillion) {
-  const input = ConvertPartPerTrillionResolver().parse(source)
+  const input = ConvertPartPerTrillionParser().parse(source)
   return convertUnits(input.input)
     .from('ppt')
     .to(input.output.format) as number
@@ -1314,14 +1314,14 @@ export function convertPartPerTrillion(source: ConvertPartPerTrillion) {
 export function convertPartPerQuadrillion(
   source: ConvertPartPerQuadrillion,
 ) {
-  const input = ConvertPartPerQuadrillionResolver().parse(source)
+  const input = ConvertPartPerQuadrillionParser().parse(source)
   return convertUnits(input.input)
     .from('ppq')
     .to(input.output.format) as number
 }
 
 export function convertMetrePerSecond(source: ConvertMetrePerSecond) {
-  const input = ConvertMetrePerSecondResolver().parse(source)
+  const input = ConvertMetrePerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('m/s')
     .to(input.output.format) as number
@@ -1330,28 +1330,28 @@ export function convertMetrePerSecond(source: ConvertMetrePerSecond) {
 export function convertKilometrePerHour(
   source: ConvertKilometrePerHour,
 ) {
-  const input = ConvertKilometrePerHourResolver().parse(source)
+  const input = ConvertKilometrePerHourParser().parse(source)
   return convertUnits(input.input)
     .from('km/h')
     .to(input.output.format) as number
 }
 
 export function convertMilePerHour(source: ConvertMilePerHour) {
-  const input = ConvertMilePerHourResolver().parse(source)
+  const input = ConvertMilePerHourParser().parse(source)
   return convertUnits(input.input)
     .from('m/h')
     .to(input.output.format) as number
 }
 
 export function convertKnot(source: ConvertKnot) {
-  const input = ConvertKnotResolver().parse(source)
+  const input = ConvertKnotParser().parse(source)
   return convertUnits(input.input)
     .from('knot')
     .to(input.output.format) as number
 }
 
 export function convertFootPerSecond(source: ConvertFootPerSecond) {
-  const input = ConvertFootPerSecondResolver().parse(source)
+  const input = ConvertFootPerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('ft/s')
     .to(input.output.format) as number
@@ -1360,70 +1360,70 @@ export function convertFootPerSecond(source: ConvertFootPerSecond) {
 export function convertMinutePerKilometre(
   source: ConvertMinutePerKilometre,
 ) {
-  const input = ConvertMinutePerKilometreResolver().parse(source)
+  const input = ConvertMinutePerKilometreParser().parse(source)
   return convertUnits(input.input)
     .from('min/km')
     .to(input.output.format) as number
 }
 
 export function convertSecondPerMetre(source: ConvertSecondPerMetre) {
-  const input = ConvertSecondPerMetreResolver().parse(source)
+  const input = ConvertSecondPerMetreParser().parse(source)
   return convertUnits(input.input)
     .from('s/m')
     .to(input.output.format) as number
 }
 
 export function convertMinutePerMile(source: ConvertMinutePerMile) {
-  const input = ConvertMinutePerMileResolver().parse(source)
+  const input = ConvertMinutePerMileParser().parse(source)
   return convertUnits(input.input)
     .from('min/mi')
     .to(input.output.format) as number
 }
 
 export function convertSecondPerFoot(source: ConvertSecondPerFoot) {
-  const input = ConvertSecondPerFootResolver().parse(source)
+  const input = ConvertSecondPerFootParser().parse(source)
   return convertUnits(input.input)
     .from('s/ft')
     .to(input.output.format) as number
 }
 
 export function convertPascal(source: ConvertPascal) {
-  const input = ConvertPascalResolver().parse(source)
+  const input = ConvertPascalParser().parse(source)
   return convertUnits(input.input)
     .from('Pa')
     .to(input.output.format) as number
 }
 
 export function convertKilopascal(source: ConvertKilopascal) {
-  const input = ConvertKilopascalResolver().parse(source)
+  const input = ConvertKilopascalParser().parse(source)
   return convertUnits(input.input)
     .from('kPa')
     .to(input.output.format) as number
 }
 
 export function convertMegapascal(source: ConvertMegapascal) {
-  const input = ConvertMegapascalResolver().parse(source)
+  const input = ConvertMegapascalParser().parse(source)
   return convertUnits(input.input)
     .from('MPa')
     .to(input.output.format) as number
 }
 
 export function convertHectopascal(source: ConvertHectopascal) {
-  const input = ConvertHectopascalResolver().parse(source)
+  const input = ConvertHectopascalParser().parse(source)
   return convertUnits(input.input)
     .from('hPa')
     .to(input.output.format) as number
 }
 
 export function convertBar(source: ConvertBar) {
-  const input = ConvertBarResolver().parse(source)
+  const input = ConvertBarParser().parse(source)
   return convertUnits(input.input)
     .from('bar')
     .to(input.output.format) as number
 }
 
 export function convertTorr(source: ConvertTorr) {
-  const input = ConvertTorrResolver().parse(source)
+  const input = ConvertTorrParser().parse(source)
   return convertUnits(input.input)
     .from('torr')
     .to(input.output.format) as number
@@ -1432,7 +1432,7 @@ export function convertTorr(source: ConvertTorr) {
 export function convertPoundPerSquareInch(
   source: ConvertPoundPerSquareInch,
 ) {
-  const input = ConvertPoundPerSquareInchResolver().parse(source)
+  const input = ConvertPoundPerSquareInchParser().parse(source)
   return convertUnits(input.input)
     .from('psi')
     .to(input.output.format) as number
@@ -1441,84 +1441,84 @@ export function convertPoundPerSquareInch(
 export function convertKilopoundPerSquareInch(
   source: ConvertKilopoundPerSquareInch,
 ) {
-  const input = ConvertKilopoundPerSquareInchResolver().parse(source)
+  const input = ConvertKilopoundPerSquareInchParser().parse(source)
   return convertUnits(input.input)
     .from('ksi')
     .to(input.output.format) as number
 }
 
 export function convertAmpere(source: ConvertAmpere) {
-  const input = ConvertAmpereResolver().parse(source)
+  const input = ConvertAmpereParser().parse(source)
   return convertUnits(input.input)
     .from('A')
     .to(input.output.format) as number
 }
 
 export function convertMilliampere(source: ConvertMilliampere) {
-  const input = ConvertMilliampereResolver().parse(source)
+  const input = ConvertMilliampereParser().parse(source)
   return convertUnits(input.input)
     .from('mA')
     .to(input.output.format) as number
 }
 
 export function convertKiloampere(source: ConvertKiloampere) {
-  const input = ConvertKiloampereResolver().parse(source)
+  const input = ConvertKiloampereParser().parse(source)
   return convertUnits(input.input)
     .from('kA')
     .to(input.output.format) as number
 }
 
 export function convertVolt(source: ConvertVolt) {
-  const input = ConvertVoltResolver().parse(source)
+  const input = ConvertVoltParser().parse(source)
   return convertUnits(input.input)
     .from('V')
     .to(input.output.format) as number
 }
 
 export function convertMillivolt(source: ConvertMillivolt) {
-  const input = ConvertMillivoltResolver().parse(source)
+  const input = ConvertMillivoltParser().parse(source)
   return convertUnits(input.input)
     .from('mV')
     .to(input.output.format) as number
 }
 
 export function convertKilovolt(source: ConvertKilovolt) {
-  const input = ConvertKilovoltResolver().parse(source)
+  const input = ConvertKilovoltParser().parse(source)
   return convertUnits(input.input)
     .from('kV')
     .to(input.output.format) as number
 }
 
 export function convertWatt(source: ConvertWatt) {
-  const input = ConvertWattResolver().parse(source)
+  const input = ConvertWattParser().parse(source)
   return convertUnits(input.input)
     .from('W')
     .to(input.output.format) as number
 }
 
 export function convertMilliwatt(source: ConvertMilliwatt) {
-  const input = ConvertMilliwattResolver().parse(source)
+  const input = ConvertMilliwattParser().parse(source)
   return convertUnits(input.input)
     .from('mW')
     .to(input.output.format) as number
 }
 
 export function convertKilowatt(source: ConvertKilowatt) {
-  const input = ConvertKilowattResolver().parse(source)
+  const input = ConvertKilowattParser().parse(source)
   return convertUnits(input.input)
     .from('kW')
     .to(input.output.format) as number
 }
 
 export function convertMegawatt(source: ConvertMegawatt) {
-  const input = ConvertMegawattResolver().parse(source)
+  const input = ConvertMegawattParser().parse(source)
   return convertUnits(input.input)
     .from('MW')
     .to(input.output.format) as number
 }
 
 export function convertGigawatt(source: ConvertGigawatt) {
-  const input = ConvertGigawattResolver().parse(source)
+  const input = ConvertGigawattParser().parse(source)
   return convertUnits(input.input)
     .from('GW')
     .to(input.output.format) as number
@@ -1527,7 +1527,7 @@ export function convertGigawatt(source: ConvertGigawatt) {
 export function convertVoltAmpereReactive(
   source: ConvertVoltAmpereReactive,
 ) {
-  const input = ConvertVoltAmpereReactiveResolver().parse(source)
+  const input = ConvertVoltAmpereReactiveParser().parse(source)
   return convertUnits(input.input)
     .from('VAR')
     .to(input.output.format) as number
@@ -1536,7 +1536,7 @@ export function convertVoltAmpereReactive(
 export function convertMillivoltAmpereReactive(
   source: ConvertMillivoltAmpereReactive,
 ) {
-  const input = ConvertMillivoltAmpereReactiveResolver().parse(source)
+  const input = ConvertMillivoltAmpereReactiveParser().parse(source)
   return convertUnits(input.input)
     .from('mVAR')
     .to(input.output.format) as number
@@ -1545,7 +1545,7 @@ export function convertMillivoltAmpereReactive(
 export function convertKilovoltAmpereReactive(
   source: ConvertKilovoltAmpereReactive,
 ) {
-  const input = ConvertKilovoltAmpereReactiveResolver().parse(source)
+  const input = ConvertKilovoltAmpereReactiveParser().parse(source)
   return convertUnits(input.input)
     .from('kVAR')
     .to(input.output.format) as number
@@ -1554,7 +1554,7 @@ export function convertKilovoltAmpereReactive(
 export function convertMegavoltAmpereReactive(
   source: ConvertMegavoltAmpereReactive,
 ) {
-  const input = ConvertMegavoltAmpereReactiveResolver().parse(source)
+  const input = ConvertMegavoltAmpereReactiveParser().parse(source)
   return convertUnits(input.input)
     .from('MVAR')
     .to(input.output.format) as number
@@ -1563,91 +1563,91 @@ export function convertMegavoltAmpereReactive(
 export function convertGigavoltAmpereReactive(
   source: ConvertGigavoltAmpereReactive,
 ) {
-  const input = ConvertGigavoltAmpereReactiveResolver().parse(source)
+  const input = ConvertGigavoltAmpereReactiveParser().parse(source)
   return convertUnits(input.input)
     .from('GVAR')
     .to(input.output.format) as number
 }
 
 export function convertVoltAmpere(source: ConvertVoltAmpere) {
-  const input = ConvertVoltAmpereResolver().parse(source)
+  const input = ConvertVoltAmpereParser().parse(source)
   return convertUnits(input.input)
     .from('VA')
     .to(input.output.format) as number
 }
 
 export function convertMillivoltAmpere(source: ConvertMillivoltAmpere) {
-  const input = ConvertMillivoltAmpereResolver().parse(source)
+  const input = ConvertMillivoltAmpereParser().parse(source)
   return convertUnits(input.input)
     .from('mVA')
     .to(input.output.format) as number
 }
 
 export function convertKilovoltAmpere(source: ConvertKilovoltAmpere) {
-  const input = ConvertKilovoltAmpereResolver().parse(source)
+  const input = ConvertKilovoltAmpereParser().parse(source)
   return convertUnits(input.input)
     .from('kVA')
     .to(input.output.format) as number
 }
 
 export function convertMegavoltAmpere(source: ConvertMegavoltAmpere) {
-  const input = ConvertMegavoltAmpereResolver().parse(source)
+  const input = ConvertMegavoltAmpereParser().parse(source)
   return convertUnits(input.input)
     .from('MVA')
     .to(input.output.format) as number
 }
 
 export function convertGigavoltAmpere(source: ConvertGigavoltAmpere) {
-  const input = ConvertGigavoltAmpereResolver().parse(source)
+  const input = ConvertGigavoltAmpereParser().parse(source)
   return convertUnits(input.input)
     .from('GVA')
     .to(input.output.format) as number
 }
 
 export function convertWattHour(source: ConvertWattHour) {
-  const input = ConvertWattHourResolver().parse(source)
+  const input = ConvertWattHourParser().parse(source)
   return convertUnits(input.input)
     .from('Wh')
     .to(input.output.format) as number
 }
 
 export function convertMilliwattHour(source: ConvertMilliwattHour) {
-  const input = ConvertMilliwattHourResolver().parse(source)
+  const input = ConvertMilliwattHourParser().parse(source)
   return convertUnits(input.input)
     .from('mWh')
     .to(input.output.format) as number
 }
 
 export function convertKilowattHour(source: ConvertKilowattHour) {
-  const input = ConvertKilowattHourResolver().parse(source)
+  const input = ConvertKilowattHourParser().parse(source)
   return convertUnits(input.input)
     .from('kWh')
     .to(input.output.format) as number
 }
 
 export function convertMegawattHour(source: ConvertMegawattHour) {
-  const input = ConvertMegawattHourResolver().parse(source)
+  const input = ConvertMegawattHourParser().parse(source)
   return convertUnits(input.input)
     .from('MWh')
     .to(input.output.format) as number
 }
 
 export function convertGigawattHour(source: ConvertGigawattHour) {
-  const input = ConvertGigawattHourResolver().parse(source)
+  const input = ConvertGigawattHourParser().parse(source)
   return convertUnits(input.input)
     .from('GWh')
     .to(input.output.format) as number
 }
 
 export function convertJoule(source: ConvertJoule) {
-  const input = ConvertJouleResolver().parse(source)
+  const input = ConvertJouleParser().parse(source)
   return convertUnits(input.input)
     .from('J')
     .to(input.output.format) as number
 }
 
 export function convertKilojoule(source: ConvertKilojoule) {
-  const input = ConvertKilojouleResolver().parse(source)
+  const input = ConvertKilojouleParser().parse(source)
   return convertUnits(input.input)
     .from('kJ')
     .to(input.output.format) as number
@@ -1656,7 +1656,7 @@ export function convertKilojoule(source: ConvertKilojoule) {
 export function convertVoltAmpereReactiveHour(
   source: ConvertVoltAmpereReactiveHour,
 ) {
-  const input = ConvertVoltAmpereReactiveHourResolver().parse(source)
+  const input = ConvertVoltAmpereReactiveHourParser().parse(source)
   return convertUnits(input.input)
     .from('VARh')
     .to(input.output.format) as number
@@ -1665,8 +1665,7 @@ export function convertVoltAmpereReactiveHour(
 export function convertMillivoltAmpereReactiveHour(
   source: ConvertMillivoltAmpereReactiveHour,
 ) {
-  const input =
-    ConvertMillivoltAmpereReactiveHourResolver().parse(source)
+  const input = ConvertMillivoltAmpereReactiveHourParser().parse(source)
   return convertUnits(input.input)
     .from('mVARh')
     .to(input.output.format) as number
@@ -1675,8 +1674,7 @@ export function convertMillivoltAmpereReactiveHour(
 export function convertKilovoltAmpereReactiveHour(
   source: ConvertKilovoltAmpereReactiveHour,
 ) {
-  const input =
-    ConvertKilovoltAmpereReactiveHourResolver().parse(source)
+  const input = ConvertKilovoltAmpereReactiveHourParser().parse(source)
   return convertUnits(input.input)
     .from('kVARh')
     .to(input.output.format) as number
@@ -1685,8 +1683,7 @@ export function convertKilovoltAmpereReactiveHour(
 export function convertMegavoltAmpereReactiveHour(
   source: ConvertMegavoltAmpereReactiveHour,
 ) {
-  const input =
-    ConvertMegavoltAmpereReactiveHourResolver().parse(source)
+  const input = ConvertMegavoltAmpereReactiveHourParser().parse(source)
   return convertUnits(input.input)
     .from('MVARh')
     .to(input.output.format) as number
@@ -1695,8 +1692,7 @@ export function convertMegavoltAmpereReactiveHour(
 export function convertGigavoltAmpereReactiveHour(
   source: ConvertGigavoltAmpereReactiveHour,
 ) {
-  const input =
-    ConvertGigavoltAmpereReactiveHourResolver().parse(source)
+  const input = ConvertGigavoltAmpereReactiveHourParser().parse(source)
   return convertUnits(input.input)
     .from('GVARh')
     .to(input.output.format) as number
@@ -1705,7 +1701,7 @@ export function convertGigavoltAmpereReactiveHour(
 export function convertCubicMillimeterPerSecond(
   source: ConvertCubicMillimeterPerSecond,
 ) {
-  const input = ConvertCubicMillimeterPerSecondResolver().parse(source)
+  const input = ConvertCubicMillimeterPerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('mm3/s')
     .to(input.output.format) as number
@@ -1714,7 +1710,7 @@ export function convertCubicMillimeterPerSecond(
 export function convertCubicCentimeterPerSecond(
   source: ConvertCubicCentimeterPerSecond,
 ) {
-  const input = ConvertCubicCentimeterPerSecondResolver().parse(source)
+  const input = ConvertCubicCentimeterPerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('cm3/s')
     .to(input.output.format) as number
@@ -1723,7 +1719,7 @@ export function convertCubicCentimeterPerSecond(
 export function convertMillilitrePerSecond(
   source: ConvertMillilitrePerSecond,
 ) {
-  const input = ConvertMillilitrePerSecondResolver().parse(source)
+  const input = ConvertMillilitrePerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('ml/s')
     .to(input.output.format) as number
@@ -1732,7 +1728,7 @@ export function convertMillilitrePerSecond(
 export function convertCentilitrePerSecond(
   source: ConvertCentilitrePerSecond,
 ) {
-  const input = ConvertCentilitrePerSecondResolver().parse(source)
+  const input = ConvertCentilitrePerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('cl/s')
     .to(input.output.format) as number
@@ -1741,28 +1737,28 @@ export function convertCentilitrePerSecond(
 export function convertDecilitrePerSecond(
   source: ConvertDecilitrePerSecond,
 ) {
-  const input = ConvertDecilitrePerSecondResolver().parse(source)
+  const input = ConvertDecilitrePerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('dl/s')
     .to(input.output.format) as number
 }
 
 export function convertLitrePerSecond(source: ConvertLitrePerSecond) {
-  const input = ConvertLitrePerSecondResolver().parse(source)
+  const input = ConvertLitrePerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('l/s')
     .to(input.output.format) as number
 }
 
 export function convertLitrePerMinute(source: ConvertLitrePerMinute) {
-  const input = ConvertLitrePerMinuteResolver().parse(source)
+  const input = ConvertLitrePerMinuteParser().parse(source)
   return convertUnits(input.input)
     .from('l/min')
     .to(input.output.format) as number
 }
 
 export function convertLitrePerHour(source: ConvertLitrePerHour) {
-  const input = ConvertLitrePerHourResolver().parse(source)
+  const input = ConvertLitrePerHourParser().parse(source)
   return convertUnits(input.input)
     .from('l/h')
     .to(input.output.format) as number
@@ -1771,7 +1767,7 @@ export function convertLitrePerHour(source: ConvertLitrePerHour) {
 export function convertKilolitrePerSecond(
   source: ConvertKilolitrePerSecond,
 ) {
-  const input = ConvertKilolitrePerSecondResolver().parse(source)
+  const input = ConvertKilolitrePerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('kl/s')
     .to(input.output.format) as number
@@ -1780,7 +1776,7 @@ export function convertKilolitrePerSecond(
 export function convertKilolitrePerMinute(
   source: ConvertKilolitrePerMinute,
 ) {
-  const input = ConvertKilolitrePerMinuteResolver().parse(source)
+  const input = ConvertKilolitrePerMinuteParser().parse(source)
   return convertUnits(input.input)
     .from('kl/min')
     .to(input.output.format) as number
@@ -1789,7 +1785,7 @@ export function convertKilolitrePerMinute(
 export function convertKilolitrePerHour(
   source: ConvertKilolitrePerHour,
 ) {
-  const input = ConvertKilolitrePerHourResolver().parse(source)
+  const input = ConvertKilolitrePerHourParser().parse(source)
   return convertUnits(input.input)
     .from('kl/h')
     .to(input.output.format) as number
@@ -1798,7 +1794,7 @@ export function convertKilolitrePerHour(
 export function convertCubicMeterPerSecond(
   source: ConvertCubicMeterPerSecond,
 ) {
-  const input = ConvertCubicMeterPerSecondResolver().parse(source)
+  const input = ConvertCubicMeterPerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('m3/s')
     .to(input.output.format) as number
@@ -1807,7 +1803,7 @@ export function convertCubicMeterPerSecond(
 export function convertCubicMeterPerMinute(
   source: ConvertCubicMeterPerMinute,
 ) {
-  const input = ConvertCubicMeterPerMinuteResolver().parse(source)
+  const input = ConvertCubicMeterPerMinuteParser().parse(source)
   return convertUnits(input.input)
     .from('m3/min')
     .to(input.output.format) as number
@@ -1816,7 +1812,7 @@ export function convertCubicMeterPerMinute(
 export function convertCubicMeterPerHour(
   source: ConvertCubicMeterPerHour,
 ) {
-  const input = ConvertCubicMeterPerHourResolver().parse(source)
+  const input = ConvertCubicMeterPerHourParser().parse(source)
   return convertUnits(input.input)
     .from('m3/h')
     .to(input.output.format) as number
@@ -1825,7 +1821,7 @@ export function convertCubicMeterPerHour(
 export function convertCubicKilometerPerSecond(
   source: ConvertCubicKilometerPerSecond,
 ) {
-  const input = ConvertCubicKilometerPerSecondResolver().parse(source)
+  const input = ConvertCubicKilometerPerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('km3/s')
     .to(input.output.format) as number
@@ -1834,7 +1830,7 @@ export function convertCubicKilometerPerSecond(
 export function convertTeaspoonPerSecond(
   source: ConvertTeaspoonPerSecond,
 ) {
-  const input = ConvertTeaspoonPerSecondResolver().parse(source)
+  const input = ConvertTeaspoonPerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('tsp/s')
     .to(input.output.format) as number
@@ -1843,7 +1839,7 @@ export function convertTeaspoonPerSecond(
 export function convertTablespoonPerSecond(
   source: ConvertTablespoonPerSecond,
 ) {
-  const input = ConvertTablespoonPerSecondResolver().parse(source)
+  const input = ConvertTablespoonPerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('Tbs/s')
     .to(input.output.format) as number
@@ -1852,7 +1848,7 @@ export function convertTablespoonPerSecond(
 export function convertCubicInchPerSecond(
   source: ConvertCubicInchPerSecond,
 ) {
-  const input = ConvertCubicInchPerSecondResolver().parse(source)
+  const input = ConvertCubicInchPerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('in3/s')
     .to(input.output.format) as number
@@ -1861,7 +1857,7 @@ export function convertCubicInchPerSecond(
 export function convertCubicInchPerMinute(
   source: ConvertCubicInchPerMinute,
 ) {
-  const input = ConvertCubicInchPerMinuteResolver().parse(source)
+  const input = ConvertCubicInchPerMinuteParser().parse(source)
   return convertUnits(input.input)
     .from('in3/min')
     .to(input.output.format) as number
@@ -1870,7 +1866,7 @@ export function convertCubicInchPerMinute(
 export function convertCubicInchPerHour(
   source: ConvertCubicInchPerHour,
 ) {
-  const input = ConvertCubicInchPerHourResolver().parse(source)
+  const input = ConvertCubicInchPerHourParser().parse(source)
   return convertUnits(input.input)
     .from('in3/h')
     .to(input.output.format) as number
@@ -1879,7 +1875,7 @@ export function convertCubicInchPerHour(
 export function convertFluidOuncePerSecond(
   source: ConvertFluidOuncePerSecond,
 ) {
-  const input = ConvertFluidOuncePerSecondResolver().parse(source)
+  const input = ConvertFluidOuncePerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('fl-oz/s')
     .to(input.output.format) as number
@@ -1888,7 +1884,7 @@ export function convertFluidOuncePerSecond(
 export function convertFluidOuncePerMinute(
   source: ConvertFluidOuncePerMinute,
 ) {
-  const input = ConvertFluidOuncePerMinuteResolver().parse(source)
+  const input = ConvertFluidOuncePerMinuteParser().parse(source)
   return convertUnits(input.input)
     .from('fl-oz/min')
     .to(input.output.format) as number
@@ -1897,63 +1893,63 @@ export function convertFluidOuncePerMinute(
 export function convertFluidOuncePerHour(
   source: ConvertFluidOuncePerHour,
 ) {
-  const input = ConvertFluidOuncePerHourResolver().parse(source)
+  const input = ConvertFluidOuncePerHourParser().parse(source)
   return convertUnits(input.input)
     .from('fl-oz/h')
     .to(input.output.format) as number
 }
 
 export function convertCupPerSecond(source: ConvertCupPerSecond) {
-  const input = ConvertCupPerSecondResolver().parse(source)
+  const input = ConvertCupPerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('cup/s')
     .to(input.output.format) as number
 }
 
 export function convertPintPerSecond(source: ConvertPintPerSecond) {
-  const input = ConvertPintPerSecondResolver().parse(source)
+  const input = ConvertPintPerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('pnt/s')
     .to(input.output.format) as number
 }
 
 export function convertPintPerMinute(source: ConvertPintPerMinute) {
-  const input = ConvertPintPerMinuteResolver().parse(source)
+  const input = ConvertPintPerMinuteParser().parse(source)
   return convertUnits(input.input)
     .from('pnt/min')
     .to(input.output.format) as number
 }
 
 export function convertPintPerHour(source: ConvertPintPerHour) {
-  const input = ConvertPintPerHourResolver().parse(source)
+  const input = ConvertPintPerHourParser().parse(source)
   return convertUnits(input.input)
     .from('pnt/h')
     .to(input.output.format) as number
 }
 
 export function convertQuartPerSecond(source: ConvertQuartPerSecond) {
-  const input = ConvertQuartPerSecondResolver().parse(source)
+  const input = ConvertQuartPerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('qt/s')
     .to(input.output.format) as number
 }
 
 export function convertGallonPerSecond(source: ConvertGallonPerSecond) {
-  const input = ConvertGallonPerSecondResolver().parse(source)
+  const input = ConvertGallonPerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('gal/s')
     .to(input.output.format) as number
 }
 
 export function convertGallonPerMinute(source: ConvertGallonPerMinute) {
-  const input = ConvertGallonPerMinuteResolver().parse(source)
+  const input = ConvertGallonPerMinuteParser().parse(source)
   return convertUnits(input.input)
     .from('gal/min')
     .to(input.output.format) as number
 }
 
 export function convertGallonPerHour(source: ConvertGallonPerHour) {
-  const input = ConvertGallonPerHourResolver().parse(source)
+  const input = ConvertGallonPerHourParser().parse(source)
   return convertUnits(input.input)
     .from('gal/h')
     .to(input.output.format) as number
@@ -1962,7 +1958,7 @@ export function convertGallonPerHour(source: ConvertGallonPerHour) {
 export function convertCubicFootPerSecond(
   source: ConvertCubicFootPerSecond,
 ) {
-  const input = ConvertCubicFootPerSecondResolver().parse(source)
+  const input = ConvertCubicFootPerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('ft3/s')
     .to(input.output.format) as number
@@ -1971,7 +1967,7 @@ export function convertCubicFootPerSecond(
 export function convertCubicFootPerMinute(
   source: ConvertCubicFootPerMinute,
 ) {
-  const input = ConvertCubicFootPerMinuteResolver().parse(source)
+  const input = ConvertCubicFootPerMinuteParser().parse(source)
   return convertUnits(input.input)
     .from('ft3/min')
     .to(input.output.format) as number
@@ -1980,7 +1976,7 @@ export function convertCubicFootPerMinute(
 export function convertCubicFootPerHour(
   source: ConvertCubicFootPerHour,
 ) {
-  const input = ConvertCubicFootPerHourResolver().parse(source)
+  const input = ConvertCubicFootPerHourParser().parse(source)
   return convertUnits(input.input)
     .from('ft3/h')
     .to(input.output.format) as number
@@ -1989,7 +1985,7 @@ export function convertCubicFootPerHour(
 export function convertCubicYardPerSecond(
   source: ConvertCubicYardPerSecond,
 ) {
-  const input = ConvertCubicYardPerSecondResolver().parse(source)
+  const input = ConvertCubicYardPerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('yd3/s')
     .to(input.output.format) as number
@@ -1998,7 +1994,7 @@ export function convertCubicYardPerSecond(
 export function convertCubicYardPerMinute(
   source: ConvertCubicYardPerMinute,
 ) {
-  const input = ConvertCubicYardPerMinuteResolver().parse(source)
+  const input = ConvertCubicYardPerMinuteParser().parse(source)
   return convertUnits(input.input)
     .from('yd3/min')
     .to(input.output.format) as number
@@ -2007,63 +2003,63 @@ export function convertCubicYardPerMinute(
 export function convertCubicYardPerHour(
   source: ConvertCubicYardPerHour,
 ) {
-  const input = ConvertCubicYardPerHourResolver().parse(source)
+  const input = ConvertCubicYardPerHourParser().parse(source)
   return convertUnits(input.input)
     .from('yd3/h')
     .to(input.output.format) as number
 }
 
 export function convertLux(source: ConvertLux) {
-  const input = ConvertLuxResolver().parse(source)
+  const input = ConvertLuxParser().parse(source)
   return convertUnits(input.input)
     .from('lx')
     .to(input.output.format) as number
 }
 
 export function convertFootCandle(source: ConvertFootCandle) {
-  const input = ConvertFootCandleResolver().parse(source)
+  const input = ConvertFootCandleParser().parse(source)
   return convertUnits(input.input)
     .from('ft-cd')
     .to(input.output.format) as number
 }
 
 export function convertMillihertz(source: ConvertMillihertz) {
-  const input = ConvertMillihertzResolver().parse(source)
+  const input = ConvertMillihertzParser().parse(source)
   return convertUnits(input.input)
     .from('mHz')
     .to(input.output.format) as number
 }
 
 export function convertHertz(source: ConvertHertz) {
-  const input = ConvertHertzResolver().parse(source)
+  const input = ConvertHertzParser().parse(source)
   return convertUnits(input.input)
     .from('Hz')
     .to(input.output.format) as number
 }
 
 export function convertKilohertz(source: ConvertKilohertz) {
-  const input = ConvertKilohertzResolver().parse(source)
+  const input = ConvertKilohertzParser().parse(source)
   return convertUnits(input.input)
     .from('kHz')
     .to(input.output.format) as number
 }
 
 export function convertMegahertz(source: ConvertMegahertz) {
-  const input = ConvertMegahertzResolver().parse(source)
+  const input = ConvertMegahertzParser().parse(source)
   return convertUnits(input.input)
     .from('MHz')
     .to(input.output.format) as number
 }
 
 export function convertGigahertz(source: ConvertGigahertz) {
-  const input = ConvertGigahertzResolver().parse(source)
+  const input = ConvertGigahertzParser().parse(source)
   return convertUnits(input.input)
     .from('GHz')
     .to(input.output.format) as number
 }
 
 export function convertTerahertz(source: ConvertTerahertz) {
-  const input = ConvertTerahertzResolver().parse(source)
+  const input = ConvertTerahertzParser().parse(source)
   return convertUnits(input.input)
     .from('THz')
     .to(input.output.format) as number
@@ -2072,56 +2068,56 @@ export function convertTerahertz(source: ConvertTerahertz) {
 export function convertRotationPerMinute(
   source: ConvertRotationPerMinute,
 ) {
-  const input = ConvertRotationPerMinuteResolver().parse(source)
+  const input = ConvertRotationPerMinuteParser().parse(source)
   return convertUnits(input.input)
     .from('rpm')
     .to(input.output.format) as number
 }
 
 export function convertDegreePerSecond(source: ConvertDegreePerSecond) {
-  const input = ConvertDegreePerSecondResolver().parse(source)
+  const input = ConvertDegreePerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('deg/s')
     .to(input.output.format) as number
 }
 
 export function convertRadianPerSecond(source: ConvertRadianPerSecond) {
-  const input = ConvertRadianPerSecondResolver().parse(source)
+  const input = ConvertRadianPerSecondParser().parse(source)
   return convertUnits(input.input)
     .from('rad/s')
     .to(input.output.format) as number
 }
 
 export function convertRadian(source: ConvertRadian) {
-  const input = ConvertRadianResolver().parse(source)
+  const input = ConvertRadianParser().parse(source)
   return convertUnits(input.input)
     .from('rad')
     .to(input.output.format) as number
 }
 
 export function convertDegree(source: ConvertDegree) {
-  const input = ConvertDegreeResolver().parse(source)
+  const input = ConvertDegreeParser().parse(source)
   return convertUnits(input.input)
     .from('deg')
     .to(input.output.format) as number
 }
 
 export function convertGradian(source: ConvertGradian) {
-  const input = ConvertGradianResolver().parse(source)
+  const input = ConvertGradianParser().parse(source)
   return convertUnits(input.input)
     .from('grad')
     .to(input.output.format) as number
 }
 
 export function convertArcminute(source: ConvertArcminute) {
-  const input = ConvertArcminuteResolver().parse(source)
+  const input = ConvertArcminuteParser().parse(source)
   return convertUnits(input.input)
     .from('arcmin')
     .to(input.output.format) as number
 }
 
 export function convertArcsecond(source: ConvertArcsecond) {
-  const input = ConvertArcsecondResolver().parse(source)
+  const input = ConvertArcsecondParser().parse(source)
   return convertUnits(input.input)
     .from('arcsec')
     .to(input.output.format) as number

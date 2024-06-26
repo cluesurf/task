@@ -1,4 +1,5 @@
-import _ from 'lodash'
+import set from 'lodash/set'
+import unset from 'lodash/unset'
 import fsp from 'fs/promises'
 import debug from '~/code/tool/shared/debug'
 import {
@@ -17,7 +18,7 @@ import {
   ResolveInputForCompileLocalExternal,
   ResolveInputForCompileLocalInternal,
   ResolveInputForCompileRemote,
-} from '~/code/type/node'
+} from '~/code/type/node/parser'
 // import debug from '~/code/tool/shared/debug'
 
 // https://www.npmjs.com/package/ftp
@@ -37,8 +38,8 @@ export async function resolveInputForCompileRemoteNode<
     const inputPath = parsePath(through.input.file.path)
     if (inputPath.type === 'file-uri') {
       const file = await createStreamableFile(inputPath.href)
-      _.unset(through.input.file, ['path'])
-      _.set(through.input.file, ['content'], file)
+      unset(through.input.file, ['path'])
+      set(through.input.file, ['content'], file)
     }
   }
 
@@ -83,7 +84,7 @@ export async function resolveInputForCompileLocalExternalNode<
           scope: getScopeDirectory(through.pathScope),
           extension: through.input.format,
         })
-        _.set(through.input.file, ['path'], newInputPath)
+        set(through.input.file, ['path'], newInputPath)
 
         debug(
           'resolveInputForCompileLocalExternalNode input',
@@ -137,8 +138,8 @@ export async function resolveInputContentForCompileLocalExternalNode<
       case 'https-uri':
       case 'http-uri': {
         const content = await readRemoteFileNode(inputPath.href)
-        _.unset(through.input.file, ['path'])
-        _.set(through.input.file, ['content'], content)
+        unset(through.input.file, ['path'])
+        set(through.input.file, ['content'], content)
         break
       }
     }
@@ -181,8 +182,8 @@ export async function resolveInputForCompileLocalInternalNode<
       case 'https-uri':
       case 'http-uri': {
         const content = await readRemoteFileNode(inputPath.href)
-        _.unset(through.input.file, ['path'])
-        _.set(through.input.file, ['content'], content)
+        unset(through.input.file, ['path'])
+        set(through.input.file, ['content'], content)
         break
       }
     }
@@ -227,15 +228,15 @@ export async function resolveInputContentForCompileLocalInternalNode<
       case 'https-uri':
       case 'http-uri': {
         const content = await readRemoteFileNode(inputPath.href)
-        _.unset(through.input.file, ['path'])
-        _.set(through.input.file, ['content'], content)
+        unset(through.input.file, ['path'])
+        set(through.input.file, ['content'], content)
         break
       }
       case 'file-uri':
         const content = (await fsp.readFile(inputPath.href, null))
           .buffer
-        _.unset(through.input.file, ['path'])
-        _.set(through.input.file, ['content'], content)
+        unset(through.input.file, ['path'])
+        set(through.input.file, ['content'], content)
         break
     }
   }

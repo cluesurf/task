@@ -2,15 +2,15 @@ import archiver from 'archiver'
 import fs from 'fs'
 import {
   ConvertArchiveNodeInput,
-  ConvertArchiveNodeInputResolver,
-  ConvertArchiveNodeOutputResolver,
+  ConvertArchiveNodeInputParser,
+  ConvertArchiveNodeOutputParser,
   ConvertArchiveNodeLocalInternalInput,
   ConvertArchiveNodeLocalExternalInput,
   ConvertArchiveNodeRemoteInput,
-  ConvertArchiveNodeClientInputResolver,
-  ExtractWithUnarchiverResolver,
-  ArchiveResolver,
-} from '~/code/type/node'
+  ConvertArchiveNodeClientInputParser,
+  ExtractWithUnarchiverParser,
+  ArchiveParser,
+} from '~/code/type/node/parser'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {
   resolveInputForConvertLocalExternalNode,
@@ -26,11 +26,8 @@ import {
   generateTemporaryDirectoryPath,
   removeDirectory,
 } from '~/code/tool/node/file'
-import _ from 'lodash'
-import {
-  buildCommandToArchiveWithRar,
-  buildCommandToArchiveWithZip,
-} from '../../archive/command'
+import merge from 'lodash/merge'
+import { buildCommandToArchiveWithRar } from '../../archive/command'
 import kink from '~/code/tool/shared/kink'
 import { testConvertArchive } from './shared'
 
@@ -38,7 +35,7 @@ export async function convertArchiveNode(
   source: ConvertArchiveNodeInput,
   native?: NativeOptions,
 ) {
-  const input = ConvertArchiveNodeInputResolver().parse(source)
+  const input = ConvertArchiveNodeInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -71,14 +68,14 @@ export async function convertArchiveNodeRemote(
   native?: NativeOptions,
 ) {
   const input = await resolveInputForConvertRemoteNode(source)
-  const clientInput = ConvertArchiveNodeClientInputResolver().parse(
+  const clientInput = ConvertArchiveNodeClientInputParser().parse(
     extend(input, { handle: 'client' }),
   )
 
   const request = buildRequestToConvert(clientInput)
   await resolveWorkFileNode(request, input.output.file.path)
 
-  return ConvertArchiveNodeOutputResolver().parse({
+  return ConvertArchiveNodeOutputParser().parse({
     file: {
       path: input.output.file.path,
     },
@@ -92,8 +89,8 @@ export async function convertArchiveNodeLocal(
   const onUpdate = native?.onUpdate
 
   const directory = await generateTemporaryDirectoryPath()
-  const unarchiveInput = ExtractWithUnarchiverResolver().parse(
-    _.merge(input, {
+  const unarchiveInput = ExtractWithUnarchiverParser().parse(
+    merge(input, {
       output: {
         directory: {
           path: directory,
@@ -106,8 +103,8 @@ export async function convertArchiveNodeLocal(
     await buildCommandToExtractWithUnarchiver(unarchiveInput)
   await runCommandSequence(unarchiveSequence)
 
-  const archiveInput = ArchiveResolver().parse(
-    _.merge(input, {
+  const archiveInput = ArchiveParser().parse(
+    merge(input, {
       input: {
         path: directory,
       },

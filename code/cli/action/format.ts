@@ -15,11 +15,11 @@ import {
 } from '~/code/cli/logging'
 import {
   ConvertCliBase,
-  ConvertCliBaseResolver,
+  ConvertCliBaseParser,
   FormatCliBase,
-  FormatCliBaseResolver,
-} from '~/code/type/shared'
-import { convert } from '~/code/action/node'
+  FormatCliBaseParser,
+} from '~/code/type/shared/parser'
+// import { convert } from '~/code/action/node'
 import {
   testConvertDocumentWithCalibreNode,
   testConvertDocumentWithLibreOfficeNode,
@@ -48,7 +48,7 @@ import {
 import { testConvertVideoWithFfmpegNode } from '~/code/action/convert/video/ffmpeg/node'
 import { testConvertArchiveNode } from '~/code/action/convert/archive/node'
 import { exitWithError } from '../process'
-import { format } from '~/code/action/format/node'
+// import { format } from '~/code/action/format/node'
 
 export async function formatCli({
   format,
@@ -76,7 +76,7 @@ export async function formatCli({
     link['-o'] = [outputFile]
   }
   const source = makeLineHash(link, lineCallLinkHash)
-  const input = FormatCliBaseResolver().parse(source)
+  const input = FormatCliBaseParser().parse(source)
   const logFormat = input.log ?? 'pretty'
 
   setLoggingStyle(logFormat)
@@ -158,7 +158,7 @@ async function formatBase({
   try {
     const input = makeLinkHash(link, MESH, form)
     spinner = logFormatting({ type, input })
-    const out = await format(input as any)
+    const out = {} as any // await format(input as any)
     spinner?.stop()
 
     logFormatted({

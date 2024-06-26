@@ -1,7 +1,7 @@
 import { serializeToFormData } from '~/code/tool/shared/form'
 import { omitNested } from '~/code/tool/shared/object'
 import { buildRemoteRequest } from '~/code/tool/shared/request'
-import { SanitizeApi } from '../../browser'
+import { SanitizeApi } from '~/code/type/shared'
 
 export function buildRequestToSanitize(input: SanitizeApi) {
   return buildRemoteRequest(

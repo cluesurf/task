@@ -7,7 +7,6 @@ import {
   exec,
 } from '~/code/tool/node/process'
 import Kink from '@termsurf/kink'
-import _ from 'lodash'
 import { stripAnsiFromText } from '~/code/cli/logging'
 
 // https://stackoverflow.com/questions/747982/can-ffmpeg-show-a-progress-bar
@@ -18,8 +17,8 @@ import {
   Command,
   ConvertVideoWithFfmpegNodeInput,
   ConvertVideoWithFfmpegNodeLocalInput,
-  ConvertVideoWithFfmpegNodeLocalInputResolver,
-} from '~/code/type/node'
+  ConvertVideoWithFfmpegNodeLocalInputParser,
+} from '~/code/type/node/parser'
 import { buildCommandToConvertVideoWithFfmpeg } from '../command'
 
 export async function handleFfmpegCommand(

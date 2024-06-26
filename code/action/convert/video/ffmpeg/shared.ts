@@ -16,7 +16,7 @@ export function testConvertVideoWithFfmpeg(input: any) {
     return false
   }
 
-  const FFMPEG_FORMAT = getConfig('ffmpeg-format')
+  const FFMPEG_FORMAT = getConfig('ffmpeg_format')
 
   if (!FFMPEG_FORMAT.includes(a as FfmpegFormat)) {
     return false

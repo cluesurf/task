@@ -15,12 +15,12 @@ import { closeAllBrowsers } from '~/code/tool/node/browser'
 import { CallLinkMesh } from '../type'
 import { Form } from '@termsurf/form'
 import { exitWithError } from '../process'
-import { compile } from '~/code/action/compile/code/node'
+// import { compile } from '~/code/action/compile/code/node'
 import { COMPILE_CODE_HINT } from '../hint'
 import {
   CompileCliBase,
-  CompileCliBaseResolver,
-} from '~/code/type/shared'
+  CompileCliBaseParser,
+} from '~/code/type/shared/parser'
 
 export async function compileCli({
   format,
@@ -48,7 +48,7 @@ export async function compileCli({
     link['-o'] = [outputFile]
   }
   const source = makeLineHash(link, lineCallLinkHash)
-  const input = CompileCliBaseResolver().parse(source)
+  const input = CompileCliBaseParser().parse(source)
   const logFormat = input.log ?? 'pretty'
 
   setLoggingStyle(logFormat)
@@ -107,7 +107,7 @@ async function compileBase({
   try {
     const input = makeLinkHash(link, MESH, form)
     spinner = logCompiling({ input })
-    const out = await compile(input as any)
+    const out = {} as any // await compile(input as any)
     spinner?.stop()
 
     logCompiled({

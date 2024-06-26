@@ -2,7 +2,7 @@ import {
   buildCommandSequence,
   getCommand,
 } from '~/code/tool/shared/command'
-import { VerifyImageWithImageMagick } from '~/code/type/node'
+import { VerifyImageWithImageMagick } from '~/code/type/node/parser'
 
 export function buildCommandToVerifyImageWithImageMagick(
   input: VerifyImageWithImageMagick,

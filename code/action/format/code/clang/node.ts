@@ -1,12 +1,12 @@
 import {
   FormatCodeWithClangFormatNodeInput,
-  FormatCodeWithClangFormatNodeInputResolver,
+  FormatCodeWithClangFormatNodeInputParser,
   FormatCodeWithClangFormatNodeLocalExternalInput,
   FormatCodeWithClangFormatNodeLocalInternalInput,
   FormatCodeWithClangFormatNodeRemoteInput,
-  FormatCodeWithClangFormatNodeClientInputResolver,
-  FormatCodeWithClangFormatNodeLocalInputResolver,
-} from '~/code/type/node'
+  FormatCodeWithClangFormatNodeClientInputParser,
+  FormatCodeWithClangFormatNodeLocalInputParser,
+} from '~/code/type/node/parser'
 import fsp from 'fs/promises'
 import YAML from 'yaml'
 import { buildCommandToFormatCodeWithClangFormat } from '../command'
@@ -26,8 +26,7 @@ export async function formatCodeWithClangFormatNode(
   source: FormatCodeWithClangFormatNodeInput,
   native?: NativeOptions,
 ) {
-  const input =
-    FormatCodeWithClangFormatNodeInputResolver().parse(source)
+  const input = FormatCodeWithClangFormatNodeInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -67,7 +66,7 @@ export async function formatCodeWithClangFormatNodeRemote(
 ) {
   const input = await resolveInputForFormatRemoteNode(source)
   const clientInput =
-    FormatCodeWithClangFormatNodeClientInputResolver().parse(
+    FormatCodeWithClangFormatNodeClientInputParser().parse(
       extend(input, { handle: 'client' }),
     )
 
@@ -86,7 +85,7 @@ export async function formatCodeWithClangFormatNodeLocal(
   native?: NativeOptions,
 ) {
   const { input, output, format, ...style } =
-    FormatCodeWithClangFormatNodeLocalInputResolver().parse(source)
+    FormatCodeWithClangFormatNodeLocalInputParser().parse(source)
 
   const stylePath = await generateTemporaryFilePath('yaml')
   await fsp.writeFile(stylePath, YAML.stringify(style ?? {}))

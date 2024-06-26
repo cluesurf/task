@@ -78,11 +78,21 @@ export const weighted_word_set: Form = {
   },
 }
 
+export const symbol_set_data: Form = {
+  form: 'form',
+  link: {
+    list: {
+      like: 'string',
+      size: { fall_meet: 256, rise_meet: 1 },
+    },
+  },
+}
+
 export const symbol_set_content: Hash = {
   form: 'hash',
   link: 'symbol_set',
   bond: {
-    list: { like: 'string', size: { fall_meet: 256, rise_meet: 1 } },
+    like: 'symbol_set_data',
   },
   hash: {
     'latin-lowercase': { list: 'abcdefghijklmnopqrstuvwxyz' },
@@ -92,13 +102,20 @@ export const symbol_set_content: Hash = {
   },
 }
 
+export const word_set_data: Form = {
+  form: 'form',
+  link: {
+    name: {
+      like: 'string',
+    },
+  },
+}
+
 export const word_set_content: Hash = {
   form: 'hash',
   link: 'word_set',
   bond: {
-    name: {
-      like: 'string',
-    },
+    like: 'word_set_data',
   },
   hash: {
     'pleasant-noun': { name: 'pleasant_noun' },

@@ -57,7 +57,7 @@ export async function getBrowser(proxy?: string, headless = true) {
   // https://github.com/puppeteer/puppeteer/issues/745
   const config: Record<string, any> = {
     headless: true,
-    args: getConfig('puppeteer-args').slice(0),
+    args: getConfig('puppeteer_args').slice(0),
     timeout: 0,
     executablePath,
   }
@@ -68,9 +68,9 @@ export async function getBrowser(proxy?: string, headless = true) {
   }
 
   item.browser = await puppeteer.launch({
-    dumpio: getConfig('debug-puppeteer'),
+    dumpio: getConfig('debug_puppeteer'),
     ...config,
-    debuggingPort: getConfig('puppeteer-debugging-port'),
+    debuggingPort: getConfig('puppeteer_debugging_port'),
     devtools: false,
   })
 

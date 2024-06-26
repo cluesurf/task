@@ -8,18 +8,18 @@ import {
 import {
   AnonymousWordSet,
   GenerateHaikuPhrase,
-  GenerateHaikuPhraseResolver,
+  GenerateHaikuPhraseParser,
   GenerateRandomPhrase,
-  GenerateRandomPhraseResolver,
+  GenerateRandomPhraseParser,
   GenerateRandomSymbols,
-  GenerateRandomSymbolsResolver,
+  GenerateRandomSymbolsParser,
   NamedWordSet,
   WeightedSymbolSet,
   WeightedWordSet,
-} from '~/code/type/shared'
+} from '~/code/type/shared/parser'
 
 export function generateRandomSymbols(source: GenerateRandomSymbols) {
-  const input = GenerateRandomSymbolsResolver().parse(source)
+  const input = GenerateRandomSymbolsParser().parse(source)
 
   const size = getRandomIntegerBetween({
     min: input.minSize as number,
@@ -67,7 +67,7 @@ export function generateRandomSymbols(source: GenerateRandomSymbols) {
 }
 
 export function generateRandomPhrase(source: GenerateRandomPhrase) {
-  const input = GenerateRandomPhraseResolver().parse(source)
+  const input = GenerateRandomPhraseParser().parse(source)
 
   const size = getRandomIntegerBetween({
     min: input.minSize as number,
@@ -118,7 +118,7 @@ export function generateRandomPhrase(source: GenerateRandomPhrase) {
 }
 
 export function generateHaikuPhrase(source: GenerateHaikuPhrase) {
-  const input = GenerateHaikuPhraseResolver().parse(source)
+  const input = GenerateHaikuPhraseParser().parse(source)
 
   const adjectives = getWordSets(input.adjectives)
   const nouns = getWordSets(input.nouns)
@@ -171,7 +171,7 @@ export function getWeightedSymbolSets(list: Array<WeightedSymbolSet>) {
           return { list, weight }
         }
         case 'named-symbol-set': {
-          const SYMBOL_SET_CONTENT = getConfig('symbol-set-content')
+          const SYMBOL_SET_CONTENT = getConfig('symbol_set_content')
           const list = SYMBOL_SET_CONTENT[item.value.name]?.list
           const weight = item.weight
           return { list, weight }
@@ -191,7 +191,7 @@ export function getWeightedWordSets(list: Array<WeightedWordSet>) {
           return { list, weight }
         }
         case 'named-word-set': {
-          const WORD_SET = getConfig('word-set')
+          const WORD_SET = getConfig('word_set')
           const list = WORD_SET[item.value.name]
           if (list) {
             const weight = item.weight
@@ -213,7 +213,7 @@ export function getWordSets(
           return item.list
         }
         case 'named-word-set': {
-          const WORD_SET = getConfig('word-set')
+          const WORD_SET = getConfig('word_set')
           const list = WORD_SET[item.name]
           return list
         }

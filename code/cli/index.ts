@@ -1,7 +1,7 @@
 #!/usr/bin/env -S node --no-warnings=ExperimentalWarning
 
 import * as task from './task'
-import { Task } from '~/code/type/node'
+import { Task } from '~/code/type/node/parser'
 import { read } from './parse'
 import { logError } from './logging'
 

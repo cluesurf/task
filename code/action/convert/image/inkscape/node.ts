@@ -1,13 +1,13 @@
 import {
   ConvertImageWithInkscapeNodeInput,
-  ConvertImageWithInkscapeNodeInputResolver,
-  ConvertImageWithInkscapeNodeOutputResolver,
+  ConvertImageWithInkscapeNodeInputParser,
+  ConvertImageWithInkscapeNodeOutputParser,
   ConvertImageWithInkscapeNodeLocalInternalInput,
   ConvertImageWithInkscapeNodeLocalExternalInput,
-  ConvertImageWithInkscapeNodeLocalInputResolver,
+  ConvertImageWithInkscapeNodeLocalInputParser,
   ConvertImageWithInkscapeNodeRemoteInput,
-  ConvertImageWithInkscapeNodeClientInputResolver,
-} from '~/code/type/node'
+  ConvertImageWithInkscapeNodeClientInputParser,
+} from '~/code/type/node/parser'
 import { buildCommandToConvertImageWithInkscape } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {
@@ -25,8 +25,7 @@ export async function convertImageWithInkscapeNode(
   source: ConvertImageWithInkscapeNodeInput,
   native?: NativeOptions,
 ) {
-  const input =
-    ConvertImageWithInkscapeNodeInputResolver().parse(source)
+  const input = ConvertImageWithInkscapeNodeInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -66,14 +65,14 @@ export async function convertImageWithInkscapeNodeRemote(
 ) {
   const input = await resolveInputForConvertRemoteNode(source)
   const clientInput =
-    ConvertImageWithInkscapeNodeClientInputResolver().parse(
+    ConvertImageWithInkscapeNodeClientInputParser().parse(
       extend(input, { handle: 'client' }),
     )
 
   const request = buildRequestToConvert(clientInput)
   await resolveWorkFileNode(request, input.output.file.path)
 
-  return ConvertImageWithInkscapeNodeOutputResolver().parse({
+  return ConvertImageWithInkscapeNodeOutputParser().parse({
     file: {
       path: input.output.file.path,
     },
@@ -85,14 +84,14 @@ export async function convertImageWithInkscapeNodeLocal(
   native?: NativeOptions,
 ) {
   const localInput =
-    ConvertImageWithInkscapeNodeLocalInputResolver().parse(input)
+    ConvertImageWithInkscapeNodeLocalInputParser().parse(input)
 
   const sequence =
     await buildCommandToConvertImageWithInkscape(localInput)
 
   await runCommandSequence(sequence)
 
-  return ConvertImageWithInkscapeNodeOutputResolver().parse({
+  return ConvertImageWithInkscapeNodeOutputParser().parse({
     file: {
       path: localInput.output.file.path,
     },

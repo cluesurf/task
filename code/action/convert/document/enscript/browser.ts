@@ -1,10 +1,10 @@
 import {
   ConvertDocumentWithEnscriptBrowserInput,
-  ConvertDocumentWithEnscriptBrowserInputResolver,
+  ConvertDocumentWithEnscriptBrowserInputParser,
   ConvertDocumentWithEnscriptBrowserLocalInput,
-  ConvertDocumentWithEnscriptBrowserOutputResolver,
+  ConvertDocumentWithEnscriptBrowserOutputParser,
   ConvertDocumentWithEnscriptBrowserRemoteInput,
-} from '~/code/type/browser'
+} from '~/code/type/browser/parser'
 import { buildFormDataRequestToConvert } from '../../shared'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
@@ -15,7 +15,7 @@ export async function convertDocumentWithEnscriptBrowser(
   native?: NativeOptions,
 ) {
   const input =
-    ConvertDocumentWithEnscriptBrowserInputResolver().parse(source)
+    ConvertDocumentWithEnscriptBrowserInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -38,7 +38,7 @@ export async function convertDocumentWithEnscriptBrowserRemote(
   const request = buildFormDataRequestToConvert(input)
   const content = await resolveWorkFileAsBlob(request, native)
 
-  return ConvertDocumentWithEnscriptBrowserOutputResolver().parse({
+  return ConvertDocumentWithEnscriptBrowserOutputParser().parse({
     file: {
       content,
     },

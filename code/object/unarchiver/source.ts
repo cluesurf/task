@@ -1,4 +1,4 @@
-import { Hash, List } from '@termsurf/form'
+import { Form, Hash, List } from '@termsurf/form'
 
 export const unarchiver_format: List = {
   form: 'list',
@@ -18,13 +18,20 @@ export const unarchiver_format: List = {
   ],
 }
 
+export const unarchiver_format_data: Form = {
+  form: 'form',
+  link: {
+    head: { like: 'string' },
+  },
+}
+
 // https://github.com/ashang/unar/blob/master/README.md
 export const unarchiver_format_content: Hash = {
   form: 'hash',
   file: 'unarchiver',
   link: 'unarchiver_format',
   bond: {
-    head: { like: 'string' },
+    like: 'unarchiver_format_data',
   },
   hash: {
     zip: { head: 'Zip' },

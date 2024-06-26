@@ -1,5 +1,6 @@
 import fsp from 'fs/promises'
-import _ from 'lodash'
+import set from 'lodash/set'
+import unset from 'lodash/unset'
 import {
   createStreamableFile,
   getFallbackFilePath,
@@ -34,8 +35,8 @@ export async function resolveInputForFormatRemoteNode<
     const inputPath = parsePath(through.input.file.path)
     if (inputPath.type === 'file-uri') {
       const file = await createStreamableFile(inputPath.href)
-      _.unset(through.input.file, ['path'])
-      _.set(through.input.file, ['content'], file)
+      unset(through.input.file, ['path'])
+      set(through.input.file, ['content'], file)
     }
   }
 
@@ -74,7 +75,7 @@ export async function resolveInputForFormatLocalExternalNode<
           scope: getScopeDirectory(through.pathScope),
           extension: through.format,
         })
-        _.set(through.input.file, ['path'], newInputPath)
+        set(through.input.file, ['path'], newInputPath)
 
         debug(
           'resolveInputForFormatLocalExternalNode input',
@@ -128,8 +129,8 @@ export async function resolveInputContentForFormatLocalExternalNode<
       case 'https-uri':
       case 'http-uri': {
         const content = await readRemoteFileNode(inputPath.href)
-        _.unset(through.input.file, ['path'])
-        _.set(through.input.file, ['content'], content)
+        unset(through.input.file, ['path'])
+        set(through.input.file, ['content'], content)
         break
       }
     }
@@ -172,8 +173,8 @@ export async function resolveInputForFormatLocalInternalNode<
       case 'https-uri':
       case 'http-uri': {
         const content = await readRemoteFileNode(inputPath.href)
-        _.unset(through.input.file, ['path'])
-        _.set(through.input.file, ['content'], content)
+        unset(through.input.file, ['path'])
+        set(through.input.file, ['content'], content)
         break
       }
     }
@@ -218,15 +219,15 @@ export async function resolveInputContentForFormatLocalInternalNode<
       case 'https-uri':
       case 'http-uri': {
         const content = await readRemoteFileNode(inputPath.href)
-        _.unset(through.input.file, ['path'])
-        _.set(through.input.file, ['content'], content)
+        unset(through.input.file, ['path'])
+        set(through.input.file, ['content'], content)
         break
       }
       case 'file-uri':
         const content = (await fsp.readFile(inputPath.href, null))
           .buffer
-        _.unset(through.input.file, ['path'])
-        _.set(through.input.file, ['content'], content)
+        unset(through.input.file, ['path'])
+        set(through.input.file, ['content'], content)
         break
     }
   }

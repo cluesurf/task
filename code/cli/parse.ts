@@ -1,6 +1,7 @@
 import { Form, FormLink, BaseHash } from '@termsurf/form'
 import { Call, Bond, CallLinkMesh } from './type'
-import _ from 'lodash'
+import set from 'lodash/set'
+import kebabCase from 'lodash/kebabCase'
 import kink from '../tool/shared/kink'
 
 export type LineCallLink = {
@@ -36,7 +37,7 @@ export function makeLineHash(
     const val = hashLink?.list ? bond : bond[0]
     if (hashLink) {
       if (hashLink?.line) {
-        _.set(make, hashLink.line, val)
+        set(make, hashLink.line, val)
       } else if (val != null) {
         make[name] = val
       }
@@ -109,7 +110,7 @@ export function makeLineCallLinkList(
           }
         } else {
           const mark = link.name?.mark && `-${link.name.mark}`
-          const name = `--${_.kebabCase(lineName.join('-'))}`
+          const name = `--${kebabCase(lineName.join('-'))}`
           const list = [mark, name].filter(x => x)
           opts.push({
             link: list as Array<string>,

@@ -1,21 +1,21 @@
 import {
   CompileSwiftBrowserInput,
-  CompileSwiftBrowserInputResolver,
+  CompileSwiftBrowserInputParser,
   CompileSwiftBrowserLocalInput,
-  CompileSwiftBrowserOutputResolver,
+  CompileSwiftBrowserOutputParser,
   CompileSwiftBrowserRemoteInput,
-} from '~/code/type/browser'
+} from '~/code/type/browser/parser'
 import { buildFormDataRequestToCompile } from '~/code/action/compile/code/shared'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
 import { NativeOptions } from '~/code/tool/shared/request'
-import { WorkFileAsBlob } from '~/code/action/browser'
+import { WorkFileAsBlob } from '~/code/tool/shared/work'
 
 export async function compileSwiftBrowser(
   source: CompileSwiftBrowserInput,
   native?: NativeOptions,
 ) {
-  const input = CompileSwiftBrowserInputResolver().parse(source)
+  const input = CompileSwiftBrowserInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':

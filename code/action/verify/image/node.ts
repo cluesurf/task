@@ -1,7 +1,7 @@
 import {
   ImageMagickFormat,
   VerifyImageWithImageMagick,
-} from '~/code/type/node'
+} from '~/code/type/node/parser'
 import { buildCommandToVerifyImageWithImageMagick } from './command'
 import { testVerifyImageWithImageMagick } from './shared'
 import { runCommandSequence } from '~/code/tool/node/command'
@@ -19,7 +19,7 @@ export async function verifyImageWithImageMagickNode(
   const data = (await runCommandSequence(sequence)) as unknown as {
     format: ImageMagickFormat
   }
-  const IMAGE_MAGICK_FORMAT = getConfig('image-magick-format')
+  const IMAGE_MAGICK_FORMAT = getConfig('image_magick_format')
   if (
     IMAGE_MAGICK_FORMAT.includes(data.format) &&
     isFormatMatch(data.format, input.format)

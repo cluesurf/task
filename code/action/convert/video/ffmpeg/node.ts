@@ -1,13 +1,13 @@
 import {
   ConvertVideoWithFfmpegNodeInput,
-  ConvertVideoWithFfmpegNodeInputResolver,
-  ConvertVideoWithFfmpegNodeOutputResolver,
+  ConvertVideoWithFfmpegNodeInputParser,
+  ConvertVideoWithFfmpegNodeOutputParser,
   ConvertVideoWithFfmpegNodeLocalInternalInput,
   ConvertVideoWithFfmpegNodeLocalExternalInput,
-  ConvertVideoWithFfmpegNodeLocalInputResolver,
+  ConvertVideoWithFfmpegNodeLocalInputParser,
   ConvertVideoWithFfmpegNodeRemoteInput,
-  ConvertVideoWithFfmpegNodeClientInputResolver,
-} from '~/code/type/node'
+  ConvertVideoWithFfmpegNodeClientInputParser,
+} from '~/code/type/node/parser'
 import { buildCommandToConvertVideoWithFfmpeg } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {
@@ -25,7 +25,7 @@ export async function convertVideoWithFfmpegNode(
   source: ConvertVideoWithFfmpegNodeInput,
   native?: NativeOptions,
 ) {
-  const input = ConvertVideoWithFfmpegNodeInputResolver().parse(source)
+  const input = ConvertVideoWithFfmpegNodeInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -65,14 +65,14 @@ export async function convertVideoWithFfmpegNodeRemote(
 ) {
   const input = await resolveInputForConvertRemoteNode(source)
   const clientInput =
-    ConvertVideoWithFfmpegNodeClientInputResolver().parse(
+    ConvertVideoWithFfmpegNodeClientInputParser().parse(
       extend(input, { handle: 'client' }),
     )
 
   const request = buildRequestToConvert(clientInput)
   await resolveWorkFileNode(request, input.output.file.path)
 
-  return ConvertVideoWithFfmpegNodeOutputResolver().parse({
+  return ConvertVideoWithFfmpegNodeOutputParser().parse({
     file: {
       path: input.output.file.path,
     },
@@ -84,14 +84,14 @@ export async function convertVideoWithFfmpegNodeLocal(
   native?: NativeOptions,
 ) {
   const localInput =
-    ConvertVideoWithFfmpegNodeLocalInputResolver().parse(input)
+    ConvertVideoWithFfmpegNodeLocalInputParser().parse(input)
 
   const sequence =
     await buildCommandToConvertVideoWithFfmpeg(localInput)
 
   await runCommandSequence(sequence)
 
-  return ConvertVideoWithFfmpegNodeOutputResolver().parse({
+  return ConvertVideoWithFfmpegNodeOutputParser().parse({
     file: {
       path: localInput.output.file.path,
     },

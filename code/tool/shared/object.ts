@@ -1,5 +1,7 @@
 import { flatten, unflatten } from 'flat'
-import _ from 'lodash'
+import unset from 'lodash/unset'
+import isPlainObject from 'lodash/isPlainObject'
+import merge from 'lodash/merge'
 
 export function flattenObjectSafe(
   obj: object,
@@ -18,7 +20,7 @@ export function unflattenObject(obj: object, delimiter: string = '.') {
 
 export function unsetAll(obj, props: Array<Array<string>>) {
   props.forEach(path => {
-    _.unset(obj, path)
+    unset(obj, path)
   })
   return obj
 }
@@ -38,7 +40,7 @@ export function cloneOptions<T extends object>(x: T) {
   Object.keys(x).forEach(name => {
     const value = x[name]
 
-    if (_.isPlainObject(value)) {
+    if (isPlainObject(value)) {
       y[name] = cloneOptions(value)
     } else {
       y[name] = value
@@ -49,5 +51,5 @@ export function cloneOptions<T extends object>(x: T) {
 }
 
 export function extend(x: object, y: object) {
-  return _.merge({}, x, y)
+  return merge({}, x, y)
 }

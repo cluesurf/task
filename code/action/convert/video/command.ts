@@ -2,12 +2,12 @@ import {
   buildCommandSequence,
   getCommand,
 } from '~/code/tool/shared/command'
+import { IOPath } from '~/code/type'
 import {
-  ConvertMp4ToGifWithFfmpegResolver,
+  ConvertMp4ToGifWithFfmpegParser,
   ConvertVideoWithFfmpegCommandInput,
   FfmpegCodecAudio,
-  IOPath,
-} from '~/code/type/shared'
+} from '~/code/type/shared/parser'
 
 // ffmpeg -filters
 // https://ffmpeg.org/ffmpeg-filters.html
@@ -166,7 +166,7 @@ export async function buildCommandToConvertVideoWithFfmpeg(
 export async function buildCommandToCompressVideoWithFfmpeg() {}
 
 export async function buildCommandToConvertMP4ToGifWithFfmpeg(source) {
-  const input = ConvertMp4ToGifWithFfmpegResolver().parse(source)
+  const input = ConvertMp4ToGifWithFfmpegParser().parse(source)
 
   const { fps, width, startTime, endTime, duration } = input
 
@@ -244,5 +244,5 @@ export async function removeAudioFromVideoWithFfmpeg({
 }
 
 // export async function compressMP4WithFfmpeg(source) {
-//   return CompressMp4WithFfmpegResolver().parse(source)
+//   return CompressMp4WithFfmpegParser().parse(source)
 // }

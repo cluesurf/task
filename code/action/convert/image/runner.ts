@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import snakeCase from 'lodash/snakeCase'
 import { ChildProcessError, exec } from '~/code/tool/node/process'
 import { Command } from '~/code/type/shared'
 
@@ -33,6 +33,6 @@ export async function handleIdentifyCommand(cmd: Command) {
   stdout.match(pattern)
   return {
     path: RegExp.$1,
-    format: _.snakeCase(RegExp.$2),
+    format: snakeCase(RegExp.$2),
   }
 }

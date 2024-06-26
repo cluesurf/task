@@ -1,12 +1,12 @@
 import {
   FormatSwiftNodeInput,
-  FormatSwiftNodeInputResolver,
+  FormatSwiftNodeInputParser,
   FormatSwiftNodeLocalExternalInput,
   FormatSwiftNodeLocalInternalInput,
   FormatSwiftNodeRemoteInput,
-  FormatSwiftNodeClientInputResolver,
-  FormatSwiftNodeLocalInputResolver,
-} from '~/code/type/node'
+  FormatSwiftNodeClientInputParser,
+  FormatSwiftNodeLocalInputParser,
+} from '~/code/type/node/parser'
 import { buildCommandToFormatSwift } from '../command'
 import { buildRequestToFormat } from '../shared'
 import { runCommandSequence } from '~/code/tool/node/command'
@@ -26,7 +26,7 @@ export async function formatSwiftNode(
   source: FormatSwiftNodeInput,
   native?: NativeOptions,
 ) {
-  const input = FormatSwiftNodeInputResolver().parse(source)
+  const input = FormatSwiftNodeInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -59,7 +59,7 @@ export async function formatSwiftNodeRemote(
   native?: NativeOptions,
 ) {
   const input = await resolveInputForFormatRemoteNode(source)
-  const clientInput = FormatSwiftNodeClientInputResolver().parse(
+  const clientInput = FormatSwiftNodeClientInputParser().parse(
     extend(input, { handle: 'client' }),
   )
 
@@ -77,7 +77,7 @@ export async function formatSwiftNodeLocal(
   source,
   native?: NativeOptions,
 ) {
-  const input = FormatSwiftNodeLocalInputResolver().parse(source)
+  const input = FormatSwiftNodeLocalInputParser().parse(source)
 
   const sequence = buildCommandToFormatSwift(input)
   await runCommandSequence(sequence)

@@ -1,4 +1,4 @@
-import { Hash, List } from '@termsurf/form'
+import { Form, Hash, List } from '@termsurf/form'
 
 export const calibre_input_format: List = {
   form: 'list',
@@ -28,13 +28,18 @@ export const calibre_input_format: List = {
   ],
 }
 
+export const calibre_format_data: Form = {
+  form: 'form',
+  link: {
+    head: { like: 'string' },
+  },
+}
+
 export const calibre_input_format_content: Hash = {
   form: 'hash',
   file: 'calibre',
   link: 'calibre_input_format',
-  bond: {
-    head: { like: 'string' },
-  },
+  bond: { like: 'calibre_format_data' },
   hash: {
     azw4: { head: 'AZW4' },
     chm: { head: 'CHM' },
@@ -91,7 +96,7 @@ export const calibre_output_format_content: Hash = {
   file: 'calibre',
   link: 'calibre_output_format',
   bond: {
-    head: { like: 'string' },
+    like: 'calibre_format_data',
   },
   hash: {
     azw3: { head: 'AZW3' },

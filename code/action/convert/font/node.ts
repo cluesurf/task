@@ -1,13 +1,13 @@
 import {
   ConvertFontWithFontForgeNodeInput,
-  ConvertFontWithFontForgeNodeInputResolver,
-  ConvertFontWithFontForgeNodeOutputResolver,
+  ConvertFontWithFontForgeNodeInputParser,
+  ConvertFontWithFontForgeNodeOutputParser,
   ConvertFontWithFontForgeNodeLocalInternalInput,
   ConvertFontWithFontForgeNodeLocalExternalInput,
-  ConvertFontWithFontForgeNodeLocalInputResolver,
+  ConvertFontWithFontForgeNodeLocalInputParser,
   ConvertFontWithFontForgeNodeRemoteInput,
-  ConvertFontWithFontForgeNodeClientInputResolver,
-} from '~/code/type/node'
+  ConvertFontWithFontForgeNodeClientInputParser,
+} from '~/code/type/node/parser'
 import {
   buildCommandToConvertFontWithFontForge,
   testConvertFontWithFontForge,
@@ -27,8 +27,7 @@ export async function convertFontWithFontForgeNode(
   source: ConvertFontWithFontForgeNodeInput,
   native?: NativeOptions,
 ) {
-  const input =
-    ConvertFontWithFontForgeNodeInputResolver().parse(source)
+  const input = ConvertFontWithFontForgeNodeInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -68,14 +67,14 @@ export async function convertFontWithFontForgeNodeRemote(
 ) {
   const input = await resolveInputForConvertRemoteNode(source)
   const clientInput =
-    ConvertFontWithFontForgeNodeClientInputResolver().parse(
+    ConvertFontWithFontForgeNodeClientInputParser().parse(
       extend(input, { handle: 'client' }),
     )
 
   const request = buildRequestToConvert(clientInput)
   await resolveWorkFileNode(request, input.output.file.path)
 
-  return ConvertFontWithFontForgeNodeOutputResolver().parse({
+  return ConvertFontWithFontForgeNodeOutputParser().parse({
     file: {
       path: input.output.file.path,
     },
@@ -87,14 +86,14 @@ export async function convertFontWithFontForgeNodeLocal(
   native?: NativeOptions,
 ) {
   const localInput =
-    ConvertFontWithFontForgeNodeLocalInputResolver().parse(input)
+    ConvertFontWithFontForgeNodeLocalInputParser().parse(input)
 
   const sequence =
     await buildCommandToConvertFontWithFontForge(localInput)
 
   await runCommandSequence(sequence)
 
-  return ConvertFontWithFontForgeNodeOutputResolver().parse({
+  return ConvertFontWithFontForgeNodeOutputParser().parse({
     file: {
       path: localInput.output.file.path,
     },

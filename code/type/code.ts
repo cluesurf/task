@@ -1,7 +1,8 @@
 import { Make, Test } from '@termsurf/form'
 import { FFMPEG_TIME_PATTERN } from './bond'
 import { ImageMagicColorMatrix } from '~/code/type/shared'
-import _ from 'lodash'
+import capitalize from 'lodash/capitalize'
+import snakeCase from 'lodash/snakeCase'
 import { RefinementCtx, z } from 'zod'
 import { replaceFileExtension } from '~/code/tool/shared/screen'
 import { getPathType } from '../tool/shared/file'
@@ -121,7 +122,7 @@ export const hex_color: Test = {
   form: 'test',
   test: (bond: string, name: string) => {
     if (!bond.match(/#[abcdef0-9]{6}/i)) {
-      const prop = _.capitalize(_.snakeCase(name)).replace(/_/g, ' ')
+      const prop = capitalize(snakeCase(name)).replace(/_/g, ' ')
       return `${prop} must be a hex string like '#ff0000'.`
     }
     return true

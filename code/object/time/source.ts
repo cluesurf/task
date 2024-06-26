@@ -1,4 +1,4 @@
-import { Hash, List } from '@termsurf/form'
+import { Form, Hash, List } from '@termsurf/form'
 import { getTimeZones } from '@vvo/tzdb'
 import _ from 'lodash'
 
@@ -49,10 +49,9 @@ export const time_zone: List = {
   list: TIME_ZONE_ABBREVIATION.concat(TIME_ZONE_LOCATION),
 }
 
-export const time_zone_content: Hash = {
-  form: 'hash',
-  link: 'time_zone_location',
-  bond: {
+export const time_zone_data: Form = {
+  form: 'form',
+  link: {
     name: { like: 'string' },
     alternativeName: { like: 'string' },
     group: { like: 'string', list: true },
@@ -64,14 +63,25 @@ export const time_zone_content: Hash = {
     rawOffsetInMinutes: { like: 'integer' },
     abbreviation: { like: 'string' },
   },
+}
+
+export const time_zone_content: Hash = {
+  form: 'hash',
+  link: 'time_zone_location',
+  bond: { like: 'time_zone_data' },
   hash: TIME_ZONE_HASH,
+}
+
+export const time_zone_abbreviation_data: Form = {
+  form: 'form',
+  link: {
+    name: { like: 'string', list: true },
+  },
 }
 
 export const time_zone_abbreviation_content: Hash = {
   form: 'hash',
   link: 'time_zone_abbreviation',
-  bond: {
-    name: { like: 'string', list: true },
-  },
+  bond: { like: 'time_zone_abbreviation_data' },
   hash: TIME_ZONE_ABBREVIATION_HASH,
 }

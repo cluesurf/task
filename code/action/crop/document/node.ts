@@ -4,13 +4,13 @@ import {
 } from '~/code/tool/shared/command'
 import {
   CropPdfWithPdfCrop,
-  CropPdfWithPdfCropResolver,
-} from '~/code/type/node'
+  CropPdfWithPdfCropParser,
+} from '~/code/type/node/parser'
 
 export async function cropPdfWithPdfCropNode(
   source: CropPdfWithPdfCrop,
 ) {
-  const input = CropPdfWithPdfCropResolver().parse(source)
+  const input = CropPdfWithPdfCropParser().parse(source)
   const command = getCommand('pdfcrop')
 
   if (input.margin != null) {

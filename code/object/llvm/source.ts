@@ -1,4 +1,4 @@
-import { Hash, List } from '@termsurf/form'
+import { Form, Hash, List } from '@termsurf/form'
 import LLVM_ARCHITECTURE_CONTENT from './llvm.architecture.json' assert { type: 'json' }
 import LLVM_CPU_CONTENT from './llvm.cpu.json' assert { type: 'json' }
 import LLVM_CPU from './llvm.cpu.key.json' assert { type: 'json' }
@@ -10,13 +10,20 @@ export const llvm_cpu: List = {
   list: LLVM_CPU,
 }
 
+export const llvm_cpu_data: Form = {
+  form: 'form',
+  link: {
+    host: { like: 'string' },
+    note: { like: 'string' },
+  },
+}
+
 export const llvm_cpu_content: Hash = {
   form: 'hash',
   file: 'llvm',
   link: 'llvm_cpu',
   bond: {
-    host: { like: 'string' },
-    note: { like: 'string' },
+    like: 'llvm_cpu_data',
   },
   hash: LLVM_CPU_CONTENT,
 }
@@ -26,14 +33,19 @@ export const llvm_feature: List = {
   list: LLVM_FEATURE,
 }
 
+export const llvm_feature_data: Form = {
+  form: 'form',
+  link: {
+    host: { like: 'string' },
+    note: { like: 'string' },
+  },
+}
+
 export const llvm_feature_content: Hash = {
   form: 'hash',
   file: 'llvm',
   link: 'llvm_feature',
-  bond: {
-    host: { like: 'string' },
-    note: { like: 'string' },
-  },
+  bond: { like: 'llvm_feature_data' },
   hash: LLVM_FEATURE_CONTENT,
 }
 
@@ -86,16 +98,21 @@ export const llvm_optimization_level: List = {
   list: ['0', '1', '2', '3'],
 }
 
-export const llvm_architecture_content: Hash = {
-  form: 'hash',
-  file: 'llvm',
-  link: 'llvm_architecture',
-  bond: {
+export const llvm_architecture_data: Form = {
+  form: 'form',
+  link: {
     host: { like: 'string' },
     note: { like: 'string' },
     cpu: { like: 'string', list: true },
     feature: { like: 'string', list: true },
   },
+}
+
+export const llvm_architecture_content: Hash = {
+  form: 'hash',
+  file: 'llvm',
+  link: 'llvm_architecture',
+  bond: { like: 'llvm_architecture_data' },
   hash: {
     aarch64: {
       ...LLVM_ARCHITECTURE_CONTENT.aarch_64,
@@ -295,13 +312,18 @@ export const backend_compilation_output: List = {
   list: ['assembly', 'llvm-ir', 'llvm-bitcode', 'binary'],
 }
 
+export const backend_compilation_output_data: Form = {
+  form: 'form',
+  link: {
+    extension: { like: 'string', need: false },
+  },
+}
+
 export const backend_compilation_output_content: Hash = {
   form: 'hash',
   file: 'llvm',
   link: 'backend_compilation_output',
-  bond: {
-    extension: { like: 'string', need: false },
-  },
+  bond: { like: 'backend_compilation_output_data' },
   hash: {
     assembly: { extension: 'asm' },
     'llvm-ir': { extension: 'll' },

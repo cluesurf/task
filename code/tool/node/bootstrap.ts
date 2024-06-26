@@ -274,542 +274,542 @@ import {
   WAST_INPUT_FORMAT,
   WAST_OUTPUT_FORMAT,
   WORD_SET,
-} from '~/code/type/node/base'
-import { configure } from '../shared/config'
+} from '~/code/type/node/data'
+import { configure } from '~/code/tool/shared/config'
 
-configure('archive-format', ARCHIVE_FORMAT)
-configure('assembly-syntax', ASSEMBLY_SYNTAX)
-configure('backend-compilation-output', BACKEND_COMPILATION_OUTPUT)
-configure('c-input-format', C_INPUT_FORMAT)
-configure('calibre-input-format', CALIBRE_INPUT_FORMAT)
-configure('calibre-input-profile', CALIBRE_INPUT_PROFILE)
-configure('calibre-output-format', CALIBRE_OUTPUT_FORMAT)
-configure('calibre-output-profile', CALIBRE_OUTPUT_PROFILE)
-configure('call-handle', CALL_HANDLE)
+configure('archive_format', ARCHIVE_FORMAT)
+configure('assembly_syntax', ASSEMBLY_SYNTAX)
+configure('backend_compilation_output', BACKEND_COMPILATION_OUTPUT)
+configure('c_input_format', C_INPUT_FORMAT)
+configure('calibre_input_format', CALIBRE_INPUT_FORMAT)
+configure('calibre_input_profile', CALIBRE_INPUT_PROFILE)
+configure('calibre_output_format', CALIBRE_OUTPUT_FORMAT)
+configure('calibre_output_profile', CALIBRE_OUTPUT_PROFILE)
+configure('call_handle', CALL_HANDLE)
 configure('cipher', CIPHER)
-configure('clang-format', CLANG_FORMAT)
-configure('cli-log-format', CLI_LOG_FORMAT)
-configure('command-key', COMMAND_KEY)
-configure('command-name', COMMAND_NAME)
-configure('conversion-unit-acre', CONVERSION_UNIT_ACRE)
-configure('conversion-unit-ampere', CONVERSION_UNIT_AMPERE)
-configure('conversion-unit-arcminute', CONVERSION_UNIT_ARCMINUTE)
-configure('conversion-unit-arcsecond', CONVERSION_UNIT_ARCSECOND)
-configure('conversion-unit-bar', CONVERSION_UNIT_BAR)
-configure('conversion-unit-bit', CONVERSION_UNIT_BIT)
-configure('conversion-unit-byte', CONVERSION_UNIT_BYTE)
-configure('conversion-unit-celsius', CONVERSION_UNIT_CELSIUS)
-configure('conversion-unit-centilitre', CONVERSION_UNIT_CENTILITRE)
+configure('clang_format', CLANG_FORMAT)
+configure('cli_log_format', CLI_LOG_FORMAT)
+configure('command_key', COMMAND_KEY)
+configure('command_name', COMMAND_NAME)
+configure('conversion_unit_acre', CONVERSION_UNIT_ACRE)
+configure('conversion_unit_ampere', CONVERSION_UNIT_AMPERE)
+configure('conversion_unit_arcminute', CONVERSION_UNIT_ARCMINUTE)
+configure('conversion_unit_arcsecond', CONVERSION_UNIT_ARCSECOND)
+configure('conversion_unit_bar', CONVERSION_UNIT_BAR)
+configure('conversion_unit_bit', CONVERSION_UNIT_BIT)
+configure('conversion_unit_byte', CONVERSION_UNIT_BYTE)
+configure('conversion_unit_celsius', CONVERSION_UNIT_CELSIUS)
+configure('conversion_unit_centilitre', CONVERSION_UNIT_CENTILITRE)
 configure(
-  'conversion-unit-centilitre-per-second',
+  'conversion_unit_centilitre_per_second',
   CONVERSION_UNIT_CENTILITRE_PER_SECOND,
 )
-configure('conversion-unit-centimeter', CONVERSION_UNIT_CENTIMETER)
+configure('conversion_unit_centimeter', CONVERSION_UNIT_CENTIMETER)
 configure(
-  'conversion-unit-cubic-centimeter',
+  'conversion_unit_cubic_centimeter',
   CONVERSION_UNIT_CUBIC_CENTIMETER,
 )
 configure(
-  'conversion-unit-cubic-centimeter-per-second',
+  'conversion_unit_cubic_centimeter_per_second',
   CONVERSION_UNIT_CUBIC_CENTIMETER_PER_SECOND,
 )
-configure('conversion-unit-cubic-foot', CONVERSION_UNIT_CUBIC_FOOT)
+configure('conversion_unit_cubic_foot', CONVERSION_UNIT_CUBIC_FOOT)
 configure(
-  'conversion-unit-cubic-foot-per-hour',
+  'conversion_unit_cubic_foot_per_hour',
   CONVERSION_UNIT_CUBIC_FOOT_PER_HOUR,
 )
 configure(
-  'conversion-unit-cubic-foot-per-minute',
+  'conversion_unit_cubic_foot_per_minute',
   CONVERSION_UNIT_CUBIC_FOOT_PER_MINUTE,
 )
 configure(
-  'conversion-unit-cubic-foot-per-second',
+  'conversion_unit_cubic_foot_per_second',
   CONVERSION_UNIT_CUBIC_FOOT_PER_SECOND,
 )
-configure('conversion-unit-cubic-inch', CONVERSION_UNIT_CUBIC_INCH)
+configure('conversion_unit_cubic_inch', CONVERSION_UNIT_CUBIC_INCH)
 configure(
-  'conversion-unit-cubic-inch-per-hour',
+  'conversion_unit_cubic_inch_per_hour',
   CONVERSION_UNIT_CUBIC_INCH_PER_HOUR,
 )
 configure(
-  'conversion-unit-cubic-inch-per-minute',
+  'conversion_unit_cubic_inch_per_minute',
   CONVERSION_UNIT_CUBIC_INCH_PER_MINUTE,
 )
 configure(
-  'conversion-unit-cubic-inch-per-second',
+  'conversion_unit_cubic_inch_per_second',
   CONVERSION_UNIT_CUBIC_INCH_PER_SECOND,
 )
 configure(
-  'conversion-unit-cubic-kilometer',
+  'conversion_unit_cubic_kilometer',
   CONVERSION_UNIT_CUBIC_KILOMETER,
 )
 configure(
-  'conversion-unit-cubic-kilometer-per-second',
+  'conversion_unit_cubic_kilometer_per_second',
   CONVERSION_UNIT_CUBIC_KILOMETER_PER_SECOND,
 )
-configure('conversion-unit-cubic-meter', CONVERSION_UNIT_CUBIC_METER)
+configure('conversion_unit_cubic_meter', CONVERSION_UNIT_CUBIC_METER)
 configure(
-  'conversion-unit-cubic-meter-per-hour',
+  'conversion_unit_cubic_meter_per_hour',
   CONVERSION_UNIT_CUBIC_METER_PER_HOUR,
 )
 configure(
-  'conversion-unit-cubic-meter-per-minute',
+  'conversion_unit_cubic_meter_per_minute',
   CONVERSION_UNIT_CUBIC_METER_PER_MINUTE,
 )
 configure(
-  'conversion-unit-cubic-meter-per-second',
+  'conversion_unit_cubic_meter_per_second',
   CONVERSION_UNIT_CUBIC_METER_PER_SECOND,
 )
 configure(
-  'conversion-unit-cubic-millimeter',
+  'conversion_unit_cubic_millimeter',
   CONVERSION_UNIT_CUBIC_MILLIMETER,
 )
 configure(
-  'conversion-unit-cubic-millimeter-per-second',
+  'conversion_unit_cubic_millimeter_per_second',
   CONVERSION_UNIT_CUBIC_MILLIMETER_PER_SECOND,
 )
-configure('conversion-unit-cubic-yard', CONVERSION_UNIT_CUBIC_YARD)
+configure('conversion_unit_cubic_yard', CONVERSION_UNIT_CUBIC_YARD)
 configure(
-  'conversion-unit-cubic-yard-per-hour',
+  'conversion_unit_cubic_yard_per_hour',
   CONVERSION_UNIT_CUBIC_YARD_PER_HOUR,
 )
 configure(
-  'conversion-unit-cubic-yard-per-minute',
+  'conversion_unit_cubic_yard_per_minute',
   CONVERSION_UNIT_CUBIC_YARD_PER_MINUTE,
 )
 configure(
-  'conversion-unit-cubic-yard-per-second',
+  'conversion_unit_cubic_yard_per_second',
   CONVERSION_UNIT_CUBIC_YARD_PER_SECOND,
 )
-configure('conversion-unit-cup', CONVERSION_UNIT_CUP)
+configure('conversion_unit_cup', CONVERSION_UNIT_CUP)
 configure(
-  'conversion-unit-cup-per-second',
+  'conversion_unit_cup_per_second',
   CONVERSION_UNIT_CUP_PER_SECOND,
 )
-configure('conversion-unit-day', CONVERSION_UNIT_DAY)
-configure('conversion-unit-decilitre', CONVERSION_UNIT_DECILITRE)
+configure('conversion_unit_day', CONVERSION_UNIT_DAY)
+configure('conversion_unit_decilitre', CONVERSION_UNIT_DECILITRE)
 configure(
-  'conversion-unit-decilitre-per-second',
+  'conversion_unit_decilitre_per_second',
   CONVERSION_UNIT_DECILITRE_PER_SECOND,
 )
-configure('conversion-unit-degree', CONVERSION_UNIT_DEGREE)
+configure('conversion_unit_degree', CONVERSION_UNIT_DEGREE)
 configure(
-  'conversion-unit-degree-per-second',
+  'conversion_unit_degree_per_second',
   CONVERSION_UNIT_DEGREE_PER_SECOND,
 )
-configure('conversion-unit-dozen', CONVERSION_UNIT_DOZEN)
-configure('conversion-unit-each', CONVERSION_UNIT_EACH)
-configure('conversion-unit-fahrenheit', CONVERSION_UNIT_FAHRENHEIT)
-configure('conversion-unit-fluid-ounce', CONVERSION_UNIT_FLUID_OUNCE)
+configure('conversion_unit_dozen', CONVERSION_UNIT_DOZEN)
+configure('conversion_unit_each', CONVERSION_UNIT_EACH)
+configure('conversion_unit_fahrenheit', CONVERSION_UNIT_FAHRENHEIT)
+configure('conversion_unit_fluid_ounce', CONVERSION_UNIT_FLUID_OUNCE)
 configure(
-  'conversion-unit-fluid-ounce-per-hour',
+  'conversion_unit_fluid_ounce_per_hour',
   CONVERSION_UNIT_FLUID_OUNCE_PER_HOUR,
 )
 configure(
-  'conversion-unit-fluid-ounce-per-minute',
+  'conversion_unit_fluid_ounce_per_minute',
   CONVERSION_UNIT_FLUID_OUNCE_PER_MINUTE,
 )
 configure(
-  'conversion-unit-fluid-ounce-per-second',
+  'conversion_unit_fluid_ounce_per_second',
   CONVERSION_UNIT_FLUID_OUNCE_PER_SECOND,
 )
-configure('conversion-unit-foot', CONVERSION_UNIT_FOOT)
-configure('conversion-unit-foot-candle', CONVERSION_UNIT_FOOT_CANDLE)
+configure('conversion_unit_foot', CONVERSION_UNIT_FOOT)
+configure('conversion_unit_foot_candle', CONVERSION_UNIT_FOOT_CANDLE)
 configure(
-  'conversion-unit-foot-per-second',
+  'conversion_unit_foot_per_second',
   CONVERSION_UNIT_FOOT_PER_SECOND,
 )
-configure('conversion-unit-gallon', CONVERSION_UNIT_GALLON)
+configure('conversion_unit_gallon', CONVERSION_UNIT_GALLON)
 configure(
-  'conversion-unit-gallon-per-hour',
+  'conversion_unit_gallon_per_hour',
   CONVERSION_UNIT_GALLON_PER_HOUR,
 )
 configure(
-  'conversion-unit-gallon-per-minute',
+  'conversion_unit_gallon_per_minute',
   CONVERSION_UNIT_GALLON_PER_MINUTE,
 )
 configure(
-  'conversion-unit-gallon-per-second',
+  'conversion_unit_gallon_per_second',
   CONVERSION_UNIT_GALLON_PER_SECOND,
 )
-configure('conversion-unit-gigabit', CONVERSION_UNIT_GIGABIT)
-configure('conversion-unit-gigabyte', CONVERSION_UNIT_GIGABYTE)
-configure('conversion-unit-gigahertz', CONVERSION_UNIT_GIGAHERTZ)
+configure('conversion_unit_gigabit', CONVERSION_UNIT_GIGABIT)
+configure('conversion_unit_gigabyte', CONVERSION_UNIT_GIGABYTE)
+configure('conversion_unit_gigahertz', CONVERSION_UNIT_GIGAHERTZ)
 configure(
-  'conversion-unit-gigavolt-ampere',
+  'conversion_unit_gigavolt_ampere',
   CONVERSION_UNIT_GIGAVOLT_AMPERE,
 )
 configure(
-  'conversion-unit-gigavolt-ampere-reactive',
+  'conversion_unit_gigavolt_ampere_reactive',
   CONVERSION_UNIT_GIGAVOLT_AMPERE_REACTIVE,
 )
 configure(
-  'conversion-unit-gigavolt-ampere-reactive-hour',
+  'conversion_unit_gigavolt_ampere_reactive_hour',
   CONVERSION_UNIT_GIGAVOLT_AMPERE_REACTIVE_HOUR,
 )
-configure('conversion-unit-gigawatt', CONVERSION_UNIT_GIGAWATT)
+configure('conversion_unit_gigawatt', CONVERSION_UNIT_GIGAWATT)
 configure(
-  'conversion-unit-gigawatt-hour',
+  'conversion_unit_gigawatt_hour',
   CONVERSION_UNIT_GIGAWATT_HOUR,
 )
-configure('conversion-unit-glas', CONVERSION_UNIT_GLAS)
-configure('conversion-unit-gradian', CONVERSION_UNIT_GRADIAN)
-configure('conversion-unit-gram', CONVERSION_UNIT_GRAM)
-configure('conversion-unit-hectare', CONVERSION_UNIT_HECTARE)
-configure('conversion-unit-hectopascal', CONVERSION_UNIT_HECTOPASCAL)
-configure('conversion-unit-hertz', CONVERSION_UNIT_HERTZ)
-configure('conversion-unit-hour', CONVERSION_UNIT_HOUR)
-configure('conversion-unit-inch', CONVERSION_UNIT_INCH)
-configure('conversion-unit-joule', CONVERSION_UNIT_JOULE)
-configure('conversion-unit-kaffekopp', CONVERSION_UNIT_KAFFEKOPP)
-configure('conversion-unit-kanna', CONVERSION_UNIT_KANNA)
-configure('conversion-unit-kelvin', CONVERSION_UNIT_KELVIN)
-configure('conversion-unit-kiloampere', CONVERSION_UNIT_KILOAMPERE)
-configure('conversion-unit-kilobit', CONVERSION_UNIT_KILOBIT)
-configure('conversion-unit-kilobyte', CONVERSION_UNIT_KILOBYTE)
-configure('conversion-unit-kilogram', CONVERSION_UNIT_KILOGRAM)
-configure('conversion-unit-kilohertz', CONVERSION_UNIT_KILOHERTZ)
-configure('conversion-unit-kilojoule', CONVERSION_UNIT_KILOJOULE)
-configure('conversion-unit-kilolitre', CONVERSION_UNIT_KILOLITRE)
+configure('conversion_unit_glas', CONVERSION_UNIT_GLAS)
+configure('conversion_unit_gradian', CONVERSION_UNIT_GRADIAN)
+configure('conversion_unit_gram', CONVERSION_UNIT_GRAM)
+configure('conversion_unit_hectare', CONVERSION_UNIT_HECTARE)
+configure('conversion_unit_hectopascal', CONVERSION_UNIT_HECTOPASCAL)
+configure('conversion_unit_hertz', CONVERSION_UNIT_HERTZ)
+configure('conversion_unit_hour', CONVERSION_UNIT_HOUR)
+configure('conversion_unit_inch', CONVERSION_UNIT_INCH)
+configure('conversion_unit_joule', CONVERSION_UNIT_JOULE)
+configure('conversion_unit_kaffekopp', CONVERSION_UNIT_KAFFEKOPP)
+configure('conversion_unit_kanna', CONVERSION_UNIT_KANNA)
+configure('conversion_unit_kelvin', CONVERSION_UNIT_KELVIN)
+configure('conversion_unit_kiloampere', CONVERSION_UNIT_KILOAMPERE)
+configure('conversion_unit_kilobit', CONVERSION_UNIT_KILOBIT)
+configure('conversion_unit_kilobyte', CONVERSION_UNIT_KILOBYTE)
+configure('conversion_unit_kilogram', CONVERSION_UNIT_KILOGRAM)
+configure('conversion_unit_kilohertz', CONVERSION_UNIT_KILOHERTZ)
+configure('conversion_unit_kilojoule', CONVERSION_UNIT_KILOJOULE)
+configure('conversion_unit_kilolitre', CONVERSION_UNIT_KILOLITRE)
 configure(
-  'conversion-unit-kilolitre-per-hour',
+  'conversion_unit_kilolitre_per_hour',
   CONVERSION_UNIT_KILOLITRE_PER_HOUR,
 )
 configure(
-  'conversion-unit-kilolitre-per-minute',
+  'conversion_unit_kilolitre_per_minute',
   CONVERSION_UNIT_KILOLITRE_PER_MINUTE,
 )
 configure(
-  'conversion-unit-kilolitre-per-second',
+  'conversion_unit_kilolitre_per_second',
   CONVERSION_UNIT_KILOLITRE_PER_SECOND,
 )
-configure('conversion-unit-kilometer', CONVERSION_UNIT_KILOMETER)
+configure('conversion_unit_kilometer', CONVERSION_UNIT_KILOMETER)
 configure(
-  'conversion-unit-kilometre-per-hour',
+  'conversion_unit_kilometre_per_hour',
   CONVERSION_UNIT_KILOMETRE_PER_HOUR,
 )
-configure('conversion-unit-kilopascal', CONVERSION_UNIT_KILOPASCAL)
+configure('conversion_unit_kilopascal', CONVERSION_UNIT_KILOPASCAL)
 configure(
-  'conversion-unit-kilopound-per-square-inch',
+  'conversion_unit_kilopound_per_square_inch',
   CONVERSION_UNIT_KILOPOUND_PER_SQUARE_INCH,
 )
-configure('conversion-unit-kilovolt', CONVERSION_UNIT_KILOVOLT)
+configure('conversion_unit_kilovolt', CONVERSION_UNIT_KILOVOLT)
 configure(
-  'conversion-unit-kilovolt-ampere',
+  'conversion_unit_kilovolt_ampere',
   CONVERSION_UNIT_KILOVOLT_AMPERE,
 )
 configure(
-  'conversion-unit-kilovolt-ampere-reactive',
+  'conversion_unit_kilovolt_ampere_reactive',
   CONVERSION_UNIT_KILOVOLT_AMPERE_REACTIVE,
 )
 configure(
-  'conversion-unit-kilovolt-ampere-reactive-hour',
+  'conversion_unit_kilovolt_ampere_reactive_hour',
   CONVERSION_UNIT_KILOVOLT_AMPERE_REACTIVE_HOUR,
 )
-configure('conversion-unit-kilowatt', CONVERSION_UNIT_KILOWATT)
+configure('conversion_unit_kilowatt', CONVERSION_UNIT_KILOWATT)
 configure(
-  'conversion-unit-kilowatt-hour',
+  'conversion_unit_kilowatt_hour',
   CONVERSION_UNIT_KILOWATT_HOUR,
 )
-configure('conversion-unit-knot', CONVERSION_UNIT_KNOT)
-configure('conversion-unit-litre', CONVERSION_UNIT_LITRE)
+configure('conversion_unit_knot', CONVERSION_UNIT_KNOT)
+configure('conversion_unit_litre', CONVERSION_UNIT_LITRE)
 configure(
-  'conversion-unit-litre-per-hour',
+  'conversion_unit_litre_per_hour',
   CONVERSION_UNIT_LITRE_PER_HOUR,
 )
 configure(
-  'conversion-unit-litre-per-minute',
+  'conversion_unit_litre_per_minute',
   CONVERSION_UNIT_LITRE_PER_MINUTE,
 )
 configure(
-  'conversion-unit-litre-per-second',
+  'conversion_unit_litre_per_second',
   CONVERSION_UNIT_LITRE_PER_SECOND,
 )
-configure('conversion-unit-lux', CONVERSION_UNIT_LUX)
-configure('conversion-unit-matsked', CONVERSION_UNIT_MATSKED)
-configure('conversion-unit-megabit', CONVERSION_UNIT_MEGABIT)
-configure('conversion-unit-megabyte', CONVERSION_UNIT_MEGABYTE)
-configure('conversion-unit-megahertz', CONVERSION_UNIT_MEGAHERTZ)
-configure('conversion-unit-megapascal', CONVERSION_UNIT_MEGAPASCAL)
+configure('conversion_unit_lux', CONVERSION_UNIT_LUX)
+configure('conversion_unit_matsked', CONVERSION_UNIT_MATSKED)
+configure('conversion_unit_megabit', CONVERSION_UNIT_MEGABIT)
+configure('conversion_unit_megabyte', CONVERSION_UNIT_MEGABYTE)
+configure('conversion_unit_megahertz', CONVERSION_UNIT_MEGAHERTZ)
+configure('conversion_unit_megapascal', CONVERSION_UNIT_MEGAPASCAL)
 configure(
-  'conversion-unit-megavolt-ampere',
+  'conversion_unit_megavolt_ampere',
   CONVERSION_UNIT_MEGAVOLT_AMPERE,
 )
 configure(
-  'conversion-unit-megavolt-ampere-reactive',
+  'conversion_unit_megavolt_ampere_reactive',
   CONVERSION_UNIT_MEGAVOLT_AMPERE_REACTIVE,
 )
 configure(
-  'conversion-unit-megavolt-ampere-reactive-hour',
+  'conversion_unit_megavolt_ampere_reactive_hour',
   CONVERSION_UNIT_MEGAVOLT_AMPERE_REACTIVE_HOUR,
 )
-configure('conversion-unit-megawatt', CONVERSION_UNIT_MEGAWATT)
+configure('conversion_unit_megawatt', CONVERSION_UNIT_MEGAWATT)
 configure(
-  'conversion-unit-megawatt-hour',
+  'conversion_unit_megawatt_hour',
   CONVERSION_UNIT_MEGAWATT_HOUR,
 )
-configure('conversion-unit-meter', CONVERSION_UNIT_METER)
+configure('conversion_unit_meter', CONVERSION_UNIT_METER)
 configure(
-  'conversion-unit-metre-per-second',
+  'conversion_unit_metre_per_second',
   CONVERSION_UNIT_METRE_PER_SECOND,
 )
-configure('conversion-unit-metric-tonne', CONVERSION_UNIT_METRIC_TONNE)
-configure('conversion-unit-microgram', CONVERSION_UNIT_MICROGRAM)
-configure('conversion-unit-microsecond', CONVERSION_UNIT_MICROSECOND)
-configure('conversion-unit-mile', CONVERSION_UNIT_MILE)
+configure('conversion_unit_metric_tonne', CONVERSION_UNIT_METRIC_TONNE)
+configure('conversion_unit_microgram', CONVERSION_UNIT_MICROGRAM)
+configure('conversion_unit_microsecond', CONVERSION_UNIT_MICROSECOND)
+configure('conversion_unit_mile', CONVERSION_UNIT_MILE)
 configure(
-  'conversion-unit-mile-per-hour',
+  'conversion_unit_mile_per_hour',
   CONVERSION_UNIT_MILE_PER_HOUR,
 )
-configure('conversion-unit-milliampere', CONVERSION_UNIT_MILLIAMPERE)
-configure('conversion-unit-milligram', CONVERSION_UNIT_MILLIGRAM)
-configure('conversion-unit-millihertz', CONVERSION_UNIT_MILLIHERTZ)
-configure('conversion-unit-millilitre', CONVERSION_UNIT_MILLILITRE)
+configure('conversion_unit_milliampere', CONVERSION_UNIT_MILLIAMPERE)
+configure('conversion_unit_milligram', CONVERSION_UNIT_MILLIGRAM)
+configure('conversion_unit_millihertz', CONVERSION_UNIT_MILLIHERTZ)
+configure('conversion_unit_millilitre', CONVERSION_UNIT_MILLILITRE)
 configure(
-  'conversion-unit-millilitre-per-second',
+  'conversion_unit_millilitre_per_second',
   CONVERSION_UNIT_MILLILITRE_PER_SECOND,
 )
-configure('conversion-unit-millimeter', CONVERSION_UNIT_MILLIMETER)
-configure('conversion-unit-millisecond', CONVERSION_UNIT_MILLISECOND)
-configure('conversion-unit-millivolt', CONVERSION_UNIT_MILLIVOLT)
+configure('conversion_unit_millimeter', CONVERSION_UNIT_MILLIMETER)
+configure('conversion_unit_millisecond', CONVERSION_UNIT_MILLISECOND)
+configure('conversion_unit_millivolt', CONVERSION_UNIT_MILLIVOLT)
 configure(
-  'conversion-unit-millivolt-ampere',
+  'conversion_unit_millivolt_ampere',
   CONVERSION_UNIT_MILLIVOLT_AMPERE,
 )
 configure(
-  'conversion-unit-millivolt-ampere-reactive',
+  'conversion_unit_millivolt_ampere_reactive',
   CONVERSION_UNIT_MILLIVOLT_AMPERE_REACTIVE,
 )
 configure(
-  'conversion-unit-millivolt-ampere-reactive-hour',
+  'conversion_unit_millivolt_ampere_reactive_hour',
   CONVERSION_UNIT_MILLIVOLT_AMPERE_REACTIVE_HOUR,
 )
-configure('conversion-unit-milliwatt', CONVERSION_UNIT_MILLIWATT)
+configure('conversion_unit_milliwatt', CONVERSION_UNIT_MILLIWATT)
 configure(
-  'conversion-unit-milliwatt-hour',
+  'conversion_unit_milliwatt_hour',
   CONVERSION_UNIT_MILLIWATT_HOUR,
 )
-configure('conversion-unit-minute', CONVERSION_UNIT_MINUTE)
+configure('conversion_unit_minute', CONVERSION_UNIT_MINUTE)
 configure(
-  'conversion-unit-minute-per-kilometre',
+  'conversion_unit_minute_per_kilometre',
   CONVERSION_UNIT_MINUTE_PER_KILOMETRE,
 )
 configure(
-  'conversion-unit-minute-per-mile',
+  'conversion_unit_minute_per_mile',
   CONVERSION_UNIT_MINUTE_PER_MILE,
 )
-configure('conversion-unit-month', CONVERSION_UNIT_MONTH)
-configure('conversion-unit-nanosecond', CONVERSION_UNIT_NANOSECOND)
-configure('conversion-unit-ounce', CONVERSION_UNIT_OUNCE)
+configure('conversion_unit_month', CONVERSION_UNIT_MONTH)
+configure('conversion_unit_nanosecond', CONVERSION_UNIT_NANOSECOND)
+configure('conversion_unit_ounce', CONVERSION_UNIT_OUNCE)
 configure(
-  'conversion-unit-part-per-billion',
+  'conversion_unit_part_per_billion',
   CONVERSION_UNIT_PART_PER_BILLION,
 )
 configure(
-  'conversion-unit-part-per-million',
+  'conversion_unit_part_per_million',
   CONVERSION_UNIT_PART_PER_MILLION,
 )
 configure(
-  'conversion-unit-part-per-quadrillion',
+  'conversion_unit_part_per_quadrillion',
   CONVERSION_UNIT_PART_PER_QUADRILLION,
 )
 configure(
-  'conversion-unit-part-per-trillion',
+  'conversion_unit_part_per_trillion',
   CONVERSION_UNIT_PART_PER_TRILLION,
 )
-configure('conversion-unit-pascal', CONVERSION_UNIT_PASCAL)
-configure('conversion-unit-pint', CONVERSION_UNIT_PINT)
+configure('conversion_unit_pascal', CONVERSION_UNIT_PASCAL)
+configure('conversion_unit_pint', CONVERSION_UNIT_PINT)
 configure(
-  'conversion-unit-pint-per-hour',
+  'conversion_unit_pint_per_hour',
   CONVERSION_UNIT_PINT_PER_HOUR,
 )
 configure(
-  'conversion-unit-pint-per-minute',
+  'conversion_unit_pint_per_minute',
   CONVERSION_UNIT_PINT_PER_MINUTE,
 )
 configure(
-  'conversion-unit-pint-per-second',
+  'conversion_unit_pint_per_second',
   CONVERSION_UNIT_PINT_PER_SECOND,
 )
-configure('conversion-unit-pound', CONVERSION_UNIT_POUND)
+configure('conversion_unit_pound', CONVERSION_UNIT_POUND)
 configure(
-  'conversion-unit-pound-per-square-inch',
+  'conversion_unit_pound_per_square_inch',
   CONVERSION_UNIT_POUND_PER_SQUARE_INCH,
 )
-configure('conversion-unit-quart', CONVERSION_UNIT_QUART)
+configure('conversion_unit_quart', CONVERSION_UNIT_QUART)
 configure(
-  'conversion-unit-quart-per-second',
+  'conversion_unit_quart_per_second',
   CONVERSION_UNIT_QUART_PER_SECOND,
 )
-configure('conversion-unit-radian', CONVERSION_UNIT_RADIAN)
+configure('conversion_unit_radian', CONVERSION_UNIT_RADIAN)
 configure(
-  'conversion-unit-radian-per-second',
+  'conversion_unit_radian_per_second',
   CONVERSION_UNIT_RADIAN_PER_SECOND,
 )
-configure('conversion-unit-rankine', CONVERSION_UNIT_RANKINE)
+configure('conversion_unit_rankine', CONVERSION_UNIT_RANKINE)
 configure(
-  'conversion-unit-rotation-per-minute',
+  'conversion_unit_rotation_per_minute',
   CONVERSION_UNIT_ROTATION_PER_MINUTE,
 )
-configure('conversion-unit-second', CONVERSION_UNIT_SECOND)
+configure('conversion_unit_second', CONVERSION_UNIT_SECOND)
 configure(
-  'conversion-unit-second-per-foot',
+  'conversion_unit_second_per_foot',
   CONVERSION_UNIT_SECOND_PER_FOOT,
 )
 configure(
-  'conversion-unit-second-per-metre',
+  'conversion_unit_second_per_metre',
   CONVERSION_UNIT_SECOND_PER_METRE,
 )
 configure(
-  'conversion-unit-square-centimeter',
+  'conversion_unit_square_centimeter',
   CONVERSION_UNIT_SQUARE_CENTIMETER,
 )
-configure('conversion-unit-square-foot', CONVERSION_UNIT_SQUARE_FOOT)
-configure('conversion-unit-square-inch', CONVERSION_UNIT_SQUARE_INCH)
+configure('conversion_unit_square_foot', CONVERSION_UNIT_SQUARE_FOOT)
+configure('conversion_unit_square_inch', CONVERSION_UNIT_SQUARE_INCH)
 configure(
-  'conversion-unit-square-kilometer',
+  'conversion_unit_square_kilometer',
   CONVERSION_UNIT_SQUARE_KILOMETER,
 )
-configure('conversion-unit-square-meter', CONVERSION_UNIT_SQUARE_METER)
-configure('conversion-unit-square-mile', CONVERSION_UNIT_SQUARE_MILE)
+configure('conversion_unit_square_meter', CONVERSION_UNIT_SQUARE_METER)
+configure('conversion_unit_square_mile', CONVERSION_UNIT_SQUARE_MILE)
 configure(
-  'conversion-unit-square-millimeter',
+  'conversion_unit_square_millimeter',
   CONVERSION_UNIT_SQUARE_MILLIMETER,
 )
-configure('conversion-unit-square-yard', CONVERSION_UNIT_SQUARE_YARD)
-configure('conversion-unit-tablespoon', CONVERSION_UNIT_TABLESPOON)
+configure('conversion_unit_square_yard', CONVERSION_UNIT_SQUARE_YARD)
+configure('conversion_unit_tablespoon', CONVERSION_UNIT_TABLESPOON)
 configure(
-  'conversion-unit-tablespoon-per-second',
+  'conversion_unit_tablespoon_per_second',
   CONVERSION_UNIT_TABLESPOON_PER_SECOND,
 )
-configure('conversion-unit-teaspoon', CONVERSION_UNIT_TEASPOON)
+configure('conversion_unit_teaspoon', CONVERSION_UNIT_TEASPOON)
 configure(
-  'conversion-unit-teaspoon-per-second',
+  'conversion_unit_teaspoon_per_second',
   CONVERSION_UNIT_TEASPOON_PER_SECOND,
 )
-configure('conversion-unit-terabit', CONVERSION_UNIT_TERABIT)
-configure('conversion-unit-terabyte', CONVERSION_UNIT_TERABYTE)
-configure('conversion-unit-terahertz', CONVERSION_UNIT_TERAHERTZ)
-configure('conversion-unit-tesked', CONVERSION_UNIT_TESKED)
-configure('conversion-unit-ton', CONVERSION_UNIT_TON)
-configure('conversion-unit-torr', CONVERSION_UNIT_TORR)
+configure('conversion_unit_terabit', CONVERSION_UNIT_TERABIT)
+configure('conversion_unit_terabyte', CONVERSION_UNIT_TERABYTE)
+configure('conversion_unit_terahertz', CONVERSION_UNIT_TERAHERTZ)
+configure('conversion_unit_tesked', CONVERSION_UNIT_TESKED)
+configure('conversion_unit_ton', CONVERSION_UNIT_TON)
+configure('conversion_unit_torr', CONVERSION_UNIT_TORR)
 configure(
-  'conversion-unit-us-survey-foot',
+  'conversion_unit_us_survey_foot',
   CONVERSION_UNIT_US_SURVEY_FOOT,
 )
-configure('conversion-unit-volt', CONVERSION_UNIT_VOLT)
-configure('conversion-unit-volt-ampere', CONVERSION_UNIT_VOLT_AMPERE)
+configure('conversion_unit_volt', CONVERSION_UNIT_VOLT)
+configure('conversion_unit_volt_ampere', CONVERSION_UNIT_VOLT_AMPERE)
 configure(
-  'conversion-unit-volt-ampere-reactive',
+  'conversion_unit_volt_ampere_reactive',
   CONVERSION_UNIT_VOLT_AMPERE_REACTIVE,
 )
 configure(
-  'conversion-unit-volt-ampere-reactive-hour',
+  'conversion_unit_volt_ampere_reactive_hour',
   CONVERSION_UNIT_VOLT_AMPERE_REACTIVE_HOUR,
 )
-configure('conversion-unit-watt', CONVERSION_UNIT_WATT)
-configure('conversion-unit-watt-hour', CONVERSION_UNIT_WATT_HOUR)
-configure('conversion-unit-week', CONVERSION_UNIT_WEEK)
-configure('conversion-unit-yard', CONVERSION_UNIT_YARD)
-configure('conversion-unit-year', CONVERSION_UNIT_YEAR)
+configure('conversion_unit_watt', CONVERSION_UNIT_WATT)
+configure('conversion_unit_watt_hour', CONVERSION_UNIT_WATT_HOUR)
+configure('conversion_unit_week', CONVERSION_UNIT_WEEK)
+configure('conversion_unit_yard', CONVERSION_UNIT_YARD)
+configure('conversion_unit_year', CONVERSION_UNIT_YEAR)
 configure(
-  'convert-latex-to-png-input-format',
+  'convert_latex_to_png_input_format',
   CONVERT_LATEX_TO_PNG_INPUT_FORMAT,
 )
 configure(
-  'convert-latex-to-png-output-format',
+  'convert_latex_to_png_output_format',
   CONVERT_LATEX_TO_PNG_OUTPUT_FORMAT,
 )
-configure('cpp-input-format', CPP_INPUT_FORMAT)
-configure('enscript-input-format', ENSCRIPT_INPUT_FORMAT)
-configure('enscript-output-format', ENSCRIPT_OUTPUT_FORMAT)
-configure('ffmpeg-codec-audio', FFMPEG_CODEC_AUDIO)
-configure('ffmpeg-codec-subtitle', FFMPEG_CODEC_SUBTITLE)
-configure('ffmpeg-codec-video', FFMPEG_CODEC_VIDEO)
-configure('ffmpeg-decoder-audio', FFMPEG_DECODER_AUDIO)
-configure('ffmpeg-decoder-subtitle', FFMPEG_DECODER_SUBTITLE)
-configure('ffmpeg-decoder-video', FFMPEG_DECODER_VIDEO)
-configure('ffmpeg-encoder-audio', FFMPEG_ENCODER_AUDIO)
-configure('ffmpeg-encoder-subtitle', FFMPEG_ENCODER_SUBTITLE)
-configure('ffmpeg-encoder-video', FFMPEG_ENCODER_VIDEO)
-configure('ffmpeg-format', FFMPEG_FORMAT)
-configure('ffmpeg-strict-option', FFMPEG_STRICT_OPTION)
-configure('file-reader-encoding', FILE_READER_ENCODING)
+configure('cpp_input_format', CPP_INPUT_FORMAT)
+configure('enscript_input_format', ENSCRIPT_INPUT_FORMAT)
+configure('enscript_output_format', ENSCRIPT_OUTPUT_FORMAT)
+configure('ffmpeg_codec_audio', FFMPEG_CODEC_AUDIO)
+configure('ffmpeg_codec_subtitle', FFMPEG_CODEC_SUBTITLE)
+configure('ffmpeg_codec_video', FFMPEG_CODEC_VIDEO)
+configure('ffmpeg_decoder_audio', FFMPEG_DECODER_AUDIO)
+configure('ffmpeg_decoder_subtitle', FFMPEG_DECODER_SUBTITLE)
+configure('ffmpeg_decoder_video', FFMPEG_DECODER_VIDEO)
+configure('ffmpeg_encoder_audio', FFMPEG_ENCODER_AUDIO)
+configure('ffmpeg_encoder_subtitle', FFMPEG_ENCODER_SUBTITLE)
+configure('ffmpeg_encoder_video', FFMPEG_ENCODER_VIDEO)
+configure('ffmpeg_format', FFMPEG_FORMAT)
+configure('ffmpeg_strict_option', FFMPEG_STRICT_OPTION)
+configure('file_reader_encoding', FILE_READER_ENCODING)
 configure('flip', FLIP)
-configure('font-format', FONT_FORMAT)
-configure('forge-message-digest', FORGE_MESSAGE_DIGEST)
-configure('format-code-format', FORMAT_CODE_FORMAT)
-configure('gifsicle-optimize-option', GIFSICLE_OPTIMIZE_OPTION)
-configure('image-magick-channel', IMAGE_MAGICK_CHANNEL)
-configure('image-magick-color-space', IMAGE_MAGICK_COLOR_SPACE)
-configure('image-magick-compression', IMAGE_MAGICK_COMPRESSION)
-configure('image-magick-format', IMAGE_MAGICK_FORMAT)
-configure('image-magick-gravity', IMAGE_MAGICK_GRAVITY)
-configure('image-magick-input-format', IMAGE_MAGICK_INPUT_FORMAT)
-configure('image-magick-output-format', IMAGE_MAGICK_OUTPUT_FORMAT)
-configure('inkscape-export-format', INKSCAPE_EXPORT_FORMAT)
-configure('inkscape-import-format', INKSCAPE_IMPORT_FORMAT)
-configure('libre-office-input-format', LIBRE_OFFICE_INPUT_FORMAT)
-configure('libre-office-output-format', LIBRE_OFFICE_OUTPUT_FORMAT)
-configure('llvm-architecture', LLVM_ARCHITECTURE)
-configure('llvm-cpu', LLVM_CPU)
-configure('llvm-feature', LLVM_FEATURE)
-configure('llvm-optimization-level', LLVM_OPTIMIZATION_LEVEL)
-configure('objdump-demangle-style', OBJDUMP_DEMANGLE_STYLE)
-configure('objdump-hide-option', OBJDUMP_HIDE_OPTION)
-configure('objdump-show-option', OBJDUMP_SHOW_OPTION)
-configure('pandoc-input-format', PANDOC_INPUT_FORMAT)
-configure('pandoc-output-format', PANDOC_OUTPUT_FORMAT)
-configure('patool-format', PATOOL_FORMAT)
-configure('pdf-latex-input-format', PDF_LATEX_INPUT_FORMAT)
-configure('pdf-latex-output-format', PDF_LATEX_OUTPUT_FORMAT)
-configure('pleasant-adjective', PLEASANT_ADJECTIVE)
-configure('pleasant-noun', PLEASANT_NOUN)
-configure('prettier-arrow-parens-option', PRETTIER_ARROW_PARENS_OPTION)
-configure('prettier-end-of-line-option', PRETTIER_END_OF_LINE_OPTION)
+configure('font_format', FONT_FORMAT)
+configure('forge_message_digest', FORGE_MESSAGE_DIGEST)
+configure('format_code_format', FORMAT_CODE_FORMAT)
+configure('gifsicle_optimize_option', GIFSICLE_OPTIMIZE_OPTION)
+configure('image_magick_channel', IMAGE_MAGICK_CHANNEL)
+configure('image_magick_color_space', IMAGE_MAGICK_COLOR_SPACE)
+configure('image_magick_compression', IMAGE_MAGICK_COMPRESSION)
+configure('image_magick_format', IMAGE_MAGICK_FORMAT)
+configure('image_magick_gravity', IMAGE_MAGICK_GRAVITY)
+configure('image_magick_input_format', IMAGE_MAGICK_INPUT_FORMAT)
+configure('image_magick_output_format', IMAGE_MAGICK_OUTPUT_FORMAT)
+configure('inkscape_export_format', INKSCAPE_EXPORT_FORMAT)
+configure('inkscape_import_format', INKSCAPE_IMPORT_FORMAT)
+configure('libre_office_input_format', LIBRE_OFFICE_INPUT_FORMAT)
+configure('libre_office_output_format', LIBRE_OFFICE_OUTPUT_FORMAT)
+configure('llvm_architecture', LLVM_ARCHITECTURE)
+configure('llvm_cpu', LLVM_CPU)
+configure('llvm_feature', LLVM_FEATURE)
+configure('llvm_optimization_level', LLVM_OPTIMIZATION_LEVEL)
+configure('objdump_demangle_style', OBJDUMP_DEMANGLE_STYLE)
+configure('objdump_hide_option', OBJDUMP_HIDE_OPTION)
+configure('objdump_show_option', OBJDUMP_SHOW_OPTION)
+configure('pandoc_input_format', PANDOC_INPUT_FORMAT)
+configure('pandoc_output_format', PANDOC_OUTPUT_FORMAT)
+configure('patool_format', PATOOL_FORMAT)
+configure('pdf_latex_input_format', PDF_LATEX_INPUT_FORMAT)
+configure('pdf_latex_output_format', PDF_LATEX_OUTPUT_FORMAT)
+configure('pleasant_adjective', PLEASANT_ADJECTIVE)
+configure('pleasant_noun', PLEASANT_NOUN)
+configure('prettier_arrow_parens_option', PRETTIER_ARROW_PARENS_OPTION)
+configure('prettier_end_of_line_option', PRETTIER_END_OF_LINE_OPTION)
 configure(
-  'prettier-html-whitespace-sensitivity-option',
+  'prettier_html_whitespace_sensitivity_option',
   PRETTIER_HTML_WHITESPACE_SENSITIVITY_OPTION,
 )
-configure('prettier-plugin', PRETTIER_PLUGIN)
-configure('prettier-prose-wrap-option', PRETTIER_PROSE_WRAP_OPTION)
+configure('prettier_plugin', PRETTIER_PLUGIN)
+configure('prettier_prose_wrap_option', PRETTIER_PROSE_WRAP_OPTION)
 configure(
-  'prettier-typescript-trailing-comma-option',
+  'prettier_typescript_trailing_comma_option',
   PRETTIER_TYPESCRIPT_TRAILING_COMMA_OPTION,
 )
 configure(
-  'prettier-xml-quote-attributes-option',
+  'prettier_xml_quote_attributes_option',
   PRETTIER_XML_QUOTE_ATTRIBUTES_OPTION,
 )
 configure(
-  'prettier-xml-whitespace-sensitivity-option',
+  'prettier_xml_whitespace_sensitivity_option',
   PRETTIER_XML_WHITESPACE_SENSITIVITY_OPTION,
 )
-configure('puppeteer-input-format', PUPPETEER_INPUT_FORMAT)
-configure('puppeteer-life-cycle-event', PUPPETEER_LIFE_CYCLE_EVENT)
+configure('puppeteer_input_format', PUPPETEER_INPUT_FORMAT)
+configure('puppeteer_life_cycle_event', PUPPETEER_LIFE_CYCLE_EVENT)
 configure(
-  'puppeteer-markdown-input-format',
+  'puppeteer_markdown_input_format',
   PUPPETEER_MARKDOWN_INPUT_FORMAT,
 )
-configure('puppeteer-output-format', PUPPETEER_OUTPUT_FORMAT)
-configure('puppeteer-txt-input-format', PUPPETEER_TXT_INPUT_FORMAT)
+configure('puppeteer_output_format', PUPPETEER_OUTPUT_FORMAT)
+configure('puppeteer_txt_input_format', PUPPETEER_TXT_INPUT_FORMAT)
 configure(
-  'qr-code-error-correction-level',
+  'qr_code_error_correction_level',
   QR_CODE_ERROR_CORRECTION_LEVEL,
 )
-configure('qr-code-format', QR_CODE_FORMAT)
-configure('rust-compiler-target', RUST_COMPILER_TARGET)
-configure('rust-input-format', RUST_INPUT_FORMAT)
-configure('rust-output-format', RUST_OUTPUT_FORMAT)
-configure('shared-gematria-language', SHARED_GEMATRIA_LANGUAGE)
-configure('swift-input-format', SWIFT_INPUT_FORMAT)
-configure('symbol-set', SYMBOL_SET)
+configure('qr_code_format', QR_CODE_FORMAT)
+configure('rust_compiler_target', RUST_COMPILER_TARGET)
+configure('rust_input_format', RUST_INPUT_FORMAT)
+configure('rust_output_format', RUST_OUTPUT_FORMAT)
+configure('shared_gematria_language', SHARED_GEMATRIA_LANGUAGE)
+configure('swift_input_format', SWIFT_INPUT_FORMAT)
+configure('symbol_set', SYMBOL_SET)
 configure('task', TASK)
-configure('time-zone', TIME_ZONE)
-configure('time-zone-abbreviation', TIME_ZONE_ABBREVIATION)
-configure('time-zone-location', TIME_ZONE_LOCATION)
-configure('unarchiver-format', UNARCHIVER_FORMAT)
+configure('time_zone', TIME_ZONE)
+configure('time_zone_abbreviation', TIME_ZONE_ABBREVIATION)
+configure('time_zone_location', TIME_ZONE_LOCATION)
+configure('unarchiver_format', UNARCHIVER_FORMAT)
 configure('unit', UNIT)
-configure('wast-input-format', WAST_INPUT_FORMAT)
-configure('wast-output-format', WAST_OUTPUT_FORMAT)
-configure('word-set', WORD_SET)
+configure('wast_input_format', WAST_INPUT_FORMAT)
+configure('wast_output_format', WAST_OUTPUT_FORMAT)
+configure('word_set', WORD_SET)

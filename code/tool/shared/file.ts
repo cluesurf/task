@@ -1,5 +1,4 @@
-import _ from 'lodash'
-import pathResolver from 'path'
+import pathParser from 'path'
 import kink from './kink'
 
 export type FileLink = {
@@ -60,20 +59,20 @@ export function addLocalFilesToList(
 }
 
 export function resolvePath(path: string) {
-  return pathResolver.resolve(path)
+  return pathParser.resolve(path)
 }
 
 export function resolvePathRelativeToScope(
   child: string,
   parent?: string | undefined,
 ) {
-  const resolvedChild = pathResolver.resolve(child)
+  const resolvedChild = pathParser.resolve(child)
 
   if (!parent) {
     return resolvedChild
   }
 
-  const resolvedParent = pathResolver.resolve(parent)
+  const resolvedParent = pathParser.resolve(parent)
 
   if (resolvedChild.indexOf(resolvedParent) === 0) {
     return resolvedChild

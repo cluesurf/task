@@ -4,7 +4,7 @@ import {
   ConvertDocumentWithPandocNodeInput,
   ConvertImageWithImageMagickNodeInput,
   ConvertVideoWithFfmpegNodeInput,
-} from '~/code/type/node'
+} from '~/code/type/node/parser'
 import { testConvertImageWithImageMagickNode } from '../convert/image/node'
 import { testConvertVideoWithFfmpegNode } from '../convert/video/ffmpeg/node'
 import { Tool, Action, Object } from '../shared'

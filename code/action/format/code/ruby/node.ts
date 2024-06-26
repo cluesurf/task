@@ -1,12 +1,12 @@
 import {
   FormatRustNodeInput,
-  FormatRustNodeInputResolver,
+  FormatRustNodeInputParser,
   FormatRustNodeLocalExternalInput,
   FormatRustNodeLocalInternalInput,
   FormatRustNodeRemoteInput,
-  FormatRustNodeClientInputResolver,
-  FormatRustNodeLocalInputResolver,
-} from '~/code/type/node'
+  FormatRustNodeClientInputParser,
+  FormatRustNodeLocalInputParser,
+} from '~/code/type/node/parser'
 import { buildCommandToFormatRust } from '../command'
 import { buildRequestToFormat } from '../shared'
 import { runCommandSequence } from '~/code/tool/node/command'
@@ -23,7 +23,7 @@ export async function formatRustNode(
   source: FormatRustNodeInput,
   native?: NativeOptions,
 ) {
-  const input = FormatRustNodeInputResolver().parse(source)
+  const input = FormatRustNodeInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -56,7 +56,7 @@ export async function formatRustNodeRemote(
   native?: NativeOptions,
 ) {
   const input = await resolveInputForFormatRemoteNode(source)
-  const clientInput = FormatRustNodeClientInputResolver().parse(
+  const clientInput = FormatRustNodeClientInputParser().parse(
     extend(input, { handle: 'client' }),
   )
 
@@ -74,7 +74,7 @@ export async function formatRustNodeLocal(
   source,
   native?: NativeOptions,
 ) {
-  const input = FormatRustNodeLocalInputResolver().parse(source)
+  const input = FormatRustNodeLocalInputParser().parse(source)
 
   const sequence = buildCommandToFormatRust(input)
   await runCommandSequence(sequence)

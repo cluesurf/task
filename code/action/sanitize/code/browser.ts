@@ -1,4 +1,4 @@
-import { SanitizeHtmlBrowserInput } from '../../browser'
+import { SanitizeHtmlBrowserInput } from '~/code/type/browser'
 import { sanitizeHtmlBrowser } from './html/browser'
 import { testSanitize } from './shared'
 

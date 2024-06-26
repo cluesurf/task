@@ -1,6 +1,5 @@
 import Kink, { KinkList } from '@termsurf/kink'
 import { z } from 'zod'
-import _ from 'lodash'
 
 export const CallBack = z.object({
   code: z.object({

@@ -47,12 +47,17 @@ export const unit: List = {
   list: inputs.map(x => x.slug),
 }
 
-export const unit_key: Hash = {
-  form: 'hash',
-  link: 'unit',
-  bond: {
+export const unit_key: Form = {
+  form: 'form',
+  link: {
     key: { like: 'string' },
   },
+}
+
+export const unit_key_hash: Hash = {
+  form: 'hash',
+  link: 'unit',
+  bond: { like: 'unit_key' },
   hash: inputs.reduce((m, x) => {
     m[x.slug] = {
       key: x.key,

@@ -1,10 +1,9 @@
-import pathResolver from 'path'
+import pathParser from 'path'
 import fsp from 'fs/promises'
 import fs from 'fs'
 import { Readable } from 'stream'
 import { ReadableStream as ReadableStreamWeb } from 'stream/web'
 import tmp, { tmpName } from 'tmp-promise'
-import _ from 'lodash'
 import { fetchWithTimeout } from '../shared/request'
 import { FileLink } from '../shared/file'
 import { tmpdir } from 'os'
@@ -29,7 +28,7 @@ export async function resolveRemoteFile({
 export async function createStreamableFile(
   path: string,
 ): Promise<File> {
-  const name = pathResolver.basename(path)
+  const name = pathParser.basename(path)
   const handle = await fsp.open(path)
   const { size } = await handle.stat()
 

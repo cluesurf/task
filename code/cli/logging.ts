@@ -2,7 +2,8 @@ import stripAnsi from 'strip-ansi'
 import tint, { Tint } from '@termsurf/tint-text'
 import ora from 'ora'
 import { log, logWithSpace } from '~/code/tool/shared/logger'
-import _ from 'lodash'
+import isObject from 'lodash/isObject'
+import kebabCase from 'lodash/kebabCase'
 import makeSiteKinkText from '@termsurf/kink-site'
 import { Form, BaseHash } from '@termsurf/form'
 import { makeLineCallLinkList } from './parse'
@@ -237,12 +238,12 @@ export function logTree(json) {
     for (const name in json) {
       const val = json[name]
       if (val) {
-        if (_.isObject(val)) {
+        if (isObject(val)) {
           text.push(
             ident(depth) +
               tint('name', B) +
               ' ' +
-              tint(_.kebabCase(name), W),
+              tint(kebabCase(name), W),
           )
           traverse(val, depth + 1)
         } else {
@@ -250,7 +251,7 @@ export function logTree(json) {
             ident(depth) +
               tint('name', B) +
               ' ' +
-              tint(_.kebabCase(name), W),
+              tint(kebabCase(name), W),
           )
           text.push(
             ident(depth + 1) +

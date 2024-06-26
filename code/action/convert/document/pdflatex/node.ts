@@ -1,13 +1,13 @@
 import {
   ConvertLatexWithPdfLatexNodeInput,
-  ConvertLatexWithPdfLatexNodeInputResolver,
-  ConvertLatexWithPdfLatexNodeOutputResolver,
+  ConvertLatexWithPdfLatexNodeInputParser,
+  ConvertLatexWithPdfLatexNodeOutputParser,
   ConvertLatexWithPdfLatexNodeLocalInternalInput,
   ConvertLatexWithPdfLatexNodeLocalExternalInput,
-  ConvertLatexWithPdfLatexNodeLocalInputResolver,
+  ConvertLatexWithPdfLatexNodeLocalInputParser,
   ConvertLatexWithPdfLatexNodeRemoteInput,
-  ConvertLatexWithPdfLatexNodeClientInputResolver,
-} from '~/code/type/node'
+  ConvertLatexWithPdfLatexNodeClientInputParser,
+} from '~/code/type/node/parser'
 import { buildCommandToConvertLatexWithPdfLatex } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {
@@ -25,8 +25,7 @@ export async function convertLatexWithPdfLatexNode(
   source: ConvertLatexWithPdfLatexNodeInput,
   native?: NativeOptions,
 ) {
-  const input =
-    ConvertLatexWithPdfLatexNodeInputResolver().parse(source)
+  const input = ConvertLatexWithPdfLatexNodeInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -66,14 +65,14 @@ export async function convertLatexWithPdfLatexNodeRemote(
 ) {
   const input = await resolveInputForConvertRemoteNode(source)
   const clientInput =
-    ConvertLatexWithPdfLatexNodeClientInputResolver().parse(
+    ConvertLatexWithPdfLatexNodeClientInputParser().parse(
       extend(input, { handle: 'client' }),
     )
 
   const request = buildRequestToConvert(clientInput)
   await resolveWorkFileNode(request, input.output.file.path)
 
-  return ConvertLatexWithPdfLatexNodeOutputResolver().parse({
+  return ConvertLatexWithPdfLatexNodeOutputParser().parse({
     file: {
       path: input.output.file.path,
     },
@@ -85,7 +84,7 @@ export async function convertLatexWithPdfLatexNodeLocal(
   native?: NativeOptions,
 ) {
   const localInput =
-    ConvertLatexWithPdfLatexNodeLocalInputResolver().parse(input)
+    ConvertLatexWithPdfLatexNodeLocalInputParser().parse(input)
 
   const sequence =
     await buildCommandToConvertLatexWithPdfLatex(localInput)
@@ -97,7 +96,7 @@ export async function convertLatexWithPdfLatexNodeLocal(
 
   await runCommandSequence(sequence)
 
-  return ConvertLatexWithPdfLatexNodeOutputResolver().parse({
+  return ConvertLatexWithPdfLatexNodeOutputParser().parse({
     file: {
       path: outputPath,
     },

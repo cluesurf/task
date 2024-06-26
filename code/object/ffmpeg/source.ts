@@ -19,11 +19,9 @@ export const ffmpeg_codec_audio: List = {
   list: FFMPEG_CODEC_AUDIO,
 }
 
-export const ffmpeg_codec_content: Hash = {
-  form: 'hash',
-  file: 'ffmpeg',
-  hash: FFMPEG_CODEC_CONTENT,
-  bond: {
+export const ffmpeg_codec_data: Form = {
+  form: 'form',
+  link: {
     label: { like: 'string' },
     type: { like: 'string', need: false },
     supportsDecoding: { like: 'boolean' },
@@ -32,6 +30,13 @@ export const ffmpeg_codec_content: Hash = {
     lossy: { like: 'boolean' },
     lossless: { like: 'boolean' },
   },
+}
+
+export const ffmpeg_codec_content: Hash = {
+  form: 'hash',
+  file: 'ffmpeg',
+  hash: FFMPEG_CODEC_CONTENT,
+  bond: { like: 'ffmpeg_codec_data' },
 }
 
 export const ffmpeg_codec_subtitle: List = {
@@ -49,11 +54,9 @@ export const ffmpeg_decoder_audio: List = {
   list: FFMPEG_DECODER_AUDIO,
 }
 
-export const ffmpeg_decoder_content: Hash = {
-  form: 'hash',
-  file: 'ffmpeg',
-  hash: FFMPEG_DECODER_CONTENT,
-  bond: {
+export const ffmpeg_decoder_data: Form = {
+  form: 'form',
+  link: {
     label: { like: 'string' },
     type: { like: 'string' },
     frameLevelMultithreading: { like: 'boolean' },
@@ -62,6 +65,13 @@ export const ffmpeg_decoder_content: Hash = {
     supportsDrawHorizontalBand: { like: 'boolean' },
     supportsDirectRenderingMethod1: { like: 'boolean' },
   },
+}
+
+export const ffmpeg_decoder_content: Hash = {
+  form: 'hash',
+  file: 'ffmpeg',
+  hash: FFMPEG_DECODER_CONTENT,
+  bond: { like: 'ffmpeg_decoder_data' },
 }
 
 export const ffmpeg_decoder_subtitle: List = {
@@ -79,11 +89,9 @@ export const ffmpeg_encoder_audio: List = {
   list: FFMPEG_ENCODER_AUDIO,
 }
 
-export const ffmpeg_encoder_content: Hash = {
-  form: 'hash',
-  file: 'ffmpeg',
-  hash: FFMPEG_ENCODER_CONTENT,
-  bond: {
+export const ffmpeg_encoder_data: Form = {
+  form: 'form',
+  link: {
     label: { like: 'string' },
     type: { like: 'string' },
     frameLevelMultithreading: { like: 'boolean' },
@@ -92,6 +100,13 @@ export const ffmpeg_encoder_content: Hash = {
     supportsDrawHorizontalBand: { like: 'boolean' },
     supportsDirectRenderingMethod1: { like: 'boolean' },
   },
+}
+
+export const ffmpeg_encoder_content: Hash = {
+  form: 'hash',
+  file: 'ffmpeg',
+  hash: FFMPEG_ENCODER_CONTENT,
+  bond: { like: 'ffmpeg_encoder_data' },
 }
 
 export const ffmpeg_encoder_subtitle: List = {
@@ -104,15 +119,20 @@ export const ffmpeg_encoder_video: List = {
   list: FFMPEG_ENCODER_VIDEO,
 }
 
-export const ffmpeg_format_content: Hash = {
-  form: 'hash',
-  file: 'ffmpeg',
-  hash: FFMPEG_FORMAT_CONTENT,
-  bond: {
+export const ffmpeg_format_data: Form = {
+  form: 'form',
+  link: {
     label: { like: 'string' },
     supportsDemuxing: { like: 'boolean' },
     supportsMuxing: { like: 'boolean' },
   },
+}
+
+export const ffmpeg_format_content: Hash = {
+  form: 'hash',
+  file: 'ffmpeg',
+  hash: FFMPEG_FORMAT_CONTENT,
+  bond: { like: 'ffmpeg_format_data' },
 }
 
 export const ffmpeg_format: List = {
@@ -125,13 +145,18 @@ export const ffmpeg_strict_option: List = {
   list: ['very', 'strict', 'normal', 'unofficial', 'experimental'],
 }
 
+export const ffmpeg_strict_option_data: Form = {
+  form: 'form',
+  link: {
+    note: { like: 'string' },
+  },
+}
+
 export const ffmpeg_strict_option_content: Hash = {
   form: 'hash',
   file: 'ffmpeg',
   link: 'ffmpeg_strict_option',
-  bond: {
-    note: { like: 'string' },
-  },
+  bond: { like: 'ffmpeg_strict_option_data' },
   hash: {
     very: {
       note: 'Strictly conform to a older more strict version of the spec or reference software.',

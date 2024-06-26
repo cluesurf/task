@@ -14,7 +14,7 @@ import {
   CompileLlvmIrToAssembly,
   CompileRustCommandInput,
   CompileSwiftCommandInput,
-} from '~/code/type/node'
+} from '~/code/type/shared'
 
 // @.str = private unnamed_addr constant [14 x i8] c"Hello, World!\00", align 1
 export async function buildCommandToCompileC(
@@ -151,7 +151,7 @@ export function buildCommandToCompileLlvmIrToAssembly(
   input: CompileLlvmIrToAssembly,
 ) {
   const LLVM_ARCHITECTURE_CONTENT = getConfig(
-    'llvm-architecture-content',
+    'llvm_architecture_content',
   )
   const architectureKey =
     LLVM_ARCHITECTURE_CONTENT[input.output.architecture ?? 'x86_64']

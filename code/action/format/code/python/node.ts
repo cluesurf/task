@@ -1,12 +1,12 @@
 import {
   FormatPythonNodeInput,
-  FormatPythonNodeInputResolver,
+  FormatPythonNodeInputParser,
   FormatPythonNodeLocalExternalInput,
   FormatPythonNodeLocalInternalInput,
   FormatPythonNodeRemoteInput,
-  FormatPythonNodeClientInputResolver,
-  FormatPythonNodeLocalInputResolver,
-} from '~/code/type/node'
+  FormatPythonNodeClientInputParser,
+  FormatPythonNodeLocalInputParser,
+} from '~/code/type/node/parser'
 import { buildCommandToFormatPython } from '../command'
 import { buildRequestToFormat } from '../shared'
 import { runCommandSequence } from '~/code/tool/node/command'
@@ -23,7 +23,7 @@ export async function formatPythonNode(
   source: FormatPythonNodeInput,
   native?: NativeOptions,
 ) {
-  const input = FormatPythonNodeInputResolver().parse(source)
+  const input = FormatPythonNodeInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -56,7 +56,7 @@ export async function formatPythonNodeRemote(
   native?: NativeOptions,
 ) {
   const input = await resolveInputForFormatRemoteNode(source)
-  const clientInput = FormatPythonNodeClientInputResolver().parse(
+  const clientInput = FormatPythonNodeClientInputParser().parse(
     extend(input, { handle: 'client' }),
   )
 
@@ -74,7 +74,7 @@ export async function formatPythonNodeLocal(
   source,
   native?: NativeOptions,
 ) {
-  const input = FormatPythonNodeLocalInputResolver().parse(source)
+  const input = FormatPythonNodeLocalInputParser().parse(source)
 
   const sequence = buildCommandToFormatPython(input)
   await runCommandSequence(sequence)

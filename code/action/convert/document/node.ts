@@ -5,7 +5,7 @@ import {
   ConvertLatexToPngNodeInput,
   ConvertMarkdownWithPuppeteerNodeInput,
   ConvertTxtWithPuppeteerNodeInput,
-} from '~/code/type/node'
+} from '~/code/type/node/parser'
 import {
   testConvertDocumentWithCalibre,
   testConvertDocumentWithLibreOffice,
@@ -61,7 +61,7 @@ export function testConvertDocumentWithLibreOfficeNode(
 // export async function convertLatexToPng(
 //   source: ConvertLatexToPngNodeInput,
 // ) {
-//   const input = ConvertLatexToPngNodeInputResolver().parse(source)
+//   const input = ConvertLatexToPngNodeInputParser().parse(source)
 
 //   if (input.handle === 'remote') {
 //     // const remoteInput = await resolveInputForConvertRemoteNode(input)

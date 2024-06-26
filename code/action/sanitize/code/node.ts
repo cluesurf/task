@@ -1,4 +1,4 @@
-import { SanitizeHtmlNodeInput } from '../../node'
+import { SanitizeHtmlNodeInput } from '~/code/type/node'
 import { sanitizeHtmlNode } from './html/node'
 import { testSanitize } from './shared'
 

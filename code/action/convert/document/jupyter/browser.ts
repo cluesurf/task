@@ -1,10 +1,10 @@
 import {
   ConvertDocumentWithJupyterBrowserInput,
-  ConvertDocumentWithJupyterBrowserInputResolver,
+  ConvertDocumentWithJupyterBrowserInputParser,
   ConvertDocumentWithJupyterBrowserLocalInput,
-  ConvertDocumentWithJupyterBrowserOutputResolver,
+  ConvertDocumentWithJupyterBrowserOutputParser,
   ConvertDocumentWithJupyterBrowserRemoteInput,
-} from '~/code/type/browser'
+} from '~/code/type/browser/parser'
 import { buildFormDataRequestToConvert } from '../../shared'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
@@ -15,7 +15,7 @@ export async function convertDocumentWithJupyterBrowser(
   native?: NativeOptions,
 ) {
   const input =
-    ConvertDocumentWithJupyterBrowserInputResolver().parse(source)
+    ConvertDocumentWithJupyterBrowserInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -35,7 +35,7 @@ export async function convertDocumentWithJupyterBrowserRemote(
   const request = buildFormDataRequestToConvert(input)
   const content = await resolveWorkFileAsBlob(request, native)
 
-  return ConvertDocumentWithJupyterBrowserOutputResolver().parse({
+  return ConvertDocumentWithJupyterBrowserOutputParser().parse({
     file: {
       content,
     },

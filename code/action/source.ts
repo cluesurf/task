@@ -2,7 +2,7 @@ import { Form, List } from '@termsurf/form'
 
 export const convert_file_base: Form = {
   form: 'form',
-  leak: true,
+  // leak: true,
   link: {
     tool: { like: 'string', need: false },
     remote: { like: 'boolean', need: false },
@@ -30,7 +30,7 @@ export const convert_file_base: Form = {
 
 export const convert_file_base_remote: Form = {
   form: 'form',
-  leak: true,
+  // leak: true,
   link: {
     tool: { like: 'string', need: false },
     remote: { like: 'boolean', need: false },
@@ -53,7 +53,7 @@ export const convert_file_base_remote: Form = {
 
 export const build_format_input_output: Form = {
   form: 'form',
-  leak: true,
+  // leak: true,
   link: {
     tool: { like: 'string', need: false },
     input: {
@@ -71,7 +71,7 @@ export const build_format_input_output: Form = {
 
 export const build_base_file_input: Form = {
   form: 'form',
-  leak: true,
+  // leak: true,
   link: {
     tool: { like: 'string', need: false },
     input: {
@@ -97,7 +97,7 @@ export const build_base_file_input: Form = {
 
 export const build_base_input_directory_or_file_output_file: Form = {
   form: 'form',
-  leak: true,
+  // leak: true,
   link: {
     input: {
       link: {
@@ -129,7 +129,7 @@ export const build_base_input_directory_or_file_output_file: Form = {
 
 export const build_base_input_file_output_directory: Form = {
   form: 'form',
-  leak: true,
+  // leak: true,
   link: {
     output: {
       link: {

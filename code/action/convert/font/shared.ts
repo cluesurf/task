@@ -42,7 +42,7 @@ export function testConvertFontWithFontForge(input: any) {
     return false
   }
 
-  const FONT_FORMAT = getConfig('font-format')
+  const FONT_FORMAT = getConfig('font_format')
 
   if (!FONT_FORMAT.includes(a as FontFormat)) {
     return false

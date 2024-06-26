@@ -11,18 +11,18 @@ import * as tibetan from '@lancejpollard/gematria.js/host/language/tibetan'
 import { sum, peak } from '@lancejpollard/gematria.js/host/index'
 import {
   CalculateGematria,
-  CalculateGematriaResolver,
+  CalculateGematriaParser,
   GematriaSystemCalculation,
   GematriaSystemCalculationResult,
   SharedGematriaLanguage,
-} from '~/code/type/shared'
+} from '~/code/type/shared/parser'
 import { detect as detectScript } from '@termsurf/talk/host/code/script/detect'
 import kink from '~/code/tool/shared/kink'
-import _ from 'lodash'
+import merge from 'lodash/merge'
 import { getConfig } from '~/code/tool/shared/config'
 
 export function calculateGematria(source: CalculateGematria) {
-  const input = CalculateGematriaResolver().parse(source)
+  const input = CalculateGematriaParser().parse(source)
 
   const { form, rank } = detectScript([...input.input.string.decoded])
 
@@ -30,7 +30,7 @@ export function calculateGematria(source: CalculateGematria) {
     throw kink('invalid_gematria_script_rank', { form, rank })
   }
 
-  const SHARED_GEMATRIA_LANGUAGE = getConfig('shared-gematria-language')
+  const SHARED_GEMATRIA_LANGUAGE = getConfig('shared_gematria_language')
 
   if (
     !SHARED_GEMATRIA_LANGUAGE.includes(form as SharedGematriaLanguage)
@@ -40,7 +40,7 @@ export function calculateGematria(source: CalculateGematria) {
 
   const encoded = input.input.string.decoded.replace(/[\s]+/g, '+')
 
-  const merged = _.merge(input, {
+  const merged = merge(input, {
     input: {
       string: { encoded },
     },

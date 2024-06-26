@@ -1,9 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import _ from 'lodash'
-import { Task } from '~/code/type/node'
 import kink from '~/code/tool/shared/kink'
 import { convertCli } from './action/convert'
-import { Call, CallLinkMesh } from './type'
+import { Call } from './type'
 import { logGenericTaskHelp } from './logging'
 import { verifyCli } from './action/verify'
 import { formatCli } from './action/format'
@@ -61,7 +59,7 @@ export async function call(call: Call) {
     //   switch (source.object[0]) {
     //     case 'rust': {
     //       await formatRust(
-    //         FormatRustResolver().parse(
+    //         FormatRustParser().parse(
     //           _.merge(makeLineHash(source, FORMAT_KEY), {
     //             input: {
     //               format: 'rust',
@@ -95,7 +93,7 @@ export async function call(call: Call) {
     //   break
     // }
     // case 'compile': {
-    //   const base = BuildFormatInputOutputResolver().parse(
+    //   const base = BuildFormatInputOutputParser().parse(
     //     _.merge(makeLineHash(source, CONVERT_KEY), {
     //       input: {
     //         format: source.object[0],

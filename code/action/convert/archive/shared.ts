@@ -16,7 +16,7 @@ export function testConvertArchive(input: any) {
     return false
   }
 
-  const ARCHIVE_FORMAT = getConfig('archive-format')
+  const ARCHIVE_FORMAT = getConfig('archive_format')
 
   if (!ARCHIVE_FORMAT.includes(a as ArchiveFormat)) {
     return false

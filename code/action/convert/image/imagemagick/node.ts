@@ -1,13 +1,13 @@
 import {
   ConvertImageWithImageMagickNodeInput,
-  ConvertImageWithImageMagickNodeInputResolver,
-  ConvertImageWithImageMagickNodeOutputResolver,
+  ConvertImageWithImageMagickNodeInputParser,
+  ConvertImageWithImageMagickNodeOutputParser,
   ConvertImageWithImageMagickNodeLocalInternalInput,
   ConvertImageWithImageMagickNodeLocalExternalInput,
-  ConvertImageWithImageMagickNodeLocalInputResolver,
+  ConvertImageWithImageMagickNodeLocalInputParser,
   ConvertImageWithImageMagickNodeRemoteInput,
-  ConvertImageWithImageMagickNodeClientInputResolver,
-} from '~/code/type/node'
+  ConvertImageWithImageMagickNodeClientInputParser,
+} from '~/code/type/node/parser'
 import { testConvertImageWithImageMagick } from './shared'
 import { buildCommandToConvertImageWithImageMagick } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'
@@ -26,7 +26,7 @@ export async function convertImageWithImageMagickNode(
   native?: NativeOptions,
 ) {
   const input =
-    ConvertImageWithImageMagickNodeInputResolver().parse(source)
+    ConvertImageWithImageMagickNodeInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -66,14 +66,14 @@ export async function convertImageWithImageMagickNodeRemote(
 ) {
   const input = await resolveInputForConvertRemoteNode(source)
   const clientInput =
-    ConvertImageWithImageMagickNodeClientInputResolver().parse(
+    ConvertImageWithImageMagickNodeClientInputParser().parse(
       extend(input, { handle: 'client' }),
     )
 
   const request = buildRequestToConvert(clientInput)
   await resolveWorkFileNode(request, input.output.file.path)
 
-  return ConvertImageWithImageMagickNodeOutputResolver().parse({
+  return ConvertImageWithImageMagickNodeOutputParser().parse({
     file: {
       path: input.output.file.path,
     },
@@ -85,14 +85,14 @@ export async function convertImageWithImageMagickNodeLocal(
   native?: NativeOptions,
 ) {
   const localInput =
-    ConvertImageWithImageMagickNodeLocalInputResolver().parse(input)
+    ConvertImageWithImageMagickNodeLocalInputParser().parse(input)
 
   const sequence =
     await buildCommandToConvertImageWithImageMagick(localInput)
 
   await runCommandSequence(sequence)
 
-  return ConvertImageWithImageMagickNodeOutputResolver().parse({
+  return ConvertImageWithImageMagickNodeOutputParser().parse({
     file: {
       path: localInput.output.file.path,
     },

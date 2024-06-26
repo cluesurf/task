@@ -11,7 +11,7 @@ import {
   ConvertLatexToPngBrowserInput,
   ConvertMarkdownWithPuppeteerBrowserInput,
   ConvertTxtWithPuppeteerBrowserInput,
-} from '~/code/type/browser'
+} from '~/code/type/browser/parser'
 import {
   testConvertDocumentWithCalibre,
   testConvertDocumentWithLibreOffice,

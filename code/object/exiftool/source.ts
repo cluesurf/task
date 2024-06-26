@@ -1,15 +1,20 @@
 import EXIFTOOL_TAG from './exiftool.tag.json' assert { type: 'json' }
-import { Hash } from '@termsurf/form'
+import { Form, Hash } from '@termsurf/form'
 
-export const exiftool_image_format_content: Hash = {
-  form: 'hash',
-  file: 'exiftool',
-  bond: {
+export const exiftool_image_format_data: Form = {
+  form: 'form',
+  link: {
     head: { like: 'string' },
     read: { like: 'boolean', need: false, fall: false },
     write: { like: 'boolean', need: false, fall: false },
     create: { like: 'boolean', need: false, fall: false },
   },
+}
+
+export const exiftool_image_format_content: Hash = {
+  form: 'hash',
+  file: 'exiftool',
+  bond: { like: 'exiftool_image_format_data' },
   hash: {
     '360': { head: '360', read: true, write: true },
     '3_fr': { head: '3FR', read: true },
@@ -229,23 +234,36 @@ export const exiftool_image_format_content: Hash = {
   },
 }
 
+export const exiftool_tag_data: Form = {
+  form: 'form',
+  link: {
+    head: { like: 'string' },
+  },
+}
+
 export const exiftool_tag_content: Hash = {
   form: 'hash',
   file: 'exiftool',
   bond: {
-    head: { like: 'string' },
+    like: 'exiftool_tag_data',
   },
   hash: EXIFTOOL_TAG,
 }
 
+export const exiftool_family_data: Form = {
+  form: 'form',
+  link: {
+    head: { like: 'string' },
+    family: { like: 'natural_number', list: true },
+  },
+}
 // https://exiftool.org/TagNames/
 
 export const exiftool_family_content: Hash = {
   form: 'hash',
   file: 'exiftool',
   bond: {
-    head: { like: 'string' },
-    family: { like: 'natural_number', list: true },
+    like: 'exiftool_family_data',
   },
   hash: {
     afcp: { head: 'AFCP', family: [0, 1] },

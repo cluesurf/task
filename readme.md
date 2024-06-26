@@ -7,7 +7,7 @@
 <br/>
 <br/>
 
-<h3 align='center'>@termsurf/base</h3>
+<h3 align='center'>@termsurf/task</h3>
 <p align='center'>
   Common Actions Interface
 </p>
@@ -22,7 +22,7 @@ _**Note**: This is pre-alpha software at this point, so many things might not wo
 
 Task is a collections of common actions to perform in code. Here are some immediately helpful resources:
 
-- [`ghcr.io/termsurf/base` Docker image](https://ghcr.io/termsurf/base)
+- [`ghcr.io/termsurf/task` Docker image](https://ghcr.io/termsurf/task)
 
 The `task` JavaScript/TypeScript library has these features:
 
@@ -72,9 +72,9 @@ choco install dart-sdk
 choco install php
 ```
 
-Not all tasks/subcommands are supported yet, see the [Choco TODO](https://github.com/termsurf/base#todo-choco).
+Not all tasks/subcommands are supported yet, see the [Choco TODO](https://github.com/termsurf/task#todo-choco).
 
-The source code for enabling this Choco package is at [./load/choco](https://github.com/termsurf/base/tree/make/load/choco).
+The source code for enabling this Choco package is at [./load/choco](https://github.com/termsurf/task/tree/make/load/choco).
 
 ### Linux Installation
 
@@ -83,20 +83,20 @@ See the `Dockerfile` in this project.
 ### Docker Installation
 
 ```Dockerfile
-FROM --platform=linux/amd64 ghcr.io/termsurf/base:latest
+FROM --platform=linux/amd64 ghcr.io/termsurf/task:latest
 ...
 ```
 
-You can link to the Docker image at [`ghcr.io/termsurf/base`](https://ghcr.io/termsurf/base) like that above.
+You can link to the Docker image at [`ghcr.io/termsurf/task`](https://ghcr.io/termsurf/task) like that above.
 
 ### Node Package Installation
 
 With the native dependencies installed, you can install task globally to enable the CLI:
 
 ```bash
-npm install -g @termsurf/base
-yarn install -g @termsurf/base
-pnpm install -g @termsurf/base
+npm install -g @termsurf/task
+yarn install -g @termsurf/task
+pnpm install -g @termsurf/task
 ```
 
 ```bash
@@ -106,15 +106,15 @@ task convert png -O jpg -i image.png -o image.jpg
 You can also install it locally to get access to the commands in TypeScript:
 
 ```bash
-npm install @termsurf/base
-yarn install @termsurf/base
-pnpm install @termsurf/base
+npm install @termsurf/task
+yarn install @termsurf/task
+pnpm install @termsurf/task
 ```
 
 _Some of this is future code._
 
 ```ts
-import task from '@termsurf/base'
+import task from '@termsurf/task'
 
 test()
 
@@ -198,7 +198,7 @@ pnpm run task convert -I png -O jpg -i image.png -o image.jpg
 ./test/cli.sh
 ```
 
-<img src='https://github.com/termsurf/base/blob/make/view/test-line.gif?raw=true' />
+<img src='https://github.com/termsurf/task/blob/make/view/test-line.gif?raw=true' />
 
 ## Development
 
@@ -254,9 +254,9 @@ Call in browser.
 ```ts
 import {
   ConvertFontWithFontForgeBrowserInput,
-  ConvertFontWithFontForgeBrowserInputResolver,
+  ConvertFontWithFontForgeBrowserInputParser,
   ConvertFontWithFontForgeBrowserLocalInput,
-  ConvertFontWithFontForgeBrowserOutputResolver,
+  ConvertFontWithFontForgeBrowserOutputParser,
   ConvertFontWithFontForgeBrowserRemoteInput,
 } from '~/code/type/index.js'
 import { buildRequestToConvert } from '../shared.js'
@@ -266,7 +266,7 @@ import kink from '~/code/tool/shared/kink.js'
 export async function convertFontWithFontForgeBrowser(
   source: ConvertFontWithFontForgeBrowserInput,
 ) {
-  const input = ConvertFontWithFontForgeBrowserInputResolver().parse(source)
+  const input = ConvertFontWithFontForgeBrowserInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -282,7 +282,7 @@ export async function convertFontWithFontForgeBrowserRemote(
   const request = buildRequestToConvert(input)
   const content = await resolveWorkFileAsBlob(request)
 
-  return ConvertFontWithFontForgeBrowserOutputResolver().parse({
+  return ConvertFontWithFontForgeBrowserOutputParser().parse({
     file: {
       content,
     },
@@ -317,13 +317,13 @@ Call in nodejs.
 ```ts
 import {
   ConvertFontWithFontForgeNodeInput,
-  ConvertFontWithFontForgeNodeInputResolver,
-  ConvertFontWithFontForgeNodeOutputResolver,
+  ConvertFontWithFontForgeNodeInputParser,
+  ConvertFontWithFontForgeNodeOutputParser,
   ConvertFontWithFontForgeNodeLocalInternalInput,
   ConvertFontWithFontForgeNodeLocalExternalInput,
-  ConvertFontWithFontForgeNodeLocalInputResolver,
+  ConvertFontWithFontForgeNodeLocalInputParser,
   ConvertFontWithFontForgeNodeRemoteInput,
-  ConvertFontWithFontForgeNodeClientInputResolver,
+  ConvertFontWithFontForgeNodeClientInputParser,
 } from '~/code/type/index.js'
 import { buildCommandToConvertFontWithFontForge } from './shared.js'
 import { runCommandSequence } from '~/code/tool/node/command.js'
@@ -338,7 +338,7 @@ import { resolveWorkFileNode } from '~/code/tool/node/request.js'
 export async function convertFontWithFontForgeNode(
   source: ConvertFontWithFontForgeNodeInput,
 ) {
-  const input = ConvertFontWithFontForgeNodeInputResolver().parse(source)
+  const input = ConvertFontWithFontForgeNodeInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -369,14 +369,14 @@ export async function convertFontWithFontForgeNodeRemote(
 ) {
   const input = await resolveInputForConvertRemoteNode(source)
   const clientInput =
-    ConvertFontWithFontForgeNodeClientInputResolver().parse(
+    ConvertFontWithFontForgeNodeClientInputParser().parse(
       extend(input, { handle: 'client' }),
     )
 
   const request = buildRequestToConvert(clientInput)
   await resolveWorkFileNode(request, input.output.file.path)
 
-  return ConvertFontWithFontForgeNodeOutputResolver().parse({
+  return ConvertFontWithFontForgeNodeOutputParser().parse({
     file: {
       path: input.output.file.path,
     },
@@ -385,14 +385,14 @@ export async function convertFontWithFontForgeNodeRemote(
 
 export async function convertFontWithFontForgeNodeLocal(input) {
   const localInput =
-    ConvertFontWithFontForgeNodeLocalInputResolver().parse(input)
+    ConvertFontWithFontForgeNodeLocalInputParser().parse(input)
 
   const sequence =
     await buildCommandToConvertFontWithFontForge(localInput)
 
   await runCommandSequence(sequence)
 
-  return ConvertFontWithFontForgeNodeOutputResolver().parse({
+  return ConvertFontWithFontForgeNodeOutputParser().parse({
     file: {
       path: localInput.output.file.path,
     },

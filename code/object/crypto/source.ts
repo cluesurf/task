@@ -23,12 +23,19 @@ export const cipher: List = {
   ],
 }
 
+export const cipher_data: Form = {
+  form: 'form',
+  link: {
+    head: { like: 'string' },
+  },
+}
+
 export const cipher_content: Hash = {
   form: 'hash',
   file: 'cipher',
   link: 'cipher',
   bond: {
-    head: { like: 'string' },
+    like: 'cipher_data',
   },
   hash: {
     aes_ecb: { head: 'AES-ECB' },
@@ -59,7 +66,7 @@ export const generate_murmur_hash: Form = {
 }
 
 // export function generateMurmurHash(source: GenerateMurmurHash) {
-//   const { input, seed, version } = GenerateMurmurHashResolver().parse(source)
+//   const { input, seed, version } = GenerateMurmurHashParser().parse(source)
 //   if (version === '2') {
 //     return murmurhash.v2(input, seed)
 //   }

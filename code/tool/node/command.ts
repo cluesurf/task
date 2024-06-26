@@ -15,7 +15,11 @@ import {
   runInkscapeCommand,
   runMogrifyCommand,
 } from '~/code/action/convert/image/runner'
-import { Command, CommandKey, CommandSequence } from '~/code/type/node'
+import {
+  Command,
+  CommandKey,
+  CommandSequence,
+} from '~/code/type/node/parser'
 import { exec } from './process'
 import {
   handleAsmfmtCommand,

@@ -1,13 +1,13 @@
 import {
   ConvertDocumentWithCalibreNodeInput,
-  ConvertDocumentWithCalibreNodeInputResolver,
-  ConvertDocumentWithCalibreNodeOutputResolver,
+  ConvertDocumentWithCalibreNodeInputParser,
+  ConvertDocumentWithCalibreNodeOutputParser,
   ConvertDocumentWithCalibreNodeLocalInternalInput,
   ConvertDocumentWithCalibreNodeLocalExternalInput,
-  ConvertDocumentWithCalibreNodeLocalInputResolver,
+  ConvertDocumentWithCalibreNodeLocalInputParser,
   ConvertDocumentWithCalibreNodeRemoteInput,
-  ConvertDocumentWithCalibreNodeClientInputResolver,
-} from '~/code/type/node'
+  ConvertDocumentWithCalibreNodeClientInputParser,
+} from '~/code/type/node/parser'
 import { buildCommandToConvertDocumentWithCalibre } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {
@@ -25,7 +25,7 @@ export async function convertDocumentWithCalibreNode(
   native?: NativeOptions,
 ) {
   const input =
-    ConvertDocumentWithCalibreNodeInputResolver().parse(source)
+    ConvertDocumentWithCalibreNodeInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -65,14 +65,14 @@ export async function convertDocumentWithCalibreNodeRemote(
 ) {
   const input = await resolveInputForConvertRemoteNode(source)
   const clientInput =
-    ConvertDocumentWithCalibreNodeClientInputResolver().parse(
+    ConvertDocumentWithCalibreNodeClientInputParser().parse(
       extend(input, { handle: 'client' }),
     )
 
   const request = buildRequestToConvert(clientInput)
   await resolveWorkFileNode(request, input.output.file.path)
 
-  return ConvertDocumentWithCalibreNodeOutputResolver().parse({
+  return ConvertDocumentWithCalibreNodeOutputParser().parse({
     file: {
       path: input.output.file.path,
     },
@@ -84,14 +84,14 @@ export async function convertDocumentWithCalibreNodeLocal(
   native?: NativeOptions,
 ) {
   const localInput =
-    ConvertDocumentWithCalibreNodeLocalInputResolver().parse(input)
+    ConvertDocumentWithCalibreNodeLocalInputParser().parse(input)
 
   const sequence =
     await buildCommandToConvertDocumentWithCalibre(localInput)
 
   await runCommandSequence(sequence)
 
-  return ConvertDocumentWithCalibreNodeOutputResolver().parse({
+  return ConvertDocumentWithCalibreNodeOutputParser().parse({
     file: {
       path: localInput.output.file.path,
     },

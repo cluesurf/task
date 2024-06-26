@@ -6,7 +6,7 @@ import {
   unflattenObject,
   flattenObjectSafe,
 } from '~/code/tool/shared/object'
-import _ from 'lodash'
+import isInteger from 'lodash/isInteger'
 import sortKeys from 'json-keys-sort'
 
 // let csv2md = new Csv2md({
@@ -188,7 +188,7 @@ export function convertJsonToTable(
       if (type === 'number') {
         column.min = Math.min(column.min || 0, value as number)
         column.max = Math.max(column.max || 0, value as number)
-        if (_.isInteger(value)) {
+        if (isInteger(value)) {
           if (value >= 0) {
             type = 'uint'
           } else {

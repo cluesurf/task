@@ -1,10 +1,10 @@
 import {
   ConvertFontWithFontForgeBrowserInput,
-  ConvertFontWithFontForgeBrowserInputResolver,
+  ConvertFontWithFontForgeBrowserInputParser,
   ConvertFontWithFontForgeBrowserLocalInput,
-  ConvertFontWithFontForgeBrowserOutputResolver,
+  ConvertFontWithFontForgeBrowserOutputParser,
   ConvertFontWithFontForgeBrowserRemoteInput,
-} from '~/code/type/browser'
+} from '~/code/type/browser/parser'
 import { buildFormDataRequestToConvert } from '../shared'
 import { WorkFileAsBlob } from '~/code/tool/shared/work'
 import { NativeOptions } from '~/code/tool/shared/request'
@@ -18,7 +18,7 @@ export async function convertFontWithFontForgeBrowser(
   native?: NativeOptions,
 ): Promise<WorkFileAsBlob> {
   const input =
-    ConvertFontWithFontForgeBrowserInputResolver().parse(source)
+    ConvertFontWithFontForgeBrowserInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':

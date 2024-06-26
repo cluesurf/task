@@ -1,10 +1,5 @@
 import Kink, { KinkMesh } from '@termsurf/kink'
-import Observable from 'zen-observable'
-import {
-  NativeOptions,
-  RequestResponseCycle,
-  getRemote,
-} from './request'
+import { NativeOptions, getRemote } from './request'
 import { wait } from './timer'
 import kink from './kink'
 import { Request } from './request'

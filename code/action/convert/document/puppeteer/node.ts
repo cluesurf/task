@@ -2,28 +2,28 @@ import { getBrowser, inactivateBrowser } from '~/code/tool/node/browser'
 import {
   ConvertHtmlWithPuppeteerNodeInput,
   TextStyle,
-} from '~/code/type/node'
+} from '~/code/type/node/parser'
 // import debug from '~/code/tool/shared/debug'
 import { marked } from 'marked'
 import debug from '~/code/tool/shared/debug'
 import {
   ConvertTxtWithPuppeteerNodeInput,
-  ConvertTxtWithPuppeteerNodeInputResolver,
-  ConvertTxtWithPuppeteerNodeOutputResolver,
+  ConvertTxtWithPuppeteerNodeInputParser,
+  ConvertTxtWithPuppeteerNodeOutputParser,
   ConvertTxtWithPuppeteerNodeLocalInternalInput,
   ConvertTxtWithPuppeteerNodeLocalExternalInput,
-  ConvertTxtWithPuppeteerNodeLocalInputResolver,
+  ConvertTxtWithPuppeteerNodeLocalInputParser,
   ConvertTxtWithPuppeteerNodeRemoteInput,
-  ConvertTxtWithPuppeteerNodeClientInputResolver,
+  ConvertTxtWithPuppeteerNodeClientInputParser,
   ConvertMarkdownWithPuppeteerNodeInput,
-  ConvertMarkdownWithPuppeteerNodeInputResolver,
-  ConvertMarkdownWithPuppeteerNodeOutputResolver,
+  ConvertMarkdownWithPuppeteerNodeInputParser,
+  ConvertMarkdownWithPuppeteerNodeOutputParser,
   ConvertMarkdownWithPuppeteerNodeLocalInternalInput,
   ConvertMarkdownWithPuppeteerNodeLocalExternalInput,
-  ConvertMarkdownWithPuppeteerNodeLocalInputResolver,
+  ConvertMarkdownWithPuppeteerNodeLocalInputParser,
   ConvertMarkdownWithPuppeteerNodeRemoteInput,
-  ConvertMarkdownWithPuppeteerNodeClientInputResolver,
-} from '~/code/type/node'
+  ConvertMarkdownWithPuppeteerNodeClientInputParser,
+} from '~/code/type/node/parser'
 import {
   resolveInputContentForConvertLocalExternalNode,
   resolveInputContentForConvertLocalInternalNode,
@@ -33,14 +33,14 @@ import { extend } from '~/code/tool/shared/object'
 import { buildRequestToConvert } from '../../shared'
 import { resolveWorkFileNode } from '~/code/tool/node/request'
 import { arrayBufferToString } from '~/code/tool/shared/string'
-import _ from 'lodash'
+import merge from 'lodash/merge'
 import { NativeOptions } from '~/code/tool/shared/request'
 
 export async function convertTxtWithPuppeteerNode(
   source: ConvertTxtWithPuppeteerNodeInput,
   native?: NativeOptions,
 ) {
-  const input = ConvertTxtWithPuppeteerNodeInputResolver().parse(source)
+  const input = ConvertTxtWithPuppeteerNodeInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -82,14 +82,14 @@ export async function convertTxtWithPuppeteerNodeRemote(
 ) {
   const input = await resolveInputForConvertRemoteNode(source)
   const clientInput =
-    ConvertTxtWithPuppeteerNodeClientInputResolver().parse(
+    ConvertTxtWithPuppeteerNodeClientInputParser().parse(
       extend(input, { handle: 'client' }),
     )
 
   const request = buildRequestToConvert(clientInput)
   await resolveWorkFileNode(request, input.output.file.path)
 
-  return ConvertTxtWithPuppeteerNodeOutputResolver().parse({
+  return ConvertTxtWithPuppeteerNodeOutputParser().parse({
     file: {
       path: input.output.file.path,
     },
@@ -215,7 +215,7 @@ export async function convertTxtWithPuppeteerNodeLocal(
   debug('convertTxtWithPuppeteerNodeLocal', source)
 
   const input =
-    ConvertTxtWithPuppeteerNodeLocalInputResolver().parse(source)
+    ConvertTxtWithPuppeteerNodeLocalInputParser().parse(source)
 
   const b = await getBrowser(input.proxy ? `${input.proxy}` : undefined)
   debug('convertTxtWithPuppeteerNodeLocal browser loaded')
@@ -223,10 +223,10 @@ export async function convertTxtWithPuppeteerNodeLocal(
   const p = await b.newPage()
   const string = arrayBufferToString(input.input.file.content)
   const textCss = textStyleToCSS(
-    _.merge(DEFAULT_TEXT_STYLE.text, input.style?.text ?? {}),
+    merge(DEFAULT_TEXT_STYLE.text, input.style?.text ?? {}),
   )
   const marginCss = marginStyleToCSS(
-    _.merge(DEFAULT_MARGIN_STYLE, input.style?.margin ?? {}),
+    merge(DEFAULT_MARGIN_STYLE, input.style?.margin ?? {}),
   )
 
   const html = `<!doctype html>
@@ -276,7 +276,7 @@ ${textCss.map(line => `        ${line}`).join('\n')}
 
   inactivateBrowser(b)
 
-  return ConvertTxtWithPuppeteerNodeOutputResolver().parse({
+  return ConvertTxtWithPuppeteerNodeOutputParser().parse({
     file: {
       path: input.output.file.path,
     },
@@ -288,7 +288,7 @@ export async function convertMarkdownWithPuppeteerNode(
   native?: NativeOptions,
 ) {
   const input =
-    ConvertMarkdownWithPuppeteerNodeInputResolver().parse(source)
+    ConvertMarkdownWithPuppeteerNodeInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -330,14 +330,14 @@ export async function convertMarkdownWithPuppeteerNodeRemote(
 ) {
   const input = await resolveInputForConvertRemoteNode(source)
   const clientInput =
-    ConvertMarkdownWithPuppeteerNodeClientInputResolver().parse(
+    ConvertMarkdownWithPuppeteerNodeClientInputParser().parse(
       extend(input, { handle: 'client' }),
     )
 
   const request = buildRequestToConvert(clientInput)
   await resolveWorkFileNode(request, input.output.file.path)
 
-  return ConvertMarkdownWithPuppeteerNodeOutputResolver().parse({
+  return ConvertMarkdownWithPuppeteerNodeOutputParser().parse({
     file: {
       path: input.output.file.path,
     },
@@ -351,7 +351,7 @@ export async function convertMarkdownWithPuppeteerNodeLocal(
   debug('convertMarkdownWithPuppeteerNodeLocal', source)
 
   const input =
-    ConvertMarkdownWithPuppeteerNodeLocalInputResolver().parse(source)
+    ConvertMarkdownWithPuppeteerNodeLocalInputParser().parse(source)
 
   const b = await getBrowser(input.proxy ? `${input.proxy}` : undefined)
   debug('convertMarkdownWithPuppeteerNodeLocal browser loaded')
@@ -361,55 +361,55 @@ export async function convertMarkdownWithPuppeteerNodeLocal(
     arrayBufferToString(input.input.file.content),
   )
   const h1Css = textStyleToCSS(
-    _.merge(
+    merge(
       DEFAULT_TEXT_STYLE.h1,
       input.style?.text ?? {},
       input.style?.h1 ?? {},
     ),
   )
   const h2Css = textStyleToCSS(
-    _.merge(
+    merge(
       DEFAULT_TEXT_STYLE.h2,
       input.style?.text ?? {},
       input.style?.h2 ?? {},
     ),
   )
   const h3Css = textStyleToCSS(
-    _.merge(
+    merge(
       DEFAULT_TEXT_STYLE.h3,
       input.style?.text ?? {},
       input.style?.h3 ?? {},
     ),
   )
   const h4Css = textStyleToCSS(
-    _.merge(
+    merge(
       DEFAULT_TEXT_STYLE.h4,
       input.style?.text ?? {},
       input.style?.h4 ?? {},
     ),
   )
   const h5Css = textStyleToCSS(
-    _.merge(
+    merge(
       DEFAULT_TEXT_STYLE.h5,
       input.style?.text ?? {},
       input.style?.h5 ?? {},
     ),
   )
   const h6Css = textStyleToCSS(
-    _.merge(
+    merge(
       DEFAULT_TEXT_STYLE.h6,
       input.style?.text ?? {},
       input.style?.h6 ?? {},
     ),
   )
   const textCss = textStyleToCSS(
-    _.merge(DEFAULT_TEXT_STYLE.text, input.style?.text ?? {}),
+    merge(DEFAULT_TEXT_STYLE.text, input.style?.text ?? {}),
   )
   const linkCss = textStyleToCSS(
-    _.merge(DEFAULT_TEXT_STYLE.link, input.style?.link ?? {}),
+    merge(DEFAULT_TEXT_STYLE.link, input.style?.link ?? {}),
   )
   const marginCss = marginStyleToCSS(
-    _.merge(DEFAULT_MARGIN_STYLE, input.style?.margin ?? {}),
+    merge(DEFAULT_MARGIN_STYLE, input.style?.margin ?? {}),
   )
 
   const html = `<!doctype html>
@@ -519,7 +519,7 @@ ${linkCss.map(line => `        ${line}`).join('\n')}
 
   inactivateBrowser(b)
 
-  return ConvertTxtWithPuppeteerNodeOutputResolver().parse({
+  return ConvertTxtWithPuppeteerNodeOutputParser().parse({
     file: {
       path: input.output.file.path,
     },

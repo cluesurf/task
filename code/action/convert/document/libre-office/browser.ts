@@ -1,10 +1,10 @@
 import {
   ConvertDocumentWithLibreOfficeBrowserInput,
-  ConvertDocumentWithLibreOfficeBrowserInputResolver,
+  ConvertDocumentWithLibreOfficeBrowserInputParser,
   ConvertDocumentWithLibreOfficeBrowserLocalInput,
-  ConvertDocumentWithLibreOfficeBrowserOutputResolver,
+  ConvertDocumentWithLibreOfficeBrowserOutputParser,
   ConvertDocumentWithLibreOfficeBrowserRemoteInput,
-} from '~/code/type/browser'
+} from '~/code/type/browser/parser'
 import { buildFormDataRequestToConvert } from '../../shared'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
@@ -15,7 +15,7 @@ export async function convertDocumentWithLibreOfficeBrowser(
   native?: NativeOptions,
 ) {
   const input =
-    ConvertDocumentWithLibreOfficeBrowserInputResolver().parse(source)
+    ConvertDocumentWithLibreOfficeBrowserInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -38,7 +38,7 @@ export async function convertDocumentWithLibreOfficeBrowserRemote(
   const request = buildFormDataRequestToConvert(input)
   const content = await resolveWorkFileAsBlob(request, native)
 
-  return ConvertDocumentWithLibreOfficeBrowserOutputResolver().parse({
+  return ConvertDocumentWithLibreOfficeBrowserOutputParser().parse({
     file: {
       content,
     },

@@ -1,13 +1,13 @@
 import {
   ConvertDocumentWithPandocNodeInput,
-  ConvertDocumentWithPandocNodeInputResolver,
-  ConvertDocumentWithPandocNodeOutputResolver,
+  ConvertDocumentWithPandocNodeInputParser,
+  ConvertDocumentWithPandocNodeOutputParser,
   ConvertDocumentWithPandocNodeLocalInternalInput,
   ConvertDocumentWithPandocNodeLocalExternalInput,
-  ConvertDocumentWithPandocNodeLocalInputResolver,
+  ConvertDocumentWithPandocNodeLocalInputParser,
   ConvertDocumentWithPandocNodeRemoteInput,
-  ConvertDocumentWithPandocNodeClientInputResolver,
-} from '~/code/type/node'
+  ConvertDocumentWithPandocNodeClientInputParser,
+} from '~/code/type/node/parser'
 import { buildCommandToConvertDocumentWithPandoc } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {
@@ -24,8 +24,7 @@ export async function convertDocumentWithPandocNode(
   source: ConvertDocumentWithPandocNodeInput,
   native?: NativeOptions,
 ) {
-  const input =
-    ConvertDocumentWithPandocNodeInputResolver().parse(source)
+  const input = ConvertDocumentWithPandocNodeInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -65,14 +64,14 @@ export async function convertDocumentWithPandocNodeRemote(
 ) {
   const input = await resolveInputForConvertRemoteNode(source)
   const clientInput =
-    ConvertDocumentWithPandocNodeClientInputResolver().parse(
+    ConvertDocumentWithPandocNodeClientInputParser().parse(
       extend(input, { handle: 'client' }),
     )
 
   const request = buildRequestToConvert(clientInput)
   await resolveWorkFileNode(request, input.output.file.path)
 
-  return ConvertDocumentWithPandocNodeOutputResolver().parse({
+  return ConvertDocumentWithPandocNodeOutputParser().parse({
     file: {
       path: input.output.file.path,
     },
@@ -84,14 +83,14 @@ export async function convertDocumentWithPandocNodeLocal(
   native?: NativeOptions,
 ) {
   const localInput =
-    ConvertDocumentWithPandocNodeLocalInputResolver().parse(input)
+    ConvertDocumentWithPandocNodeLocalInputParser().parse(input)
 
   const sequence =
     await buildCommandToConvertDocumentWithPandoc(localInput)
 
   await runCommandSequence(sequence)
 
-  return ConvertDocumentWithPandocNodeOutputResolver().parse({
+  return ConvertDocumentWithPandocNodeOutputParser().parse({
     file: {
       path: localInput.output.file.path,
     },

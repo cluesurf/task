@@ -13,9 +13,9 @@ import {
 } from '~/code/cli/logging'
 import {
   ConvertCliBase,
-  ConvertCliBaseResolver,
-} from '~/code/type/shared'
-import { convert } from '~/code/action/node'
+  ConvertCliBaseParser,
+} from '~/code/type/shared/parser'
+// import { convert } from '~/code/action/node'
 import {
   testConvertDocumentWithCalibreNode,
   testConvertDocumentWithLibreOfficeNode,
@@ -68,7 +68,7 @@ export async function convertCli({
     link['-O'] = [outputFormat]
   }
   const source = makeLineHash(link, convert_lineCallLinkHash)
-  const input = ConvertCliBaseResolver().parse(source)
+  const input = ConvertCliBaseParser().parse(source)
   const logFormat = input.log ?? 'pretty'
 
   setLoggingStyle(logFormat)
@@ -208,7 +208,7 @@ async function convertBase({
   try {
     const input = makeLinkHash(link, MESH, form)
     spinner = logConverting({ type, input })
-    const out = await convert(input as any)
+    const out = {} as any //await convert(input as any)
     spinner?.stop()
 
     logConverted({

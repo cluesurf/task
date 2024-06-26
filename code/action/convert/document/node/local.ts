@@ -22,11 +22,11 @@
 //   ConvertLatexWithPdfLatexNodeInput,
 // } from '~/code/type/shared'
 // import {
-//   ConvertDocumentWithCalibreNodeCommandInputResolver,
-//   ConvertDocumentWithLibreOfficeNodeCommandInputResolver,
-//   ConvertDocumentWithPandocNodeCommandInputResolver,
-//   ConvertDocumentWithPuppeteerNodeInputResolver,
-//   ConvertLatexWithPdfLatexNodeCommandInputResolver,
+//   ConvertDocumentWithCalibreNodeCommandInputParser,
+//   ConvertDocumentWithLibreOfficeNodeCommandInputParser,
+//   ConvertDocumentWithPandocNodeCommandInputParser,
+//   ConvertDocumentWithPuppeteerNodeInputParser,
+//   ConvertLatexWithPdfLatexNodeCommandInputParser,
 // } from '~/code/type/take'
 
 // // export async function readPDFMetadata({ inputPath }) {
@@ -97,7 +97,7 @@
 //   input: ConvertDocumentWithPandocNodeInput,
 // ) {
 //   const commandInput =
-//     ConvertDocumentWithPandocNodeCommandInputResolver().parse(input)
+//     ConvertDocumentWithPandocNodeCommandInputParser().parse(input)
 //   const sequence = buildCommandToConvertDocumentWithPandoc(commandInput)
 //   await runCommandSequence(sequence)
 //   return input.output.file.path
@@ -107,7 +107,7 @@
 //   input: ConvertDocumentWithLibreOfficeNodeInput,
 // ) {
 //   const commandInput =
-//     ConvertDocumentWithLibreOfficeNodeCommandInputResolver().parse(input)
+//     ConvertDocumentWithLibreOfficeNodeCommandInputParser().parse(input)
 //   const sequence =
 //     buildCommandToConvertDocumentWithLibreOffice(commandInput)
 //   const name =
@@ -134,7 +134,7 @@
 //   input: ConvertDocumentWithCalibreNodeInput,
 // ) {
 //   const commandInput =
-//     ConvertDocumentWithCalibreNodeCommandInputResolver().parse(input)
+//     ConvertDocumentWithCalibreNodeCommandInputParser().parse(input)
 //   const sequence =
 //     buildCommandToConvertDocumentWithCalibre(commandInput)
 //   await runCommandSequence(sequence)
@@ -151,7 +151,7 @@
 //   input: ConvertLatexWithPdfLatexNodeInput,
 // ) {
 //   const commandInput =
-//     ConvertLatexWithPdfLatexNodeCommandInputResolver().parse(input)
+//     ConvertLatexWithPdfLatexNodeCommandInputParser().parse(input)
 //   const sequence = buildCommandToConvertLatexWithPdfLatex(commandInput)
 //   await runCommandSequence(sequence)
 //   const outputPath = path.join(
@@ -174,7 +174,7 @@
 // export async function convertDocumentWithPuppeteer(
 //   source: ConvertDocumentWithPuppeteerNodeInput,
 // ) {
-//   const input = ConvertDocumentWithPuppeteerNodeInputResolver().parse(source)
+//   const input = ConvertDocumentWithPuppeteerNodeInputParser().parse(source)
 //   switch (input.output.format) {
 //     case 'png':
 //       return await convertHtmlToPngWithPuppeteer(input)

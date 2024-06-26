@@ -1,10 +1,10 @@
 import {
   ConvertLatexWithPdfLatexBrowserInput,
-  ConvertLatexWithPdfLatexBrowserInputResolver,
+  ConvertLatexWithPdfLatexBrowserInputParser,
   ConvertLatexWithPdfLatexBrowserLocalInput,
-  ConvertLatexWithPdfLatexBrowserOutputResolver,
+  ConvertLatexWithPdfLatexBrowserOutputParser,
   ConvertLatexWithPdfLatexBrowserRemoteInput,
-} from '~/code/type/browser'
+} from '~/code/type/browser/parser'
 import { buildFormDataRequestToConvert } from '../../shared'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
@@ -15,7 +15,7 @@ export async function convertLatexWithPdfLatexBrowser(
   native?: NativeOptions,
 ) {
   const input =
-    ConvertLatexWithPdfLatexBrowserInputResolver().parse(source)
+    ConvertLatexWithPdfLatexBrowserInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -32,7 +32,7 @@ export async function convertLatexWithPdfLatexBrowserRemote(
   const request = buildFormDataRequestToConvert(input)
   const content = await resolveWorkFileAsBlob(request, native)
 
-  return ConvertLatexWithPdfLatexBrowserOutputResolver().parse({
+  return ConvertLatexWithPdfLatexBrowserOutputParser().parse({
     file: {
       content,
     },

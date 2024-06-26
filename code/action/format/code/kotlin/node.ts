@@ -1,12 +1,12 @@
 import {
   FormatKotlinNodeInput,
-  FormatKotlinNodeInputResolver,
+  FormatKotlinNodeInputParser,
   FormatKotlinNodeLocalExternalInput,
   FormatKotlinNodeLocalInternalInput,
   FormatKotlinNodeRemoteInput,
-  FormatKotlinNodeClientInputResolver,
-  FormatKotlinNodeLocalInputResolver,
-} from '~/code/type/node'
+  FormatKotlinNodeClientInputParser,
+  FormatKotlinNodeLocalInputParser,
+} from '~/code/type/node/parser'
 import { buildCommandToFormatKotlin } from '../command'
 import { buildRequestToFormat } from '../shared'
 import { runCommandSequence } from '~/code/tool/node/command'
@@ -23,7 +23,7 @@ export async function formatKotlinNode(
   source: FormatKotlinNodeInput,
   native?: NativeOptions,
 ) {
-  const input = FormatKotlinNodeInputResolver().parse(source)
+  const input = FormatKotlinNodeInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -56,7 +56,7 @@ export async function formatKotlinNodeRemote(
   native?: NativeOptions,
 ) {
   const input = await resolveInputForFormatRemoteNode(source)
-  const clientInput = FormatKotlinNodeClientInputResolver().parse(
+  const clientInput = FormatKotlinNodeClientInputParser().parse(
     extend(input, { handle: 'client' }),
   )
 
@@ -74,7 +74,7 @@ export async function formatKotlinNodeLocal(
   source,
   native?: NativeOptions,
 ) {
-  const input = FormatKotlinNodeLocalInputResolver().parse(source)
+  const input = FormatKotlinNodeLocalInputParser().parse(source)
 
   const sequence = buildCommandToFormatKotlin(input)
   await runCommandSequence(sequence)
