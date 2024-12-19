@@ -203,6 +203,9 @@ importers:
       hast-util-to-jsx-runtime:
         specifier: ^2.3.0
         version: 2.3.0
+      ip-address:
+        specifier: ^10.0.1
+        version: 10.0.1
       jsdom:
         specifier: ^25.0.1
         version: 25.0.1
@@ -3244,6 +3247,10 @@ packages:
 
   invert-color@2.0.0:
     resolution: {integrity: sha512-9s6IATlhOAr0/0MPUpLdMpk81ixIu8IqwPwORssXBauFT/4ff/iyEOcojd0UYuPwkDbJvL1+blIZGhqVIaAm5Q==}
+
+  ip-address@10.0.1:
+    resolution: {integrity: sha512-NWv9YLW4PoW2B7xtzaS3NCot75m6nK7Icdv0o3lfMceJVRfSoQwqD4wEH5rLwoKJwUiZ/rfpiVBhnaF0FK4HoA==}
+    engines: {node: '>= 12'}
 
   ip-address@9.0.5:
     resolution: {integrity: sha512-zHtQzGojZXTwZTHQqra+ETKd4Sn3vgi7uBmlPoXVWZqYvuKmtI0l/VZTjqGmJY9x88GGOaZ9+G9ES8hC4T4X8g==}
@@ -8859,6 +8866,8 @@ snapshots:
   interpret@3.1.1: {}
 
   invert-color@2.0.0: {}
+
+  ip-address@10.0.1: {}
 
   ip-address@9.0.5:
     dependencies:
