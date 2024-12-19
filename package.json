@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@epic-web/invariant": "^1.0.0",
-    "@lancejpollard/color-splat.js": "^0.0.4",
+    "@lancejpollard/color-splat.js": "^0.0.14",
     "@ngrok/ngrok": "^0.9.1",
     "@ngrok/ngrok-linux-x64-gnu": "^0.9.1",
     "@prettier/plugin-php": "^0.22.2",
@@ -148,7 +148,7 @@
     "tar": "^7.1.0",
     "tmp-promise": "^3.0.3",
     "ts-custom-error": "^3.3.1",
-    "tsc-alias": "^1.8.8",
+    "tsc-alias": "^1.8.10",
     "type-detect": "^4.0.8",
     "typescript": "^5.3.3",
     "unified": "^11.0.4",
