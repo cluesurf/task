@@ -14,9 +14,6 @@ importers:
       '@lancejpollard/color-splat.js':
         specifier: ^0.0.4
         version: 0.0.4
-      '@lancejpollard/gematria.js':
-        specifier: ^0.3.2
-        version: 0.3.2
       '@ngrok/ngrok':
         specifier: ^0.9.1
         version: 0.9.1
@@ -976,9 +973,6 @@ packages:
 
   '@lancejpollard/configured-quadratic-residue-prng.js@1.0.0':
     resolution: {integrity: sha512-TGKhTiD1v3aHCjfYnSkzW5VG4/r75RO8ZkSSIyFrlH0uXh+0s0w5ElUUZ1g9I3TYRceTV+ZdsnWvTAwxq/LppQ==}
-
-  '@lancejpollard/gematria.js@0.3.2':
-    resolution: {integrity: sha512-Vx5m3j0L0iMl26TR9vL0UC7oUi6bNERVBHHsTttMvseH2ulSlcy8RNYhF9bRYXLR1YVXwCKtTA30GlQ32BK8bg==}
 
   '@lancejpollard/quadratic-residue-prng.js@1.0.0':
     resolution: {integrity: sha512-njr7owTIRuTAncZeO5yZWZ2mBuSXZu0wqFqZsJm5gGcUKL+p+lyjOel+dKG3rouB0q//Nw1uYLa8foM89bnehQ==}
@@ -6053,10 +6047,6 @@ snapshots:
   '@lancejpollard/configured-quadratic-residue-prng.js@1.0.0':
     dependencies:
       '@lancejpollard/quadratic-residue-prng.js': 1.0.0
-
-  '@lancejpollard/gematria.js@0.3.2':
-    dependencies:
-      tsc-alias: 1.8.8
 
   '@lancejpollard/quadratic-residue-prng.js@1.0.0': {}
 
