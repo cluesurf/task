@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express'
-import __dirname from '~/code/tool/shared/directory'
+import __dirname from '~/code/tool/shared/directory.js'
 import cors from 'cors'
 import kink from '~/code/tool/shared/kink.js'
 import Kink from '@termsurf/kink'

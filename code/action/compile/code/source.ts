@@ -1,5 +1,5 @@
 import { Form, List } from '@termsurf/form'
-import { baseCommonCompile, buildCompileForms } from './tool/source'
+import { baseCommonCompile, buildCompileForms } from './tool/source.js'
 import _ from 'lodash'
 
 export const swift_input_format: List = {

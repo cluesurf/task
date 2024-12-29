@@ -42,8 +42,8 @@ importers:
         specifier: ^0.1.6
         version: 0.1.6
       '@termsurf/kink-site':
-        specifier: ^0.0.12
-        version: 0.0.12
+        specifier: ^0.0.16
+        version: 0.0.16
       '@termsurf/kink-text':
         specifier: ^0.0.10
         version: 0.0.10
@@ -1114,8 +1114,8 @@ packages:
   '@termsurf/have@0.2.0':
     resolution: {integrity: sha512-ZopW9vLIKzMhvNkEw0rY0gZpmlKKgqsER82VvCbQqCZxckVlIBDsWid7vfdSVN3ZuOKn9H4mKnpAcx8ndnENkg==}
 
-  '@termsurf/kink-site@0.0.12':
-    resolution: {integrity: sha512-sI+aMmGzooIajesRcrNGTksV/Qk04F989872hdS6oolt3y4iqoAHxbUeybXrfrHt5zAKU3no8rfXNLO0LAwklA==}
+  '@termsurf/kink-site@0.0.16':
+    resolution: {integrity: sha512-oESp3997zukil9UCmlKjs4M6C/5hqN2G8FCDwTGBePnTKKnpWdRUyNETEAVrR3Yb2HBtrixGRSOAFtAZRlrhtw==}
 
   '@termsurf/kink-text@0.0.10':
     resolution: {integrity: sha512-668HDeEwPLNJIuXmbmImPuaRLE/nA2yqcLe/irdMpce/PCxq5pgjQvhenuEql/TVn64MQUJ8FI5qbL82Cvft1g==}
@@ -6051,7 +6051,7 @@ snapshots:
       '@termsurf/kink-text': 0.0.10
       lodash: 4.17.21
 
-  '@termsurf/kink-site@0.0.12':
+  '@termsurf/kink-site@0.0.16':
     dependencies:
       '@termsurf/kink': 0.1.6
       '@termsurf/kink-text': 0.0.10

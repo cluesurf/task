@@ -44,7 +44,7 @@ RUN apt-get -y install rustfmt
 RUN apt-get -y install wget
 RUN apt-get -y install gnupg
 RUN apt-get -y install unoconv
-RUN apt-get -y install ruby3.1
+RUN apt-get -y install ruby3.2
 RUN apt-get -y install rubygems-integration
 RUN apt-get -y install calibre
 RUN apt-get -y install wabt
@@ -135,7 +135,7 @@ RUN set -e; \
 RUN apt-get update -y -q
 RUN apt-get upgrade -y -q
 RUN apt-get -y install software-properties-common
-RUN apt-get -y install python3.11-venv
+RUN apt-get -y install python3.12-venv
 # RUN wget https://www.python.org/ftp/python/3.9.16/Python-3.9.16.tar.xz
 # RUN tar -xf Python-3.9.16.tar.xz
 # RUN cd Python-3.9.16 && ./configure --enable-optimizations --enable-shared \

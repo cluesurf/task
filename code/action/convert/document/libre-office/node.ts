@@ -19,7 +19,7 @@ import { extend } from '~/code/tool/shared/object.js'
 import { buildRequestToConvert } from '../../shared.js'
 import { resolveWorkFileNode } from '~/code/tool/node/request.js'
 import path from 'path'
-import { replaceFileExtension } from '~/code/tool/shared/screen'
+import { replaceFileExtension } from '~/code/tool/shared/screen.js'
 import { NativeOptions } from '~/code/tool/shared/request.js'
 
 export async function convertDocumentWithLibreOfficeNode(

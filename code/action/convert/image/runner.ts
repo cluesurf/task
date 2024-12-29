@@ -1,4 +1,4 @@
-import snakeCase from 'lodash/snakeCase'
+import snakeCase from 'lodash/snakeCase.js'
 import { ChildProcessError, exec } from '~/code/tool/node/process.js'
 import { Command } from '~/code/type/shared/index.js'
 

@@ -4,7 +4,7 @@ import {
   generateCumulativeWeightedRandomArray,
   getRandomIntegerBetween,
   getWeightedRandomIndex,
-} from '~/code/tool/shared/random'
+} from '~/code/tool/shared/random.js'
 import {
   AnonymousWordSet,
   GenerateHaikuPhrase,

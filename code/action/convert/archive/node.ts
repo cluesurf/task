@@ -26,7 +26,7 @@ import {
   generateTemporaryDirectoryPath,
   removeDirectory,
 } from '~/code/tool/node/file.js'
-import merge from 'lodash/merge'
+import merge from 'lodash/merge.js'
 import { buildCommandToArchiveWithRar } from '../../archive/command.js'
 import kink from '~/code/tool/shared/kink.js'
 import { testConvertArchive } from './shared.js'

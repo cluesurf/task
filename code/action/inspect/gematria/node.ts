@@ -1,6 +1,6 @@
 import { peak, sum } from '@lancejpollard/gematria.js/host/index'
 import * as chinese from '@lancejpollard/gematria.js/host/language/chinese'
-import merge from 'lodash/merge'
+import merge from 'lodash/merge.js'
 import {
   CalculateGematria,
   CalculateGematriaParser,

@@ -1,4 +1,4 @@
-import omit from 'lodash/omit'
+import omit from 'lodash/omit.js'
 import { serialize as serializeToFormData } from 'object-to-formdata'
 import prettier from 'prettier/standalone.js'
 import {

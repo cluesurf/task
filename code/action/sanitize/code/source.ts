@@ -1,5 +1,8 @@
 import { Form } from '@termsurf/form'
-import { baseCommonSanitize, buildSanitizeForms } from './tool/source'
+import {
+  baseCommonSanitize,
+  buildSanitizeForms,
+} from './tool/source.js'
 import _ from 'lodash'
 
 const sanitize_html_forms = buildSanitizeForms({

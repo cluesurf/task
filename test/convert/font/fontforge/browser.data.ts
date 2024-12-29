@@ -1,4 +1,4 @@
-import { base64ToArrayBuffer } from '~/code/tool/shared/buffer'
+import { base64ToArrayBuffer } from '~/code/tool/shared/buffer.js'
 
 export const TTF_FONT = new Blob([
   base64ToArrayBuffer(

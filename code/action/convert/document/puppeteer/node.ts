@@ -1,4 +1,7 @@
-import { getBrowser, inactivateBrowser } from '~/code/tool/node/browser'
+import {
+  getBrowser,
+  inactivateBrowser,
+} from '~/code/tool/node/browser.js'
 import {
   ConvertHtmlWithPuppeteerNodeInput,
   TextStyle,
@@ -33,7 +36,7 @@ import { extend } from '~/code/tool/shared/object.js'
 import { buildRequestToConvert } from '../../shared.js'
 import { resolveWorkFileNode } from '~/code/tool/node/request.js'
 import { arrayBufferToString } from '~/code/tool/shared/string.js'
-import merge from 'lodash/merge'
+import merge from 'lodash/merge.js'
 import { NativeOptions } from '~/code/tool/shared/request.js'
 
 export async function convertTxtWithPuppeteerNode(

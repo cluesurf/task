@@ -6,7 +6,7 @@ import {
   unflattenObject,
   flattenObjectSafe,
 } from '~/code/tool/shared/object.js'
-import isInteger from 'lodash/isInteger'
+import isInteger from 'lodash/isInteger.js'
 import sortKeys from 'json-keys-sort'
 
 // let csv2md = new Csv2md({
