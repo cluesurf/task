@@ -7,7 +7,7 @@
 <br/>
 <br/>
 
-<h3 align='center'>@cluesurf/task</h3>
+<h3 align='center'>@cluesurf/hack</h3>
 <p align='center'>
   Common Actions Interface
 </p>
@@ -22,12 +22,12 @@ _**Note**: This is pre-alpha software at this point, so many things might not wo
 
 Task is a collections of common actions to perform in code. Here are some immediately helpful resources:
 
-- [`ghcr.io/cluesurf/task` Docker image](https://ghcr.io/cluesurf/task)
+- [`ghcr.io/cluesurf/hack` Docker image](https://ghcr.io/cluesurf/hack)
 
-The `task` JavaScript/TypeScript library has these features:
+The `hack` JavaScript/TypeScript library has these features:
 
 - CLI
-- Programmatic Browser API (for where we can do browser tasks)
+- Programmatic Browser API (for where we can do browser hacks)
 - Programmatic Node.js API (for everything)
 
 ## Installing the Library
@@ -72,9 +72,9 @@ choco install dart-sdk
 choco install php
 ```
 
-Not all tasks/subcommands are supported yet, see the [Choco TODO](https://github.com/cluesurf/task#todo-choco).
+Not all hacks/subcommands are supported yet, see the [Choco TODO](https://github.com/cluesurf/hack#todo-choco).
 
-The source code for enabling this Choco package is at [./load/choco](https://github.com/cluesurf/task/tree/make/load/choco).
+The source code for enabling this Choco package is at [./load/choco](https://github.com/cluesurf/hack/tree/make/load/choco).
 
 ### Linux Installation
 
@@ -83,89 +83,89 @@ See the `Dockerfile` in this project.
 ### Docker Installation
 
 ```Dockerfile
-FROM --platform=linux/amd64 ghcr.io/cluesurf/task:latest
+FROM --platform=linux/amd64 ghcr.io/cluesurf/hack:latest
 ...
 ```
 
-You can link to the Docker image at [`ghcr.io/cluesurf/task`](https://ghcr.io/cluesurf/task) like that above.
+You can link to the Docker image at [`ghcr.io/cluesurf/hack`](https://ghcr.io/cluesurf/hack) like that above.
 
 ### Node Package Installation
 
-With the native dependencies installed, you can install task globally to enable the CLI:
+With the native dependencies installed, you can install hack globally to enable the CLI:
 
 ```bash
-npm install -g @cluesurf/task
-yarn install -g @cluesurf/task
-pnpm install -g @cluesurf/task
+npm install -g @cluesurf/hack
+yarn install -g @cluesurf/hack
+pnpm install -g @cluesurf/hack
 ```
 
 ```bash
-task convert png -O jpg -i image.png -o image.jpg
+hack convert png -O jpg -i image.png -o image.jpg
 ```
 
 You can also install it locally to get access to the commands in TypeScript:
 
 ```bash
-npm install @cluesurf/task
-yarn install @cluesurf/task
-pnpm install @cluesurf/task
+npm install @cluesurf/hack
+yarn install @cluesurf/hack
+pnpm install @cluesurf/hack
 ```
 
 _Some of this is future code._
 
 ```ts
-import task from '@cluesurf/task'
+import hack from '@cluesurf/hack'
 
 test()
 
 async function test() {
   // no remote server, just the bare basics.
-  const result = await task.convert({
+  const result = await hack.convert({
     input: { format: 'png', file: { path: 'image.png' } },
     output: { format: 'jpg', file: { path: 'image.jpg' } }
   })
-  await task.open({
+  await hack.open({
     format: 'window',
     input: result.output,
   })
 
   // using the remote server.
-  task.code('api-key')
+  hack.code('api-key')
 
-  const work = await task.convert({
+  const work = await hack.convert({
     surf: true,
     work: true,
     input: { format: 'png', file: { path: 'image.png' } },
     output: { format: 'jpg', file: { path: 'image.jpg' } }
   })
 
-  await task.wait(work)
+  await hack.wait(work)
 
-  const output = await task.resolve(work)
+  const output = await hack.resolve(work)
 
-  const explainer = await task.convert({
+  const explainer = await hack.convert({
     explain: true,
     input: { format: 'png', file: { path: 'image.png' } },
     output: { format: 'jpg', file: { path: 'image.jpg' } }
   })
 
-  await task.format({
+  await hack.format({
     input: { format: 'c', file: { path: 'hello.c' } }
   })
 
-  await task.upload({
+  await hack.upload({
     location: { service: 's3', bucket: 'my-bucket' },
     input: { file: { path: 'hello.jpg' } },
     output: { file: { path: 'foo/image.jpg' } }
   })
 
-  await task.download({
+  await hack.download({
     location: { service: 's3', bucket: 'my-bucket' },
     reference: { file: { path: 'hello.jpg' } },
     output: { file: { path: 'foo/image.jpg' } }
   })
 
-  await task.archive({
+  await hack.archive({
     input: { path: 'hello.jpg' },
     output: { format: 'zip', file: { path: 'foo/image.jpg' } }
   })
@@ -182,14 +182,14 @@ json, json:pretty, plain, color
 -E, --show (explain the command)
 -s, --syntax
 
-task resize --width --height --left --right --top --bottom
-task optimize gif --scale 0.5 --color-count 16 --lossy=80
+hack resize --width --height --left --right --top --bottom
+hack optimize gif --scale 0.5 --color-count 16 --lossy=80
 ```
 
 Having it installed locally, you can still use the CLI as well like:
 
 ```bash
-pnpm run task convert -I png -O jpg -i image.png -o image.jpg
+pnpm run hack convert -I png -O jpg -i image.png -o image.jpg
 ```
 
 ## Tests
@@ -198,7 +198,7 @@ pnpm run task convert -I png -O jpg -i image.png -o image.jpg
 ./test/cli.sh
 ```
 
-<img src='https://github.com/cluesurf/task/blob/make/view/test-line.gif?raw=true' />
+<img src='https://github.com/cluesurf/hack/blob/make/view/test-line.gif?raw=true' />
 
 ## Development
 
@@ -292,8 +292,8 @@ export async function convertFontWithFontForgeBrowserRemote(
 export async function convertFontWithFontForgeBrowserLocal(
   input: ConvertFontWithFontForgeBrowserLocalInput,
 ) {
-  throw kink('task_not_implemented', {
-    task: 'convertFontWithFontForgeBrowserLocal',
+  throw kink('hack_not_implemented', {
+    hack: 'convertFontWithFontForgeBrowserLocal',
   })
 }
 ```
@@ -402,14 +402,14 @@ export async function convertFontWithFontForgeNodeLocal(input) {
 
 ### Task Organization
 
-Each task in Node.js basically starts from one of the top simple action methods:
+Each hack in Node.js basically starts from one of the top simple action methods:
 
 - `compile`
 - `format`
 - `convert`
 - etc.
 
-First it takes the `input` from the top-level call, and parses the input and passes the parsed input to the implementation task like `convertImageWithImageMagick`. Then that function checks for the `surf` argument, and if present, it branches to make a remote API call against `task.surf`. This serializes all local file paths into readable streams for upload, but keeps remote file paths unchanged. No further input parsing occurs after the first two top-level parsings.
+First it takes the `input` from the top-level call, and parses the input and passes the parsed input to the implementation hack like `convertImageWithImageMagick`. Then that function checks for the `surf` argument, and if present, it branches to make a remote API call against `hack.surf`. This serializes all local file paths into readable streams for upload, but keeps remote file paths unchanged. No further input parsing occurs after the first two top-level parsings.
 
 If the `surf` parameter is not present, then it branche into the "local" API call, to the file system or a system command. So we have basically:
 
@@ -450,7 +450,7 @@ In addition, it is actually called `convertInternal`, beccause of the way we nee
 
 ### Adding a new Task
 
-To add a new task, just place it in either of the shared/no/browser folders, and add a source type definition for the input. Run `pnpm tsx make` to generate the types. Then just write the code to implement the command. If the command invokes a CLI tool, you can create two functions:
+To add a new hack, just place it in either of the shared/no/browser folders, and add a source type definition for the input. Run `pnpm tsx make` to generate the types. Then just write the code to implement the command. If the command invokes a CLI tool, you can create two functions:
 
 1. Build the command.
 2. Run the command.
