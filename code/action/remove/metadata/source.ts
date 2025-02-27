@@ -1,7 +1,8 @@
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 
 export const remove_image_metadata: Form = {
   form: 'form',
+  save: '~/code/type/action/remove/metadata/shared',
   link: {
     input: {
       link: {

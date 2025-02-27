@@ -1,7 +1,8 @@
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 
 export const crop_pdf_with_pdf_crop: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/crop/document/shared',
   link: {
     margin: {
       like: 'natural_number',

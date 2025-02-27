@@ -1,17 +1,20 @@
-import { List } from '@termsurf/form'
+import { List } from '@cluesurf/form'
 
 export const rust_input_format: List = {
   form: 'list',
+  save: '~/code/type/object/rust',
   list: ['rust'],
 }
 
 export const rust_output_format: List = {
   form: 'list',
+  save: '~/code/type/object/rust',
   list: ['binary', 'assembly', 'llvm-ir', 'llvm-bitcode', 'mir'],
 }
 
 export const rust_compiler_target: List = {
   form: 'list',
+  save: '~/code/type/object/rust',
   list: [
     'aarch64-apple-darwin',
     'aarch64-apple-ios',

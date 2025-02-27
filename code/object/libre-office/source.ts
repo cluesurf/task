@@ -1,7 +1,8 @@
-import { List } from '@termsurf/form'
+import { List } from '@cluesurf/form'
 
 export const libre_office_input_format: List = {
   form: 'list',
+  save: '~/code/type/object/libre-office',
   list: [
     'html',
     'mediawiki',
@@ -21,6 +22,7 @@ export const libre_office_input_format: List = {
 
 export const libre_office_output_format: List = {
   form: 'list',
+  save: '~/code/type/object/libre-office',
   list: [
     'html',
     'mediawiki',

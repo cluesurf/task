@@ -1,17 +1,19 @@
-import { Form, Hash, List } from '@termsurf/form'
-import LLVM_ARCHITECTURE_CONTENT from './llvm.architecture.json' assert { type: 'json' }
-import LLVM_CPU_CONTENT from './llvm.cpu.json' assert { type: 'json' }
-import LLVM_CPU from './llvm.cpu.key.json' assert { type: 'json' }
-import LLVM_FEATURE_CONTENT from './llvm.feature.json' assert { type: 'json' }
-import LLVM_FEATURE from './llvm.feature.key.json' assert { type: 'json' }
+import { Form, Hash, List } from '@cluesurf/form'
+import LLVM_ARCHITECTURE_CONTENT from './llvm.architecture.json'
+import LLVM_CPU_CONTENT from './llvm.cpu.json'
+import LLVM_CPU from './llvm.cpu.key.json'
+import LLVM_FEATURE_CONTENT from './llvm.feature.json'
+import LLVM_FEATURE from './llvm.feature.key.json'
 
 export const llvm_cpu: List = {
   form: 'list',
+  save: '~/code/type/object/llvm',
   list: LLVM_CPU,
 }
 
 export const llvm_cpu_data: Form = {
   form: 'form',
+  save: '~/code/type/object/llvm',
   link: {
     host: { like: 'string' },
     note: { like: 'string' },
@@ -20,7 +22,7 @@ export const llvm_cpu_data: Form = {
 
 export const llvm_cpu_content: Hash = {
   form: 'hash',
-  file: 'llvm',
+  save: '~/code/type/object/llvm',
   link: 'llvm_cpu',
   bond: {
     like: 'llvm_cpu_data',
@@ -30,11 +32,13 @@ export const llvm_cpu_content: Hash = {
 
 export const llvm_feature: List = {
   form: 'list',
+  save: '~/code/type/object/llvm',
   list: LLVM_FEATURE,
 }
 
 export const llvm_feature_data: Form = {
   form: 'form',
+  save: '~/code/type/object/llvm',
   link: {
     host: { like: 'string' },
     note: { like: 'string' },
@@ -43,7 +47,7 @@ export const llvm_feature_data: Form = {
 
 export const llvm_feature_content: Hash = {
   form: 'hash',
-  file: 'llvm',
+  save: '~/code/type/object/llvm',
   link: 'llvm_feature',
   bond: { like: 'llvm_feature_data' },
   hash: LLVM_FEATURE_CONTENT,
@@ -51,6 +55,7 @@ export const llvm_feature_content: Hash = {
 
 export const llvm_architecture: List = {
   form: 'list',
+  save: '~/code/type/object/llvm',
   list: [
     'aarch64',
     'aarch64_32',
@@ -95,11 +100,13 @@ export const llvm_architecture: List = {
 
 export const llvm_optimization_level: List = {
   form: 'list',
+  save: '~/code/type/object/llvm',
   list: ['0', '1', '2', '3'],
 }
 
 export const llvm_architecture_data: Form = {
   form: 'form',
+  save: '~/code/type/object/llvm',
   link: {
     host: { like: 'string' },
     note: { like: 'string' },
@@ -110,7 +117,7 @@ export const llvm_architecture_data: Form = {
 
 export const llvm_architecture_content: Hash = {
   form: 'hash',
-  file: 'llvm',
+  save: '~/code/type/object/llvm',
   link: 'llvm_architecture',
   bond: { like: 'llvm_architecture_data' },
   hash: {
@@ -309,11 +316,13 @@ export const llvm_architecture_content: Hash = {
 
 export const backend_compilation_output: List = {
   form: 'list',
+  save: '~/code/type/object/llvm',
   list: ['assembly', 'llvm-ir', 'llvm-bitcode', 'binary'],
 }
 
 export const backend_compilation_output_data: Form = {
   form: 'form',
+  save: '~/code/type/object/llvm',
   link: {
     extension: { like: 'string', need: false },
   },
@@ -321,7 +330,7 @@ export const backend_compilation_output_data: Form = {
 
 export const backend_compilation_output_content: Hash = {
   form: 'hash',
-  file: 'llvm',
+  save: '~/code/type/object/llvm',
   link: 'backend_compilation_output',
   bond: { like: 'backend_compilation_output_data' },
   hash: {

@@ -1,4 +1,4 @@
-import { Form, List } from '@termsurf/form'
+import { Form, List } from '@cluesurf/form'
 import {
   buildConvertForms,
   buildConvertFormsToStringContent,
@@ -7,6 +7,7 @@ import {
 
 const convert_document_with_jupyter_forms = buildConvertForms(
   'convert_document_with_jupyter',
+  '~/code/type/action/convert/jupyter',
   'string',
   'string',
 )
@@ -53,6 +54,7 @@ export const convert_document_with_jupyter_browser_output =
 const convert_document_with_libre_office_forms =
   buildConvertFormsWithOutputDirectory(
     'convert_document_with_libre_office',
+    '~/code/type/action/convert/libre-office',
     'libre_office_input_format',
     'libre_office_output_format',
   )
@@ -98,17 +100,20 @@ export const convert_document_with_libre_office_browser_output =
 
 export const pdf_latex_input_format: List = {
   form: 'list',
+  save: '~/code/type/action/convert/pdf-latex/shared',
   list: ['tex'],
 }
 
 export const pdf_latex_output_format: List = {
   form: 'list',
+  save: '~/code/type/action/convert/pdf-latex/shared',
   list: ['pdf'],
 }
 
 const convert_latex_with_pdf_latex_forms =
   buildConvertFormsWithOutputDirectory(
     'convert_latex_with_pdf_latex',
+    '~/code/type/action/convert/pdf-latex',
     'pdf_latex_input_format',
     'pdf_latex_output_format',
   )
@@ -154,16 +159,19 @@ export const convert_latex_with_pdf_latex_browser_output =
 
 export const convert_latex_to_png_input_format: List = {
   form: 'list',
+  save: '~/code/type/action/convert/latex-to-png/shared',
   list: ['tex'],
 }
 
 export const convert_latex_to_png_output_format: List = {
   form: 'list',
+  save: '~/code/type/action/convert/latex-to-png/shared',
   list: ['png'],
 }
 
 const convert_latex_to_png_forms = buildConvertForms(
   'convert_latex_to_png',
+  '~/code/type/action/convert/latex-to-png',
   'convert_latex_to_png_input_format',
   'convert_latex_to_png_output_format',
 )
@@ -209,6 +217,7 @@ export const convert_latex_to_png_browser_output =
 
 const convert_document_with_calibre_forms = buildConvertForms(
   'convert_document_with_calibre',
+  '~/code/type/action/convert/calibre',
   'calibre_input_format',
   'calibre_output_format',
 )
@@ -254,6 +263,7 @@ export const convert_document_with_calibre_browser_output =
 
 const convert_html_with_puppeteer_forms = buildConvertForms(
   'convert_html_with_puppeteer',
+  '~/code/type/action/convert/puppeteer',
   'puppeteer_input_format',
   'puppeteer_output_format',
   {
@@ -309,6 +319,7 @@ export const convert_html_with_puppeteer_browser_output =
 
 export const text_style: Form = {
   form: 'form',
+  save: '~/code/type/action/convert',
   link: {
     color: {
       like: 'string',
@@ -341,6 +352,7 @@ const margin = {
 const convert_txt_with_puppeteer_forms =
   buildConvertFormsToStringContent(
     'convert_txt_with_puppeteer',
+    '~/code/type/action/convert/puppeteer',
     'puppeteer_txt_input_format',
     'puppeteer_output_format',
     {
@@ -402,6 +414,7 @@ export const convert_txt_with_puppeteer_browser_output =
 const convert_markdown_with_puppeteer_forms =
   buildConvertFormsToStringContent(
     'convert_markdown_with_puppeteer',
+    '~/code/type/action/convert/puppeteer',
     'puppeteer_markdown_input_format',
     'puppeteer_output_format',
     {
@@ -469,6 +482,7 @@ export const convert_markdown_with_puppeteer_browser_output =
 
 const convert_document_with_pandoc_forms = buildConvertForms(
   'convert_document_with_pandoc',
+  '~/code/type/action/convert/pandoc',
   'pandoc_input_format',
   'pandoc_output_format',
 )
@@ -514,6 +528,7 @@ export const convert_document_with_pandoc_browser_output =
 
 const convert_document_with_enscript_forms = buildConvertForms(
   'convert_document_with_enscript',
+  '~/code/type/action/convert/enscript',
   'enscript_input_format',
   'enscript_output_format',
 )

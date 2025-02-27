@@ -1,17 +1,20 @@
-import { Form, List } from '@termsurf/form'
+import { Form, List } from '@cluesurf/form'
 
 export const flip: List = {
   form: 'list',
+  save: '~/code/type/action/optimize/image/shared',
   list: ['horizontal', 'vertical'],
 }
 
 export const gifsicle_optimize_option: List = {
   form: 'list',
+  save: '~/code/type/action/optimize/image/shared',
   list: ['1', '2', '3'],
 }
 
 export const build_command_to_optimize_gif_with_gifsicle: Form = {
   form: 'form',
+  save: '~/code/type/action/optimize/image/shared',
   link: {
     lossy: { like: 'natural_number', need: false },
     background: { like: 'string', need: false },

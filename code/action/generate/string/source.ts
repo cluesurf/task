@@ -1,4 +1,4 @@
-import { Form, Hash, List } from '@termsurf/form'
+import { Form, Hash, List } from '@cluesurf/form'
 
 const weight = {
   like: 'integer',
@@ -7,6 +7,7 @@ const weight = {
 
 export const symbol_set: List = {
   form: 'list',
+  save: '~/code/type/action/generate/string/shared',
   list: [
     'latin-lowercase',
     'latin-uppercase',
@@ -17,6 +18,7 @@ export const symbol_set: List = {
 
 export const named_symbol_set: Form = {
   form: 'form',
+  save: '~/code/type/action/generate/string/shared',
   link: {
     form: { take: ['named-symbol-set'] },
     name: { like: 'symbol_set' },
@@ -25,6 +27,7 @@ export const named_symbol_set: Form = {
 
 export const anonymous_symbol_set: Form = {
   form: 'form',
+  save: '~/code/type/action/generate/string/shared',
   link: {
     form: { take: ['anonymous-symbol-set'] },
     list: { like: 'string' },
@@ -33,6 +36,7 @@ export const anonymous_symbol_set: Form = {
 
 export const weighted_symbol_set: Form = {
   form: 'form',
+  save: '~/code/type/action/generate/string/shared',
   link: {
     value: {
       case: [
@@ -46,11 +50,13 @@ export const weighted_symbol_set: Form = {
 
 export const word_set: List = {
   form: 'list',
+  save: '~/code/type/action/generate/string/shared',
   list: ['pleasant-adjective', 'pleasant-noun'],
 }
 
 export const anonymous_word_set: Form = {
   form: 'form',
+  save: '~/code/type/action/generate/string/shared',
   link: {
     form: { take: ['anonymous-word-set'] },
     list: { like: 'string', list: true },
@@ -59,6 +65,7 @@ export const anonymous_word_set: Form = {
 
 export const named_word_set: Form = {
   form: 'form',
+  save: '~/code/type/action/generate/string/shared',
   link: {
     form: { take: ['named-word-set'] },
     name: { like: 'word_set' },
@@ -67,6 +74,7 @@ export const named_word_set: Form = {
 
 export const weighted_word_set: Form = {
   form: 'form',
+  save: '~/code/type/action/generate/string/shared',
   link: {
     value: {
       case: [
@@ -80,6 +88,7 @@ export const weighted_word_set: Form = {
 
 export const symbol_set_data: Form = {
   form: 'form',
+  save: '~/code/type/action/generate/string/shared',
   link: {
     list: {
       like: 'string',
@@ -90,6 +99,7 @@ export const symbol_set_data: Form = {
 
 export const symbol_set_content: Hash = {
   form: 'hash',
+  save: '~/code/type/action/generate/string/shared',
   link: 'symbol_set',
   bond: {
     like: 'symbol_set_data',
@@ -104,6 +114,7 @@ export const symbol_set_content: Hash = {
 
 export const word_set_data: Form = {
   form: 'form',
+  save: '~/code/type/action/generate/string/shared',
   link: {
     name: {
       like: 'string',
@@ -113,6 +124,7 @@ export const word_set_data: Form = {
 
 export const word_set_content: Hash = {
   form: 'hash',
+  save: '~/code/type/action/generate/string/shared',
   link: 'word_set',
   bond: {
     like: 'word_set_data',
@@ -125,6 +137,7 @@ export const word_set_content: Hash = {
 
 export const generate_random_symbols: Form = {
   form: 'form',
+  save: '~/code/type/action/generate/string/shared',
   link: {
     format: { take: ['random_symbols'] },
     minSize: { like: 'integer', need: false, fall: 4 },
@@ -143,6 +156,7 @@ export const generate_random_symbols: Form = {
 
 export const generate_random_phrase: Form = {
   form: 'form',
+  save: '~/code/type/action/generate/string/shared',
   link: {
     format: { take: ['random_phrase'] },
     separator: { like: 'string', need: false, fall: '-' },
@@ -172,6 +186,7 @@ export const generate_random_phrase: Form = {
 
 export const generate_haiku_phrase: Form = {
   form: 'form',
+  save: '~/code/type/action/generate/string/shared',
   link: {
     format: { take: ['haiku_phrase'] },
     separator: { like: 'string', need: false, fall: '-' },
@@ -194,6 +209,7 @@ export const generate_haiku_phrase: Form = {
 
 export const pleasant_adjective: List = {
   form: 'list',
+  save: '~/code/type/action/generate/string/shared',
   list: [
     'aged',
     'ancient',
@@ -291,6 +307,7 @@ export const pleasant_adjective: List = {
 
 export const pleasant_noun: List = {
   form: 'list',
+  save: '~/code/type/action/generate/string/shared',
   list: [
     'art',
     'band',

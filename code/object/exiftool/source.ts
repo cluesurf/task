@@ -1,8 +1,9 @@
-import EXIFTOOL_TAG from './exiftool.tag.json' assert { type: 'json' }
-import { Form, Hash } from '@termsurf/form'
+import EXIFTOOL_TAG from './exiftool.tag.json'
+import { Form, Hash } from '@cluesurf/form'
 
 export const exiftool_image_format_data: Form = {
   form: 'form',
+  save: '~/code/type/object/exiftool',
   link: {
     head: { like: 'string' },
     read: { like: 'boolean', need: false, fall: false },
@@ -13,7 +14,7 @@ export const exiftool_image_format_data: Form = {
 
 export const exiftool_image_format_content: Hash = {
   form: 'hash',
-  file: 'exiftool',
+  save: '~/code/type/object/exiftool',
   bond: { like: 'exiftool_image_format_data' },
   hash: {
     '360': { head: '360', read: true, write: true },
@@ -236,6 +237,7 @@ export const exiftool_image_format_content: Hash = {
 
 export const exiftool_tag_data: Form = {
   form: 'form',
+  save: '~/code/type/object/exiftool',
   link: {
     head: { like: 'string' },
   },
@@ -243,7 +245,7 @@ export const exiftool_tag_data: Form = {
 
 export const exiftool_tag_content: Hash = {
   form: 'hash',
-  file: 'exiftool',
+  save: '~/code/type/object/exiftool',
   bond: {
     like: 'exiftool_tag_data',
   },
@@ -252,6 +254,7 @@ export const exiftool_tag_content: Hash = {
 
 export const exiftool_family_data: Form = {
   form: 'form',
+  save: '~/code/type/object/exiftool',
   link: {
     head: { like: 'string' },
     family: { like: 'natural_number', list: true },
@@ -261,7 +264,7 @@ export const exiftool_family_data: Form = {
 
 export const exiftool_family_content: Hash = {
   form: 'hash',
-  file: 'exiftool',
+  save: '~/code/type/object/exiftool',
   bond: {
     like: 'exiftool_family_data',
   },

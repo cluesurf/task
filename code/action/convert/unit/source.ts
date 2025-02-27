@@ -1,4 +1,4 @@
-import { Form, Hash, List } from '@termsurf/form'
+import { Form, Hash, List } from '@cluesurf/form'
 import convertUnits from 'convert-units'
 import _ from 'lodash'
 
@@ -44,11 +44,13 @@ const inputMap = inputs.reduce((m, x) => {
 
 export const unit: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: inputs.map(x => x.slug),
 }
 
 export const unit_key: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     key: { like: 'string' },
   },
@@ -56,6 +58,7 @@ export const unit_key: Form = {
 
 export const unit_key_hash: Hash = {
   form: 'hash',
+  save: '~/code/type/action/convert/unit',
   link: 'unit',
   bond: { like: 'unit_key' },
   hash: inputs.reduce((m, x) => {
@@ -68,6 +71,7 @@ export const unit_key_hash: Hash = {
 
 export const conversion_unit_millimeter: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mm')
     .possibilities()
@@ -77,6 +81,7 @@ export const conversion_unit_millimeter: List = {
 
 export const conversion_unit_centimeter: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('cm')
     .possibilities()
@@ -86,6 +91,7 @@ export const conversion_unit_centimeter: List = {
 
 export const conversion_unit_meter: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('m')
     .possibilities()
@@ -95,6 +101,7 @@ export const conversion_unit_meter: List = {
 
 export const conversion_unit_kilometer: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('km')
     .possibilities()
@@ -104,6 +111,7 @@ export const conversion_unit_kilometer: List = {
 
 export const conversion_unit_inch: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('in')
     .possibilities()
@@ -113,6 +121,7 @@ export const conversion_unit_inch: List = {
 
 export const conversion_unit_yard: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('yd')
     .possibilities()
@@ -122,6 +131,7 @@ export const conversion_unit_yard: List = {
 
 export const conversion_unit_us_survey_foot: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ft-us')
     .possibilities()
@@ -131,6 +141,7 @@ export const conversion_unit_us_survey_foot: List = {
 
 export const conversion_unit_foot: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ft')
     .possibilities()
@@ -140,6 +151,7 @@ export const conversion_unit_foot: List = {
 
 export const conversion_unit_mile: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mi')
     .possibilities()
@@ -149,6 +161,7 @@ export const conversion_unit_mile: List = {
 
 export const conversion_unit_square_millimeter: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mm2')
     .possibilities()
@@ -158,6 +171,7 @@ export const conversion_unit_square_millimeter: List = {
 
 export const conversion_unit_square_centimeter: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('cm2')
     .possibilities()
@@ -167,6 +181,7 @@ export const conversion_unit_square_centimeter: List = {
 
 export const conversion_unit_square_meter: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('m2')
     .possibilities()
@@ -176,6 +191,7 @@ export const conversion_unit_square_meter: List = {
 
 export const conversion_unit_hectare: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ha')
     .possibilities()
@@ -185,6 +201,7 @@ export const conversion_unit_hectare: List = {
 
 export const conversion_unit_square_kilometer: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('km2')
     .possibilities()
@@ -194,6 +211,7 @@ export const conversion_unit_square_kilometer: List = {
 
 export const conversion_unit_square_inch: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('in2')
     .possibilities()
@@ -203,6 +221,7 @@ export const conversion_unit_square_inch: List = {
 
 export const conversion_unit_square_yard: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('yd2')
     .possibilities()
@@ -212,6 +231,7 @@ export const conversion_unit_square_yard: List = {
 
 export const conversion_unit_square_foot: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ft2')
     .possibilities()
@@ -221,6 +241,7 @@ export const conversion_unit_square_foot: List = {
 
 export const conversion_unit_acre: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ac')
     .possibilities()
@@ -230,6 +251,7 @@ export const conversion_unit_acre: List = {
 
 export const conversion_unit_square_mile: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mi2')
     .possibilities()
@@ -239,6 +261,7 @@ export const conversion_unit_square_mile: List = {
 
 export const conversion_unit_microgram: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mcg')
     .possibilities()
@@ -248,6 +271,7 @@ export const conversion_unit_microgram: List = {
 
 export const conversion_unit_milligram: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mg')
     .possibilities()
@@ -257,6 +281,7 @@ export const conversion_unit_milligram: List = {
 
 export const conversion_unit_gram: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('g')
     .possibilities()
@@ -266,6 +291,7 @@ export const conversion_unit_gram: List = {
 
 export const conversion_unit_kilogram: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kg')
     .possibilities()
@@ -275,6 +301,7 @@ export const conversion_unit_kilogram: List = {
 
 export const conversion_unit_metric_tonne: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mt')
     .possibilities()
@@ -284,6 +311,7 @@ export const conversion_unit_metric_tonne: List = {
 
 export const conversion_unit_ounce: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('oz')
     .possibilities()
@@ -293,6 +321,7 @@ export const conversion_unit_ounce: List = {
 
 export const conversion_unit_pound: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('lb')
     .possibilities()
@@ -302,6 +331,7 @@ export const conversion_unit_pound: List = {
 
 export const conversion_unit_ton: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('t')
     .possibilities()
@@ -311,6 +341,7 @@ export const conversion_unit_ton: List = {
 
 export const conversion_unit_cubic_millimeter: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mm3')
     .possibilities()
@@ -320,6 +351,7 @@ export const conversion_unit_cubic_millimeter: List = {
 
 export const conversion_unit_cubic_centimeter: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('cm3')
     .possibilities()
@@ -329,6 +361,7 @@ export const conversion_unit_cubic_centimeter: List = {
 
 export const conversion_unit_millilitre: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ml')
     .possibilities()
@@ -338,6 +371,7 @@ export const conversion_unit_millilitre: List = {
 
 export const conversion_unit_centilitre: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('cl')
     .possibilities()
@@ -347,6 +381,7 @@ export const conversion_unit_centilitre: List = {
 
 export const conversion_unit_decilitre: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('dl')
     .possibilities()
@@ -356,6 +391,7 @@ export const conversion_unit_decilitre: List = {
 
 export const conversion_unit_litre: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('l')
     .possibilities()
@@ -365,6 +401,7 @@ export const conversion_unit_litre: List = {
 
 export const conversion_unit_kilolitre: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kl')
     .possibilities()
@@ -374,6 +411,7 @@ export const conversion_unit_kilolitre: List = {
 
 export const conversion_unit_cubic_meter: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('m3')
     .possibilities()
@@ -383,6 +421,7 @@ export const conversion_unit_cubic_meter: List = {
 
 export const conversion_unit_cubic_kilometer: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('km3')
     .possibilities()
@@ -392,6 +431,7 @@ export const conversion_unit_cubic_kilometer: List = {
 
 export const conversion_unit_tesked: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('tsk')
     .possibilities()
@@ -401,6 +441,7 @@ export const conversion_unit_tesked: List = {
 
 export const conversion_unit_matsked: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('msk')
     .possibilities()
@@ -410,6 +451,7 @@ export const conversion_unit_matsked: List = {
 
 export const conversion_unit_kaffekopp: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kkp')
     .possibilities()
@@ -419,6 +461,7 @@ export const conversion_unit_kaffekopp: List = {
 
 export const conversion_unit_glas: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('glas')
     .possibilities()
@@ -428,6 +471,7 @@ export const conversion_unit_glas: List = {
 
 export const conversion_unit_kanna: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kanna')
     .possibilities()
@@ -437,6 +481,7 @@ export const conversion_unit_kanna: List = {
 
 export const conversion_unit_teaspoon: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('tsp')
     .possibilities()
@@ -446,6 +491,7 @@ export const conversion_unit_teaspoon: List = {
 
 export const conversion_unit_tablespoon: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('Tbs')
     .possibilities()
@@ -455,6 +501,7 @@ export const conversion_unit_tablespoon: List = {
 
 export const conversion_unit_cubic_inch: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('in3')
     .possibilities()
@@ -464,6 +511,7 @@ export const conversion_unit_cubic_inch: List = {
 
 export const conversion_unit_fluid_ounce: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('fl-oz')
     .possibilities()
@@ -473,6 +521,7 @@ export const conversion_unit_fluid_ounce: List = {
 
 export const conversion_unit_cup: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('cup')
     .possibilities()
@@ -482,6 +531,7 @@ export const conversion_unit_cup: List = {
 
 export const conversion_unit_pint: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('pnt')
     .possibilities()
@@ -491,6 +541,7 @@ export const conversion_unit_pint: List = {
 
 export const conversion_unit_quart: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('qt')
     .possibilities()
@@ -500,6 +551,7 @@ export const conversion_unit_quart: List = {
 
 export const conversion_unit_gallon: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('gal')
     .possibilities()
@@ -509,6 +561,7 @@ export const conversion_unit_gallon: List = {
 
 export const conversion_unit_cubic_foot: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ft3')
     .possibilities()
@@ -518,6 +571,7 @@ export const conversion_unit_cubic_foot: List = {
 
 export const conversion_unit_cubic_yard: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('yd3')
     .possibilities()
@@ -527,6 +581,7 @@ export const conversion_unit_cubic_yard: List = {
 
 export const conversion_unit_each: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ea')
     .possibilities()
@@ -536,6 +591,7 @@ export const conversion_unit_each: List = {
 
 export const conversion_unit_dozen: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('dz')
     .possibilities()
@@ -545,6 +601,7 @@ export const conversion_unit_dozen: List = {
 
 export const conversion_unit_celsius: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('C')
     .possibilities()
@@ -554,6 +611,7 @@ export const conversion_unit_celsius: List = {
 
 export const conversion_unit_kelvin: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('K')
     .possibilities()
@@ -563,6 +621,7 @@ export const conversion_unit_kelvin: List = {
 
 export const conversion_unit_fahrenheit: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('F')
     .possibilities()
@@ -572,6 +631,7 @@ export const conversion_unit_fahrenheit: List = {
 
 export const conversion_unit_rankine: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('R')
     .possibilities()
@@ -581,6 +641,7 @@ export const conversion_unit_rankine: List = {
 
 export const conversion_unit_nanosecond: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ns')
     .possibilities()
@@ -590,6 +651,7 @@ export const conversion_unit_nanosecond: List = {
 
 export const conversion_unit_microsecond: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mu')
     .possibilities()
@@ -599,6 +661,7 @@ export const conversion_unit_microsecond: List = {
 
 export const conversion_unit_millisecond: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ms')
     .possibilities()
@@ -608,6 +671,7 @@ export const conversion_unit_millisecond: List = {
 
 export const conversion_unit_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('s')
     .possibilities()
@@ -617,6 +681,7 @@ export const conversion_unit_second: List = {
 
 export const conversion_unit_minute: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('min')
     .possibilities()
@@ -626,6 +691,7 @@ export const conversion_unit_minute: List = {
 
 export const conversion_unit_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('h')
     .possibilities()
@@ -635,6 +701,7 @@ export const conversion_unit_hour: List = {
 
 export const conversion_unit_day: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('d')
     .possibilities()
@@ -644,6 +711,7 @@ export const conversion_unit_day: List = {
 
 export const conversion_unit_week: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('week')
     .possibilities()
@@ -653,6 +721,7 @@ export const conversion_unit_week: List = {
 
 export const conversion_unit_month: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('month')
     .possibilities()
@@ -662,6 +731,7 @@ export const conversion_unit_month: List = {
 
 export const conversion_unit_year: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('year')
     .possibilities()
@@ -671,6 +741,7 @@ export const conversion_unit_year: List = {
 
 export const conversion_unit_bit: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('b')
     .possibilities()
@@ -680,6 +751,7 @@ export const conversion_unit_bit: List = {
 
 export const conversion_unit_kilobit: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('Kb')
     .possibilities()
@@ -689,6 +761,7 @@ export const conversion_unit_kilobit: List = {
 
 export const conversion_unit_megabit: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('Mb')
     .possibilities()
@@ -698,6 +771,7 @@ export const conversion_unit_megabit: List = {
 
 export const conversion_unit_gigabit: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('Gb')
     .possibilities()
@@ -707,6 +781,7 @@ export const conversion_unit_gigabit: List = {
 
 export const conversion_unit_terabit: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('Tb')
     .possibilities()
@@ -716,6 +791,7 @@ export const conversion_unit_terabit: List = {
 
 export const conversion_unit_byte: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('B')
     .possibilities()
@@ -725,6 +801,7 @@ export const conversion_unit_byte: List = {
 
 export const conversion_unit_kilobyte: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('KB')
     .possibilities()
@@ -734,6 +811,7 @@ export const conversion_unit_kilobyte: List = {
 
 export const conversion_unit_megabyte: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('MB')
     .possibilities()
@@ -743,6 +821,7 @@ export const conversion_unit_megabyte: List = {
 
 export const conversion_unit_gigabyte: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('GB')
     .possibilities()
@@ -752,6 +831,7 @@ export const conversion_unit_gigabyte: List = {
 
 export const conversion_unit_terabyte: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('TB')
     .possibilities()
@@ -761,6 +841,7 @@ export const conversion_unit_terabyte: List = {
 
 export const conversion_unit_part_per_million: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ppm')
     .possibilities()
@@ -770,6 +851,7 @@ export const conversion_unit_part_per_million: List = {
 
 export const conversion_unit_part_per_billion: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ppb')
     .possibilities()
@@ -779,6 +861,7 @@ export const conversion_unit_part_per_billion: List = {
 
 export const conversion_unit_part_per_trillion: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ppt')
     .possibilities()
@@ -788,6 +871,7 @@ export const conversion_unit_part_per_trillion: List = {
 
 export const conversion_unit_part_per_quadrillion: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ppq')
     .possibilities()
@@ -797,6 +881,7 @@ export const conversion_unit_part_per_quadrillion: List = {
 
 export const conversion_unit_metre_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('m/s')
     .possibilities()
@@ -806,6 +891,7 @@ export const conversion_unit_metre_per_second: List = {
 
 export const conversion_unit_kilometre_per_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('km/h')
     .possibilities()
@@ -815,6 +901,7 @@ export const conversion_unit_kilometre_per_hour: List = {
 
 export const conversion_unit_mile_per_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('m/h')
     .possibilities()
@@ -824,6 +911,7 @@ export const conversion_unit_mile_per_hour: List = {
 
 export const conversion_unit_knot: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('knot')
     .possibilities()
@@ -833,6 +921,7 @@ export const conversion_unit_knot: List = {
 
 export const conversion_unit_foot_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ft/s')
     .possibilities()
@@ -842,6 +931,7 @@ export const conversion_unit_foot_per_second: List = {
 
 export const conversion_unit_minute_per_kilometre: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('min/km')
     .possibilities()
@@ -851,6 +941,7 @@ export const conversion_unit_minute_per_kilometre: List = {
 
 export const conversion_unit_second_per_metre: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('s/m')
     .possibilities()
@@ -860,6 +951,7 @@ export const conversion_unit_second_per_metre: List = {
 
 export const conversion_unit_minute_per_mile: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('min/mi')
     .possibilities()
@@ -869,6 +961,7 @@ export const conversion_unit_minute_per_mile: List = {
 
 export const conversion_unit_second_per_foot: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('s/ft')
     .possibilities()
@@ -878,6 +971,7 @@ export const conversion_unit_second_per_foot: List = {
 
 export const conversion_unit_pascal: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('Pa')
     .possibilities()
@@ -887,6 +981,7 @@ export const conversion_unit_pascal: List = {
 
 export const conversion_unit_kilopascal: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kPa')
     .possibilities()
@@ -896,6 +991,7 @@ export const conversion_unit_kilopascal: List = {
 
 export const conversion_unit_megapascal: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('MPa')
     .possibilities()
@@ -905,6 +1001,7 @@ export const conversion_unit_megapascal: List = {
 
 export const conversion_unit_hectopascal: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('hPa')
     .possibilities()
@@ -914,6 +1011,7 @@ export const conversion_unit_hectopascal: List = {
 
 export const conversion_unit_bar: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('bar')
     .possibilities()
@@ -923,6 +1021,7 @@ export const conversion_unit_bar: List = {
 
 export const conversion_unit_torr: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('torr')
     .possibilities()
@@ -932,6 +1031,7 @@ export const conversion_unit_torr: List = {
 
 export const conversion_unit_pound_per_square_inch: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('psi')
     .possibilities()
@@ -941,6 +1041,7 @@ export const conversion_unit_pound_per_square_inch: List = {
 
 export const conversion_unit_kilopound_per_square_inch: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ksi')
     .possibilities()
@@ -950,6 +1051,7 @@ export const conversion_unit_kilopound_per_square_inch: List = {
 
 export const conversion_unit_ampere: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('A')
     .possibilities()
@@ -959,6 +1061,7 @@ export const conversion_unit_ampere: List = {
 
 export const conversion_unit_milliampere: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mA')
     .possibilities()
@@ -968,6 +1071,7 @@ export const conversion_unit_milliampere: List = {
 
 export const conversion_unit_kiloampere: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kA')
     .possibilities()
@@ -977,6 +1081,7 @@ export const conversion_unit_kiloampere: List = {
 
 export const conversion_unit_volt: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('V')
     .possibilities()
@@ -986,6 +1091,7 @@ export const conversion_unit_volt: List = {
 
 export const conversion_unit_millivolt: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mV')
     .possibilities()
@@ -995,6 +1101,7 @@ export const conversion_unit_millivolt: List = {
 
 export const conversion_unit_kilovolt: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kV')
     .possibilities()
@@ -1004,6 +1111,7 @@ export const conversion_unit_kilovolt: List = {
 
 export const conversion_unit_watt: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('W')
     .possibilities()
@@ -1013,6 +1121,7 @@ export const conversion_unit_watt: List = {
 
 export const conversion_unit_milliwatt: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mW')
     .possibilities()
@@ -1022,6 +1131,7 @@ export const conversion_unit_milliwatt: List = {
 
 export const conversion_unit_kilowatt: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kW')
     .possibilities()
@@ -1031,6 +1141,7 @@ export const conversion_unit_kilowatt: List = {
 
 export const conversion_unit_megawatt: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('MW')
     .possibilities()
@@ -1040,6 +1151,7 @@ export const conversion_unit_megawatt: List = {
 
 export const conversion_unit_gigawatt: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('GW')
     .possibilities()
@@ -1049,6 +1161,7 @@ export const conversion_unit_gigawatt: List = {
 
 export const conversion_unit_volt_ampere_reactive: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('VAR')
     .possibilities()
@@ -1058,6 +1171,7 @@ export const conversion_unit_volt_ampere_reactive: List = {
 
 export const conversion_unit_millivolt_ampere_reactive: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mVAR')
     .possibilities()
@@ -1067,6 +1181,7 @@ export const conversion_unit_millivolt_ampere_reactive: List = {
 
 export const conversion_unit_kilovolt_ampere_reactive: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kVAR')
     .possibilities()
@@ -1076,6 +1191,7 @@ export const conversion_unit_kilovolt_ampere_reactive: List = {
 
 export const conversion_unit_megavolt_ampere_reactive: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('MVAR')
     .possibilities()
@@ -1085,6 +1201,7 @@ export const conversion_unit_megavolt_ampere_reactive: List = {
 
 export const conversion_unit_gigavolt_ampere_reactive: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('GVAR')
     .possibilities()
@@ -1094,6 +1211,7 @@ export const conversion_unit_gigavolt_ampere_reactive: List = {
 
 export const conversion_unit_volt_ampere: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('VA')
     .possibilities()
@@ -1103,6 +1221,7 @@ export const conversion_unit_volt_ampere: List = {
 
 export const conversion_unit_millivolt_ampere: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mVA')
     .possibilities()
@@ -1112,6 +1231,7 @@ export const conversion_unit_millivolt_ampere: List = {
 
 export const conversion_unit_kilovolt_ampere: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kVA')
     .possibilities()
@@ -1121,6 +1241,7 @@ export const conversion_unit_kilovolt_ampere: List = {
 
 export const conversion_unit_megavolt_ampere: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('MVA')
     .possibilities()
@@ -1130,6 +1251,7 @@ export const conversion_unit_megavolt_ampere: List = {
 
 export const conversion_unit_gigavolt_ampere: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('GVA')
     .possibilities()
@@ -1139,6 +1261,7 @@ export const conversion_unit_gigavolt_ampere: List = {
 
 export const conversion_unit_watt_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('Wh')
     .possibilities()
@@ -1148,6 +1271,7 @@ export const conversion_unit_watt_hour: List = {
 
 export const conversion_unit_milliwatt_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mWh')
     .possibilities()
@@ -1157,6 +1281,7 @@ export const conversion_unit_milliwatt_hour: List = {
 
 export const conversion_unit_kilowatt_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kWh')
     .possibilities()
@@ -1166,6 +1291,7 @@ export const conversion_unit_kilowatt_hour: List = {
 
 export const conversion_unit_megawatt_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('MWh')
     .possibilities()
@@ -1175,6 +1301,7 @@ export const conversion_unit_megawatt_hour: List = {
 
 export const conversion_unit_gigawatt_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('GWh')
     .possibilities()
@@ -1184,6 +1311,7 @@ export const conversion_unit_gigawatt_hour: List = {
 
 export const conversion_unit_joule: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('J')
     .possibilities()
@@ -1193,6 +1321,7 @@ export const conversion_unit_joule: List = {
 
 export const conversion_unit_kilojoule: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kJ')
     .possibilities()
@@ -1202,6 +1331,7 @@ export const conversion_unit_kilojoule: List = {
 
 export const conversion_unit_volt_ampere_reactive_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('VARh')
     .possibilities()
@@ -1211,6 +1341,7 @@ export const conversion_unit_volt_ampere_reactive_hour: List = {
 
 export const conversion_unit_millivolt_ampere_reactive_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mVARh')
     .possibilities()
@@ -1220,6 +1351,7 @@ export const conversion_unit_millivolt_ampere_reactive_hour: List = {
 
 export const conversion_unit_kilovolt_ampere_reactive_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kVARh')
     .possibilities()
@@ -1229,6 +1361,7 @@ export const conversion_unit_kilovolt_ampere_reactive_hour: List = {
 
 export const conversion_unit_megavolt_ampere_reactive_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('MVARh')
     .possibilities()
@@ -1238,6 +1371,7 @@ export const conversion_unit_megavolt_ampere_reactive_hour: List = {
 
 export const conversion_unit_gigavolt_ampere_reactive_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('GVARh')
     .possibilities()
@@ -1247,6 +1381,7 @@ export const conversion_unit_gigavolt_ampere_reactive_hour: List = {
 
 export const conversion_unit_cubic_millimeter_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mm3/s')
     .possibilities()
@@ -1256,6 +1391,7 @@ export const conversion_unit_cubic_millimeter_per_second: List = {
 
 export const conversion_unit_cubic_centimeter_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('cm3/s')
     .possibilities()
@@ -1265,6 +1401,7 @@ export const conversion_unit_cubic_centimeter_per_second: List = {
 
 export const conversion_unit_millilitre_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ml/s')
     .possibilities()
@@ -1274,6 +1411,7 @@ export const conversion_unit_millilitre_per_second: List = {
 
 export const conversion_unit_centilitre_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('cl/s')
     .possibilities()
@@ -1283,6 +1421,7 @@ export const conversion_unit_centilitre_per_second: List = {
 
 export const conversion_unit_decilitre_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('dl/s')
     .possibilities()
@@ -1292,6 +1431,7 @@ export const conversion_unit_decilitre_per_second: List = {
 
 export const conversion_unit_litre_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('l/s')
     .possibilities()
@@ -1301,6 +1441,7 @@ export const conversion_unit_litre_per_second: List = {
 
 export const conversion_unit_litre_per_minute: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('l/min')
     .possibilities()
@@ -1310,6 +1451,7 @@ export const conversion_unit_litre_per_minute: List = {
 
 export const conversion_unit_litre_per_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('l/h')
     .possibilities()
@@ -1319,6 +1461,7 @@ export const conversion_unit_litre_per_hour: List = {
 
 export const conversion_unit_kilolitre_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kl/s')
     .possibilities()
@@ -1328,6 +1471,7 @@ export const conversion_unit_kilolitre_per_second: List = {
 
 export const conversion_unit_kilolitre_per_minute: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kl/min')
     .possibilities()
@@ -1337,6 +1481,7 @@ export const conversion_unit_kilolitre_per_minute: List = {
 
 export const conversion_unit_kilolitre_per_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kl/h')
     .possibilities()
@@ -1346,6 +1491,7 @@ export const conversion_unit_kilolitre_per_hour: List = {
 
 export const conversion_unit_cubic_meter_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('m3/s')
     .possibilities()
@@ -1355,6 +1501,7 @@ export const conversion_unit_cubic_meter_per_second: List = {
 
 export const conversion_unit_cubic_meter_per_minute: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('m3/min')
     .possibilities()
@@ -1364,6 +1511,7 @@ export const conversion_unit_cubic_meter_per_minute: List = {
 
 export const conversion_unit_cubic_meter_per_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('m3/h')
     .possibilities()
@@ -1373,6 +1521,7 @@ export const conversion_unit_cubic_meter_per_hour: List = {
 
 export const conversion_unit_cubic_kilometer_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('km3/s')
     .possibilities()
@@ -1382,6 +1531,7 @@ export const conversion_unit_cubic_kilometer_per_second: List = {
 
 export const conversion_unit_teaspoon_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('tsp/s')
     .possibilities()
@@ -1391,6 +1541,7 @@ export const conversion_unit_teaspoon_per_second: List = {
 
 export const conversion_unit_tablespoon_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('Tbs/s')
     .possibilities()
@@ -1400,6 +1551,7 @@ export const conversion_unit_tablespoon_per_second: List = {
 
 export const conversion_unit_cubic_inch_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('in3/s')
     .possibilities()
@@ -1409,6 +1561,7 @@ export const conversion_unit_cubic_inch_per_second: List = {
 
 export const conversion_unit_cubic_inch_per_minute: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('in3/min')
     .possibilities()
@@ -1418,6 +1571,7 @@ export const conversion_unit_cubic_inch_per_minute: List = {
 
 export const conversion_unit_cubic_inch_per_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('in3/h')
     .possibilities()
@@ -1427,6 +1581,7 @@ export const conversion_unit_cubic_inch_per_hour: List = {
 
 export const conversion_unit_fluid_ounce_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('fl-oz/s')
     .possibilities()
@@ -1436,6 +1591,7 @@ export const conversion_unit_fluid_ounce_per_second: List = {
 
 export const conversion_unit_fluid_ounce_per_minute: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('fl-oz/min')
     .possibilities()
@@ -1445,6 +1601,7 @@ export const conversion_unit_fluid_ounce_per_minute: List = {
 
 export const conversion_unit_fluid_ounce_per_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('fl-oz/h')
     .possibilities()
@@ -1454,6 +1611,7 @@ export const conversion_unit_fluid_ounce_per_hour: List = {
 
 export const conversion_unit_cup_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('cup/s')
     .possibilities()
@@ -1463,6 +1621,7 @@ export const conversion_unit_cup_per_second: List = {
 
 export const conversion_unit_pint_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('pnt/s')
     .possibilities()
@@ -1472,6 +1631,7 @@ export const conversion_unit_pint_per_second: List = {
 
 export const conversion_unit_pint_per_minute: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('pnt/min')
     .possibilities()
@@ -1481,6 +1641,7 @@ export const conversion_unit_pint_per_minute: List = {
 
 export const conversion_unit_pint_per_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('pnt/h')
     .possibilities()
@@ -1490,6 +1651,7 @@ export const conversion_unit_pint_per_hour: List = {
 
 export const conversion_unit_quart_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('qt/s')
     .possibilities()
@@ -1499,6 +1661,7 @@ export const conversion_unit_quart_per_second: List = {
 
 export const conversion_unit_gallon_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('gal/s')
     .possibilities()
@@ -1508,6 +1671,7 @@ export const conversion_unit_gallon_per_second: List = {
 
 export const conversion_unit_gallon_per_minute: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('gal/min')
     .possibilities()
@@ -1517,6 +1681,7 @@ export const conversion_unit_gallon_per_minute: List = {
 
 export const conversion_unit_gallon_per_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('gal/h')
     .possibilities()
@@ -1526,6 +1691,7 @@ export const conversion_unit_gallon_per_hour: List = {
 
 export const conversion_unit_cubic_foot_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ft3/s')
     .possibilities()
@@ -1535,6 +1701,7 @@ export const conversion_unit_cubic_foot_per_second: List = {
 
 export const conversion_unit_cubic_foot_per_minute: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ft3/min')
     .possibilities()
@@ -1544,6 +1711,7 @@ export const conversion_unit_cubic_foot_per_minute: List = {
 
 export const conversion_unit_cubic_foot_per_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ft3/h')
     .possibilities()
@@ -1553,6 +1721,7 @@ export const conversion_unit_cubic_foot_per_hour: List = {
 
 export const conversion_unit_cubic_yard_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('yd3/s')
     .possibilities()
@@ -1562,6 +1731,7 @@ export const conversion_unit_cubic_yard_per_second: List = {
 
 export const conversion_unit_cubic_yard_per_minute: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('yd3/min')
     .possibilities()
@@ -1571,6 +1741,7 @@ export const conversion_unit_cubic_yard_per_minute: List = {
 
 export const conversion_unit_cubic_yard_per_hour: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('yd3/h')
     .possibilities()
@@ -1580,6 +1751,7 @@ export const conversion_unit_cubic_yard_per_hour: List = {
 
 export const conversion_unit_lux: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('lx')
     .possibilities()
@@ -1589,6 +1761,7 @@ export const conversion_unit_lux: List = {
 
 export const conversion_unit_foot_candle: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('ft-cd')
     .possibilities()
@@ -1598,6 +1771,7 @@ export const conversion_unit_foot_candle: List = {
 
 export const conversion_unit_millihertz: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('mHz')
     .possibilities()
@@ -1607,6 +1781,7 @@ export const conversion_unit_millihertz: List = {
 
 export const conversion_unit_hertz: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('Hz')
     .possibilities()
@@ -1616,6 +1791,7 @@ export const conversion_unit_hertz: List = {
 
 export const conversion_unit_kilohertz: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('kHz')
     .possibilities()
@@ -1625,6 +1801,7 @@ export const conversion_unit_kilohertz: List = {
 
 export const conversion_unit_megahertz: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('MHz')
     .possibilities()
@@ -1634,6 +1811,7 @@ export const conversion_unit_megahertz: List = {
 
 export const conversion_unit_gigahertz: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('GHz')
     .possibilities()
@@ -1643,6 +1821,7 @@ export const conversion_unit_gigahertz: List = {
 
 export const conversion_unit_terahertz: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('THz')
     .possibilities()
@@ -1652,6 +1831,7 @@ export const conversion_unit_terahertz: List = {
 
 export const conversion_unit_rotation_per_minute: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('rpm')
     .possibilities()
@@ -1661,6 +1841,7 @@ export const conversion_unit_rotation_per_minute: List = {
 
 export const conversion_unit_degree_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('deg/s')
     .possibilities()
@@ -1670,6 +1851,7 @@ export const conversion_unit_degree_per_second: List = {
 
 export const conversion_unit_radian_per_second: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('rad/s')
     .possibilities()
@@ -1679,6 +1861,7 @@ export const conversion_unit_radian_per_second: List = {
 
 export const conversion_unit_radian: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('rad')
     .possibilities()
@@ -1688,6 +1871,7 @@ export const conversion_unit_radian: List = {
 
 export const conversion_unit_degree: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('deg')
     .possibilities()
@@ -1697,6 +1881,7 @@ export const conversion_unit_degree: List = {
 
 export const conversion_unit_gradian: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('grad')
     .possibilities()
@@ -1706,6 +1891,7 @@ export const conversion_unit_gradian: List = {
 
 export const conversion_unit_arcminute: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('arcmin')
     .possibilities()
@@ -1715,6 +1901,7 @@ export const conversion_unit_arcminute: List = {
 
 export const conversion_unit_arcsecond: List = {
   form: 'list',
+  save: '~/code/type/action/convert/unit',
   list: convertedUnits
     .from('arcsec')
     .possibilities()
@@ -1724,6 +1911,7 @@ export const conversion_unit_arcsecond: List = {
 
 export const convert_millimeter: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -1741,6 +1929,7 @@ export const convert_millimeter: Form = {
 
 export const convert_centimeter: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -1758,6 +1947,7 @@ export const convert_centimeter: Form = {
 
 export const convert_meter: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -1775,6 +1965,7 @@ export const convert_meter: Form = {
 
 export const convert_kilometer: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -1792,6 +1983,7 @@ export const convert_kilometer: Form = {
 
 export const convert_inch: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -1809,6 +2001,7 @@ export const convert_inch: Form = {
 
 export const convert_yard: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -1826,6 +2019,7 @@ export const convert_yard: Form = {
 
 export const convert_us_survey_foot: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -1843,6 +2037,7 @@ export const convert_us_survey_foot: Form = {
 
 export const convert_foot: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -1860,6 +2055,7 @@ export const convert_foot: Form = {
 
 export const convert_mile: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -1877,6 +2073,7 @@ export const convert_mile: Form = {
 
 export const convert_square_millimeter: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -1894,6 +2091,7 @@ export const convert_square_millimeter: Form = {
 
 export const convert_square_centimeter: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -1911,6 +2109,7 @@ export const convert_square_centimeter: Form = {
 
 export const convert_square_meter: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -1928,6 +2127,7 @@ export const convert_square_meter: Form = {
 
 export const convert_hectare: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -1945,6 +2145,7 @@ export const convert_hectare: Form = {
 
 export const convert_square_kilometer: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -1962,6 +2163,7 @@ export const convert_square_kilometer: Form = {
 
 export const convert_square_inch: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -1979,6 +2181,7 @@ export const convert_square_inch: Form = {
 
 export const convert_square_yard: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -1996,6 +2199,7 @@ export const convert_square_yard: Form = {
 
 export const convert_square_foot: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2013,6 +2217,7 @@ export const convert_square_foot: Form = {
 
 export const convert_acre: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2030,6 +2235,7 @@ export const convert_acre: Form = {
 
 export const convert_square_mile: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2047,6 +2253,7 @@ export const convert_square_mile: Form = {
 
 export const convert_microgram: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2064,6 +2271,7 @@ export const convert_microgram: Form = {
 
 export const convert_milligram: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2081,6 +2289,7 @@ export const convert_milligram: Form = {
 
 export const convert_gram: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2098,6 +2307,7 @@ export const convert_gram: Form = {
 
 export const convert_kilogram: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2115,6 +2325,7 @@ export const convert_kilogram: Form = {
 
 export const convert_metric_tonne: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2132,6 +2343,7 @@ export const convert_metric_tonne: Form = {
 
 export const convert_ounce: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2149,6 +2361,7 @@ export const convert_ounce: Form = {
 
 export const convert_pound: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2166,6 +2379,7 @@ export const convert_pound: Form = {
 
 export const convert_ton: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2183,6 +2397,7 @@ export const convert_ton: Form = {
 
 export const convert_cubic_millimeter: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2200,6 +2415,7 @@ export const convert_cubic_millimeter: Form = {
 
 export const convert_cubic_centimeter: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2217,6 +2433,7 @@ export const convert_cubic_centimeter: Form = {
 
 export const convert_millilitre: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2234,6 +2451,7 @@ export const convert_millilitre: Form = {
 
 export const convert_centilitre: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2251,6 +2469,7 @@ export const convert_centilitre: Form = {
 
 export const convert_decilitre: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2268,6 +2487,7 @@ export const convert_decilitre: Form = {
 
 export const convert_litre: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2285,6 +2505,7 @@ export const convert_litre: Form = {
 
 export const convert_kilolitre: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2302,6 +2523,7 @@ export const convert_kilolitre: Form = {
 
 export const convert_cubic_meter: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2319,6 +2541,7 @@ export const convert_cubic_meter: Form = {
 
 export const convert_cubic_kilometer: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2336,6 +2559,7 @@ export const convert_cubic_kilometer: Form = {
 
 export const convert_tesked: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2353,6 +2577,7 @@ export const convert_tesked: Form = {
 
 export const convert_matsked: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2370,6 +2595,7 @@ export const convert_matsked: Form = {
 
 export const convert_kaffekopp: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2387,6 +2613,7 @@ export const convert_kaffekopp: Form = {
 
 export const convert_glas: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2404,6 +2631,7 @@ export const convert_glas: Form = {
 
 export const convert_kanna: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2421,6 +2649,7 @@ export const convert_kanna: Form = {
 
 export const convert_teaspoon: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2438,6 +2667,7 @@ export const convert_teaspoon: Form = {
 
 export const convert_tablespoon: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2455,6 +2685,7 @@ export const convert_tablespoon: Form = {
 
 export const convert_cubic_inch: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2472,6 +2703,7 @@ export const convert_cubic_inch: Form = {
 
 export const convert_fluid_ounce: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2489,6 +2721,7 @@ export const convert_fluid_ounce: Form = {
 
 export const convert_cup: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2506,6 +2739,7 @@ export const convert_cup: Form = {
 
 export const convert_pint: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2523,6 +2757,7 @@ export const convert_pint: Form = {
 
 export const convert_quart: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2540,6 +2775,7 @@ export const convert_quart: Form = {
 
 export const convert_gallon: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2557,6 +2793,7 @@ export const convert_gallon: Form = {
 
 export const convert_cubic_foot: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2574,6 +2811,7 @@ export const convert_cubic_foot: Form = {
 
 export const convert_cubic_yard: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2591,6 +2829,7 @@ export const convert_cubic_yard: Form = {
 
 export const convert_each: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2608,6 +2847,7 @@ export const convert_each: Form = {
 
 export const convert_dozen: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2625,6 +2865,7 @@ export const convert_dozen: Form = {
 
 export const convert_celsius: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2642,6 +2883,7 @@ export const convert_celsius: Form = {
 
 export const convert_kelvin: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2659,6 +2901,7 @@ export const convert_kelvin: Form = {
 
 export const convert_fahrenheit: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2676,6 +2919,7 @@ export const convert_fahrenheit: Form = {
 
 export const convert_rankine: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2693,6 +2937,7 @@ export const convert_rankine: Form = {
 
 export const convert_nanosecond: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2710,6 +2955,7 @@ export const convert_nanosecond: Form = {
 
 export const convert_microsecond: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2727,6 +2973,7 @@ export const convert_microsecond: Form = {
 
 export const convert_millisecond: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2744,6 +2991,7 @@ export const convert_millisecond: Form = {
 
 export const convert_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2761,6 +3009,7 @@ export const convert_second: Form = {
 
 export const convert_minute: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2778,6 +3027,7 @@ export const convert_minute: Form = {
 
 export const convert_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2795,6 +3045,7 @@ export const convert_hour: Form = {
 
 export const convert_day: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2812,6 +3063,7 @@ export const convert_day: Form = {
 
 export const convert_week: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2829,6 +3081,7 @@ export const convert_week: Form = {
 
 export const convert_month: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2846,6 +3099,7 @@ export const convert_month: Form = {
 
 export const convert_year: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2863,6 +3117,7 @@ export const convert_year: Form = {
 
 export const convert_bit: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2880,6 +3135,7 @@ export const convert_bit: Form = {
 
 export const convert_kilobit: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2897,6 +3153,7 @@ export const convert_kilobit: Form = {
 
 export const convert_megabit: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2914,6 +3171,7 @@ export const convert_megabit: Form = {
 
 export const convert_gigabit: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2931,6 +3189,7 @@ export const convert_gigabit: Form = {
 
 export const convert_terabit: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2948,6 +3207,7 @@ export const convert_terabit: Form = {
 
 export const convert_byte: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2965,6 +3225,7 @@ export const convert_byte: Form = {
 
 export const convert_kilobyte: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2982,6 +3243,7 @@ export const convert_kilobyte: Form = {
 
 export const convert_megabyte: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -2999,6 +3261,7 @@ export const convert_megabyte: Form = {
 
 export const convert_gigabyte: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3016,6 +3279,7 @@ export const convert_gigabyte: Form = {
 
 export const convert_terabyte: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3033,6 +3297,7 @@ export const convert_terabyte: Form = {
 
 export const convert_part_per_million: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3050,6 +3315,7 @@ export const convert_part_per_million: Form = {
 
 export const convert_part_per_billion: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3067,6 +3333,7 @@ export const convert_part_per_billion: Form = {
 
 export const convert_part_per_trillion: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3084,6 +3351,7 @@ export const convert_part_per_trillion: Form = {
 
 export const convert_part_per_quadrillion: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3101,6 +3369,7 @@ export const convert_part_per_quadrillion: Form = {
 
 export const convert_metre_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3118,6 +3387,7 @@ export const convert_metre_per_second: Form = {
 
 export const convert_kilometre_per_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3135,6 +3405,7 @@ export const convert_kilometre_per_hour: Form = {
 
 export const convert_mile_per_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3152,6 +3423,7 @@ export const convert_mile_per_hour: Form = {
 
 export const convert_knot: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3169,6 +3441,7 @@ export const convert_knot: Form = {
 
 export const convert_foot_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3186,6 +3459,7 @@ export const convert_foot_per_second: Form = {
 
 export const convert_minute_per_kilometre: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3203,6 +3477,7 @@ export const convert_minute_per_kilometre: Form = {
 
 export const convert_second_per_metre: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3220,6 +3495,7 @@ export const convert_second_per_metre: Form = {
 
 export const convert_minute_per_mile: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3237,6 +3513,7 @@ export const convert_minute_per_mile: Form = {
 
 export const convert_second_per_foot: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3254,6 +3531,7 @@ export const convert_second_per_foot: Form = {
 
 export const convert_pascal: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3271,6 +3549,7 @@ export const convert_pascal: Form = {
 
 export const convert_kilopascal: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3288,6 +3567,7 @@ export const convert_kilopascal: Form = {
 
 export const convert_megapascal: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3305,6 +3585,7 @@ export const convert_megapascal: Form = {
 
 export const convert_hectopascal: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3322,6 +3603,7 @@ export const convert_hectopascal: Form = {
 
 export const convert_bar: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3339,6 +3621,7 @@ export const convert_bar: Form = {
 
 export const convert_torr: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3356,6 +3639,7 @@ export const convert_torr: Form = {
 
 export const convert_pound_per_square_inch: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3373,6 +3657,7 @@ export const convert_pound_per_square_inch: Form = {
 
 export const convert_kilopound_per_square_inch: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3390,6 +3675,7 @@ export const convert_kilopound_per_square_inch: Form = {
 
 export const convert_ampere: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3407,6 +3693,7 @@ export const convert_ampere: Form = {
 
 export const convert_milliampere: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3424,6 +3711,7 @@ export const convert_milliampere: Form = {
 
 export const convert_kiloampere: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3441,6 +3729,7 @@ export const convert_kiloampere: Form = {
 
 export const convert_volt: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3458,6 +3747,7 @@ export const convert_volt: Form = {
 
 export const convert_millivolt: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3475,6 +3765,7 @@ export const convert_millivolt: Form = {
 
 export const convert_kilovolt: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3492,6 +3783,7 @@ export const convert_kilovolt: Form = {
 
 export const convert_watt: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3509,6 +3801,7 @@ export const convert_watt: Form = {
 
 export const convert_milliwatt: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3526,6 +3819,7 @@ export const convert_milliwatt: Form = {
 
 export const convert_kilowatt: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3543,6 +3837,7 @@ export const convert_kilowatt: Form = {
 
 export const convert_megawatt: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3560,6 +3855,7 @@ export const convert_megawatt: Form = {
 
 export const convert_gigawatt: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3577,6 +3873,7 @@ export const convert_gigawatt: Form = {
 
 export const convert_volt_ampere_reactive: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3594,6 +3891,7 @@ export const convert_volt_ampere_reactive: Form = {
 
 export const convert_millivolt_ampere_reactive: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3611,6 +3909,7 @@ export const convert_millivolt_ampere_reactive: Form = {
 
 export const convert_kilovolt_ampere_reactive: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3628,6 +3927,7 @@ export const convert_kilovolt_ampere_reactive: Form = {
 
 export const convert_megavolt_ampere_reactive: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3645,6 +3945,7 @@ export const convert_megavolt_ampere_reactive: Form = {
 
 export const convert_gigavolt_ampere_reactive: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3662,6 +3963,7 @@ export const convert_gigavolt_ampere_reactive: Form = {
 
 export const convert_volt_ampere: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3679,6 +3981,7 @@ export const convert_volt_ampere: Form = {
 
 export const convert_millivolt_ampere: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3696,6 +3999,7 @@ export const convert_millivolt_ampere: Form = {
 
 export const convert_kilovolt_ampere: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3713,6 +4017,7 @@ export const convert_kilovolt_ampere: Form = {
 
 export const convert_megavolt_ampere: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3730,6 +4035,7 @@ export const convert_megavolt_ampere: Form = {
 
 export const convert_gigavolt_ampere: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3747,6 +4053,7 @@ export const convert_gigavolt_ampere: Form = {
 
 export const convert_watt_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3764,6 +4071,7 @@ export const convert_watt_hour: Form = {
 
 export const convert_milliwatt_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3781,6 +4089,7 @@ export const convert_milliwatt_hour: Form = {
 
 export const convert_kilowatt_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3798,6 +4107,7 @@ export const convert_kilowatt_hour: Form = {
 
 export const convert_megawatt_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3815,6 +4125,7 @@ export const convert_megawatt_hour: Form = {
 
 export const convert_gigawatt_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3832,6 +4143,7 @@ export const convert_gigawatt_hour: Form = {
 
 export const convert_joule: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3849,6 +4161,7 @@ export const convert_joule: Form = {
 
 export const convert_kilojoule: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3866,6 +4179,7 @@ export const convert_kilojoule: Form = {
 
 export const convert_volt_ampere_reactive_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3883,6 +4197,7 @@ export const convert_volt_ampere_reactive_hour: Form = {
 
 export const convert_millivolt_ampere_reactive_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3902,6 +4217,7 @@ export const convert_millivolt_ampere_reactive_hour: Form = {
 
 export const convert_kilovolt_ampere_reactive_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3921,6 +4237,7 @@ export const convert_kilovolt_ampere_reactive_hour: Form = {
 
 export const convert_megavolt_ampere_reactive_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3940,6 +4257,7 @@ export const convert_megavolt_ampere_reactive_hour: Form = {
 
 export const convert_gigavolt_ampere_reactive_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3959,6 +4277,7 @@ export const convert_gigavolt_ampere_reactive_hour: Form = {
 
 export const convert_cubic_millimeter_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3976,6 +4295,7 @@ export const convert_cubic_millimeter_per_second: Form = {
 
 export const convert_cubic_centimeter_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -3993,6 +4313,7 @@ export const convert_cubic_centimeter_per_second: Form = {
 
 export const convert_millilitre_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4010,6 +4331,7 @@ export const convert_millilitre_per_second: Form = {
 
 export const convert_centilitre_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4027,6 +4349,7 @@ export const convert_centilitre_per_second: Form = {
 
 export const convert_decilitre_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4044,6 +4367,7 @@ export const convert_decilitre_per_second: Form = {
 
 export const convert_litre_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4061,6 +4385,7 @@ export const convert_litre_per_second: Form = {
 
 export const convert_litre_per_minute: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4078,6 +4403,7 @@ export const convert_litre_per_minute: Form = {
 
 export const convert_litre_per_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4095,6 +4421,7 @@ export const convert_litre_per_hour: Form = {
 
 export const convert_kilolitre_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4112,6 +4439,7 @@ export const convert_kilolitre_per_second: Form = {
 
 export const convert_kilolitre_per_minute: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4129,6 +4457,7 @@ export const convert_kilolitre_per_minute: Form = {
 
 export const convert_kilolitre_per_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4146,6 +4475,7 @@ export const convert_kilolitre_per_hour: Form = {
 
 export const convert_cubic_meter_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4163,6 +4493,7 @@ export const convert_cubic_meter_per_second: Form = {
 
 export const convert_cubic_meter_per_minute: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4180,6 +4511,7 @@ export const convert_cubic_meter_per_minute: Form = {
 
 export const convert_cubic_meter_per_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4197,6 +4529,7 @@ export const convert_cubic_meter_per_hour: Form = {
 
 export const convert_cubic_kilometer_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4214,6 +4547,7 @@ export const convert_cubic_kilometer_per_second: Form = {
 
 export const convert_teaspoon_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4231,6 +4565,7 @@ export const convert_teaspoon_per_second: Form = {
 
 export const convert_tablespoon_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4248,6 +4583,7 @@ export const convert_tablespoon_per_second: Form = {
 
 export const convert_cubic_inch_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4265,6 +4601,7 @@ export const convert_cubic_inch_per_second: Form = {
 
 export const convert_cubic_inch_per_minute: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4282,6 +4619,7 @@ export const convert_cubic_inch_per_minute: Form = {
 
 export const convert_cubic_inch_per_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4299,6 +4637,7 @@ export const convert_cubic_inch_per_hour: Form = {
 
 export const convert_fluid_ounce_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4316,6 +4655,7 @@ export const convert_fluid_ounce_per_second: Form = {
 
 export const convert_fluid_ounce_per_minute: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4333,6 +4673,7 @@ export const convert_fluid_ounce_per_minute: Form = {
 
 export const convert_fluid_ounce_per_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4350,6 +4691,7 @@ export const convert_fluid_ounce_per_hour: Form = {
 
 export const convert_cup_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4367,6 +4709,7 @@ export const convert_cup_per_second: Form = {
 
 export const convert_pint_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4384,6 +4727,7 @@ export const convert_pint_per_second: Form = {
 
 export const convert_pint_per_minute: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4401,6 +4745,7 @@ export const convert_pint_per_minute: Form = {
 
 export const convert_pint_per_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4418,6 +4763,7 @@ export const convert_pint_per_hour: Form = {
 
 export const convert_quart_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4435,6 +4781,7 @@ export const convert_quart_per_second: Form = {
 
 export const convert_gallon_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4452,6 +4799,7 @@ export const convert_gallon_per_second: Form = {
 
 export const convert_gallon_per_minute: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4469,6 +4817,7 @@ export const convert_gallon_per_minute: Form = {
 
 export const convert_gallon_per_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4486,6 +4835,7 @@ export const convert_gallon_per_hour: Form = {
 
 export const convert_cubic_foot_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4503,6 +4853,7 @@ export const convert_cubic_foot_per_second: Form = {
 
 export const convert_cubic_foot_per_minute: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4520,6 +4871,7 @@ export const convert_cubic_foot_per_minute: Form = {
 
 export const convert_cubic_foot_per_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4537,6 +4889,7 @@ export const convert_cubic_foot_per_hour: Form = {
 
 export const convert_cubic_yard_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4554,6 +4907,7 @@ export const convert_cubic_yard_per_second: Form = {
 
 export const convert_cubic_yard_per_minute: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4571,6 +4925,7 @@ export const convert_cubic_yard_per_minute: Form = {
 
 export const convert_cubic_yard_per_hour: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4588,6 +4943,7 @@ export const convert_cubic_yard_per_hour: Form = {
 
 export const convert_lux: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4605,6 +4961,7 @@ export const convert_lux: Form = {
 
 export const convert_foot_candle: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4622,6 +4979,7 @@ export const convert_foot_candle: Form = {
 
 export const convert_millihertz: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4639,6 +4997,7 @@ export const convert_millihertz: Form = {
 
 export const convert_hertz: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4656,6 +5015,7 @@ export const convert_hertz: Form = {
 
 export const convert_kilohertz: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4673,6 +5033,7 @@ export const convert_kilohertz: Form = {
 
 export const convert_megahertz: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4690,6 +5051,7 @@ export const convert_megahertz: Form = {
 
 export const convert_gigahertz: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4707,6 +5069,7 @@ export const convert_gigahertz: Form = {
 
 export const convert_terahertz: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4724,6 +5087,7 @@ export const convert_terahertz: Form = {
 
 export const convert_rotation_per_minute: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4741,6 +5105,7 @@ export const convert_rotation_per_minute: Form = {
 
 export const convert_degree_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4758,6 +5123,7 @@ export const convert_degree_per_second: Form = {
 
 export const convert_radian_per_second: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4775,6 +5141,7 @@ export const convert_radian_per_second: Form = {
 
 export const convert_radian: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4792,6 +5159,7 @@ export const convert_radian: Form = {
 
 export const convert_degree: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4809,6 +5177,7 @@ export const convert_degree: Form = {
 
 export const convert_gradian: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4826,6 +5195,7 @@ export const convert_gradian: Form = {
 
 export const convert_arcminute: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4843,6 +5213,7 @@ export const convert_arcminute: Form = {
 
 export const convert_arcsecond: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {
@@ -4860,6 +5231,7 @@ export const convert_arcsecond: Form = {
 
 export const convert_unit: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/unit',
   link: {
     input: {
       link: {

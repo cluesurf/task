@@ -19,7 +19,7 @@ import {
   VerifyImageWithImageMagickParser,
 } from '~/code/type/shared/parser.js'
 import { testVerifyImageWithImageMagickNode } from '~/code/action/verify/image/node.js'
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 import { closeAllBrowsers } from '~/code/tool/node/browser.js'
 // import { verify } from '~/code/action/verify/node'
 import { exitWithError } from '../process.js'

@@ -1,7 +1,8 @@
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 
 export const convert_time_zone: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/time-zone',
   link: {
     input: {
       link: {

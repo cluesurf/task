@@ -1,4 +1,4 @@
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 
 const cli_base = {
   help: { like: 'boolean', need: false, name: { mark: 'h' } },
@@ -12,6 +12,7 @@ const cli_base = {
 
 export const compile_cli_base: Form = {
   form: 'form',
+  save: '~/code/type/cli',
   // leak: true,
   link: {
     input: {
@@ -40,6 +41,7 @@ export const compile_cli_base: Form = {
 
 export const convert_cli_base: Form = {
   form: 'form',
+  save: '~/code/type/cli',
   // leak: true,
   link: {
     input: {
@@ -68,6 +70,7 @@ export const convert_cli_base: Form = {
 
 export const format_cli_base: Form = {
   form: 'form',
+  save: '~/code/type/cli',
   // leak: true,
   link: {
     format: { like: 'string', name: { mark: 'I' } },
@@ -95,6 +98,7 @@ export const format_cli_base: Form = {
 
 export const verify_cli_base: Form = {
   form: 'form',
+  save: '~/code/type/cli',
   // leak: true,
   link: {
     format: { like: 'string', name: { mark: 'I' } },

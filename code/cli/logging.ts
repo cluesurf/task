@@ -5,7 +5,7 @@ import { log, logWithSpace } from '~/code/tool/shared/logger.js'
 import isObject from 'lodash/isObject.js'
 import kebabCase from 'lodash/kebabCase.js'
 import makeSiteKinkText from '@termsurf/kink-site'
-import { Form, BaseHash } from '@termsurf/form'
+import { Form, BaseHash } from '@cluesurf/form'
 import { makeLineCallLinkList } from './parse.js'
 
 const M: Tint = { tone: 'magenta' }

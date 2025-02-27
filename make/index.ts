@@ -1,50 +1,46 @@
-import makeTree from '@termsurf/form/host/make/index.js'
+import makeTree from '@cluesurf/form/host/make'
 import * as MESH from '~/code/source'
 import NAME from '~/code/object/name'
 // import '~/code/shared/type/source/call/convert'
 import fsp from 'fs/promises'
-import { BaseHash } from '@termsurf/form'
+import { BaseHash } from '@cluesurf/form'
 import path from 'path'
-import { Hold } from '@termsurf/form/host/make/type'
 
 export type Test = (text: string) => boolean
 
 make()
 
 async function make() {
-  const hold: Hold = { save: {}, load: {} }
-  await makeShared(hold)
-  await makeNode(hold)
-  await makeBrowser(hold)
+  await makeShared()
+  await makeNode()
+  await makeBrowser()
 }
 
-async function makeShared(hold: Hold) {
-  await makeForm(hold, 'shared', (text: string) =>
+async function makeShared() {
+  await makeForm('shared', (text: string) =>
     Boolean(!text.match('_browser_') && !text.match('_node_')),
   )
 }
 
-async function makeNode(hold: Hold) {
-  await makeForm(hold, 'node', (text: string) =>
+async function makeNode() {
+  await makeForm('node', (text: string) =>
     Boolean(text.match('_node_')),
   )
 }
 
-async function makeBrowser(hold: Hold) {
-  await makeForm(hold, 'browser', (text: string) =>
+async function makeBrowser() {
+  await makeForm('browser', (text: string) =>
     Boolean(text.match('_browser_')),
   )
 }
 
-async function makeForm(hold: Hold, type: string, test: Test) {
+async function makeForm(type: string, test: Test) {
   const link: BaseHash = makeMesh(test)
   const tree = await makeTree({
     testLink: `~/code/type/code.js`,
-    baseLink: `~/code/type/${type}`,
     link,
     mesh: MESH,
     name: NAME,
-    ...hold,
   })
 
   await fsp.mkdir(`./code/type/${type}`, { recursive: true })
@@ -52,11 +48,11 @@ async function makeForm(hold: Hold, type: string, test: Test) {
   const castLoad: Record<string, boolean> = {}
 
   if (type !== 'shared') {
-    castLoad[`export * from '../shared/index.js'`] = true
+    castLoad[`export * from '../shared/form.js'`] = true
   }
 
-  for (const name in tree.cast) {
-    const text = tree.cast[name]
+  for (const name in tree.type) {
+    const text = tree.type[name]
     if (text) {
       const link = name.replace('~', '.')
       const base = path.dirname(link)
@@ -80,8 +76,8 @@ async function makeForm(hold: Hold, type: string, test: Test) {
 
   takeLoad[`export * from './form.js'`] = true
 
-  for (const name in tree.take) {
-    const text = tree.take[name]
+  for (const name in tree.parser) {
+    const text = tree.parser[name]
     if (text) {
       const link = name.replace('~', '.')
       const base = path.dirname(link)
@@ -103,8 +99,8 @@ async function makeForm(hold: Hold, type: string, test: Test) {
     baseLoad[`export * from '../shared/data.js'`] = true
   }
 
-  for (const name in tree.base) {
-    const text = tree.base[name]
+  for (const name in tree.constant) {
+    const text = tree.constant[name]
     if (text) {
       const link = name.replace('~', '.')
       const base = path.dirname(link)

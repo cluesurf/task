@@ -1,7 +1,8 @@
-import { Form, Hash, List } from '@termsurf/form'
+import { Form, Hash, List } from '@cluesurf/form'
 
 export const calibre_input_format: List = {
   form: 'list',
+  save: '~/code/type/object/calibre',
   list: [
     'azw4',
     'chm',
@@ -30,6 +31,7 @@ export const calibre_input_format: List = {
 
 export const calibre_format_data: Form = {
   form: 'form',
+  save: '~/code/type/object/calibre',
   link: {
     head: { like: 'string' },
   },
@@ -37,7 +39,7 @@ export const calibre_format_data: Form = {
 
 export const calibre_input_format_content: Hash = {
   form: 'hash',
-  file: 'calibre',
+  save: '~/code/type/object/calibre',
   link: 'calibre_input_format',
   bond: { like: 'calibre_format_data' },
   hash: {
@@ -68,6 +70,7 @@ export const calibre_input_format_content: Hash = {
 
 export const calibre_output_format: List = {
   form: 'list',
+  save: '~/code/type/object/calibre',
   list: [
     'azw3',
     'docx',
@@ -93,7 +96,7 @@ export const calibre_output_format: List = {
 
 export const calibre_output_format_content: Hash = {
   form: 'hash',
-  file: 'calibre',
+  save: '~/code/type/object/calibre',
   link: 'calibre_output_format',
   bond: {
     like: 'calibre_format_data',
@@ -123,6 +126,7 @@ export const calibre_output_format_content: Hash = {
 
 export const calibre_input_profile: List = {
   form: 'list',
+  save: '~/code/type/object/calibre',
   list: [
     'cybookg3',
     'cybook_opus',
@@ -144,6 +148,7 @@ export const calibre_input_profile: List = {
 
 export const calibre_output_profile: List = {
   form: 'list',
+  save: '~/code/type/object/calibre',
   list: [
     'cybookg3',
     'cybook_opus',

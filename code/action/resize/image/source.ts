@@ -1,9 +1,10 @@
 // https://github.com/dlemstra/magick-wasm/tree/dcd3709394b90ea18fd03c50caa6694f2be92a99/src/enums
 
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 
 export const replace_image_color_with_image_magick: Form = {
   form: 'form',
+  save: '~/code/type/action/resize/image/shared',
   link: {
     inputPath: { like: 'string' },
     outputPath: { like: 'string' },
@@ -15,6 +16,7 @@ export const replace_image_color_with_image_magick: Form = {
 
 export const resize_image_with_image_magick: Form = {
   form: 'form',
+  save: '~/code/type/action/resize/image/shared',
   link: {
     inputPath: { like: 'string' },
     outputPath: { like: 'string' },
@@ -27,6 +29,7 @@ export const resize_image_with_image_magick: Form = {
 
 export const write_metadata_to_image: Form = {
   form: 'form',
+  save: '~/code/type/action/resize/image/shared',
   link: {
     input: {
       link: {

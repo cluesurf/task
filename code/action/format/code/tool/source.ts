@@ -1,4 +1,4 @@
-import { Form, FormLinkMesh } from '@termsurf/form'
+import { Form, FormLinkMesh } from '@cluesurf/form'
 import _ from 'lodash'
 
 // only allow uploads from browser to contain `content` or remote paths.
@@ -12,12 +12,14 @@ export const baseCommonFormat: FormLinkMesh = {
 
 export function buildFormatForms({
   name,
+  save,
   i,
   base,
   common = {},
   commonCommand = {},
 }: {
   name: string
+  save: string
   i: string
   base?: string
   common?: FormLinkMesh
@@ -25,6 +27,7 @@ export function buildFormatForms({
 }) {
   const node_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     base,
     case: [
       { like: `${name}_node_remote_input` },
@@ -35,6 +38,7 @@ export function buildFormatForms({
 
   const node_remote_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     base,
     link: _.merge(
       {
@@ -66,6 +70,7 @@ export function buildFormatForms({
 
   const node_client_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     base,
     link: _.merge(
       {
@@ -92,6 +97,7 @@ export function buildFormatForms({
   // gets input from REST API
   const node_external_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     base,
     link: _.merge(
       {
@@ -117,6 +123,7 @@ export function buildFormatForms({
 
   const node_local_external_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     base,
     link: _.merge(
       {
@@ -149,6 +156,7 @@ export function buildFormatForms({
   // is called from node.js directly.
   const node_local_internal_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     base,
     link: _.merge(
       {
@@ -180,6 +188,7 @@ export function buildFormatForms({
 
   const node_local_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     base,
     link: _.merge(
       {
@@ -202,6 +211,7 @@ export function buildFormatForms({
 
   const command_input: Form = {
     form: 'form',
+    save: `${save}/cli`,
     link: _.merge(
       {
         format: { like: i, name: { mark: 'I' } },
@@ -223,6 +233,7 @@ export function buildFormatForms({
 
   const node_output: Form = {
     form: 'form',
+    save: `${save}/node`,
     base,
     link: {
       file: { like: 'file_path' },
@@ -231,6 +242,7 @@ export function buildFormatForms({
 
   const browser_input: Form = {
     form: 'form',
+    save: `${save}/browser`,
     base,
     case: [
       { like: `${name}_browser_remote_input` },
@@ -240,6 +252,7 @@ export function buildFormatForms({
 
   const browser_remote_input: Form = {
     form: 'form',
+    save: `${save}/browser`,
     base,
     link: _.merge({
       handle: { take: ['remote'] },
@@ -257,6 +270,7 @@ export function buildFormatForms({
 
   const browser_local_input: Form = {
     form: 'form',
+    save: `${save}/browser`,
     base,
     link: _.merge({
       handle: { take: ['local'], need: false },
@@ -276,6 +290,7 @@ export function buildFormatForms({
 
   const browser_output: Form = {
     form: 'form',
+    save: `${save}/browser`,
     base,
     link: {
       file: { like: 'file_content' },

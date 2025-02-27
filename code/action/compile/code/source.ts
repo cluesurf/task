@@ -1,14 +1,16 @@
-import { Form, List } from '@termsurf/form'
+import { Form, List } from '@cluesurf/form'
 import { baseCommonCompile, buildCompileForms } from './tool/source.js'
 import _ from 'lodash'
 
 export const swift_input_format: List = {
   form: 'list',
+  save: '~/code/type/action/compile/code/swift/shared',
   list: ['swift'],
 }
 
 const compile_swift_forms = buildCompileForms({
   name: 'compile_swift',
+  save: '~/code/type/action/compile/code/swift',
   i: 'swift_input_format',
   o: 'backend_compilation_output',
 })
@@ -52,11 +54,13 @@ export const compile_swift_browser_output =
 
 export const c_input_format: List = {
   form: 'list',
+  save: '~/code/type/action/compile/code/c/shared',
   list: ['c'],
 }
 
 const compile_c_forms = buildCompileForms({
   name: 'compile_c',
+  save: '~/code/type/action/compile/code/c',
   i: 'c_input_format',
   o: 'backend_compilation_output',
   common: {
@@ -115,11 +119,13 @@ export const compile_c_browser_output = compile_c_forms.browser_output
 
 export const cpp_input_format: List = {
   form: 'list',
+  save: '~/code/type/action/compile/code/cpp',
   list: ['cpp'],
 }
 
 const compile_cpp_forms = buildCompileForms({
   name: 'compile_cpp',
+  save: '~/code/type/action/compile/code/cpp',
   i: 'cpp_input_format',
   o: 'backend_compilation_output',
   common: {
@@ -179,6 +185,7 @@ export const compile_cpp_browser_output =
 
 export const compile_llvm_ir_to_assembly: Form = {
   form: 'form',
+  save: '~/code/type/action/compile/code/llvm-ir',
   link: {
     input: {
       link: {
@@ -210,6 +217,7 @@ export const compile_llvm_ir_to_assembly: Form = {
 
 export const compile_java: Form = {
   form: 'form',
+  save: '~/code/type/action/compile/code/java',
   link: {
     input: {
       link: {
@@ -226,6 +234,7 @@ export const compile_java: Form = {
 
 const compile_rust_forms = buildCompileForms({
   name: 'compile_rust',
+  save: '~/code/type/action/compile/code/rust',
   i: 'rust_input_format',
   o: 'rust_output_format',
   common: {
@@ -278,16 +287,19 @@ export const compile_rust_browser_output =
 
 export const wast_input_format: List = {
   form: 'list',
+  save: '~/code/type/action/compile/code/wast/shared',
   list: ['wast'],
 }
 
 export const wast_output_format: List = {
   form: 'list',
+  save: '~/code/type/action/compile/code/wast/shared',
   list: ['wasm'],
 }
 
 const compile_wast_forms = buildCompileForms({
   name: 'compile_wast',
+  save: '~/code/type/action/compile/code/wast',
   i: 'wast_input_format',
   o: 'wast_output_format',
 })
@@ -331,6 +343,7 @@ export const compile_wast_browser_output =
 
 export const compile_llvm: Form = {
   form: 'form',
+  save: '~/code/type/action/compile/code/llvm/shared',
   link: {
     input: {
       link: {
@@ -347,6 +360,7 @@ export const compile_llvm: Form = {
 
 export const compile_asm: Form = {
   form: 'form',
+  save: '~/code/type/action/compile/code/asm/shared',
   link: {
     input: {
       link: {
@@ -363,6 +377,7 @@ export const compile_asm: Form = {
 
 export const resolve_input_for_compile_remote: Form = {
   form: 'form',
+  save: '~/code/type/action/compile/code',
   link: _.merge(baseCommonCompile, {
     input: {
       link: {
@@ -389,6 +404,7 @@ export const resolve_input_for_compile_remote: Form = {
 
 export const resolve_input_for_compile_local_external: Form = {
   form: 'form',
+  save: '~/code/type/action/compile/code',
   link: _.merge(baseCommonCompile, {
     input: {
       link: {
@@ -411,6 +427,7 @@ export const resolve_input_for_compile_local_external: Form = {
 
 export const resolve_input_for_compile_local_internal: Form = {
   form: 'form',
+  save: '~/code/type/action/compile/code',
   link: _.merge(baseCommonCompile, {
     input: {
       link: {
@@ -430,6 +447,7 @@ export const resolve_input_for_compile_local_internal: Form = {
 
 export const compile_api: Form = {
   form: 'form',
+  save: '~/code/type/action/compile/code',
   link: {
     input: {
       link: {

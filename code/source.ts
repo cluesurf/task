@@ -19,7 +19,6 @@ export * from '~/code/action/convert/font/source.js'
 export * from '~/code/action/optimize/image/local/source.js'
 export * from '~/code/action/disassemble/binary/source.js'
 export * from '~/code/action/inspect/color/source.js'
-export * from '~/code/action/inspect/gematria/source.js'
 export * from '~/code/action/convert/time/source.js'
 export * from '~/code/action/crop/document/source.js'
 export * from '~/code/action/generate/qrcode/source.js'
@@ -54,4 +53,4 @@ export * from '~/code/object/log/source.js'
 
 export * from '~/code/cli/source.js'
 
-export * from '~/code/type/code'
+export * from '~/code/type/code.js'

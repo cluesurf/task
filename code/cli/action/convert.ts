@@ -34,7 +34,7 @@ import {
 } from '../hint.js'
 import { closeAllBrowsers } from '~/code/tool/node/browser.js'
 import { CallLinkMesh } from '../type'
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 import { testConvertFontWithFontForgeNode } from '~/code/action/convert/font/node.js'
 import { testConvertImageWithImageMagickNode } from '~/code/action/convert/image/imagemagick/node.js'
 import { testConvertImageWithInkscapeNode } from '~/code/action/convert/image/inkscape/node.js'

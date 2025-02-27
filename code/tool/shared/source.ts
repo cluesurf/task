@@ -1,4 +1,4 @@
-import { Form, FormLinkMesh } from '@termsurf/form'
+import { Form, FormLinkMesh } from '@cluesurf/form'
 import _ from 'lodash'
 
 // only allow uploads from browser to contain `content` or remote paths.
@@ -12,12 +12,14 @@ export const baseCommonConvert: FormLinkMesh = {
 
 export function buildConvertForms(
   name: string,
+  save: string,
   i: string,
   o: string,
   common: FormLinkMesh = {},
 ) {
   const node_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     case: [
       { like: `${name}_node_remote_input` },
       { like: `${name}_node_local_external_input` },
@@ -27,6 +29,7 @@ export function buildConvertForms(
 
   const node_remote_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['remote'] },
@@ -58,6 +61,7 @@ export function buildConvertForms(
 
   const node_client_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['client'] },
@@ -85,6 +89,7 @@ export function buildConvertForms(
   // gets input from REST API
   const node_external_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['external'] },
@@ -111,6 +116,7 @@ export function buildConvertForms(
 
   const node_local_external_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['external'] },
@@ -143,6 +149,7 @@ export function buildConvertForms(
   // is called from node.js directly.
   const node_local_internal_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['internal'], need: false },
@@ -174,6 +181,7 @@ export function buildConvertForms(
 
   const node_local_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         input: {
@@ -196,6 +204,7 @@ export function buildConvertForms(
 
   const command_input: Form = {
     form: 'form',
+    save: `${save}/cli`,
     link: _.merge(
       {
         input: {
@@ -218,6 +227,7 @@ export function buildConvertForms(
 
   const node_output: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: {
       file: { like: 'file_path' },
     },
@@ -225,6 +235,7 @@ export function buildConvertForms(
 
   const browser_input: Form = {
     form: 'form',
+    save: `${save}/browser`,
     case: [
       { like: `${name}_browser_remote_input` },
       { like: `${name}_browser_local_input` },
@@ -233,6 +244,7 @@ export function buildConvertForms(
 
   const browser_remote_input: Form = {
     form: 'form',
+    save: `${save}/browser`,
     link: _.merge(
       {
         handle: { take: ['remote'] },
@@ -256,6 +268,7 @@ export function buildConvertForms(
 
   const browser_local_input: Form = {
     form: 'form',
+    save: `${save}/browser`,
     link: _.merge(
       {
         handle: { take: ['local'], need: false },
@@ -281,6 +294,7 @@ export function buildConvertForms(
 
   const browser_output: Form = {
     form: 'form',
+    save: `${save}/browser`,
     link: {
       file: { like: 'file_content' },
     },
@@ -305,12 +319,14 @@ export function buildConvertForms(
 
 export function buildConvertFormsToStringContent(
   name: string,
+  save: string,
   i: string,
   o: string,
   common: FormLinkMesh = {},
 ) {
   const node_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     case: [
       { like: `${name}_node_remote_input` },
       { like: `${name}_node_local_external_input` },
@@ -320,6 +336,7 @@ export function buildConvertFormsToStringContent(
 
   const node_remote_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['remote'] },
@@ -351,6 +368,7 @@ export function buildConvertFormsToStringContent(
 
   const node_client_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['client'] },
@@ -378,6 +396,7 @@ export function buildConvertFormsToStringContent(
   // gets input from REST API
   const node_external_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['external'] },
@@ -404,6 +423,7 @@ export function buildConvertFormsToStringContent(
 
   const node_local_external_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['external'] },
@@ -436,6 +456,7 @@ export function buildConvertFormsToStringContent(
   // is called from node.js directly.
   const node_local_internal_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['internal'], need: false },
@@ -467,6 +488,7 @@ export function buildConvertFormsToStringContent(
 
   const node_local_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         input: {
@@ -493,6 +515,7 @@ export function buildConvertFormsToStringContent(
 
   const node_output: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: {
       file: { like: 'file_path' },
     },
@@ -500,6 +523,7 @@ export function buildConvertFormsToStringContent(
 
   const browser_input: Form = {
     form: 'form',
+    save: `${save}/browser`,
     case: [
       { like: `${name}_browser_remote_input` },
       { like: `${name}_browser_local_input` },
@@ -508,6 +532,7 @@ export function buildConvertFormsToStringContent(
 
   const browser_remote_input: Form = {
     form: 'form',
+    save: `${save}/browser`,
     link: _.merge({
       handle: { take: ['remote'] },
       input: {
@@ -529,6 +554,7 @@ export function buildConvertFormsToStringContent(
 
   const browser_local_input: Form = {
     form: 'form',
+    save: `${save}/browser`,
     link: _.merge({
       handle: { take: ['local'], need: false },
       input: {
@@ -552,6 +578,7 @@ export function buildConvertFormsToStringContent(
 
   const browser_output: Form = {
     form: 'form',
+    save: `${save}/browser`,
     link: {
       file: { like: 'file_content' },
     },
@@ -575,12 +602,14 @@ export function buildConvertFormsToStringContent(
 
 export function buildConvertFormsWithOutputDirectory(
   name: string,
+  save: string,
   i: string,
   o: string,
   common: FormLinkMesh = {},
 ) {
   const node_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     case: [
       { like: `${name}_node_remote_input` },
       { like: `${name}_node_local_external_input` },
@@ -590,6 +619,7 @@ export function buildConvertFormsWithOutputDirectory(
 
   const node_remote_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['remote'] },
@@ -618,6 +648,7 @@ export function buildConvertFormsWithOutputDirectory(
 
   const node_client_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['client'] },
@@ -645,6 +676,7 @@ export function buildConvertFormsWithOutputDirectory(
   // gets input from REST API
   const node_external_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['external'] },
@@ -671,6 +703,7 @@ export function buildConvertFormsWithOutputDirectory(
 
   const node_local_external_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['external'] },
@@ -699,6 +732,7 @@ export function buildConvertFormsWithOutputDirectory(
   // is called from node.js directly.
   const node_local_internal_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['internal'], need: false },
@@ -730,6 +764,7 @@ export function buildConvertFormsWithOutputDirectory(
 
   const node_local_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         input: {
@@ -752,6 +787,7 @@ export function buildConvertFormsWithOutputDirectory(
 
   const command_input: Form = {
     form: 'form',
+    save: `${save}/cli`,
     link: _.merge(
       {
         input: {
@@ -774,6 +810,7 @@ export function buildConvertFormsWithOutputDirectory(
 
   const node_output: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: {
       file: { like: 'file_path' },
     },
@@ -781,6 +818,7 @@ export function buildConvertFormsWithOutputDirectory(
 
   const browser_input: Form = {
     form: 'form',
+    save: `${save}/browser`,
     case: [
       { like: `${name}_browser_remote_input` },
       { like: `${name}_browser_local_input` },
@@ -789,6 +827,7 @@ export function buildConvertFormsWithOutputDirectory(
 
   const browser_remote_input: Form = {
     form: 'form',
+    save: `${save}/browser`,
     link: _.merge({
       handle: { take: ['remote'] },
       input: {
@@ -810,6 +849,7 @@ export function buildConvertFormsWithOutputDirectory(
 
   const browser_local_input: Form = {
     form: 'form',
+    save: `${save}/browser`,
     link: _.merge({
       handle: { take: ['local'], need: false },
       input: {
@@ -833,6 +873,7 @@ export function buildConvertFormsWithOutputDirectory(
 
   const browser_output: Form = {
     form: 'form',
+    save: `${save}/browser`,
     link: {
       file: { like: 'file_content' },
     },

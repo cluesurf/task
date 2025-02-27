@@ -1,4 +1,4 @@
-import { Form, FormLinkMesh } from '@termsurf/form'
+import { Form, FormLinkMesh } from '@cluesurf/form'
 import _ from 'lodash'
 
 // only allow uploads from browser to contain `content` or remote paths.
@@ -12,17 +12,20 @@ export const baseCommonCompile: FormLinkMesh = {
 
 export function buildCompileForms({
   name,
+  save,
   i,
   o,
   common = {},
 }: {
   name: string
+  save: string
   i: string
   o: string
   common?: FormLinkMesh
 }) {
   const node_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     case: [
       { like: `${name}_node_remote_input` },
       { like: `${name}_node_local_external_input` },
@@ -32,6 +35,7 @@ export function buildCompileForms({
 
   const node_remote_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['remote'] },
@@ -63,6 +67,7 @@ export function buildCompileForms({
 
   const node_client_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['client'] },
@@ -90,6 +95,7 @@ export function buildCompileForms({
   // gets input from REST API
   const node_external_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['external'] },
@@ -116,6 +122,7 @@ export function buildCompileForms({
 
   const node_local_external_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['external'] },
@@ -148,6 +155,7 @@ export function buildCompileForms({
   // is called from node.js directly.
   const node_local_internal_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         handle: { take: ['internal'], need: false },
@@ -179,6 +187,7 @@ export function buildCompileForms({
 
   const node_local_input: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: _.merge(
       {
         input: {
@@ -201,6 +210,7 @@ export function buildCompileForms({
 
   const command_input: Form = {
     form: 'form',
+    save: `${save}/cli`,
     link: _.merge(
       {
         input: {
@@ -223,6 +233,7 @@ export function buildCompileForms({
 
   const node_output: Form = {
     form: 'form',
+    save: `${save}/node`,
     link: {
       file: { like: 'file_path' },
     },
@@ -230,6 +241,7 @@ export function buildCompileForms({
 
   const browser_input: Form = {
     form: 'form',
+    save: `${save}/browser`,
     case: [
       { like: `${name}_browser_remote_input` },
       { like: `${name}_browser_local_input` },
@@ -238,6 +250,7 @@ export function buildCompileForms({
 
   const browser_remote_input: Form = {
     form: 'form',
+    save: `${save}/browser`,
     link: _.merge(
       {
         handle: { take: ['remote'] },
@@ -261,6 +274,7 @@ export function buildCompileForms({
 
   const browser_local_input: Form = {
     form: 'form',
+    save: `${save}/browser`,
     link: _.merge(
       {
         handle: { take: ['local'], need: false },
@@ -286,6 +300,7 @@ export function buildCompileForms({
 
   const browser_output: Form = {
     form: 'form',
+    save: `${save}/browser`,
     link: {
       file: { like: 'file_content' },
     },

@@ -1,7 +1,8 @@
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 
 export const parse_ast: Form = {
   form: 'form',
+  save: '~/code/type/action/parse/code/shared',
   link: {
     input: {
       link: {

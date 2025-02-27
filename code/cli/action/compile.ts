@@ -13,7 +13,7 @@ import {
 } from '~/code/cli/logging.js'
 import { closeAllBrowsers } from '~/code/tool/node/browser.js'
 import { CallLinkMesh } from '../type.js'
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 import { exitWithError } from '../process.js'
 // import { compile } from '~/code/action/compile/code/node'
 import { COMPILE_CODE_HINT } from '../hint.js'

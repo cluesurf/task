@@ -1,8 +1,9 @@
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 import { buildConvertForms } from '~/code/tool/shared/source.js'
 
 export const convert_video_to_audio_with_ffmpeg: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/ffmpeg/shared',
   link: {
     inputPath: { like: 'string' },
     outputPath: { like: 'string' },
@@ -11,6 +12,7 @@ export const convert_video_to_audio_with_ffmpeg: Form = {
 
 export const convert_video_with_ffmpeg_base: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/ffmpeg/shared',
   link: {
     audioCodec: { like: 'ffmpeg_codec_audio', need: false },
     videoCodec: { like: 'ffmpeg_codec_video', need: false },
@@ -66,6 +68,7 @@ export const convert_video_with_ffmpeg_base: Form = {
 
 const convert_video_with_ffmpeg_forms = buildConvertForms(
   'convert_video_with_ffmpeg',
+  '~/code/type/action/convert/ffmpeg',
   'ffmpeg_format',
   'ffmpeg_format',
   convert_video_with_ffmpeg_base.link,
@@ -112,6 +115,7 @@ export const convert_video_with_ffmpeg_browser_output =
 
 export const convert_mp4_to_gif_with_ffmpeg: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/ffmpeg',
   link: {
     input: {
       link: {
@@ -158,6 +162,7 @@ export const convert_mp4_to_gif_with_ffmpeg: Form = {
 
 export const remove_audio_from_video_with_ffmpeg: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/ffmpeg/shared',
   link: {
     inputPath: { like: 'string' },
     outputPath: { like: 'string' },
@@ -166,6 +171,7 @@ export const remove_audio_from_video_with_ffmpeg: Form = {
 
 export const add_audio_to_video_with_ffmpeg: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/ffmpeg/shared',
   link: {
     inputVideoPath: { like: 'string' },
     inputAudioPath: { like: 'string' },
@@ -177,6 +183,7 @@ export const add_audio_to_video_with_ffmpeg: Form = {
 
 export const compress_mp4_with_ffmpeg: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/ffmpeg/shared',
   link: {
     input: {
       link: {

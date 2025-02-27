@@ -2,6 +2,7 @@ import { buildConvertForms } from '~/code/tool/shared/source.js'
 
 const convert_font_with_font_forge_forms = buildConvertForms(
   'convert_font_with_font_forge',
+  '~/code/type/action/convert/font-forge',
   'font_format',
   'font_format',
 )

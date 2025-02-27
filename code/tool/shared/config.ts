@@ -1,4 +1,4 @@
-import { save } from '@termsurf/form'
+import { save } from '@cluesurf/form'
 
 export const ENVIRONMENT = ['cli', 'server', 'browser'] as const
 

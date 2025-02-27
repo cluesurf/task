@@ -1,4 +1,4 @@
-import { Form, Hash, List } from '@termsurf/form'
+import { Form, Hash, List } from '@cluesurf/form'
 import murmurhash from 'murmurhash'
 import forge from 'node-forge'
 // https://github.com/vkandy/jenkins-hash-js/blob/master/src/jenkins.js
@@ -9,6 +9,7 @@ import forge from 'node-forge'
 
 export const cipher: List = {
   form: 'list',
+  save: '~/code/type/object/crypto',
   list: [
     'aes_ecb',
     'aes_cbc',
@@ -25,6 +26,7 @@ export const cipher: List = {
 
 export const cipher_data: Form = {
   form: 'form',
+  save: '~/code/type/object/crypto',
   link: {
     head: { like: 'string' },
   },
@@ -32,7 +34,7 @@ export const cipher_data: Form = {
 
 export const cipher_content: Hash = {
   form: 'hash',
-  file: 'cipher',
+  save: '~/code/type/object/crypto',
   link: 'cipher',
   bond: {
     like: 'cipher_data',
@@ -53,6 +55,7 @@ export const cipher_content: Hash = {
 
 export const generate_murmur_hash: Form = {
   form: 'form',
+  save: '~/code/type/object/crypto',
   link: {
     input: { like: 'string' },
     seed: { like: 'integer' },

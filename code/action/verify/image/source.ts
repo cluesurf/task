@@ -1,7 +1,8 @@
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 
 export const verify_image_with_image_magick: Form = {
   form: 'form',
+  save: '~/code/type/action/verify/image/shared',
   link: {
     format: { like: 'image_magick_format', name: { mark: 'I' } },
     file: {

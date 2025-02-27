@@ -1,4 +1,4 @@
-import { Form, FormLink, BaseHash } from '@termsurf/form'
+import { Form, FormLink, BaseHash } from '@cluesurf/form'
 import { Call, Bond, CallLinkMesh } from './type.js'
 import set from 'lodash/set.js'
 import kebabCase from 'lodash/kebabCase.js'

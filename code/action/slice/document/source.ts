@@ -1,7 +1,8 @@
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 
 export const slice_pdf_with_data: Form = {
   form: 'form',
+  save: '~/code/type/action/slice/document/shared',
   link: {
     input: {
       link: {
@@ -20,6 +21,7 @@ export const slice_pdf_with_data: Form = {
 
 export const slice_pdf: Form = {
   form: 'form',
+  save: '~/code/type/action/slice/document/shared',
   link: {
     input: {
       link: {

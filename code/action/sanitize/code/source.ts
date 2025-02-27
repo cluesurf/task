@@ -1,4 +1,4 @@
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 import {
   baseCommonSanitize,
   buildSanitizeForms,
@@ -7,6 +7,7 @@ import _ from 'lodash'
 
 const sanitize_html_forms = buildSanitizeForms({
   name: 'sanitize_html',
+  save: '~/code/type/action/sanitize/code',
   i: 'string',
   o: 'string',
 })
@@ -50,6 +51,7 @@ export const sanitize_html_browser_output =
 
 export const sanitize_api: Form = {
   form: 'form',
+  save: '~/code/type/action/sanitize/code/shared',
   link: {
     input: {
       link: {
@@ -61,6 +63,7 @@ export const sanitize_api: Form = {
 
 export const resolve_input_for_sanitize_remote: Form = {
   form: 'form',
+  save: '~/code/type/action/sanitize/code/shared',
   link: _.merge(baseCommonSanitize, {
     input: {
       link: {
@@ -87,6 +90,7 @@ export const resolve_input_for_sanitize_remote: Form = {
 
 export const resolve_input_for_sanitize_local_external: Form = {
   form: 'form',
+  save: '~/code/type/action/sanitize/code/shared',
   link: _.merge(baseCommonSanitize, {
     input: {
       link: {
@@ -109,6 +113,7 @@ export const resolve_input_for_sanitize_local_external: Form = {
 
 export const resolve_input_for_sanitize_local_internal: Form = {
   form: 'form',
+  save: '~/code/type/action/sanitize/code/shared',
   link: _.merge(baseCommonSanitize, {
     input: {
       link: {

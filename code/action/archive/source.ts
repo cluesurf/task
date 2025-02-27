@@ -1,7 +1,8 @@
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 
 export const archive: Form = {
   form: 'form',
+  save: '~/code/type/action/archive',
   link: {
     input: {
       link: {

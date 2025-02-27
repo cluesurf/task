@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@cluesurf/form':
+        specifier: ^0.3.0
+        version: 0.3.0(zod@3.22.4)
       '@epic-web/invariant':
         specifier: ^1.0.0
         version: 1.0.0
@@ -32,9 +35,6 @@ importers:
       '@prettier/plugin-xml':
         specifier: ^3.2.2
         version: 3.2.2(prettier@3.2.5)
-      '@termsurf/form':
-        specifier: ^0.9.22
-        version: 0.9.22(zod@3.22.4)
       '@termsurf/kink':
         specifier: ^0.1.6
         version: 0.1.6
@@ -505,6 +505,11 @@ packages:
   '@babel/runtime@7.23.7':
     resolution: {integrity: sha512-w06OXVOFso7LcbzMiDGt+3X7Rh7Ho8MmgPoWU3rarH+8upf+wSU/grlGbWzQyr3DkdN6ZeuMFjpdwW0Q+HxobA==}
     engines: {node: '>=6.9.0'}
+
+  '@cluesurf/form@0.3.0':
+    resolution: {integrity: sha512-DHXkirModaDS5B9/bpgYbYgm5CNvu6wbL9479ZWi/HGVdnp0FlHjFeiVV4gjus9vcSk2X2UErRTQxiaVxEnmbA==}
+    peerDependencies:
+      zod: ^3.22.4
 
   '@cspotcode/source-map@0.8.0':
     resolution: {integrity: sha512-LJ8rJH2SyApMpjKeL+h9IIF9VbVMX9lel0bkUIWV0G7GlAj/riWBWkUDt6GB4wZiqxPv25hFNa57hPZDrRWrqA==}
@@ -1148,11 +1153,6 @@ packages:
 
   '@taplo/lib@0.4.0-alpha.2':
     resolution: {integrity: sha512-DV/Re3DPVY+BhBtLZ3dmP4mP6YMLSsgq9qGLXwOV38lvNF/fBlgvQswzlXmzCEefL/3q2eMoefZpOI/+GLuCNA==}
-
-  '@termsurf/form@0.9.22':
-    resolution: {integrity: sha512-QseaE/tuPoLcxOvSiqj1GPmtdNTA6EAum8Aau51DvwiUdLCA32LzxwO2XYwjnC7WRznEFvPdaYpnziJltHXmcA==}
-    peerDependencies:
-      zod: ^3.22.4
 
   '@termsurf/have@0.2.0':
     resolution: {integrity: sha512-ZopW9vLIKzMhvNkEw0rY0gZpmlKKgqsER82VvCbQqCZxckVlIBDsWid7vfdSVN3ZuOKn9H4mKnpAcx8ndnENkg==}
@@ -5623,6 +5623,15 @@ snapshots:
     dependencies:
       regenerator-runtime: 0.14.1
 
+  '@cluesurf/form@0.3.0(zod@3.22.4)':
+    dependencies:
+      '@termsurf/have': 0.2.0
+      '@termsurf/kink': 0.1.6
+      '@termsurf/love-code': 0.1.10
+      dayjs: 1.11.10
+      lodash: 4.17.21
+      zod: 3.22.4
+
   '@cspotcode/source-map@0.8.0': {}
 
   '@csstools/cascade-layer-name-parser@2.0.4(@csstools/css-parser-algorithms@3.0.4(@csstools/css-tokenizer@3.0.3))(@csstools/css-tokenizer@3.0.3)':
@@ -6207,15 +6216,6 @@ snapshots:
   '@taplo/lib@0.4.0-alpha.2':
     dependencies:
       '@taplo/core': 0.1.1
-
-  '@termsurf/form@0.9.22(zod@3.22.4)':
-    dependencies:
-      '@termsurf/have': 0.2.0
-      '@termsurf/kink': 0.1.6
-      '@termsurf/love-code': 0.1.10
-      dayjs: 1.11.10
-      lodash: 4.17.21
-      zod: 3.22.4
 
   '@termsurf/have@0.2.0':
     dependencies:

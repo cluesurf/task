@@ -1,7 +1,8 @@
-import { List } from '@termsurf/form'
+import { List } from '@cluesurf/form'
 
 export const patool_format: List = {
   form: 'list',
+  save: '~/code/type/object/patool',
   list: [
     '7z',
     'ace',

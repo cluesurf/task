@@ -1,4 +1,4 @@
-import { Make, Test } from '@termsurf/form'
+import { Make, Test } from '@cluesurf/form'
 import { FFMPEG_TIME_PATTERN } from './bond.js'
 import { ImageMagicColorMatrix } from '~/code/type/shared/index.js'
 import capitalize from 'lodash/capitalize.js'

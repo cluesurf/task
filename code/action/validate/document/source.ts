@@ -1,7 +1,8 @@
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 
 export const validate_pdf_with_data: Form = {
   form: 'form',
+  save: '~/code/type/action/validate/document/shared',
   link: {
     input: {
       link: {

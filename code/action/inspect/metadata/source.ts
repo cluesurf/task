@@ -1,7 +1,8 @@
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 
 export const inspect_metadata_from_image: Form = {
   form: 'form',
+  save: '~/code/type/action/inspect/metadata/shared',
   link: {
     input: {
       link: {

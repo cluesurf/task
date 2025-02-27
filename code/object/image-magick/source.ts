@@ -1,20 +1,23 @@
-import IMAGE_MAGICK_FORMAT from './image-magick.format.json' assert { type: 'json' }
-import IMAGE_MAGICK_INPUT_FORMAT from './image-magick.format.input.json' assert { type: 'json' }
-import IMAGE_MAGICK_OUTPUT_FORMAT from './image-magick.format.output.json' assert { type: 'json' }
-import { Form, Hash, List } from '@termsurf/form'
+import IMAGE_MAGICK_FORMAT from './image-magick.format.json'
+import IMAGE_MAGICK_INPUT_FORMAT from './image-magick.format.input.json'
+import IMAGE_MAGICK_OUTPUT_FORMAT from './image-magick.format.output.json'
+import { Form, Hash, List } from '@cluesurf/form'
 
 export const image_magick_input_format: List = {
   form: 'list',
+  save: '~/code/type/object/image-magick',
   list: IMAGE_MAGICK_INPUT_FORMAT,
 }
 
 export const image_magick_output_format: List = {
   form: 'list',
+  save: '~/code/type/object/image-magick',
   list: IMAGE_MAGICK_OUTPUT_FORMAT,
 }
 
 export const image_magick_format: List = {
   form: 'list',
+  save: '~/code/type/object/image-magick',
   list: [
     '3fr',
     '3g2',
@@ -273,6 +276,7 @@ export const image_magick_format: List = {
 
 export const image_magick_format_data: Form = {
   form: 'form',
+  save: '~/code/type/object/image-magick',
   link: {
     head: { like: 'string' },
     note: { like: 'string', need: false },
@@ -285,7 +289,7 @@ export const image_magick_format_data: Form = {
 
 export const image_magick_format_content: Hash = {
   form: 'hash',
-  file: 'image_magick',
+  save: '~/code/type/object/image-magick',
   link: 'image_magick_format',
   bond: { like: 'image_magick_format_data' },
   hash: IMAGE_MAGICK_FORMAT,
@@ -293,6 +297,7 @@ export const image_magick_format_content: Hash = {
 
 export const image_magick_gravity: List = {
   form: 'list',
+  save: '~/code/type/object/image-magick',
   list: [
     'forget',
     'northwest',
@@ -309,6 +314,7 @@ export const image_magick_gravity: List = {
 
 export const image_magick_channel: List = {
   form: 'list',
+  save: '~/code/type/object/image-magick',
   list: [
     'red',
     'green',
@@ -330,6 +336,7 @@ export const image_magick_channel: List = {
 
 export const image_magick_channel_data: Form = {
   form: 'form',
+  save: '~/code/type/object/image-magick',
   link: {
     head: { like: 'string' },
   },
@@ -338,7 +345,7 @@ export const image_magick_channel_data: Form = {
 // https://imagemagick.org/script/command-line-options.php#channel
 export const image_magick_channel_content: Hash = {
   form: 'hash',
-  file: 'image_magick',
+  save: '~/code/type/object/image-magick',
   link: 'image_magick_channel',
   bond: { like: 'image_magick_channel_data' },
   hash: {
@@ -362,6 +369,7 @@ export const image_magick_channel_content: Hash = {
 
 export const image_magick_compression_data: Form = {
   form: 'form',
+  save: '~/code/type/object/image-magick',
   link: {
     head: { like: 'string' },
   },
@@ -369,7 +377,7 @@ export const image_magick_compression_data: Form = {
 
 export const image_magick_compression_content: Hash = {
   form: 'hash',
-  file: 'image_magick',
+  save: '~/code/type/object/image-magick',
   link: 'image_magick_compression',
   bond: {
     like: 'image_magick_compression_data',
@@ -390,6 +398,7 @@ export const image_magick_compression_content: Hash = {
 
 export const image_magick_compression: List = {
   form: 'list',
+  save: '~/code/type/object/image-magick',
   list: [
     'none',
     'bzip',
@@ -406,6 +415,7 @@ export const image_magick_compression: List = {
 
 export const image_magick_color_space: List = {
   form: 'list',
+  save: '~/code/type/object/image-magick',
   list: [
     'cmy',
     'cmyk',
@@ -447,6 +457,7 @@ export const image_magick_color_space: List = {
 
 export const image_magick_color_space_data: Form = {
   form: 'form',
+  save: '~/code/type/object/image-magick',
   link: {
     head: { like: 'string' },
     note: { like: 'string', need: false },
@@ -455,7 +466,7 @@ export const image_magick_color_space_data: Form = {
 
 export const image_magick_color_space_content: Hash = {
   form: 'hash',
-  file: 'image_magick',
+  save: '~/code/type/object/image-magick',
   link: 'image_magick_color_space',
   bond: { like: 'image_magick_color_space_data' },
   hash: {
@@ -763,6 +774,7 @@ export const image_magick_color_space_content: Hash = {
 
 export const image_magic_color_matrix: Form = {
   form: 'form',
+  save: '~/code/type/object/image-magick',
   link: {
     row: { like: 'natural_number' },
     column: { like: 'natural_number' },

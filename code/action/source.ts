@@ -1,7 +1,8 @@
-import { Form, List } from '@termsurf/form'
+import { Form, List } from '@cluesurf/form'
 
 export const convert_file_base: Form = {
   form: 'form',
+  save: '~/code/type/action/shared',
   // leak: true,
   link: {
     tool: { like: 'string', need: false },
@@ -30,6 +31,7 @@ export const convert_file_base: Form = {
 
 export const convert_file_base_remote: Form = {
   form: 'form',
+  save: '~/code/type/action/shared',
   // leak: true,
   link: {
     tool: { like: 'string', need: false },
@@ -53,6 +55,7 @@ export const convert_file_base_remote: Form = {
 
 export const build_format_input_output: Form = {
   form: 'form',
+  save: '~/code/type/action/shared',
   // leak: true,
   link: {
     tool: { like: 'string', need: false },
@@ -71,6 +74,7 @@ export const build_format_input_output: Form = {
 
 export const build_base_file_input: Form = {
   form: 'form',
+  save: '~/code/type/action/shared',
   // leak: true,
   link: {
     tool: { like: 'string', need: false },
@@ -97,6 +101,7 @@ export const build_base_file_input: Form = {
 
 export const build_base_input_directory_or_file_output_file: Form = {
   form: 'form',
+  save: '~/code/type/action/shared',
   // leak: true,
   link: {
     input: {
@@ -129,6 +134,7 @@ export const build_base_input_directory_or_file_output_file: Form = {
 
 export const build_base_input_file_output_directory: Form = {
   form: 'form',
+  save: '~/code/type/action/shared',
   // leak: true,
   link: {
     output: {
@@ -154,6 +160,7 @@ export const build_base_input_file_output_directory: Form = {
 
 export const task: List = {
   form: 'list',
+  save: '~/code/type/action/shared',
   list: [
     'decompress',
     'compress',

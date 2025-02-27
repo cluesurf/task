@@ -1,34 +1,40 @@
-import { Form, List } from '@termsurf/form'
+import { Form, List } from '@cluesurf/form'
 import { baseCommonFormat, buildFormatForms } from './tool/source.js'
 import _ from 'lodash'
 
 export const prettier_prose_wrap_option: List = {
   form: 'list',
+  save: '~/code/type/action/format/code/shared',
   list: ['always', 'never', 'preserve'],
 }
 
 export const prettier_html_whitespace_sensitivity_option: List = {
   form: 'list',
+  save: '~/code/type/action/format/code/shared',
   list: ['css', 'strict', 'ignore'],
 }
 
 export const prettier_xml_whitespace_sensitivity_option: List = {
   form: 'list',
+  save: '~/code/type/action/format/code/shared',
   list: ['strict', 'preserve', 'ignore'],
 }
 
 export const prettier_xml_quote_attributes_option: List = {
   form: 'list',
+  save: '~/code/type/action/format/code/shared',
   list: ['preserve', 'single', 'double'],
 }
 
 export const prettier_end_of_line_option: List = {
   form: 'list',
+  save: '~/code/type/action/format/code/shared',
   list: ['lf', 'crlf', 'cr', 'auto'],
 }
 
 export const prettier_arrow_parens_option: List = {
   form: 'list',
+  save: '~/code/type/action/format/code/shared',
   list: ['always', 'avoid'],
 }
 
@@ -46,6 +52,7 @@ const prettier_common_option = {
 
 export const format_html_with_prettier: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     code: { like: 'string' },
     bracketSameLine: prettier_common_option.bracketSameLine,
@@ -66,6 +73,7 @@ export const format_html_with_prettier: Form = {
 
 export const format_graphql_with_prettier: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     code: { like: 'string' },
     bracketSpacing: prettier_common_option.bracketSpacing,
@@ -74,6 +82,7 @@ export const format_graphql_with_prettier: Form = {
 
 export const format_css_with_prettier: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     code: { like: 'string' },
     singleQuote: prettier_common_option.singleQuote,
@@ -82,6 +91,7 @@ export const format_css_with_prettier: Form = {
 
 export const format_yaml_with_prettier: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     code: { like: 'string' },
     bracketSpacing: prettier_common_option.bracketSpacing,
@@ -92,6 +102,7 @@ export const format_yaml_with_prettier: Form = {
 
 export const format_xml_with_prettier: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     code: { like: 'string' },
     xmlSelfClosingSpace: { like: 'boolean', fall: true, need: false },
@@ -117,6 +128,7 @@ export const format_xml_with_prettier: Form = {
 
 export const format_markdown_with_prettier: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     code: { like: 'string' },
     proseWrap: prettier_common_option.proseWrap,
@@ -127,6 +139,7 @@ export const format_markdown_with_prettier: Form = {
 // https://nshipster.com/swift-format/#swift-format
 export const prettier_plugin: List = {
   form: 'list',
+  save: '~/code/type/action/format/code/shared',
   list: [
     'angular',
     'flow',
@@ -150,6 +163,7 @@ export const prettier_plugin: List = {
 
 export const format_code_format: List = {
   form: 'list',
+  save: '~/code/type/action/format/code/shared',
   list: prettier_plugin.list
     .slice(0)
     .concat(['python', 'swift', 'c', 'assembly', 'cpp', 'sql']),
@@ -157,6 +171,7 @@ export const format_code_format: List = {
 
 export const format_code_with_prettier: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     code: { like: 'string' },
     format: { like: 'prettier_plugin' },
@@ -165,6 +180,7 @@ export const format_code_with_prettier: Form = {
 
 export const format_rust_with_prettier: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     code: { like: 'string' },
     useTabs: { like: 'boolean', need: false },
@@ -176,6 +192,7 @@ export const format_rust_with_prettier: Form = {
 
 export const format_java_with_prettier: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     code: { like: 'string' },
     maxLineLength: { like: 'natural_number', need: false },
@@ -187,11 +204,13 @@ export const format_java_with_prettier: Form = {
 
 export const prettier_typescript_trailing_comma_option: List = {
   form: 'list',
+  save: '~/code/type/action/format/code/shared',
   list: ['all', 'es5', 'none'],
 }
 
 export const format_typescript_with_prettier: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     code: { like: 'string' },
     jsxSingleQuote: { like: 'boolean', need: false },
@@ -216,6 +235,7 @@ export const format_typescript_with_prettier: Form = {
 
 export const format_sh_with_prettier: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     code: { like: 'string' },
     keepComments: { like: 'boolean', need: false },
@@ -233,6 +253,7 @@ export const format_sh_with_prettier: Form = {
 
 const format_kotlin_forms = buildFormatForms({
   name: 'format_kotlin',
+  save: '~/code/type/action/format/code',
   i: 'string',
 })
 
@@ -275,6 +296,7 @@ export const format_kotlin_browser_output =
 
 const format_swift_forms = buildFormatForms({
   name: 'format_swift',
+  save: '~/code/type/action/format/code',
   i: 'string',
 })
 
@@ -317,6 +339,7 @@ export const format_swift_browser_output =
 
 const format_rust_forms = buildFormatForms({
   name: 'format_rust',
+  save: '~/code/type/action/format/code',
   i: 'string',
 })
 
@@ -357,6 +380,7 @@ export const format_rust_browser_output =
 
 const format_python_forms = buildFormatForms({
   name: 'format_python',
+  save: '~/code/type/action/format/code',
   i: 'string',
 })
 
@@ -399,6 +423,7 @@ export const format_python_browser_output =
 
 export const format_ruby: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     format: { like: 'string', name: { mark: 'I' } },
     input: {
@@ -424,6 +449,7 @@ export const format_ruby: Form = {
 
 const format_assembly_forms = buildFormatForms({
   name: 'format_assembly',
+  save: '~/code/type/action/format/code',
   i: 'string',
 })
 
@@ -468,6 +494,7 @@ export const format_assembly_browser_output =
 
 export const format_c: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     format: { like: 'string', name: { mark: 'I' } },
     input: {
@@ -493,6 +520,7 @@ export const format_c: Form = {
 
 export const format_cpp: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     format: { like: 'string', name: { mark: 'I' } },
     input: {
@@ -518,6 +546,7 @@ export const format_cpp: Form = {
 
 export const format_java: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     format: { like: 'string', name: { mark: 'I' } },
     input: {
@@ -543,11 +572,13 @@ export const format_java: Form = {
 
 export const clang_format: List = {
   form: 'list',
+  save: '~/code/type/action/format/code/shared',
   list: ['c', 'cpp'],
 }
 
 const format_code_with_clang_format_forms = buildFormatForms({
   name: 'format_code_with_clang_format',
+  save: '~/code/type/action/format/code',
   i: 'clang_format',
   base: 'clang_style_all',
   common: {},
@@ -601,6 +632,7 @@ export const format_code_with_clang_format_browser_output =
 
 export const format_sql_with_content: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     format: { like: 'string', name: { mark: 'I' } },
     input: {
@@ -619,6 +651,7 @@ export const format_sql_with_content: Form = {
 
 export const resolve_input_for_format_remote: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: _.merge(baseCommonFormat, {
     format: { like: 'string' },
     input: {
@@ -644,6 +677,7 @@ export const resolve_input_for_format_remote: Form = {
 
 export const resolve_input_for_format_local_external: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: _.merge(baseCommonFormat, {
     format: { like: 'string' },
     input: {
@@ -661,6 +695,7 @@ export const resolve_input_for_format_local_external: Form = {
 
 export const resolve_input_for_format_local_internal: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: _.merge(baseCommonFormat, {
     format: { like: 'string' },
     input: {
@@ -675,6 +710,7 @@ export const resolve_input_for_format_local_internal: Form = {
 
 export const format_api: Form = {
   form: 'form',
+  save: '~/code/type/action/format/code/shared',
   link: {
     format: { like: 'string' },
   },

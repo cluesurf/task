@@ -1,7 +1,8 @@
-import { Form, List } from '@termsurf/form'
+import { Form, List } from '@cluesurf/form'
 
 export const file_reader_encoding: List = {
   form: 'list',
+  save: '~/code/type/object/file',
   list: [
     'utf-8',
     'ibm866',
@@ -37,6 +38,7 @@ export const file_reader_encoding: List = {
 
 export const file_input_path: Form = {
   form: 'form',
+  save: '~/code/type/object/file',
   link: {
     path: { like: 'string', name: { mark: 'i' } },
   },
@@ -44,6 +46,7 @@ export const file_input_path: Form = {
 
 export const file_path: Form = {
   form: 'form',
+  save: '~/code/type/object/file',
   link: {
     path: { like: 'string' },
   },
@@ -51,6 +54,7 @@ export const file_path: Form = {
 
 export const remote_path: Form = {
   form: 'form',
+  save: '~/code/type/object/file',
   link: {
     path: { like: 'string', test: 'is_remote_path' },
   },
@@ -58,6 +62,7 @@ export const remote_path: Form = {
 
 export const remote_input_path: Form = {
   form: 'form',
+  save: '~/code/type/object/file',
   link: {
     path: {
       like: 'string',
@@ -69,6 +74,7 @@ export const remote_input_path: Form = {
 
 export const remote_output_path: Form = {
   form: 'form',
+  save: '~/code/type/object/file',
   link: {
     path: {
       like: 'string',
@@ -80,6 +86,7 @@ export const remote_output_path: Form = {
 
 export const local_path: Form = {
   form: 'form',
+  save: '~/code/type/object/file',
   link: {
     path: { like: 'string', test: 'is_local_path' },
   },
@@ -87,6 +94,7 @@ export const local_path: Form = {
 
 export const local_input_path: Form = {
   form: 'form',
+  save: '~/code/type/object/file',
   link: {
     path: {
       like: 'string',
@@ -98,6 +106,7 @@ export const local_input_path: Form = {
 
 export const local_output_path: Form = {
   form: 'form',
+  save: '~/code/type/object/file',
   link: {
     path: {
       like: 'string',
@@ -109,6 +118,7 @@ export const local_output_path: Form = {
 
 export const file_output_path: Form = {
   form: 'form',
+  save: '~/code/type/object/file',
   link: {
     path: { like: 'string', name: { mark: 'o' } },
   },
@@ -116,6 +126,7 @@ export const file_output_path: Form = {
 
 export const file_content: Form = {
   form: 'form',
+  save: '~/code/type/object/file',
   link: {
     content: {
       case: [
@@ -129,6 +140,7 @@ export const file_content: Form = {
 
 export const file_content_with_sha256: Form = {
   form: 'form',
+  save: '~/code/type/object/file',
   link: {
     sha256: { like: 'string', test: 'is_sha256' },
     content: {
@@ -143,6 +155,7 @@ export const file_content_with_sha256: Form = {
 
 export const file_has_output_content: Form = {
   form: 'form',
+  save: '~/code/type/object/file',
   link: {
     content: { like: 'boolean' },
   },

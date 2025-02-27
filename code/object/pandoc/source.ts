@@ -1,7 +1,8 @@
-import { Form, Hash, List } from '@termsurf/form'
+import { Form, Hash, List } from '@cluesurf/form'
 
 export const pandoc_format_data: Form = {
   form: 'form',
+  save: '~/code/type/object/pandoc',
   link: {
     head: { like: 'string' },
   },
@@ -9,7 +10,7 @@ export const pandoc_format_data: Form = {
 
 export const pandoc_format_content: Hash = {
   form: 'hash',
-  file: 'pandoc',
+  save: '~/code/type/object/pandoc',
   bond: { like: 'pandoc_format_data' },
   hash: {
     bibtex: { head: 'BibTeX bibliography' },
@@ -99,6 +100,7 @@ export const pandoc_format_content: Hash = {
 
 export const pandoc_output_format: List = {
   form: 'list',
+  save: '~/code/type/object/pandoc',
   list: [
     'asciidoc',
     'asciidoc_legacy',
@@ -166,6 +168,7 @@ export const pandoc_output_format: List = {
 
 export const pandoc_input_format: List = {
   form: 'list',
+  save: '~/code/type/object/pandoc',
   list: [
     'bibtex',
     'biblatex',

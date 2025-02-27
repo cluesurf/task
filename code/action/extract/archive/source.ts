@@ -1,7 +1,8 @@
-import { Form } from '@termsurf/form'
+import { Form } from '@cluesurf/form'
 
 export const extract_with_7z: Form = {
   form: 'form',
+  save: '~/code/type/action/extract/archive/shared',
   link: {
     input: {
       link: {
@@ -22,6 +23,7 @@ export const extract_with_7z: Form = {
 
 export const extract_with_unarchiver: Form = {
   form: 'form',
+  save: '~/code/type/action/extract/archive/shared',
   link: {
     input: {
       link: {

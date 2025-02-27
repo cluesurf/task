@@ -1,7 +1,6 @@
 {
   "name": "@termsurf/hack",
   "version": "0.0.1",
-  "type": "module",
   "chocoVersion": "0.0.2",
   "bin": {
     "task": "./host/code/cli/index.js"
@@ -33,12 +32,13 @@
     "make:test": "webpack build --config webpack.test.config.mjs",
     "scan:test": "webpack watch --config webpack.test.config.mjs",
     "test:bind": "pnpm tsx test/server.ts",
-    "load:form": "pnpm remove @termsurf/form && pnpm add @termsurf/form@latest"
+    "load:form": "pnpm remove @cluesurf/form && pnpm add @cluesurf/form@latest"
   },
   "peerDependencies": {
     "@termsurf/task-host": "^0.0.3"
   },
   "dependencies": {
+    "@cluesurf/form": "^0.3.0",
     "@epic-web/invariant": "^1.0.0",
     "@lancejpollard/color-splat.js": "^0.0.14",
     "@ngrok/ngrok": "^0.9.1",
@@ -47,7 +47,6 @@
     "@prettier/plugin-pug": "^3.0.0",
     "@prettier/plugin-ruby": "^4.0.4",
     "@prettier/plugin-xml": "^3.2.2",
-    "@termsurf/form": "^0.9.22",
     "@termsurf/kink": "^0.1.6",
     "@termsurf/kink-site": "^0.0.16",
     "@termsurf/kink-text": "^0.0.10",

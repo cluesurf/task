@@ -4,6 +4,7 @@ import { buildConvertForms } from '../../../tool/shared/source.js'
 
 const convert_image_with_image_magick_forms = buildConvertForms(
   'convert_image_with_image_magick',
+  '~/code/type/action/convert/image-magick',
   'image_magick_input_format',
   'image_magick_output_format',
   {
@@ -64,6 +65,7 @@ export const convert_image_with_image_magick_browser_output =
 
 const convert_image_with_inkscape_forms = buildConvertForms(
   'convert_image_with_inkscape',
+  '~/code/type/action/convert/inkscape',
   'string',
   'string',
 )

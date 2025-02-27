@@ -1,4 +1,4 @@
-import { Form, Hash, List } from '@termsurf/form'
+import { Form, Hash, List } from '@cluesurf/form'
 import { getTimeZones } from '@vvo/tzdb'
 import _ from 'lodash'
 
@@ -36,21 +36,25 @@ const TIME_ZONE_LOCATION = _.uniq(
 
 export const time_zone_abbreviation: List = {
   form: 'list',
+  save: '~/code/type/object/time',
   list: TIME_ZONE_ABBREVIATION,
 }
 
 export const time_zone_location: List = {
   form: 'list',
+  save: '~/code/type/object/time',
   list: TIME_ZONE_LOCATION,
 }
 
 export const time_zone: List = {
   form: 'list',
+  save: '~/code/type/object/time',
   list: TIME_ZONE_ABBREVIATION.concat(TIME_ZONE_LOCATION),
 }
 
 export const time_zone_data: Form = {
   form: 'form',
+  save: '~/code/type/object/time',
   link: {
     name: { like: 'string' },
     alternativeName: { like: 'string' },
@@ -67,6 +71,7 @@ export const time_zone_data: Form = {
 
 export const time_zone_content: Hash = {
   form: 'hash',
+  save: '~/code/type/object/time',
   link: 'time_zone_location',
   bond: { like: 'time_zone_data' },
   hash: TIME_ZONE_HASH,
@@ -74,6 +79,7 @@ export const time_zone_content: Hash = {
 
 export const time_zone_abbreviation_data: Form = {
   form: 'form',
+  save: '~/code/type/object/time',
   link: {
     name: { like: 'string', list: true },
   },
@@ -81,6 +87,7 @@ export const time_zone_abbreviation_data: Form = {
 
 export const time_zone_abbreviation_content: Hash = {
   form: 'hash',
+  save: '~/code/type/object/time',
   link: 'time_zone_abbreviation',
   bond: { like: 'time_zone_abbreviation_data' },
   hash: TIME_ZONE_ABBREVIATION_HASH,
