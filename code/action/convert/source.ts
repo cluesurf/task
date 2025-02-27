@@ -4,6 +4,7 @@ import { baseCommonConvert } from '~/code/tool/shared/source.js'
 
 export const resolve_input_for_convert_remote: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/shared',
   link: _.merge(baseCommonConvert, {
     input: {
       link: {
@@ -30,6 +31,7 @@ export const resolve_input_for_convert_remote: Form = {
 
 export const resolve_input_for_convert_local_external: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/shared',
   link: _.merge(baseCommonConvert, {
     input: {
       link: {
@@ -52,6 +54,7 @@ export const resolve_input_for_convert_local_external: Form = {
 
 export const resolve_input_for_convert_local_internal: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/shared',
   link: _.merge(baseCommonConvert, {
     input: {
       link: {
@@ -71,6 +74,7 @@ export const resolve_input_for_convert_local_internal: Form = {
 
 export const convert_api: Form = {
   form: 'form',
+  save: '~/code/type/action/convert/shared',
   link: {
     input: {
       link: {
