@@ -9,7 +9,7 @@
 
 <h3 align='center'>@cluesurf/hack</h3>
 <p align='center'>
-  Common Actions Interface
+  A Function Registry
 </p>
 
 <br/>

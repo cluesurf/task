@@ -2,7 +2,7 @@ import {
   buildCommandSequence,
   getCommand,
 } from '~/code/tool/shared/command.js'
-import { Archive } from '~/code/type/shared/index.js'
+import { Archive } from '~/code/type/action/archive/index.js'
 
 // https://superuser.com/questions/190053/universal-command-line-unarchiving-tool-on-a-mac
 // atool

@@ -1,12 +1,14 @@
 import {
-  CompileCNodeInput,
   CompileCNodeInputParser,
+  CompileCNodeLocalInputParser,
+  CompileCNodeClientInputParser,
+} from '~/code/type/action/compile/code/c/node/parsers.js'
+import {
+  CompileCNodeInput,
   CompileCNodeLocalInternalInput,
   CompileCNodeLocalExternalInput,
-  CompileCNodeLocalInputParser,
   CompileCNodeRemoteInput,
-  CompileCNodeClientInputParser,
-} from '~/code/type/node/parser.js'
+} from '~/code/type/action/compile/code/c/node/index.js'
 import { buildCommandToCompileC } from '../command.js'
 import { runCommandSequence } from '~/code/tool/node/command.js'
 import {

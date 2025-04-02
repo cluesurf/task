@@ -1,9 +1,9 @@
+import { CompileCBrowserInputParser } from '~/code/type/action/compile/code/c/browser/parsers.js'
 import {
   CompileCBrowserInput,
-  CompileCBrowserInputParser,
   CompileCBrowserLocalInput,
   CompileCBrowserRemoteInput,
-} from '~/code/type/browser/parser.js'
+} from '~/code/type/action/compile/code/c/browser/index.js'
 import { buildFormDataRequestToCompile } from '~/code/action/compile/code/shared.js'
 import kink from '~/code/tool/shared/kink.js'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work.js'
