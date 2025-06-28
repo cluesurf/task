@@ -7,7 +7,7 @@
 <br/>
 <br/>
 
-<h3 align='center'>@cluesurf/hack</h3>
+<h3 align='center'>@cluesurf/task</h3>
 <p align='center'>
   A Function Registry
 </p>
@@ -22,9 +22,9 @@ _**Note**: This is pre-alpha software at this point, so many things might not wo
 
 Task is a collections of common actions to perform in code. Here are some immediately helpful resources:
 
-- [`ghcr.io/cluesurf/hack` Docker image](https://ghcr.io/cluesurf/hack)
+- [`ghcr.io/cluesurf/task` Docker image](https://ghcr.io/cluesurf/task)
 
-The `hack` JavaScript/TypeScript library has these features:
+The `task` JavaScript/TypeScript library has these features:
 
 - CLI
 - Programmatic Browser API (for where we can do browser hacks)
@@ -33,7 +33,7 @@ The `hack` JavaScript/TypeScript library has these features:
 ## Installing the Library
 
 1. Install OS-specific dependencies.
-2. Then install `@termserf/base` node module.
+2. Then install `@cluesurf/task` node module.
 
 ### MacOS Installation
 
@@ -72,9 +72,9 @@ choco install dart-sdk
 choco install php
 ```
 
-Not all hacks/subcommands are supported yet, see the [Choco TODO](https://github.com/cluesurf/hack#todo-choco).
+Not all hacks/subcommands are supported yet, see the [Choco TODO](https://github.com/cluesurf/task#todo-choco).
 
-The source code for enabling this Choco package is at [./load/choco](https://github.com/cluesurf/hack/tree/make/load/choco).
+The source code for enabling this Choco package is at [./load/choco](https://github.com/cluesurf/task/tree/make/load/choco).
 
 ### Linux Installation
 
@@ -83,20 +83,20 @@ See the `Dockerfile` in this project.
 ### Docker Installation
 
 ```Dockerfile
-FROM --platform=linux/amd64 ghcr.io/cluesurf/hack:latest
+FROM --platform=linux/amd64 ghcr.io/cluesurf/task:latest
 ...
 ```
 
-You can link to the Docker image at [`ghcr.io/cluesurf/hack`](https://ghcr.io/cluesurf/hack) like that above.
+You can link to the Docker image at [`ghcr.io/cluesurf/task`](https://ghcr.io/cluesurf/task) like that above.
 
 ### Node Package Installation
 
 With the native dependencies installed, you can install hack globally to enable the CLI:
 
 ```bash
-npm install -g @cluesurf/hack
-yarn install -g @cluesurf/hack
-pnpm install -g @cluesurf/hack
+npm install -g @cluesurf/task
+yarn install -g @cluesurf/task
+pnpm install -g @cluesurf/task
 ```
 
 ```bash
@@ -106,15 +106,15 @@ hack convert png -O jpg -i image.png -o image.jpg
 You can also install it locally to get access to the commands in TypeScript:
 
 ```bash
-npm install @cluesurf/hack
-yarn install @cluesurf/hack
-pnpm install @cluesurf/hack
+npm install @cluesurf/task
+yarn install @cluesurf/task
+pnpm install @cluesurf/task
 ```
 
 _Some of this is future code._
 
 ```ts
-import hack from '@cluesurf/hack'
+import hack from '@cluesurf/task'
 
 test()
 
@@ -198,7 +198,7 @@ pnpm run hack convert -I png -O jpg -i image.png -o image.jpg
 ./test/cli.sh
 ```
 
-<img src='https://github.com/cluesurf/hack/blob/make/view/test-line.gif?raw=true' />
+<img src='https://github.com/cluesurf/task/blob/make/view/test-line.gif?raw=true' />
 
 ## Development
 

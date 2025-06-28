@@ -190,8 +190,8 @@ RUN tar -xvzf obvconv.v2.50.tar.gz
 RUN cd objconv-2.50/src && ./build.sh && mv objconv /usr/local/bin
 
 # Label the container
-LABEL org.opencontainers.image.source https://github.com/cluesurf/hack
-LABEL org.opencontainers.image.title "Hack: Common Actions Interface"
+LABEL org.opencontainers.image.source https://github.com/cluesurf/task
+LABEL org.opencontainers.image.title "Task: Common Actions Interface"
 LABEL org.opencontainers.image.description "A wrapper around a lot of tools to make it easier to use them all."
 
 RUN /home/python/venv/bin/pip install antlr4-tools
