@@ -1,11 +1,14 @@
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
+<p align='center'>
+  <img src='https://github.com/cluesurf/task/blob/make/view/flame.svg?raw=true' height='256'>
+</p>
 
 <h3 align='center'>@cluesurf/task</h3>
 <p align='center'>
