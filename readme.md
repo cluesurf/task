@@ -41,10 +41,10 @@ The `task` JavaScript/TypeScript library has these features:
 ### MacOS Installation
 
 ```bash
-brew install cluesurf/load/base
+brew install cluesurf/load/basetask
 ```
 
-The source code for enabling this Homebrew cask is at [cluesurf/homebrew-load](https://github.com/cluesurf/homebrew-load/blob/make/Casks/base.rb).
+The source code for enabling this Homebrew cask is at [cluesurf/homebrew-load](https://github.com/cluesurf/homebrew-load/blob/make/Casks/task.rb).
 
 To use `docx2pdf` you need to have the Microsoft Word app installed on your machine as well.
 
