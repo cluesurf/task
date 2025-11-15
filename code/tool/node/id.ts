@@ -1,4 +1,4 @@
-import { getRandomBytes } from './bytes.js'
+import { getRandomBytes } from './bytes'
 import { CODE } from '@termsurf/tone-code'
 
 export function getRandomId(n: number) {

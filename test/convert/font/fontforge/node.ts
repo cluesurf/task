@@ -1,5 +1,5 @@
 import { Test } from 'tape'
-import { convertFontWithFontForgeNode } from '~/code/action/convert/font/node'
+import { convertFontWithFontForgeNode } from '~/code/call/convert/font/node'
 import fs from 'fs'
 
 export default function testConvertFontWithFontForgeNode(

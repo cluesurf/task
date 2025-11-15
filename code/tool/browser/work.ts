@@ -2,16 +2,16 @@ import {
   Request,
   RequestResponseCycle,
   fetchWithTimeout,
-} from '../shared/request.js'
-import { NativeOptions } from '~/code/tool/shared/request.js'
+} from '../shared/request'
+import { NativeOptions } from '~/code/tool/shared/request'
 import {
   Work,
   WorkFile,
   WorkFileAsBlob,
   handleWorkRequestComplete,
-} from '~/code/tool/shared/work.js'
+} from '~/code/tool/shared/work'
 import Kink, { KinkMesh } from '@termsurf/kink'
-import kink from '../shared/kink.js'
+import kink from '../shared/kink'
 
 export async function callXhrBrowser(
   request: Request,

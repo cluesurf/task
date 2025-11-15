@@ -1,5 +1,5 @@
 import { Test } from 'tape'
-import { convertImageWithImageMagickBrowser } from '~/code/action/convert/image/imagemagick/browser'
+import { convertImageWithImageMagickBrowser } from '~/code/call/convert/image/imagemagick/browser'
 import { PNG_FIRE } from './browser.data'
 
 export default function testConvertImageWithImageMagickBrowser(

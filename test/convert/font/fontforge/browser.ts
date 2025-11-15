@@ -1,5 +1,5 @@
 import { Test } from 'tape'
-import { convertFontWithFontForgeBrowser } from '~/code/action/convert/font/browser'
+import { convertFontWithFontForgeBrowser } from '~/code/call/convert/font/browser'
 import { TTF_FONT } from './browser.data'
 
 export default function testConvertFontWithFontForgeBrowser(

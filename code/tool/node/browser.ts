@@ -1,11 +1,11 @@
 import { Browser } from 'puppeteer'
 // import puppeteer from 'puppeteer-extra'
 import puppeteer from 'puppeteer-core'
-import __dirname from '~/code/tool/shared/directory.js'
+import __dirname from '~/code/tool/shared/directory'
 // add stealth plugin and use defaults (all evasion techniques)
 // import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 import locateChrome from 'locate-chrome'
-import { getConfig } from '../shared/config.js'
+import { getConfig } from '../shared/config'
 
 // puppeteer.use(StealthPlugin())
 

@@ -1,6 +1,6 @@
 import makeTree from '@cluesurf/form/host/make'
 import * as MESH from '~/code/source'
-import NAME from '~/code/object/name'
+import NAME from '~/code/base/name'
 // import '~/code/shared/type/source/call/convert'
 import fsp from 'fs/promises'
 import { BaseHash } from '@cluesurf/form'

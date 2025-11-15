@@ -1,5 +1,5 @@
-import { configure } from '~/code/tool/shared/config.js'
-import { command } from '~/code/tool/shared/command.js'
+import { configure } from '~/code/tool/shared/config'
+import { command } from '~/code/tool/shared/command'
 
 const out = {
   configure,

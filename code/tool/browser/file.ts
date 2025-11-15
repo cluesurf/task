@@ -1,7 +1,7 @@
 import {
   FileContent,
   FileReaderEncoding,
-} from '~/code/type/shared/index.js'
+} from '~/code/form/shared/index'
 
 export async function readFileContentAsString(
   content: FileContent,

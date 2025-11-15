@@ -1,4 +1,4 @@
-import { configure } from '~/code/tool/shared/config.js'
+import { configure } from '~/code/tool/shared/config'
 
 const out = {
   configure,

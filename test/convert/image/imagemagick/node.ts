@@ -1,5 +1,5 @@
 import { Test } from 'tape'
-import { convertImageWithImageMagickNode } from '~/code/action/convert/image/imagemagick/node'
+import { convertImageWithImageMagickNode } from '~/code/call/convert/image/imagemagick/node'
 import fs from 'fs'
 
 export default function testConvertImageWithImageMagickNode(

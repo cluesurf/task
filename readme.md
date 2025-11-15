@@ -21,9 +21,12 @@
 
 ## Summary
 
-_**Note**: This is pre-alpha software at this point, so many things might not work or be documented properly. Eventually things will work, but scope is large._
+_**Note**: This is pre-alpha software at this point, so many things
+might not work or be documented properly. Eventually things will work,
+but scope is large._
 
-Task is a collections of common actions to perform in code. Here are some immediately helpful resources:
+Task is a collections of common actions to perform in code. Here are
+some immediately helpful resources:
 
 - [`ghcr.io/cluesurf/task` Docker image](https://ghcr.io/cluesurf/task)
 
@@ -44,13 +47,17 @@ The `task` JavaScript/TypeScript library has these features:
 brew install cluesurf/load/basetask
 ```
 
-The source code for enabling this Homebrew cask is at [cluesurf/homebrew-load](https://github.com/cluesurf/homebrew-load/blob/make/Casks/task.rb).
+The source code for enabling this Homebrew cask is at
+[cluesurf/homebrew-load](https://github.com/cluesurf/homebrew-load/blob/make/Casks/task.rb).
 
-To use `docx2pdf` you need to have the Microsoft Word app installed on your machine as well.
+To use `docx2pdf` you need to have the Microsoft Word app installed on
+your machine as well.
 
 ### Windows Installation
 
-I tried wrapping this in a nice and clean choco package, but it was deemed not a good fit for the choco community, so have to install all these manually :/.
+I tried wrapping this in a nice and clean choco package, but it was
+deemed not a good fit for the choco community, so have to install all
+these manually :/.
 
 ```bash
 choco install libreoffice-fresh
@@ -75,9 +82,11 @@ choco install dart-sdk
 choco install php
 ```
 
-Not all hacks/subcommands are supported yet, see the [Choco TODO](https://github.com/cluesurf/task#todo-choco).
+Not all hacks/subcommands are supported yet, see the
+[Choco TODO](https://github.com/cluesurf/task#todo-choco).
 
-The source code for enabling this Choco package is at [./load/choco](https://github.com/cluesurf/task/tree/make/load/choco).
+The source code for enabling this Choco package is at
+[./load/choco](https://github.com/cluesurf/task/tree/make/load/choco).
 
 ### Linux Installation
 
@@ -90,11 +99,14 @@ FROM --platform=linux/amd64 ghcr.io/cluesurf/task:latest
 ...
 ```
 
-You can link to the Docker image at [`ghcr.io/cluesurf/task`](https://ghcr.io/cluesurf/task) like that above.
+You can link to the Docker image at
+[`ghcr.io/cluesurf/task`](https://ghcr.io/cluesurf/task) like that
+above.
 
 ### Node Package Installation
 
-With the native dependencies installed, you can install hack globally to enable the CLI:
+With the native dependencies installed, you can install hack globally to
+enable the CLI:
 
 ```bash
 npm install -g @cluesurf/task
@@ -106,7 +118,8 @@ pnpm install -g @cluesurf/task
 hack convert png -O jpg -i image.png -o image.jpg
 ```
 
-You can also install it locally to get access to the commands in TypeScript:
+You can also install it locally to get access to the commands in
+TypeScript:
 
 ```bash
 npm install @cluesurf/task
@@ -125,7 +138,7 @@ async function test() {
   // no remote server, just the bare basics.
   const result = await hack.convert({
     input: { format: 'png', file: { path: 'image.png' } },
-    output: { format: 'jpg', file: { path: 'image.jpg' } }
+    output: { format: 'jpg', file: { path: 'image.jpg' } },
   })
   await hack.open({
     format: 'window',
@@ -139,7 +152,7 @@ async function test() {
     surf: true,
     work: true,
     input: { format: 'png', file: { path: 'image.png' } },
-    output: { format: 'jpg', file: { path: 'image.jpg' } }
+    output: { format: 'jpg', file: { path: 'image.jpg' } },
   })
 
   await hack.wait(work)
@@ -149,28 +162,28 @@ async function test() {
   const explainer = await hack.convert({
     explain: true,
     input: { format: 'png', file: { path: 'image.png' } },
-    output: { format: 'jpg', file: { path: 'image.jpg' } }
+    output: { format: 'jpg', file: { path: 'image.jpg' } },
   })
 
   await hack.format({
-    input: { format: 'c', file: { path: 'hello.c' } }
+    input: { format: 'c', file: { path: 'hello.c' } },
   })
 
   await hack.upload({
     location: { service: 's3', bucket: 'my-bucket' },
     input: { file: { path: 'hello.jpg' } },
-    output: { file: { path: 'foo/image.jpg' } }
+    output: { file: { path: 'foo/image.jpg' } },
   })
 
   await hack.download({
     location: { service: 's3', bucket: 'my-bucket' },
     reference: { file: { path: 'hello.jpg' } },
-    output: { file: { path: 'foo/image.jpg' } }
+    output: { file: { path: 'foo/image.jpg' } },
   })
 
   await hack.archive({
     input: { path: 'hello.jpg' },
-    output: { format: 'zip', file: { path: 'foo/image.jpg' } }
+    output: { format: 'zip', file: { path: 'foo/image.jpg' } },
   })
 }
 ```
@@ -205,7 +218,16 @@ pnpm run hack convert -I png -O jpg -i image.png -o image.jpg
 
 ## Development
 
-This codebase is built around TypeScript, Node.js/Browser, pnpm, and zod for parsing JSON input. All central functions should have an object passed as input, which zod parses and validates. We automatically generate the zod types using `pnpm tsx make`, which reads from `code/**/source.ts` for a bunch of "type" definitions written in JavaScript/JSON, and it then takes those definitions and generates TypeScript types and zod parsers. This way we don't have to write 2 or 3 times the same type definition (once in TypeScript, once in zod, once for an API somewhere else, etc.), you just write the source types, and it generates the types from that.
+This codebase is built around TypeScript, Node.js/Browser, pnpm, and zod
+for parsing JSON input. All central functions should have an object
+passed as input, which zod parses and validates. We automatically
+generate the zod types using `pnpm tsx make`, which reads from
+`code/**/source.ts` for a bunch of "type" definitions written in
+JavaScript/JSON, and it then takes those definitions and generates
+TypeScript types and zod parsers. This way we don't have to write 2 or 3
+times the same type definition (once in TypeScript, once in zod, once
+for an API somewhere else, etc.), you just write the source types, and
+it generates the types from that.
 
 Then there are 3 parts:
 
@@ -213,7 +235,9 @@ Then there are 3 parts:
 2. CLI
 3. Browser API (not really started yet)
 
-The Node.js API is all Promise based, using the object input pattern. The CLI wraps that Node.js interface and logs some stuff to the terminal, not too much.
+The Node.js API is all Promise based, using the object input pattern.
+The CLI wraps that Node.js interface and logs some stuff to the
+terminal, not too much.
 
 To setup the command locally, just do `pnpm link -g`.
 
@@ -225,11 +249,17 @@ pnpm tsx make # regenerate the typescript and zod files frouce source.ts files.
 pnpm test # if you want to play around with the test commands, it's not finished yet.
 ```
 
-That's it! When you run `pnpm tsx make`, it regenerates the types in `code/type/*.ts`. You don't really have to pay much attention to those, but if you have VSCode and the prettier/eslint stuff setup (should be configured after `pnpm install`, if not, let me know), then you can start typing the type name in some file and it will autoimport it for you. Nice stuff.
+That's it! When you run `pnpm tsx make`, it regenerates the types in
+`code/type/*.ts`. You don't really have to pay much attention to those,
+but if you have VSCode and the prettier/eslint stuff setup (should be
+configured after `pnpm install`, if not, let me know), then you can
+start typing the type name in some file and it will autoimport it for
+you. Nice stuff.
 
 ### Key Files
 
-All the code lives in the `code` folder, that plus the `make` folder has a command.
+All the code lives in the `code` folder, that plus the `make` folder has
+a command.
 
 ```bash
 # where type definitions are specified, used to generate typescript and zod files
@@ -261,7 +291,7 @@ import {
   ConvertFontWithFontForgeBrowserLocalInput,
   ConvertFontWithFontForgeBrowserOutputParser,
   ConvertFontWithFontForgeBrowserRemoteInput,
-} from '~/code/type/index.js'
+} from '~/code/form/index.js'
 import { buildRequestToConvert } from '../shared.js'
 import { resolveWorkFileAsBlob } from '~/code/tool/shared/work.js'
 import kink from '~/code/tool/shared/kink.js'
@@ -269,7 +299,8 @@ import kink from '~/code/tool/shared/kink.js'
 export async function convertFontWithFontForgeBrowser(
   source: ConvertFontWithFontForgeBrowserInput,
 ) {
-  const input = ConvertFontWithFontForgeBrowserInputParser().parse(source)
+  const input =
+    ConvertFontWithFontForgeBrowserInputParser().parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -327,7 +358,7 @@ import {
   ConvertFontWithFontForgeNodeLocalInputParser,
   ConvertFontWithFontForgeNodeRemoteInput,
   ConvertFontWithFontForgeNodeClientInputParser,
-} from '~/code/type/index.js'
+} from '~/code/form/index.js'
 import { buildCommandToConvertFontWithFontForge } from './shared.js'
 import { runCommandSequence } from '~/code/tool/node/command.js'
 import {
@@ -405,16 +436,24 @@ export async function convertFontWithFontForgeNodeLocal(input) {
 
 ### Task Organization
 
-Each hack in Node.js basically starts from one of the top simple action methods:
+Each hack in Node.js basically starts from one of the top simple action
+methods:
 
 - `compile`
 - `format`
 - `convert`
 - etc.
 
-First it takes the `input` from the top-level call, and parses the input and passes the parsed input to the implementation hack like `convertImageWithImageMagick`. Then that function checks for the `surf` argument, and if present, it branches to make a remote API call against `hack.surf`. This serializes all local file paths into readable streams for upload, but keeps remote file paths unchanged. No further input parsing occurs after the first two top-level parsings.
+First it takes the `input` from the top-level call, and parses the input
+and passes the parsed input to the implementation hack like
+`convertImageWithImageMagick`. Then that function checks for the `surf`
+argument, and if present, it branches to make a remote API call against
+`hack.surf`. This serializes all local file paths into readable streams
+for upload, but keeps remote file paths unchanged. No further input
+parsing occurs after the first two top-level parsings.
 
-If the `surf` parameter is not present, then it branche into the "local" API call, to the file system or a system command. So we have basically:
+If the `surf` parameter is not present, then it branche into the "local"
+API call, to the file system or a system command. So we have basically:
 
 ```
 convert(source)
@@ -434,39 +473,61 @@ convert(source)
         return runCommand(command)
 ```
 
-The remote method such as `convertImageWithImageMagickRemote` converts the local file paths to streams, and updates some input properties. Likewise, `convertImageWithImageMagickLocal` takes the input and converts some file data to local paths.
+The remote method such as `convertImageWithImageMagickRemote` converts
+the local file paths to streams, and updates some input properties.
+Likewise, `convertImageWithImageMagickLocal` takes the input and
+converts some file data to local paths.
 
-If the top-level command gets a `show` property, then it returns the `buildX` result instead. The top-level `code` property is to pass an auth token to requests.
+If the top-level command gets a `show` property, then it returns the
+`buildX` result instead. The top-level `code` property is to pass an
+auth token to requests.
 
 The functions are stored in different places:
 
 - `convert`: `code/action/convert/node.ts`
 - `convertInternal`: `code/action/convert/node.ts`
 - `convertImageWithImageMagick`: `code/action/convert/image/node.ts`
-- `convertImageWithImageMagickRemote`: `code/action/convert/image/node.ts`
-- `convertImageWithImageMagickLocal`: `code/action/convert/image/node.ts`
-- `buildRequestToConvertWithImageMagickRemote`: `code/action/convert/image/shared.ts`
-- `buildCommandToConvertWithImageMagickLocal`: `code/action/convert/image/shared.ts`
-- `convert_image_with_image_magick`: `code/action/convert/image/source.ts`
+- `convertImageWithImageMagickRemote`:
+  `code/action/convert/image/node.ts`
+- `convertImageWithImageMagickLocal`:
+  `code/action/convert/image/node.ts`
+- `buildRequestToConvertWithImageMagickRemote`:
+  `code/action/convert/image/shared.ts`
+- `buildCommandToConvertWithImageMagickLocal`:
+  `code/action/convert/image/shared.ts`
+- `convert_image_with_image_magick`:
+  `code/action/convert/image/source.ts`
 
-In addition, it is actually called `convertInternal`, beccause of the way we need a TypeScript interface to everything with `convert` and under the hood it uses the parser with `convertInternal`. Then there are "source" types for defining type definitions for zod and TypeScript.
+In addition, it is actually called `convertInternal`, beccause of the
+way we need a TypeScript interface to everything with `convert` and
+under the hood it uses the parser with `convertInternal`. Then there are
+"source" types for defining type definitions for zod and TypeScript.
 
 ### Adding a new Task
 
-To add a new hack, just place it in either of the shared/no/browser folders, and add a source type definition for the input. Run `pnpm tsx make` to generate the types. Then just write the code to implement the command. If the command invokes a CLI tool, you can create two functions:
+To add a new hack, just place it in either of the shared/no/browser
+folders, and add a source type definition for the input. Run
+`pnpm tsx make` to generate the types. Then just write the code to
+implement the command. If the command invokes a CLI tool, you can create
+two functions:
 
 1. Build the command.
 2. Run the command.
 
-The building part just creates an array of CLI arguments. The Run command takes those args and runs them and interprets any CLI output if there is some.
+The building part just creates an array of CLI arguments. The Run
+command takes those args and runs them and interprets any CLI output if
+there is some.
 
-There are some basic tests against files in the `test` directory, just manual tests pretty much at the moment.
+There are some basic tests against files in the `test` directory, just
+manual tests pretty much at the moment.
 
-You don't need to run Docker to develop this, you can just install the tools on your computer to develop locally.
+You don't need to run Docker to develop this, you can just install the
+tools on your computer to develop locally.
 
 ### Choco
 
-To trigger this build and publishing, the build needs to be run manually.
+To trigger this build and publishing, the build needs to be run
+manually.
 
 - [Choco package creation discord](https://discord.com/channels/778552361454141460/897088817293574154)
 
@@ -477,9 +538,13 @@ To trigger this build and publishing, the build needs to be run manually.
 - add archive creation commands
   - same tools as unarchiving
 - add minify commands
-  - css: https://github.com/css/csso [benchmarks](https://github.com/GoalSmashers/css-minification-benchmark)
-  - js: probably `@swc/core` from [here](https://github.com/privatenumber/minification-benchmarks?tab=readme-ov-file)
-  - just use the docs to define the input option types. If it's not a command, just define a function with the input types and call the library function.
+  - css: https://github.com/css/csso
+    [benchmarks](https://github.com/GoalSmashers/css-minification-benchmark)
+  - js: probably `@swc/core` from
+    [here](https://github.com/privatenumber/minification-benchmarks?tab=readme-ov-file)
+  - just use the docs to define the input option types. If it's not a
+    command, just define a function with the input types and call the
+    library function.
   - could support multiple minifiers later.
 - sanitize html command (started this one, just search for "sanitize")
   - https://www.npmjs.com/package/sanitize-html
@@ -497,7 +562,8 @@ To trigger this build and publishing, the build needs to be run manually.
 - add crypto commands
   - see the `node-forge` package APIs
 - add decompress commands
-  - see the `fflate` package APIs, started in `code/action/archive/loc/browser.ts`
+  - see the `fflate` package APIs, started in
+    `code/action/archive/loc/browser.ts`
 - add compress commands
   - fflate
 
@@ -512,11 +578,13 @@ To trigger this build and publishing, the build needs to be run manually.
   - the pip installed commands
   - rubocop
 
-Compare `load/choco/base.nuspec` with the `Dockerfile` to see all what's missing. If you know how to install those, please feel free to add.
+Compare `load/choco/base.nuspec` with the `Dockerfile` to see all what's
+missing. If you know how to install those, please feel free to add.
 
 ### TODO (Ubuntu)
 
-- create an [ubuntu package](https://earthly.dev/blog/creating-and-hosting-your-own-deb-packages-and-apt-repo/)
+- create an
+  [ubuntu package](https://earthly.dev/blog/creating-and-hosting-your-own-deb-packages-and-apt-repo/)
 
 ## License
 
@@ -524,9 +592,11 @@ MIT
 
 ## ClueSurf
 
-This is being developed by the folks at [ClueSurf](https://clue.surf), a
-California-based project for helping humanity master information and
-computation. Find us on [Twitter](https://twitter.com/cluesurf),
-[LinkedIn](https://www.linkedin.com/company/cluesurf), and
-[Facebook](https://www.facebook.com/cluesurf). Check out our other
-[GitHub projects](https://github.com/cluesurf) as well!
+Made by [ClueSurf](https://clue.surf), meditating on the universe ¤.
+Follow the work on [YouTube](https://youtube.com/@cluesurf),
+[X](https://x.com/cluesurf),
+[Instagram](https://instagram.com/cluesurf),
+[Substack](https://cluesurf.substack.com),
+[Facebook](https://facebook.com/cluesurf), and
+[LinkedIn](https://linkedin.com/company/cluesurf), and browse more of
+our open-source work here on [GitHub](https://github.com/cluesurf).

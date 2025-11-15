@@ -1,5 +1,5 @@
 import { Test } from 'tape'
-import { convertArchiveBrowser } from '~/code/action/convert/archive/browser'
+import { convertArchiveBrowser } from '~/code/call/convert/archive/browser'
 import { TEST_TAR } from './browser.data'
 
 export default function testConvertArchiveBrowser(test: Test['test']) {

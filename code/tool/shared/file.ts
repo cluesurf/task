@@ -1,5 +1,5 @@
 import pathParser from 'path'
-import kink from './kink.js'
+import kink from './kink'
 
 export type FileLink = {
   path: ParsePath

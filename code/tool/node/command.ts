@@ -7,32 +7,32 @@ import {
   runPandocCommand,
   runPdfLatexCommand,
   runUnoconvCommand,
-} from '~/code/action/convert/document/handler.js'
-import { runFontforgeCommand } from '~/code/action/convert/font/runner.js'
+} from '~/code/call/convert/document/handler'
+import { runFontforgeCommand } from '~/code/call/convert/font/runner'
 import {
   handleIdentifyCommand,
   runConvertCommand,
   runInkscapeCommand,
   runMogrifyCommand,
-} from '~/code/action/convert/image/runner.js'
+} from '~/code/call/convert/image/runner'
 import {
   Command,
   CommandKey,
   CommandSequence,
-} from '~/code/type/node/parser.js'
-import { exec } from './process.js'
+} from '~/code/form/node/parser'
+import { exec } from './process'
 import {
   handleAsmfmtCommand,
   handleBlackCommand,
   handleClangFormatCommand,
   handleKtfmtCommand,
-} from '~/code/action/convert/video/local/node.js'
+} from '~/code/call/convert/video/local/node'
 import {
   runClangCommand,
   runClangppCommand,
   runRustcCommand,
   runSwiftCommand,
-} from '~/code/action/compile/code/handler.js'
+} from '~/code/call/compile/code/handler'
 
 export type CommandHandlerName = CommandKey
 

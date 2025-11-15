@@ -3,7 +3,7 @@ import {
   generateHaikuPhrase,
   generateRandomSymbols,
   generateRandomPhrase,
-} from '~/code/action/generate/string/shared'
+} from '~/code/call/generate/string/shared'
 
 export default function testGenerateString(test: Test['test']) {
   test('generate random latin string', async t => {

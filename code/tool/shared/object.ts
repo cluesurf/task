@@ -1,7 +1,7 @@
 import { flatten, unflatten } from 'flat'
-import unset from 'lodash/unset.js'
-import isPlainObject from 'lodash/isPlainObject.js'
-import merge from 'lodash/merge.js'
+import unset from 'lodash/unset'
+import isPlainObject from 'lodash/isPlainObject'
+import merge from 'lodash/merge'
 
 export function flattenObjectSafe(
   obj: object,

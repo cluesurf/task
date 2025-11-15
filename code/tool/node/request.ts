@@ -1,5 +1,5 @@
-import { Request } from '../shared/request.js'
-import { WorkFile } from '../shared/work.js'
+import { Request } from '../shared/request'
+import { WorkFile } from '../shared/work'
 
 export async function resolveWorkFileNode<T extends WorkFile>(
   request: Request,

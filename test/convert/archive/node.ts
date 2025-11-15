@@ -1,5 +1,5 @@
 import { Test } from 'tape'
-import { convertArchiveNode } from '~/code/action/convert/archive/node'
+import { convertArchiveNode } from '~/code/call/convert/archive/node'
 import fs from 'fs'
 
 export default function testConvertArchiveNode(test: Test['test']) {

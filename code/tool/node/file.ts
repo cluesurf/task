@@ -4,10 +4,10 @@ import fs from 'fs'
 import { Readable } from 'stream'
 import { ReadableStream as ReadableStreamWeb } from 'stream/web'
 import tmp, { tmpName } from 'tmp-promise'
-import { fetchWithTimeout } from '../shared/request.js'
-import { FileLink } from '../shared/file.js'
+import { fetchWithTimeout } from '../shared/request'
+import { FileLink } from '../shared/file'
 import { tmpdir } from 'os'
-import { getRandomId } from './id.js'
+import { getRandomId } from './id'
 
 export async function resolveRemoteFile({
   path,
