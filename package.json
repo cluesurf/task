@@ -100,7 +100,7 @@
     "flat": "^6.0.1",
     "ftp": "^0.3.10",
     "gifsicle-wasm-browser": "^1.5.16",
-    "glob": "^10.3.10",
+    "glob": "^13.0.0",
     "guesslang-js": "^0.0.3",
     "hast-util-to-jsx-runtime": "^2.3.0",
     "ip-address": "^10.0.1",
