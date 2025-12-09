@@ -70,7 +70,7 @@
     "ansi-to-html": "^0.7.2",
     "archiver": "^6.0.1",
     "assert": "^2.1.0",
-    "axios": "^1.7.9",
+    "axios": "^1.13.2",
     "basic-ftp": "^5.0.4",
     "braces": "^3.0.3",
     "bytes": "^3.1.2",
