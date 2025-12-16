@@ -144,7 +144,7 @@
     "sql-escape-string": "^1.1.0",
     "sql-formatter": "^15.0.2",
     "strip-ansi": "^7.1.0",
-    "systeminformation": "^5.25.11",
+    "systeminformation": "^5.27.14",
     "tape": "^5.9.0",
     "tar": "^7.5.2",
     "tmp-promise": "^3.0.3",
