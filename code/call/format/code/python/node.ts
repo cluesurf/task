@@ -6,7 +6,7 @@ import {
   FormatPythonNodeRemoteInput,
   FormatPythonNodeClientInputParser,
   FormatPythonNodeLocalInputParser,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 import { buildCommandToFormatPython } from '../command'
 import { buildRequestToFormat } from '../shared'
 import { runCommandSequence } from '~/code/tool/node/command'

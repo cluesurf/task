@@ -6,5 +6,5 @@ export const generateStringConsole = buildActionCommand({
   describe: 'Generate a random or patterned string',
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'generate_string_command_input',
-  loadHandler: () => import('./node'),
+
 })

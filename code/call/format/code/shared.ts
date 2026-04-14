@@ -24,7 +24,7 @@ import {
   FormatYamlWithPrettier,
   FormatYamlWithPrettierParser,
   PrettierPlugin,
-} from '~/code/form/shared/parser'
+} from '~/code/form/shared/take'
 import * as prettierPluginEstree from 'prettier/plugins/estree'
 import { buildRemoteRequest } from '~/code/tool/shared/request'
 import { omitNested } from '~/code/tool/shared/object'

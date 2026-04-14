@@ -7,7 +7,7 @@ import {
   ConvertImageWithImageMagickNodeLocalInputParser,
   ConvertImageWithImageMagickNodeRemoteInput,
   ConvertImageWithImageMagickNodeClientInputParser,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 import { testConvertImageWithImageMagick } from './shared'
 import { buildCommandToConvertImageWithImageMagick } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'

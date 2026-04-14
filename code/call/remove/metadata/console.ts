@@ -6,5 +6,5 @@ export const removeMetadataConsole = buildActionCommand({
   describe: 'Strip metadata (EXIF, XMP, etc.) from a file',
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'remove_metadata_command_input',
-  loadHandler: () => import('./node'),
+
 })

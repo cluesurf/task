@@ -10,7 +10,7 @@ import {
   SanitizeHtmlNodeLocalInputParser,
   SanitizeHtmlNodeRemoteInput,
   SanitizeHtmlNodeClientInputParser,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 import {
   resolveInputForSanitizeLocalExternalNode,
   resolveInputForSanitizeLocalInternalNode,

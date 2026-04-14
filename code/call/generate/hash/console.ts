@@ -6,5 +6,5 @@ export const generateHashConsole = buildActionCommand({
   describe: 'Generate a cryptographic hash of input content',
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'generate_hash_command_input',
-  loadHandler: () => import('./node'),
+
 })

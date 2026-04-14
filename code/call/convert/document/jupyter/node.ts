@@ -7,7 +7,7 @@ import {
   ConvertDocumentWithJupyterNodeLocalInputParser,
   ConvertDocumentWithJupyterNodeRemoteInput,
   ConvertDocumentWithJupyterNodeClientInputParser,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 import { buildCommandToConvertDocumentWithJupyter } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {

@@ -7,7 +7,7 @@ import {
   ConvertMp4ToGifWithFfmpegParser,
   ConvertVideoWithFfmpegCommandInput,
   FfmpegCodecAudio,
-} from '~/code/form/shared/parser'
+} from '~/code/form/shared/take'
 
 // ffmpeg -filters
 // https://ffmpeg.org/ffmpeg-filters.html

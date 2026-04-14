@@ -6,5 +6,5 @@ export const convertVideoConsole = buildActionCommand({
   describe: 'Convert between video formats',
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'convert_video_command_input',
-  loadHandler: () => import('./node'),
+
 })

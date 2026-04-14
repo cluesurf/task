@@ -16,7 +16,7 @@ import {
   NamedWordSet,
   WeightedSymbolSet,
   WeightedWordSet,
-} from '~/code/form/shared/parser'
+} from '~/code/form/shared/take'
 
 export function generateRandomSymbols(source: GenerateRandomSymbols) {
   const input = GenerateRandomSymbolsParser().parse(source)

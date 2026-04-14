@@ -7,7 +7,7 @@ import {
   CompileCppNodeLocalInputParser,
   CompileCppNodeRemoteInput,
   CompileCppNodeClientInputParser,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 import { buildCommandToCompileCpp } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {

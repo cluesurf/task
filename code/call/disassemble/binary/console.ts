@@ -6,5 +6,5 @@ export const disassembleBinaryConsole = buildActionCommand({
   describe: 'Disassemble a binary file to assembly',
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'disassemble_binary_command_input',
-  loadHandler: () => import('./node'),
+
 })

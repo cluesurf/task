@@ -5,7 +5,7 @@ import {
   ConvertLatexToPngBrowserInput,
   ConvertMarkdownWithPuppeteerBrowserInput,
   ConvertTxtWithPuppeteerBrowserInput,
-} from '~/code/form/browser/parser'
+} from '~/code/form/browser/take'
 import {
   testConvertDocumentWithCalibre,
   testConvertDocumentWithLibreOffice,

@@ -4,7 +4,7 @@ import {
   FormatSwiftBrowserInputParser,
   FormatSwiftBrowserLocalInput,
   FormatSwiftBrowserRemoteInput,
-} from '~/code/form/browser/parser'
+} from '~/code/form/browser/take'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
 import { NativeOptions } from '~/code/tool/shared/request'

@@ -6,7 +6,7 @@ import {
   FormatKotlinNodeRemoteInput,
   FormatKotlinNodeClientInputParser,
   FormatKotlinNodeLocalInputParser,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 import { buildCommandToFormatKotlin } from '../command'
 import { buildRequestToFormat } from '../shared'
 import { runCommandSequence } from '~/code/tool/node/command'

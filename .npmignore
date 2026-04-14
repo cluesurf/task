@@ -19,3 +19,9 @@ Dockerfile*
 .gitattributes
 /test/hold
 /deck
+/host/test
+/host/make
+/host/deck
+/load
+/deck
+/view

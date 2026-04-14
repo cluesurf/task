@@ -6,7 +6,7 @@ import {
   FormatRustNodeRemoteInput,
   FormatRustNodeClientInputParser,
   FormatRustNodeLocalInputParser,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 import { buildCommandToFormatRust } from '../command'
 import { buildRequestToFormat } from '../shared'
 import { runCommandSequence } from '~/code/tool/node/command'

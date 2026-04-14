@@ -4,7 +4,7 @@ import {
   CompileSwiftBrowserLocalInput,
   CompileSwiftBrowserOutputParser,
   CompileSwiftBrowserRemoteInput,
-} from '~/code/form/browser/parser'
+} from '~/code/form/browser/take'
 import { buildFormDataRequestToCompile } from '~/code/call/compile/code/shared'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'

@@ -6,7 +6,7 @@ import {
   FormatCodeWithClangFormatNodeRemoteInput,
   FormatCodeWithClangFormatNodeClientInputParser,
   FormatCodeWithClangFormatNodeLocalInputParser,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 import fsp from 'fs/promises'
 import YAML from 'yaml'
 import { buildCommandToFormatCodeWithClangFormat } from '../command'

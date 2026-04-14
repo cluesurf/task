@@ -3,7 +3,7 @@ import {
   buildCommandSequence,
   getCommand,
 } from '~/code/tool/shared/command'
-import { InspectMetadataFromImage } from '~/code/form/node/parser'
+import { InspectMetadataFromImage } from '~/code/form/node/take'
 
 export function buildCommandToInspectMetadataFromImage(
   input: InspectMetadataFromImage,

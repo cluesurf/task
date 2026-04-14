@@ -3,7 +3,7 @@ import {
   ForgeMessageDigest,
   GenerateHash,
   GenerateHashParser,
-} from '~/code/form/shared/parser'
+} from '~/code/form/shared/take'
 
 export function generateHash(source: GenerateHash) {
   const input = GenerateHashParser().parse(source)

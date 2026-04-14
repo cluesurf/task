@@ -2,7 +2,7 @@ import {
   Command,
   CommandName,
   CommandSequenceParser,
-} from '~/code/form/shared/parser'
+} from '~/code/form/shared/take'
 import kink from './kink'
 
 export const COMMAND: Record<CommandName, Array<string> | undefined> = {

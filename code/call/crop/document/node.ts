@@ -5,7 +5,7 @@ import {
 import {
   CropPdfWithPdfCrop,
   CropPdfWithPdfCropParser,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 
 export async function cropPdfWithPdfCropNode(
   source: CropPdfWithPdfCrop,

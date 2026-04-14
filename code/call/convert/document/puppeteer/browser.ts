@@ -7,7 +7,7 @@ import {
   ConvertMarkdownWithPuppeteerBrowserInputParser,
   ConvertMarkdownWithPuppeteerBrowserLocalInput,
   ConvertMarkdownWithPuppeteerBrowserRemoteInput,
-} from '~/code/form/browser/parser'
+} from '~/code/form/browser/take'
 import { buildFormDataRequestToConvert } from '../../shared'
 import { WorkFileAsBlob } from '~/code/tool/shared/work'
 import { NativeOptions } from '~/code/tool/shared/request'

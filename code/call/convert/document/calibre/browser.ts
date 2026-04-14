@@ -4,7 +4,7 @@ import {
   ConvertDocumentWithCalibreBrowserLocalInput,
   ConvertDocumentWithCalibreBrowserOutputParser,
   ConvertDocumentWithCalibreBrowserRemoteInput,
-} from '~/code/form/browser/parser'
+} from '~/code/form/browser/take'
 import { buildFormDataRequestToConvert } from '../../shared'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'

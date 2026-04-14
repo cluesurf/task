@@ -6,5 +6,5 @@ export const convertTimeConsole = buildActionCommand({
   describe: 'Convert between time zones and date formats',
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'convert_time_command_input',
-  loadHandler: () => import('./node'),
+
 })

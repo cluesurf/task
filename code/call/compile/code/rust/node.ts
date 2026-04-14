@@ -6,7 +6,7 @@ import {
   CompileRustNodeLocalInputParser,
   CompileRustNodeRemoteInput,
   CompileRustNodeClientInputParser,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 import { buildCommandToCompileRust } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {

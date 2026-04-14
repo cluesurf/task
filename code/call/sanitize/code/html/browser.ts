@@ -4,7 +4,7 @@ import {
   SanitizeHtmlBrowserInputParser,
   SanitizeHtmlBrowserLocalInput,
   SanitizeHtmlBrowserRemoteInput,
-} from '~/code/form/browser/parser'
+} from '~/code/form/browser/take'
 import { testSanitize, buildFormDataRequestToSanitize } from '../shared'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
 import { NativeOptions } from '~/code/tool/shared/request'

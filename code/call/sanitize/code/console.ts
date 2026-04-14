@@ -6,5 +6,5 @@ export const sanitizeCodeConsole = buildActionCommand({
   describe: 'Sanitize source code (remove secrets, pii, etc.)',
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'sanitize_code_command_input',
-  loadHandler: () => import('./node'),
+
 })

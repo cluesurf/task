@@ -5,6 +5,207 @@
   "bin": {
     "task": "./host/code/console.js"
   },
+  "exports": {
+    ".": {
+      "types": "./host/code/base.d.ts",
+      "default": "./host/code/base.js"
+    },
+    "./archive": {
+      "node": "./host/code/call/archive/node.js",
+      "browser": "./host/code/call/archive/browser.js",
+      "default": "./host/code/call/archive/node.js"
+    },
+    "./check/file": {
+      "node": "./host/code/call/check/file/node.js",
+      "browser": "./host/code/call/check/file/browser.js",
+      "default": "./host/code/call/check/file/node.js"
+    },
+    "./compile/c": {
+      "node": "./host/code/call/compile/code/c/node.js",
+      "browser": "./host/code/call/compile/code/c/browser.js",
+      "default": "./host/code/call/compile/code/c/node.js"
+    },
+    "./compile/cpp": {
+      "node": "./host/code/call/compile/code/cpp/node.js",
+      "browser": "./host/code/call/compile/code/cpp/browser.js",
+      "default": "./host/code/call/compile/code/cpp/node.js"
+    },
+    "./compile/rust": {
+      "node": "./host/code/call/compile/code/rust/node.js",
+      "browser": "./host/code/call/compile/code/rust/browser.js",
+      "default": "./host/code/call/compile/code/rust/node.js"
+    },
+    "./compile/swift": {
+      "node": "./host/code/call/compile/code/swift/node.js",
+      "browser": "./host/code/call/compile/code/swift/browser.js",
+      "default": "./host/code/call/compile/code/swift/node.js"
+    },
+    "./compile/wast": {
+      "node": "./host/code/call/compile/code/wast/node.js",
+      "browser": "./host/code/call/compile/code/wast/browser.js",
+      "default": "./host/code/call/compile/code/wast/node.js"
+    },
+    "./convert/archive": {
+      "node": "./host/code/call/convert/archive/node.js",
+      "browser": "./host/code/call/convert/archive/browser.js",
+      "default": "./host/code/call/convert/archive/node.js"
+    },
+    "./convert/data": {
+      "node": "./host/code/call/convert/data/node.js",
+      "browser": "./host/code/call/convert/data/browser.js",
+      "default": "./host/code/call/convert/data/node.js"
+    },
+    "./convert/document": {
+      "node": "./host/code/call/convert/document/node.js",
+      "browser": "./host/code/call/convert/document/browser.js",
+      "default": "./host/code/call/convert/document/node.js"
+    },
+    "./convert/font": {
+      "node": "./host/code/call/convert/font/node.js",
+      "browser": "./host/code/call/convert/font/browser.js",
+      "default": "./host/code/call/convert/font/node.js"
+    },
+    "./convert/image": {
+      "node": "./host/code/call/convert/image/imagemagick/node.js",
+      "browser": "./host/code/call/convert/image/imagemagick/browser.js",
+      "default": "./host/code/call/convert/image/imagemagick/node.js"
+    },
+    "./convert/time": {
+      "node": "./host/code/call/convert/time/node.js",
+      "browser": "./host/code/call/convert/time/browser.js",
+      "default": "./host/code/call/convert/time/node.js"
+    },
+    "./convert/unit": {
+      "node": "./host/code/call/convert/unit/node.js",
+      "browser": "./host/code/call/convert/unit/browser.js",
+      "default": "./host/code/call/convert/unit/node.js"
+    },
+    "./convert/video": {
+      "node": "./host/code/call/convert/video/ffmpeg/node.js",
+      "browser": "./host/code/call/convert/video/ffmpeg/browser.js",
+      "default": "./host/code/call/convert/video/ffmpeg/node.js"
+    },
+    "./crop/document": {
+      "node": "./host/code/call/crop/document/node.js",
+      "browser": "./host/code/call/crop/document/browser.js",
+      "default": "./host/code/call/crop/document/node.js"
+    },
+    "./disassemble/binary": {
+      "node": "./host/code/call/disassemble/binary/node.js",
+      "browser": "./host/code/call/disassemble/binary/browser.js",
+      "default": "./host/code/call/disassemble/binary/node.js"
+    },
+    "./download/hugging-face": {
+      "node": "./host/code/call/download/hugging-face/node.js",
+      "browser": "./host/code/call/download/hugging-face/browser.js",
+      "default": "./host/code/call/download/hugging-face/node.js"
+    },
+    "./extract/archive": {
+      "node": "./host/code/call/extract/archive/node.js",
+      "browser": "./host/code/call/extract/archive/browser.js",
+      "default": "./host/code/call/extract/archive/node.js"
+    },
+    "./format/assembly": {
+      "node": "./host/code/call/format/code/assembly/node.js",
+      "browser": "./host/code/call/format/code/assembly/browser.js",
+      "default": "./host/code/call/format/code/assembly/node.js"
+    },
+    "./format/clang": {
+      "node": "./host/code/call/format/code/clang/node.js",
+      "browser": "./host/code/call/format/code/clang/browser.js",
+      "default": "./host/code/call/format/code/clang/node.js"
+    },
+    "./format/kotlin": {
+      "node": "./host/code/call/format/code/kotlin/node.js",
+      "browser": "./host/code/call/format/code/kotlin/browser.js",
+      "default": "./host/code/call/format/code/kotlin/node.js"
+    },
+    "./format/python": {
+      "node": "./host/code/call/format/code/python/node.js",
+      "browser": "./host/code/call/format/code/python/browser.js",
+      "default": "./host/code/call/format/code/python/node.js"
+    },
+    "./format/ruby": {
+      "node": "./host/code/call/format/code/ruby/node.js",
+      "browser": "./host/code/call/format/code/ruby/browser.js",
+      "default": "./host/code/call/format/code/ruby/node.js"
+    },
+    "./format/rust": {
+      "node": "./host/code/call/format/code/rust/node.js",
+      "browser": "./host/code/call/format/code/rust/browser.js",
+      "default": "./host/code/call/format/code/rust/node.js"
+    },
+    "./format/swift": {
+      "node": "./host/code/call/format/code/swift/node.js",
+      "browser": "./host/code/call/format/code/swift/browser.js",
+      "default": "./host/code/call/format/code/swift/node.js"
+    },
+    "./generate/hash": {
+      "node": "./host/code/call/generate/hash/node.js",
+      "browser": "./host/code/call/generate/hash/browser.js",
+      "default": "./host/code/call/generate/hash/node.js"
+    },
+    "./generate/qrcode": {
+      "node": "./host/code/call/generate/qrcode/node.js",
+      "browser": "./host/code/call/generate/qrcode/browser.js",
+      "default": "./host/code/call/generate/qrcode/node.js"
+    },
+    "./generate/string": {
+      "node": "./host/code/call/generate/string/node.js",
+      "browser": "./host/code/call/generate/string/browser.js",
+      "default": "./host/code/call/generate/string/node.js"
+    },
+    "./inspect/color": {
+      "node": "./host/code/call/inspect/color/node.js",
+      "browser": "./host/code/call/inspect/color/browser.js",
+      "default": "./host/code/call/inspect/color/node.js"
+    },
+    "./inspect/metadata": {
+      "node": "./host/code/call/inspect/metadata/node.js",
+      "browser": "./host/code/call/inspect/metadata/browser.js",
+      "default": "./host/code/call/inspect/metadata/node.js"
+    },
+    "./optimize/image": {
+      "node": "./host/code/call/optimize/image/local/node.js",
+      "browser": "./host/code/call/optimize/image/local/browser.js",
+      "default": "./host/code/call/optimize/image/local/node.js"
+    },
+    "./parse/code": {
+      "node": "./host/code/call/parse/code/node.js",
+      "browser": "./host/code/call/parse/code/browser.js",
+      "default": "./host/code/call/parse/code/node.js"
+    },
+    "./remove/metadata": {
+      "node": "./host/code/call/remove/metadata/node.js",
+      "browser": "./host/code/call/remove/metadata/browser.js",
+      "default": "./host/code/call/remove/metadata/node.js"
+    },
+    "./resize/image": {
+      "node": "./host/code/call/resize/image/node.js",
+      "browser": "./host/code/call/resize/image/browser.js",
+      "default": "./host/code/call/resize/image/node.js"
+    },
+    "./sanitize/code": {
+      "node": "./host/code/call/sanitize/code/node.js",
+      "browser": "./host/code/call/sanitize/code/browser.js",
+      "default": "./host/code/call/sanitize/code/node.js"
+    },
+    "./slice/document": {
+      "node": "./host/code/call/slice/document/node.js",
+      "browser": "./host/code/call/slice/document/browser.js",
+      "default": "./host/code/call/slice/document/node.js"
+    },
+    "./validate/document": {
+      "node": "./host/code/call/validate/document/node.js",
+      "browser": "./host/code/call/validate/document/browser.js",
+      "default": "./host/code/call/validate/document/node.js"
+    },
+    "./verify/image": {
+      "node": "./host/code/call/verify/image/node.js",
+      "browser": "./host/code/call/verify/image/browser.js",
+      "default": "./host/code/call/verify/image/node.js"
+    }
+  },
   "scripts": {
     "test:clean": "rm -rf test/hold && mkdir test/hold && mkdir test/hold/pdf",
     "test:cli": "pnpm test:clean && ./test/cli.sh",

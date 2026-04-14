@@ -228,6 +228,16 @@ every concrete sub-thing of that action.
   nothing will register it. **Never use `~/code/source` — that
   pattern is gone; there's only `code/base.ts`.**
 - `pnpm make` — `tsc && tsc-alias` over the whole package.
+- **Package exports are per-action.** Consumers import a single
+  action rather than the whole library. Shape:
+  `@cluesurf/task/<action>/<thing>` resolves to `node.ts` (via
+  `default` and `node` export conditions) or `browser.ts` (via
+  `browser` condition) for that action. Examples:
+  `import { convertDataNode } from '@cluesurf/task/convert/data'`,
+  `import { downloadHuggingFaceNode } from '@cluesurf/task/download/hugging-face'`.
+  **When you add a new action, add a matching entry under the
+  `exports` field in `package.json`** with `node` + `browser` +
+  `default` pointing at the compiled `host/code/call/<path>.js`.
 - **External tools live in two install manifests**:
   - `deck/task/Dockerfile` installs everything the scripts shell
     out to (ffmpeg, pandoc, imagemagick, duckdb, hf CLI, etc.)

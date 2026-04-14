@@ -6,5 +6,5 @@ export const extractArchiveConsole = buildActionCommand({
   describe: 'Extract files from an archive',
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'extract_archive_command_input',
-  loadHandler: () => import('./node'),
+
 })

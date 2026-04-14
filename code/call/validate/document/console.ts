@@ -6,5 +6,5 @@ export const validateDocumentConsole = buildActionCommand({
   describe: 'Validate a document against a schema or standard',
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'validate_document_command_input',
-  loadHandler: () => import('./node'),
+
 })

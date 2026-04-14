@@ -6,7 +6,7 @@ import {
   FormatAssemblyNodeRemoteInput,
   FormatAssemblyNodeClientInputParser,
   FormatAssemblyNodeLocalInputParser,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 import { buildCommandToFormatAssembly } from '../command'
 import { buildRequestToFormat } from '../shared'
 import { runCommandSequence } from '~/code/tool/node/command'

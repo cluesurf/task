@@ -6,7 +6,7 @@ import {
   CompileSwiftNodeLocalInputParser,
   CompileSwiftNodeRemoteInput,
   CompileSwiftNodeClientInputParser,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 import { buildCommandToCompileSwift } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {

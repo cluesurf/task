@@ -3,7 +3,7 @@ import {
   ConvertImageWithImageMagickBrowserInputParser,
   ConvertImageWithImageMagickBrowserLocalInput,
   ConvertImageWithImageMagickBrowserRemoteInput,
-} from '~/code/form/browser/parser'
+} from '~/code/form/browser/take'
 import { buildFormDataRequestToConvert } from '../../shared'
 import kink from '~/code/tool/shared/kink'
 import { testConvertImageWithImageMagick } from './shared'

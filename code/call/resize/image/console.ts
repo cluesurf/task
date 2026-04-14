@@ -6,5 +6,5 @@ export const resizeImageConsole = buildActionCommand({
   describe: 'Resize an image',
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'resize_image_command_input',
-  loadHandler: () => import('./node'),
+
 })

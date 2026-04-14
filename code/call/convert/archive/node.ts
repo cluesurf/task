@@ -10,7 +10,7 @@ import {
   ConvertArchiveNodeClientInputParser,
   ExtractWithUnarchiverParser,
   ArchiveParser,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {
   resolveInputForConvertLocalExternalNode,

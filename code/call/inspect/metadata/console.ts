@@ -6,5 +6,5 @@ export const inspectMetadataConsole = buildActionCommand({
   describe: 'Inspect file metadata (EXIF, XMP, etc.)',
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'inspect_metadata_command_input',
-  loadHandler: () => import('./node'),
+
 })

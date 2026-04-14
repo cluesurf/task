@@ -6,5 +6,5 @@ export const generateQrcodeConsole = buildActionCommand({
   describe: 'Generate a QR code image from text',
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'generate_qrcode_command_input',
-  loadHandler: () => import('./node'),
+
 })

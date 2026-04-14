@@ -6,7 +6,7 @@ import {
   FormatSwiftNodeRemoteInput,
   FormatSwiftNodeClientInputParser,
   FormatSwiftNodeLocalInputParser,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 import { buildCommandToFormatSwift } from '../command'
 import { buildRequestToFormat } from '../shared'
 import { runCommandSequence } from '~/code/tool/node/command'

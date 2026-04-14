@@ -6,5 +6,5 @@ export const optimizeImageConsole = buildActionCommand({
   describe: 'Optimize an image (reduce size, quantize, etc.)',
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'optimize_image_local_command_input',
-  loadHandler: () => import('./local/node'),
+
 })

@@ -164,7 +164,12 @@ export function buildActionCommand(input: {
   describe: string
   mesh: Record<string, unknown>
   formName: string
-  loadHandler: () => Promise<{ default: (input: unknown) => Promise<unknown> } | Record<string, unknown>>
+  /** Optional. When omitted the command prints a "not yet routed"
+   *  message — useful for scaffolding while the node handler
+   *  doesn't exist at this exact path yet. */
+  loadHandler?: () => Promise<
+    { default: (input: unknown) => Promise<unknown> } | Record<string, unknown>
+  >
 }): import('yargs').CommandModule {
   const form = input.mesh[input.formName]
   const options = form
@@ -176,6 +181,12 @@ export function buildActionCommand(input: {
     describe: input.describe,
     builder: y => applyFormOptions(y, options),
     handler: async argv => {
+      if (!input.loadHandler) {
+        throw new Error(
+          `'${input.command}' is not yet routed to a Node handler. ` +
+            `Add a loadHandler to its console.ts.`,
+        )
+      }
       const mod = await input.loadHandler()
       const fn =
         'default' in mod && typeof mod.default === 'function'

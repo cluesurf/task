@@ -18,7 +18,7 @@ import {
   ResolveInputForCompileLocalExternal,
   ResolveInputForCompileLocalInternal,
   ResolveInputForCompileRemote,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 // import debug from '~/code/tool/shared/debug'
 
 // https://www.npmjs.com/package/ftp

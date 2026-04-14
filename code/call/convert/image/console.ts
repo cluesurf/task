@@ -6,5 +6,5 @@ export const convertImageConsole = buildActionCommand({
   describe: 'Convert between image formats',
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'convert_image_command_input',
-  loadHandler: () => import('./node'),
+
 })

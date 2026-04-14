@@ -5,7 +5,7 @@ import {
   ConvertLatexToPngNodeInput,
   ConvertMarkdownWithPuppeteerNodeInput,
   ConvertTxtWithPuppeteerNodeInput,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 import {
   testConvertDocumentWithCalibre,
   testConvertDocumentWithLibreOffice,

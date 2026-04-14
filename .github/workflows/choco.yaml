@@ -4,6 +4,7 @@ name: Choco Publish
 
 jobs:
   publish:
+    if: false # disabled for now
     # Windows Server 2022 (https://github.com/actions/runner-images)
     runs-on: windows-2022
     environment: build

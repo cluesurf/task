@@ -2,7 +2,7 @@ import { getBrowser, inactivateBrowser } from '~/code/tool/node/browser'
 import {
   ConvertHtmlWithPuppeteerNodeInput,
   TextStyle,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 // import debug from '~/code/tool/shared/debug'
 import { marked } from 'marked'
 import debug from '~/code/tool/shared/debug'
@@ -23,7 +23,7 @@ import {
   ConvertMarkdownWithPuppeteerNodeLocalInputParser,
   ConvertMarkdownWithPuppeteerNodeRemoteInput,
   ConvertMarkdownWithPuppeteerNodeClientInputParser,
-} from '~/code/form/node/parser'
+} from '~/code/form/node/take'
 import {
   resolveInputContentForConvertLocalExternalNode,
   resolveInputContentForConvertLocalInternalNode,
