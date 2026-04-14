@@ -404,13 +404,39 @@ Then point `.env` at the clone:
 WINGET_PKGS_DIR=/Users/you/base/crew/cluesurf/fork-winget-pkgs
 ```
 
-`gh` is what `publish.sh` uses to open the PR after pushing the
-branch. Make sure `gh auth login` has run and the authenticated
-account has push rights on `cluesurf/fork-winget-pkgs`.
-
 If you ever need the full history (`git log` on old commits,
 bisect, etc.), run `git fetch --unshallow && git fetch --refetch`
 — converts the shallow + partial clone into a full one.
+
+### Publish flow — one pnpm command
+
+```sh
+pnpm host:pkg:winget
+```
+
+That runs `make/deck/windows/winget/publish.sh`, which does all
+four steps end-to-end:
+
+1. **Branch** — `git checkout -b cluesurf-task-<version>` inside
+   the fork, off a fresh `master` tracking upstream.
+2. **Write manifests** — copies the rendered
+   `manifests/c/ClueSurf/Task/<version>/*.yaml` into the fork.
+3. **Commit + push** — pushes the new branch to
+   `cluesurf/fork-winget-pkgs`.
+4. **Open PR** — `gh pr create --repo microsoft/winget-pkgs
+   --head cluesurf:<branch>`, so the PR targets Microsoft's repo
+   with the fork as the source.
+
+Preconditions:
+
+- `gh auth login` has been run and the account has push rights
+  on `cluesurf/fork-winget-pkgs`.
+- `.env` has `WINGET_PKGS_DIR` pointing at your local clone.
+- You ran `pnpm make:pkg:windows` (or `pnpm make:pkg`) first so
+  `make/deck/windows/winget/dist/manifests/` exists.
+
+If `gh` isn't on PATH the script prints the GitHub compare URL
+so you can open the PR manually in a browser.
 
 ## 9. Chocolatey API key (Windows)
 
