@@ -1,9 +1,16 @@
+/**
+ * `task list network port` — second name for `task list port` /
+ * `task list network connection`, kept so users discovering the
+ * command through `list network <...>` find the expected verb.
+ * All three flow through the same port-listing node.
+ */
+
 import type { CommandModule } from 'yargs'
 import { registerHelp } from '~/code/tool/node/log/registry'
 
 registerHelp({
-  command: 'task list port',
-  describe: 'List open TCP / UDP ports',
+  command: 'task list network port',
+  describe: 'List open TCP / UDP ports (alias for `list port`)',
   options: [
     { long: 'status', describe: 'Filter by status, e.g. `open` / `LISTEN`' },
     { long: 'protocol', describe: 'tcp | udp' },
@@ -12,13 +19,11 @@ registerHelp({
     { long: 'direction', describe: 'increasing (default) | decreasing' },
   ],
   examples: [
-    { comment: 'all listening ports', command: 'task list port --status open' },
-    { comment: 'sort by port number',  command: 'task list port --sort port' },
-    { comment: 'group by status',      command: 'task list port --sort status' },
+    { comment: 'listening ports', command: 'task list network port --status open' },
   ],
 })
 
-export const listPortConsole: CommandModule = {
+export const listNetworkPortConsole: CommandModule = {
   command: 'port',
   describe: 'List open TCP / UDP ports',
   builder: y =>
@@ -32,15 +37,10 @@ export const listPortConsole: CommandModule = {
       })
       .option('direction', {
         type: 'string',
-        choices: ['increasing', 'decreasing', 'ascending', 'descending', 'asc', 'desc'],
-        coerce: (v: string) => {
-          if (v === 'ascending' || v === 'asc') return 'increasing'
-          if (v === 'descending' || v === 'desc') return 'decreasing'
-          return v
-        },
+        choices: ['increasing', 'decreasing'],
       }),
   handler: async argv => {
-    const { listPortNode } = await import('./node')
+    const { listPortNode } = await import('../../port/node')
     const { runAction } = await import('~/code/tool/node/log')
     const input = {
       status: argv.status as string | undefined,

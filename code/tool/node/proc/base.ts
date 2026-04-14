@@ -138,16 +138,26 @@ export async function listPorts(): Promise<PortRow[]> {
 
 // ---- filtering / searching ----------------------------------------
 
-export function filterByText(
+/**
+ * Ranked fuzzy match via fuse.js. Name is weighted higher than
+ * command so `task list process --text node` surfaces the
+ * `node` binaries ahead of processes that only mention node in
+ * a long argv. Returns in relevance order, best match first.
+ */
+export async function filterByText(
   list: Process[],
   text: string,
-): Process[] {
-  const needle = text.toLowerCase()
-  return list.filter(
-    p =>
-      p.name.toLowerCase().includes(needle) ||
-      p.command.toLowerCase().includes(needle),
-  )
+): Promise<Process[]> {
+  const { default: Fuse } = await import('fuse.js')
+  const fuse = new Fuse(list, {
+    keys: [
+      { name: 'name', weight: 0.7 },
+      { name: 'command', weight: 0.3 },
+    ],
+    threshold: 0.4,
+    ignoreLocation: true,
+  })
+  return fuse.search(text).map(r => r.item)
 }
 
 export function filterByUser(list: Process[], user: string): Process[] {
@@ -297,7 +307,7 @@ export async function killByText(
   signal: NodeJS.Signals = 'SIGTERM',
 ): Promise<number[]> {
   const all = await listProcesses()
-  const matches = filterByText(all, text)
+  const matches = await filterByText(all, text)
   const killed: number[] = []
   for (const p of matches) {
     try {

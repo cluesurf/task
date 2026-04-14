@@ -70,6 +70,7 @@ export async function buildCommandToConvertVideoWithFfmpeg(
     audioBitRate,
     videoBitRate,
     frameRate,
+    fps,
     startTime,
     endTime,
     strict,
@@ -144,8 +145,12 @@ export async function buildCommandToConvertVideoWithFfmpeg(
     cmd.link.push(`-b:v`, `${videoBitRate}`)
   }
 
-  if (frameRate) {
-    cmd.link.push(`-r`, `${frameRate}`)
+  // `--fps` and `--frame-rate` are aliases; whichever is set wins,
+  // with `--fps` taking precedence because it's the more common
+  // knob and likely passed deliberately.
+  const rate = fps ?? frameRate
+  if (rate) {
+    cmd.link.push(`-r`, `${rate}`)
   }
 
   if (videoCodec) {

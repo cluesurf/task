@@ -30,7 +30,7 @@ export async function watchProcessNode(input: WatchProcessNodeInput) {
 
   const tick = async () => {
     let list = await listProcesses()
-    if (input.text) list = filterByText(list, input.text)
+    if (input.text) list = await filterByText(list, input.text)
     if (input.top) list = topProcesses(list, input.top, input.limit)
     else list = list.slice(0, input.limit)
 

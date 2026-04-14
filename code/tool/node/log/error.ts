@@ -28,14 +28,28 @@ export class CliError extends Error {
   }
 }
 
+/**
+ * JS runtime error classes whose messages read like compiler
+ * diagnostics (`x.split is not a function`). A user hitting one
+ * of these wasn't trying to debug node internals, so we rewrite
+ * them to a generic "something went wrong internally" line and
+ * stash the real message in `DEBUG` mode only.
+ */
+const INTERNAL_ERROR_NAMES = new Set([
+  'TypeError',
+  'ReferenceError',
+  'SyntaxError',
+  'RangeError',
+  'URIError',
+  'EvalError',
+])
+
 export function renderCliError(err: unknown): string {
   const color = getLoggingStyle() === 'pretty'
   const paint = (text: string, tone: Tint) =>
     color ? tint(text, tone) : stripAnsi(tint(text, tone))
 
-  const message =
-    err instanceof Error ? err.message : String(err)
-  const hint = err instanceof CliError ? err.hint : undefined
+  const { message, hint } = summarize(err)
 
   const lines: string[] = []
   lines.push('')
@@ -52,6 +66,27 @@ export function renderCliError(err: unknown): string {
   }
   lines.push('')
   return lines.join('\n')
+}
+
+function summarize(err: unknown): { message: string; hint?: string } {
+  if (err instanceof CliError) {
+    return { message: err.message, hint: err.hint }
+  }
+  if (err instanceof Error) {
+    if (INTERNAL_ERROR_NAMES.has(err.name)) {
+      const debug = process.env.TASK_DEBUG
+      return {
+        message: debug
+          ? `unexpected internal error — ${err.name}: ${err.message}`
+          : 'unexpected internal error',
+        hint: debug
+          ? 'stack trace above — please report at github.com/cluesurf/task/issues'
+          : 'set `TASK_DEBUG=1` for details, or report at github.com/cluesurf/task/issues',
+      }
+    }
+    return { message: err.message }
+  }
+  return { message: String(err) }
 }
 
 export function printCliError(err: unknown): void {

@@ -18,7 +18,11 @@ export const convert_video_with_ffmpeg_base: Form = {
     videoCodec: { like: 'ffmpeg_codec_video', need: false },
     audioBitRate: { like: 'integer', need: false },
     videoBitRate: { like: 'integer', need: false },
-    frameRate: { like: 'integer', need: false },
+    frameRate: { like: 'integer', need: false, name: { mark: 'r' } },
+    // `--fps` is the colloquial name for frame rate. Mirrored field
+    // so callers can reach for either flag; the handler prefers
+    // whichever is set.
+    fps: { like: 'integer', need: false },
     startTime: {
       need: false,
       case: [
