@@ -307,6 +307,7 @@
     "ip-address": "10.1.0",
     "jsdom": "28.1.0",
     "json-keys-sort": "2.2.0",
+    "jsondiffpatch": "^0.7.3",
     "libarchive.js": "2.0.2",
     "libreoffice-convert": "1.8.1",
     "locate-chrome": "^0.1.1",

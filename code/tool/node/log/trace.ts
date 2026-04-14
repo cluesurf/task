@@ -28,6 +28,13 @@ export function getTrace(): TraceState {
   return state
 }
 
+/** True when `--explain` is active — handlers should skip
+ * rendering their (empty) results so only the `$ cmd` lines
+ * surface in the output. */
+export function isExplaining(): boolean {
+  return state.mode === 'explain'
+}
+
 const FLAG: Tint = { tone: 'cyan' }
 const HEAD: Tint = { tone: 'blackBright' }
 

@@ -22,7 +22,7 @@ import {
   renderTree,
   type ProcessColumn,
 } from '~/code/tool/node/proc/render'
-import { getLoggingStyle } from '~/code/tool/node/log'
+import { getLoggingStyle, isExplaining } from '~/code/tool/node/log'
 
 export type ListProcessNodeInput = {
   pid?: number
@@ -136,6 +136,18 @@ export async function listProcessNode(input: ListProcessNodeInput) {
   // For tree mode, keep every process so the hierarchy survives —
   // slicing before `buildTree` orphans grandchildren whose parents
   // got cut. Pagination of the tree is applied per-line downstream.
+  // `--show memory:sum` / `--show cpu:sum` short-circuit the
+  // table and print a one-row aggregate. Mixes with filters —
+  // `task list process --name node --show memory:sum` gives the
+  // total RSS across every node process, for example.
+  const aggregates = showParts
+    .filter(s => /^(cpu|memory|rss):(sum|avg|count|min|max)$/i.test(s))
+    .map(s => s.toLowerCase().split(':') as [AggField, AggOp])
+  if (aggregates.length > 0) {
+    renderAggregates(list, aggregates)
+    return { processes: list, aggregates: computeAll(list, aggregates) }
+  }
+
   if (input.layout !== 'tree') {
     const start = Math.max(0, (input.page - 1) * input.limit)
     list = list.slice(start, start + input.limit)
@@ -143,6 +155,69 @@ export async function listProcessNode(input: ListProcessNodeInput) {
 
   render(list, input, null)
   return { processes: list }
+}
+
+type AggField = 'cpu' | 'memory' | 'rss'
+type AggOp = 'sum' | 'avg' | 'count' | 'min' | 'max'
+
+const AGG_LABEL: Record<AggField, string> = {
+  cpu: 'CPU',
+  memory: 'MEM',
+  rss: 'RSS',
+}
+
+function valueOf(p: Process, field: AggField): number {
+  if (field === 'memory' || field === 'rss') return p.rss
+  return p.cpu
+}
+
+function formatAgg(value: number, field: AggField, op: AggOp): string {
+  if (op === 'count') return String(value)
+  if (field === 'cpu') return `${value.toFixed(1)}%`
+  // memory / rss track kilobytes; switch to GB once large enough.
+  if (value < 1024) return `${value.toFixed(0)} KB`
+  if (value < 1024 * 1024) return `${(value / 1024).toFixed(1)} MB`
+  return `${(value / 1024 / 1024).toFixed(2)} GB`
+}
+
+function computeOne(list: Process[], field: AggField, op: AggOp): number {
+  if (op === 'count') return list.length
+  if (list.length === 0) return 0
+  if (op === 'sum')
+    return list.reduce((acc, p) => acc + valueOf(p, field), 0)
+  if (op === 'avg')
+    return list.reduce((acc, p) => acc + valueOf(p, field), 0) / list.length
+  if (op === 'min')
+    return list.reduce((m, p) => Math.min(m, valueOf(p, field)), Infinity)
+  return list.reduce((m, p) => Math.max(m, valueOf(p, field)), -Infinity)
+}
+
+function computeAll(
+  list: Process[],
+  pairs: [AggField, AggOp][],
+): Array<{ field: AggField; op: AggOp; value: number }> {
+  return pairs.map(([field, op]) => ({
+    field,
+    op,
+    value: computeOne(list, field, op),
+  }))
+}
+
+function renderAggregates(
+  list: Process[],
+  pairs: [AggField, AggOp][],
+): void {
+  const style = getLoggingStyle()
+  if (style !== 'pretty' && style !== 'text') return
+  const rows = computeAll(list, pairs)
+  const lines: string[] = [`\nmatched ${list.length} processes\n`]
+  for (const r of rows) {
+    lines.push(
+      `  ${AGG_LABEL[r.field]} ${r.op.padEnd(5)} ${formatAgg(r.value, r.field, r.op)}`,
+    )
+  }
+  lines.push('')
+  process.stdout.write(lines.join('\n') + '\n')
 }
 
 /**

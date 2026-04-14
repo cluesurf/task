@@ -29,6 +29,7 @@ import { addConsole } from '~/code/call/add/console'
 import { archiveConsole } from '~/code/call/archive/console'
 import { checkConsole } from '~/code/call/check/console'
 import { combineConsole } from '~/code/call/combine/console'
+import { compareConsole } from '~/code/call/compare/console'
 import { compileConsole } from '~/code/call/compile/console'
 import { compressConsole } from '~/code/call/compress/console'
 import { convertConsole } from '~/code/call/convert/console'
@@ -181,7 +182,7 @@ async function main() {
     }
   }
 
-  const argv = rewriteImplicitSubcommands(raw)
+  const argv = rewriteArchive(rewriteCombine(rewriteImplicitSubcommands(raw)))
 
   await yargs(argv)
     .scriptName('task')
@@ -255,6 +256,7 @@ async function main() {
     .command(archiveConsole)
     .command(checkConsole)
     .command(combineConsole)
+    .command(compareConsole)
     .command(compileConsole)
     .command(compressConsole)
     .command(convertConsole)
@@ -347,6 +349,20 @@ function kindFromPath(p: string): string | undefined {
   return MEDIA_KIND_BY_EXT[lower.slice(dot + 1)]
 }
 
+/** Lowercase extension without the leading dot, or `undefined`
+ * when the path has none. Used to derive `-I` / `-O` format
+ * flags from the two-positional convert shorthand. */
+function extensionOf(p: string): string | undefined {
+  const lower = p.toLowerCase()
+  if (/\.tar\.gz$/.test(lower)) return 'tar.gz'
+  if (/\.tar\.bz2$/.test(lower)) return 'tar.bz2'
+  if (/\.tar\.xz$/.test(lower)) return 'tar.xz'
+  if (/\.tar\.zst$/.test(lower)) return 'tar.zst'
+  const dot = lower.lastIndexOf('.')
+  if (dot < 0) return undefined
+  return lower.slice(dot + 1)
+}
+
 /**
  * `task <verb> <path>` is shorthand for `task <verb> <kind> <path>`,
  * where `<kind>` is inferred from the path's extension. Each verb
@@ -410,14 +426,22 @@ function rewriteImplicitSubcommands(argv: string[]): string[] {
   if (config.subs.includes(positional)) return argv
   const kind = kindFromPath(positional)
 
-  // `task convert a.png a.jpg` — two positionals, both paths. Lift
-  // the second into `-o <path>` so buildActionCommand's positional
-  // handler fills input from the first and yargs fills output from
-  // the flag. Only when the caller hasn't already passed `-o`.
+  // `task convert a.png a.jpg` — two positional paths. Lift the
+  // second into `-o <path>` so buildActionCommand's positional
+  // handler fills input from the first and yargs takes output
+  // from the flag. Convert also requires `-I` / `-O` format
+  // flags, which we infer from the file extensions — otherwise
+  // the user would still have to repeat `-I png -O jpg`.
   const maybeOut = argv[2]
   const alreadyHasOutputFlag = argv
     .slice(2)
     .some(a => a === '-o' || a === '--output-file-path')
+  const alreadyHasInputFormat = argv
+    .slice(2)
+    .some(a => a === '-I' || a === '--input-format')
+  const alreadyHasOutputFormat = argv
+    .slice(2)
+    .some(a => a === '-O' || a === '--output-format')
   if (
     TWO_POSITIONAL_VERBS.has(verb) &&
     kind &&
@@ -427,7 +451,17 @@ function rewriteImplicitSubcommands(argv: string[]): string[] {
     kindFromPath(maybeOut) &&
     !alreadyHasOutputFlag
   ) {
-    return [verb, kind, positional, '-o', maybeOut, ...argv.slice(3)]
+    const rest = argv.slice(3)
+    const inExt = extensionOf(positional)
+    const outExt = extensionOf(maybeOut)
+    const extras: string[] = []
+    if (verb === 'convert' && inExt && !alreadyHasInputFormat) {
+      extras.push('-I', inExt)
+    }
+    if (verb === 'convert' && outExt && !alreadyHasOutputFormat) {
+      extras.push('-O', outExt)
+    }
+    return [verb, kind, positional, '-o', maybeOut, ...extras, ...rest]
   }
 
   if (kind && config.subs.includes(kind)) {
@@ -437,6 +471,77 @@ function rewriteImplicitSubcommands(argv: string[]): string[] {
     return [verb, config.default, ...argv.slice(1)]
   }
   return argv
+}
+
+/**
+ * `task combine` accepts two path shapes:
+ *
+ *   task combine image.png audio.mp3 -o video.mp4   # heterogeneous
+ *   task combine a.pdf b.pdf c.pdf  -o merged.pdf   # N homogeneous
+ *
+ * The heterogeneous form maps image → `-i` and audio → `-a`.
+ * The homogeneous form lifts each positional into a repeated
+ * `-i` so combine's merge path sees the same shape as a
+ * flag-only invocation.
+ */
+function rewriteCombine(argv: string[]): string[] {
+  if (argv[0] !== 'combine') return argv
+  if (argv.some(a => a === '-i' || a === '--input-file-path' || a === '-a')) {
+    return argv
+  }
+  const positionals: string[] = []
+  let i = 1
+  while (i < argv.length && argv[i] && !argv[i]!.startsWith('-')) {
+    positionals.push(argv[i]!)
+    i++
+  }
+  const rest = argv.slice(i)
+  if (positionals.length === 0) return argv
+
+  const kinds = positionals.map(kindFromPath)
+  const image = positionals.find((_, idx) => kinds[idx] === 'image')
+  const audio = positionals.find((_, idx) => kinds[idx] === 'audio')
+  if (image && audio && positionals.length === 2) {
+    return ['combine', '-i', image, '-a', audio, ...rest]
+  }
+  const inputs = positionals.flatMap(p => ['-i', p])
+  return ['combine', ...inputs, ...rest]
+}
+
+/**
+ * `task archive <path> -o <archive.tar.gz>` — fills in the pieces
+ * the archive schema wants as flags (`--input-path` and
+ * `--output-format`, derived from the output extension).
+ */
+function rewriteArchive(argv: string[]): string[] {
+  if (argv[0] !== 'archive') return argv
+  const first = argv[1]
+  if (!first || first.startsWith('-')) return argv
+  const hasInputPath = argv.some(
+    a => a === '--input-path' || a === '-i',
+  )
+  const hasOutputFormat = argv.some(
+    a => a === '--output-format' || a === '-O',
+  )
+  if (hasInputPath) return argv
+
+  // Pull `-o <path>` out of rest so we can infer the format from
+  // its extension. Everything else stays in its original slot.
+  const rest = argv.slice(2)
+  let outPath: string | undefined
+  for (let i = 0; i < rest.length; i++) {
+    if ((rest[i] === '-o' || rest[i] === '--output-file-path') && rest[i + 1]) {
+      outPath = rest[i + 1]
+      break
+    }
+  }
+
+  const inject = ['--input-path', first]
+  if (!hasOutputFormat && outPath) {
+    const ext = extensionOf(outPath)
+    if (ext) inject.push('-O', ext)
+  }
+  return ['archive', ...inject, ...rest]
 }
 
 main().catch(err => {

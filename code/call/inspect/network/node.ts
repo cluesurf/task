@@ -14,7 +14,7 @@ import {
   lookupDns,
 } from '~/code/tool/node/network/base'
 import { listPorts } from '~/code/tool/node/proc/base'
-import { getLoggingStyle } from '~/code/tool/node/log'
+import { getLoggingStyle, isExplaining } from '~/code/tool/node/log'
 
 const KEY: Tint = { tone: 'white' }
 const VAL: Tint = { tone: 'whiteBright' }
@@ -68,7 +68,7 @@ async function inspectHost(host: string, show: string | undefined) {
   const records = await lookupDns(host, types)
 
   const style = getLoggingStyle()
-  if (style === 'pretty' || style === 'text') {
+  if ((style === 'pretty' || style === 'text') && !isExplaining()) {
     const color = style === 'pretty'
     const paint = (s: string, t: Tint) =>
       color ? tint(s, t) : stripAnsi(tint(s, t))
@@ -89,6 +89,7 @@ async function inspectHost(host: string, show: string | undefined) {
 function render(title: string, rows: Array<[string, string]>): void {
   const style = getLoggingStyle()
   if (style !== 'pretty' && style !== 'text') return
+  if (isExplaining()) return
   const color = style === 'pretty'
   const paint = (s: string, t: Tint) =>
     color ? tint(s, t) : stripAnsi(tint(s, t))

@@ -11,17 +11,17 @@ export const archive: Form = {
   form: 'form',
   save: '~/code/form/action/archive',
   link: {
-    tool: { like: 'archive_tool', need: false },
+    tool: { like: 'archive_tool', need: false, name: { mark: 'T' } },
     input: {
       link: {
-        path: { like: 'string' },
+        path: { like: 'string', name: { mark: 'i' } },
       },
     },
     output: {
       link: {
         format: { like: 'archive_format', name: { mark: 'O' } },
         file: {
-          link: { path: { like: 'string' } },
+          link: { path: { like: 'string', name: { mark: 'o' } } },
         },
       },
     },

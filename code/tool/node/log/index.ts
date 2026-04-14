@@ -44,5 +44,6 @@ export {
 export {
   setTrace,
   getTrace,
+  isExplaining,
   type TraceMode,
 } from './trace'
