@@ -30,9 +30,9 @@ jobs:
         id: version
         run: echo "PACKAGE_VERSION=$(cat package.json | jq -r '.chocoVersion')" >> $env:GITHUB_ENV
       - name: Choco pack
-        run: choco pack load/choco/task.nuspec --out load/choco
+        run: choco pack make/deck/windows/choco/task.nuspec --out make/deck/windows/choco
       - name: Choco install
-        run: choco install -y task --source "'./load/choco;chocolatey'"
+        run: choco install -y task --source "'./make/deck/windows/choco;chocolatey'"
       - name: Choco set api key
         env:
           CHOCOLATEY_API_KEY: ${{ secrets.CHOCOLATEY_API_KEY }}
@@ -41,7 +41,7 @@ jobs:
       - name: Choco publish
         env:
           CHOCOLATEY_API_KEY: ${{ secrets.CHOCOLATEY_API_KEY }}
-        working-directory: load/choco
+        working-directory: make/deck/windows/choco
         run:
           choco push --key $env:CHOCOLATEY_API_KEY task.${{ env.PACKAGE_VERSION }}.nupkg --source
           https://push.chocolatey.org/

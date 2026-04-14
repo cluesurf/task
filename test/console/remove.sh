@@ -30,4 +30,32 @@ rm -f "$OUT/clip.silent.mp4"
 task remove audio -i "$OUT/clip.mp4" -o "$OUT/clip.silent.mp4" -f text >/dev/null 2>&1
 expect_file "$OUT/clip.silent.mp4"
 
+step "subtitles from video"
+rm -f "$OUT/clip.nosub.mp4"
+task remove subtitles "$OUT/clip.mp4" -o "$OUT/clip.nosub.mp4" -f text >/dev/null 2>&1
+expect_file "$OUT/clip.nosub.mp4"
+
+step "transparency flatten"
+cp "$F/image/landscape.jpg" "$OUT/flat.jpg"
+task remove transparency "$OUT/flat.jpg" -o "$OUT/flat.noalpha.jpg" -f text >/dev/null 2>&1
+expect_file "$OUT/flat.noalpha.jpg"
+
+step "profile strip"
+cp "$F/image/landscape.jpg" "$OUT/pro.jpg"
+task remove profile "$OUT/pro.jpg" -o "$OUT/pro.noicc.jpg" -f text >/dev/null 2>&1
+expect_file "$OUT/pro.noicc.jpg"
+
+step "exif surgical preset"
+cp "$F/image/landscape.jpg" "$OUT/exif.jpg"
+task remove exif "$OUT/exif.jpg" -o "$OUT/exif.clean.jpg" --preset gps -f text >/dev/null 2>&1
+expect_file "$OUT/exif.clean.jpg"
+
+step "exif requires at least one tag / preset"
+expect_contains "error mentions --tag or --preset" \
+  "task remove exif $OUT/exif.jpg 2>&1 || true" \
+  "at least one"
+
+step "password help"
+expect_contains "qpdf description" "task remove password --help" "qpdf"
+
 summary

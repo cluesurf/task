@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>__NAME__</id>
+    <title>@cluesurf/task native dependencies</title>
+    <version>__VERSION__</version>
+    <owners>Lance Pollard</owners>
+    <authors>ClueSurf</authors>
+    <summary>__SUMMARY__</summary>
+    <description>__DESCRIPTION__</description>
+    <tags>libreoffice imagemagick fontforge ffmpeg latex inkscape gifsicle go python rust calibre pandoc qpdf ghostscript nodejs cluesurf metapackage</tags>
+    <projectUrl>__HOMEPAGE__</projectUrl>
+    <packageSourceUrl>https://github.com/cluesurf/task/tree/make/make/deck/windows/choco</packageSourceUrl>
+    <bugTrackerUrl>https://github.com/cluesurf/task/issues</bugTrackerUrl>
+    <licenseUrl>https://github.com/cluesurf/task/blob/make/license.md</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <dependencies>
+__DEPS__
+    </dependencies>
+  </metadata>
+</package>

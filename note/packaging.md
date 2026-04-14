@@ -68,7 +68,7 @@ sudo emerge app-misc/cluesurf-task
 pnpm add -g @cluesurf/task
 ```
 
-Source: [`load/linux`](../load/linux).
+Source: [`make/deck/linux`](../make/deck/linux).
 
 ### Windows
 
@@ -79,7 +79,7 @@ choco install cluesurf-task       # alternative: legacy
 pnpm add -g @cluesurf/task        # layer 2
 ```
 
-Source: [`load/windows`](../load/windows).
+Source: [`make/deck/windows`](../make/deck/windows).
 
 ### Any OS with a container runtime
 
@@ -92,7 +92,7 @@ Both layers baked in. Best for CI and cross-platform reproducibility.
 ### Any OS with Nix
 
 ```sh
-nix-build load/nix/task.nix
+nix-build make/deck/nix/task.nix
 ```
 
 Single derivation, works on macOS + Linux + WSL. Most reproducible
@@ -161,7 +161,7 @@ paths and parse them — they never render HTML. The Pages site only
 needs to serve the file tree the publishers wrote:
 
 ```
-https://cluesurf.github.io/host/task/
+https://deck.clue.surf/task/
   apt/
     pool/main/cluesurf-task_<ver>_all.deb
     dists/stable/Release
@@ -185,10 +185,11 @@ https://cluesurf.github.io/host/task/
 Pages serves all of that with the right `Content-Type` and CORS
 defaults already. **You don't need Jekyll, a theme, `_config.yml`,
 or any rendering pipeline.** The deploy workflow in
-[`accounts.md` §2](./accounts.md) just uploads `site/` as the
-artifact.
+[`accounts.md` §2](./accounts.md) lives in `cluesurf/host` with
+GitHub Pages serving the `docs/` folder directly (branch hosting,
+no workflow needed).
 
-A bare `site/index.md` (or `index.html`) is a nice-to-have for
+A bare `docs/index.md` (or `index.html`) is a nice-to-have for
 humans who paste the root URL into a browser — a one-paragraph
 "this is the cluesurf-task package mirror, install instructions
 here: …" landing page. **Optional.** Without it the root URL

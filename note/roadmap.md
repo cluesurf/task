@@ -192,9 +192,10 @@ Pull requests welcome.
 ### remove
 
 - Done: metadata (image/audio/video), audio track from video,
+  subtitles (ffmpeg -sn), pdf password (qpdf --decrypt), color /
+  ICC profile (imagemagick +profile), transparency (flatten alpha),
+  specific exif tags (exiftool per-tag with gps/device/user presets),
   invisible characters, ssh-key.
-- Add: subtitles, pdf password, color profile, transparency,
-  specific exif fields (`exiftool` per-tag).
 
 ### merge / split
 

@@ -33,7 +33,7 @@ elevated shell (git-bash / msys / WSL with `choco` on PATH):
 ./task/windows/install.sh
 ```
 
-Source for the partial choco package: [load/choco](https://github.com/cluesurf/task/tree/make/load/choco).
+Source for the partial choco package: [make/deck/windows/choco](https://github.com/cluesurf/task/tree/make/make/deck/windows/choco).
 Missing tools tracked in [roadmap.md](./roadmap.md).
 
 ## Linux
@@ -43,15 +43,15 @@ Missing tools tracked in [roadmap.md](./roadmap.md).
 Pull the native toolchain via apt:
 
 ```sh
-curl -fsSL https://cluesurf.github.io/task/apt/pubkey.asc \
+curl -fsSL https://deck.clue.surf/task/apt/pubkey.asc \
   | sudo gpg --dearmor -o /usr/share/keyrings/cluesurf.gpg
-echo "deb [signed-by=/usr/share/keyrings/cluesurf.gpg] https://cluesurf.github.io/task/apt stable main" \
+echo "deb [signed-by=/usr/share/keyrings/cluesurf.gpg] https://deck.clue.surf/task/apt stable main" \
   | sudo tee /etc/apt/sources.list.d/cluesurf.list
 sudo apt update
 sudo apt install cluesurf-task
 ```
 
-Source: [load/deb](../load/deb). `cluesurf-task` is a metapackage that
+Source: [make/deck/linux/deb](../make/deck/linux/deb). `cluesurf-task` is a metapackage that
 pulls in every native CLI task uses (ffmpeg, imagemagick, pandoc,
 libreoffice, etc.). Swift is not in apt — install from swift.org when
 `task compile swift` is needed.

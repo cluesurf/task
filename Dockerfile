@@ -1,9 +1,10 @@
-# hadolint ignore=DL3026,DL3029
-# The --platform pin is intentional: LibreOffice, Swift, and a
-# handful of other tooling only ship prebuilt amd64 binaries here.
-# Native arm64 builds on Apple Silicon go through emulation.
-ARG TARGETPLATFORM=linux/amd64
-FROM --platform=$TARGETPLATFORM amd64/ubuntu:noble
+# LibreOffice, Swift, and a handful of other tools only ship
+# prebuilt amd64 binaries. Apple Silicon hosts run this image
+# under emulation. The image tag itself locks the arch
+# (`amd64/ubuntu`) so we don't need an explicit `--platform=` —
+# BuildKit emits a RedundantTargetPlatform warning when both are
+# set.
+FROM amd64/ubuntu:noble
 
 # `noble` = Ubuntu 24.04 LTS, the current LTS line. Next LTS
 # (26.04) releases April 2026 — bump to `ubuntu:26.04` once it's
@@ -64,6 +65,9 @@ RUN apt-get -y install wget
 RUN apt-get -y install gnupg
 RUN apt-get -y install unoconv
 RUN apt-get -y install ruby3.2
+# `ruby3.2-dev` ships ruby.h and friends — required because some
+# gems (rubocop pulls in `prism`) build C extensions on install.
+RUN apt-get -y install ruby3.2-dev
 RUN apt-get -y install rubygems-integration
 RUN apt-get -y install calibre
 RUN apt-get -y install wabt
@@ -113,45 +117,49 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && ap
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && apt-get -q -y install zlib1g-dev
 RUN rm -r /var/lib/apt/lists/*
 
-# Install swift — the signing key is a *public* GPG fingerprint
-# published by Apple, not a secret. We keep it as an ARG (build-time
-# only) so it doesn't ship in the final image env, which also
-# silences BuildKit's SecretsUsedInArgOrEnv warning. RUN below still
-# expands these because RUN inherits ARG values.
-ARG SWIFT_SIGNING_KEY=A62AE125BBBFBB96A6E042EC925CC1CCED3D1561
-ARG SWIFT_PLATFORM=ubuntu22.04
-ARG SWIFT_BRANCH=swift-5.9.2-release
-ARG SWIFT_VERSION=swift-5.9.2-RELEASE
+# Install swift.
+#
+# We import the canonical keyring directly from swift.org rather
+# than fetching by fingerprint from a keyserver — the Swift 5.x
+# release key (A62AE125...925CC1CCED3D1561) expired in 2024-06,
+# so any pinned fingerprint goes stale. The all-keys.asc bundle
+# always contains the active signing key for whatever release
+# stream we point SWIFT_PLATFORM/VERSION at.
+#
+# Bumped to Swift 6.0.3 on ubuntu24.04 (matches our `noble` base).
+# Update SWIFT_VERSION to roll forward — both the .tar.gz and .sig
+# come from `<SWIFT_WEBROOT>/<SWIFT_BRANCH>/<platform>/<SWIFT_VERSION>/`.
+ARG SWIFT_PLATFORM=ubuntu24.04
+ARG SWIFT_BRANCH=swift-6.0.3-release
+ARG SWIFT_VERSION=swift-6.0.3-RELEASE
 ARG SWIFT_WEBROOT=https://download.swift.org
 
+# hadolint ignore=DL3008,DL3015
 RUN set -e; \
     ARCH_NAME="$(dpkg --print-architecture)"; \
-    url=; \
     case "${ARCH_NAME##*-}" in \
-        'amd64') \
-            OS_ARCH_SUFFIX=''; \
-            ;; \
-        'arm64') \
-            OS_ARCH_SUFFIX='-aarch64'; \
-            ;; \
+        'amd64') OS_ARCH_SUFFIX='' ;; \
+        'arm64') OS_ARCH_SUFFIX='-aarch64' ;; \
         *) echo >&2 "error: unsupported architecture: '$ARCH_NAME'"; exit 1 ;; \
     esac; \
-    SWIFT_WEBDIR="$SWIFT_WEBROOT/$SWIFT_BRANCH/$(echo $SWIFT_PLATFORM | tr -d .)$OS_ARCH_SUFFIX" \
-    && SWIFT_BIN_URL="$SWIFT_WEBDIR/$SWIFT_VERSION/$SWIFT_VERSION-$SWIFT_PLATFORM$OS_ARCH_SUFFIX.tar.gz" \
-    && SWIFT_SIG_URL="$SWIFT_BIN_URL.sig" \
-    # - Grab curl here so we cache better up above
-    && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -q update && apt-get -q install -y curl && rm -rf /var/lib/apt/lists/* \
-    # - Download the GPG keys, Swift toolchain, and toolchain signature, and verify.
-    && export GNUPGHOME="$(mktemp -d)" \
-    && curl -fsSL "$SWIFT_BIN_URL" -o swift.tar.gz "$SWIFT_SIG_URL" -o swift.tar.gz.sig \
-    && gpg --batch --quiet --keyserver keyserver.ubuntu.com --recv-keys "$SWIFT_SIGNING_KEY" \
-    && gpg --batch --verify swift.tar.gz.sig swift.tar.gz \
-    # - Unpack the toolchain, set libs permissions, and clean up.
-    && tar -xzf swift.tar.gz --directory / --strip-components=1 \
-    && chmod -R o+r /usr/lib/swift \
-    && rm -rf "$GNUPGHOME" swift.tar.gz.sig swift.tar.gz \
-    && apt-get purge --auto-remove -y curl
+    SWIFT_WEBDIR="$SWIFT_WEBROOT/$SWIFT_BRANCH/$(echo "$SWIFT_PLATFORM" | tr -d .)$OS_ARCH_SUFFIX"; \
+    SWIFT_BIN_URL="$SWIFT_WEBDIR/$SWIFT_VERSION/$SWIFT_VERSION-$SWIFT_PLATFORM$OS_ARCH_SUFFIX.tar.gz"; \
+    SWIFT_SIG_URL="$SWIFT_BIN_URL.sig"; \
+    export DEBIAN_FRONTEND=noninteractive; \
+    apt-get -q update && apt-get -q install -y --no-install-recommends curl ca-certificates gnupg \
+      && rm -rf /var/lib/apt/lists/*; \
+    GNUPGHOME="$(mktemp -d)"; export GNUPGHOME; \
+    # Pull the live keyring from swift.org instead of trusting a
+    # baked-in fingerprint — that way we automatically get the new
+    # signing key when Apple rotates it.
+    curl -fsSL https://swift.org/keys/all-keys.asc | gpg --batch --quiet --import -; \
+    curl -fsSL "$SWIFT_BIN_URL" -o swift.tar.gz; \
+    curl -fsSL "$SWIFT_SIG_URL" -o swift.tar.gz.sig; \
+    gpg --batch --verify swift.tar.gz.sig swift.tar.gz; \
+    tar -xzf swift.tar.gz --directory / --strip-components=1; \
+    chmod -R o+r /usr/lib/swift; \
+    rm -rf "$GNUPGHOME" swift.tar.gz.sig swift.tar.gz; \
+    apt-get purge --auto-remove -y curl gnupg
 
 # RUN source ~/.nvm/nvm.sh; \
 #   nvm install $NODE_VERSION; \
@@ -183,8 +191,12 @@ RUN /home/python/venv/bin/pip install jill
 # Install go packages
 RUN go install github.com/klauspost/asmfmt/cmd/asmfmt@ef134b9cec704e2b7b336fb02153b7d1a58247da
 
-# Install Julia
-RUN /home/python/venv/bin/jill install --preferred-arch arm64 -c
+# Install Julia via jill. The old `-c` short flag for "auto-confirm"
+# was removed — use `--confirm` instead. We don't pin --preferred-arch
+# because jill auto-detects the host arch (amd64 here, since the
+# base image is amd64/ubuntu); forcing arm64 on an amd64 image
+# would download a Julia tarball that can't execute.
+RUN /home/python/venv/bin/jill install --confirm
 
 # Install ruby formatter rubocop
 RUN gem install rubocop

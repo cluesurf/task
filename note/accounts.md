@@ -21,7 +21,7 @@ Everything you'd otherwise put in a side repo lives on a branch of
 
 | repo                                | what it's for                                  | section |
 | ----------------------------------- | ---------------------------------------------- | ------- |
-| `cluesurf/task` branch `site`       | apt + rpm + apk repos under `site/` (Pages)    | §2      |
+| `cluesurf/deck`                     | apt + rpm + apk repos under `docs/` (Pages)    | §2      |
 | AUR `cluesurf-task.git`             | Arch publishing (created via AUR submit form)  | §3      |
 | `cluesurf/gentoo-overlay`           | Gentoo ebuild overlay                          | §6      |
 | `cluesurf/scoop-bucket`             | Scoop manifest bucket                          | §7      |
@@ -35,9 +35,9 @@ Already existing: `cluesurf/task` (this one), `cluesurf/homebrew-code`.
 | var                  | source                                                  | section |
 | -------------------- | ------------------------------------------------------- | ------- |
 | `APT_SIGNING_KEY`    | GPG key id (`gpg --full-generate-key`)                  | §1      |
-| `APT_REPO_DIR`       | `~/cluesurf-task-site/site/apt` (worktree of `site`)    | §2      |
-| `RPM_REPO_DIR`       | `~/cluesurf-task-site/site/rpm` (same worktree)         | §2      |
-| `ALPINE_REPO_DIR`    | `~/cluesurf-task-site/site/apk` (same worktree)         | §2      |
+| `APT_REPO_DIR`       | `<deck-checkout>/docs/task/apt` (in `cluesurf/deck` clone)              | §2      |
+| `RPM_REPO_DIR`       | `<deck-checkout>/docs/task/rpm` (same clone)                           | §2      |
+| `ALPINE_REPO_DIR`    | `<deck-checkout>/docs/task/apk` (same clone)                           | §2      |
 | `ABUILD_KEY`         | `~/.abuild/<email>-<n>.rsa` (`abuild-keygen`)           | §4      |
 | `AUR_REMOTE`         | `ssh://aur@aur.archlinux.org/cluesurf-task.git`         | §3      |
 | `OBS_PROJECT`        | `home:<your-username>` on build.opensuse.org            | §5      |
@@ -77,90 +77,76 @@ gpg --export-secret-keys --armor "$APT_SIGNING_KEY" > ~/cluesurf-apt.key.asc
 
 Used by: `apt`, `rpm`. The Alpine repo uses a separate scheme — see §4.
 
-## 2. The `site` branch (apt + rpm + apk hosting, one place)
+## 2. `cluesurf/deck` repo (apt + rpm + apk hosting, one place)
 
-One branch on `cluesurf/task` hosts every Linux package repo. The
-branch is called `site`. Inside it lives a `site/` folder with one
-subdir per format. GitHub Pages serves that folder via a workflow.
+A single dedicated repo, `cluesurf/deck`, holds every Linux package
+mirror. The repo's `docs/` folder is the GitHub Pages root —
+served natively by Pages branch hosting (no workflow required).
 
 Layout:
 
 ```
-cluesurf/task  (branch: site)
-  site/
-    apt/      ← Debian / Ubuntu repo
-    rpm/      ← RHEL / Fedora / openSUSE repo
-    apk/      ← Alpine repo
-    pubkey.asc  ← exported once, shared across all three
+cluesurf/deck
+  docs/
+    task/
+      apt/      ← Debian / Ubuntu repo
+      rpm/      ← RHEL / Fedora / openSUSE repo
+      apk/      ← Alpine repo
+    index.html  ← optional landing page for browsers
 ```
 
 Final URLs (no custom domain):
 
-- `https://cluesurf.github.io/task/apt`
-- `https://cluesurf.github.io/task/rpm`
-- `https://cluesurf.github.io/task/apk`
+- `https://deck.clue.surf/task/apt`
+- `https://deck.clue.surf/task/rpm`
+- `https://deck.clue.surf/task/apk`
 
 ### One-time setup
 
+The repo already exists — clone it locally next to `task/`:
+
 ```sh
-# Create the orphan branch + folder.
-git checkout --orphan site
-git rm -rf .
-mkdir -p site/{apt,rpm,apk}
-echo '# cluesurf/task package repositories' > site/index.md
-git add site
-git commit -m "init site branch"
-git push -u origin site
-git checkout make    # or whatever your default branch is
+gh repo clone cluesurf/deck deck
 ```
 
-Then add a Pages-deploy workflow on the default branch at
-`.github/workflows/pages.yml`:
+In `cluesurf/deck` *Settings → Pages*, set:
 
-```yaml
-name: pages
-on:
-  push:
-    branches: [site]
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
-    steps:
-      - uses: actions/checkout@v4
-        with: { ref: site }
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with: { path: site }
-      - id: deploy
-        uses: actions/deploy-pages@v4
-```
+- **Source:** *Deploy from a branch*
+- **Branch:** `main` (or whatever the default is)
+- **Folder:** `/docs`
 
-In *Settings → Pages*, set *Source: GitHub Actions*. After the
-first push to `site`, every Linux repo lives at the URLs above.
+That's it — Pages serves `docs/` natively. No workflow file, no
+artifact upload step. Future pushes to `main` republish in ~30s.
 
 ### Local checkout for publishing
 
-Clone the `site` branch into its own working tree (so you can edit
-it without juggling branches in your main checkout):
+Every export below lives in `deck/task/.env` (gitignored). Source
+that file once per shell — `set -a` auto-exports any `KEY=value`
+line, so the .env stays as plain assignments without `export`
+prefixes:
 
 ```sh
-git worktree add ~/cluesurf-task-site site
-
-export APT_REPO_DIR=~/cluesurf-task-site/site/apt
-export RPM_REPO_DIR=~/cluesurf-task-site/site/rpm
-export ALPINE_REPO_DIR=~/cluesurf-task-site/site/apk
+set -a; source .env; set +a    # or: source-env / dotenv-cli
 ```
 
-After running `pnpm host:pkg`, commit and push from
-`~/cluesurf-task-site` — the Pages workflow re-deploys
-automatically.
+The `.env` should contain at minimum:
+
+```sh
+APT_REPO_DIR=deck
+RPM_REPO_DIR=deck
+ALPINE_REPO_DIR=deck
+```
+
+A few helpers that do the same thing automatically:
+
+- **direnv** — drop a `.envrc` containing `dotenv` next to `.env`
+  and direnv loads on `cd`. Recommended for local dev.
+- **pnpm scripts** — `pnpm host:pkg` and `pnpm host:site` already
+  load `.env` via `dotenv-cli` (see `package.json`), so you don't
+  need to source manually when running through pnpm.
+
+After `pnpm host:pkg` writes the repo trees, `pnpm host:site`
+commits and pushes — Pages republishes automatically.
 
 ## 3. AUR account (Arch)
 
@@ -326,23 +312,44 @@ echo "$GITHUB_TOKEN" | docker login ghcr.io -u <gh-username> --password-stdin
 
 Used for `docker push ghcr.io/cluesurf/task:<version>`.
 
-## At-a-glance shell profile
+## At-a-glance: `deck/task/.env`
 
-Drop everything into `~/.zshrc` (or wherever) once it's all set up:
+Keep all of these in `deck/task/.env` (gitignored) so secrets stay
+off your shell rc and out of git history. Plain `KEY=value` lines —
+no `export` prefix needed because we source with `set -a`:
 
 ```sh
-export APT_SIGNING_KEY=ABCD1234EF567890
-export APT_REPO_DIR=~/cluesurf-task-site/site/apt
-export RPM_REPO_DIR=~/cluesurf-task-site/site/rpm
-export ALPINE_REPO_DIR=~/cluesurf-task-site/site/apk
-export ABUILD_KEY=~/.abuild/lp@elk.fm-1234abcd.rsa
-export AUR_REMOTE=ssh://aur@aur.archlinux.org/cluesurf-task.git
-export OBS_PROJECT=home:cluesurf
-export GENTOO_OVERLAY_DIR=~/cluesurf-overlay
-export SCOOP_BUCKET_DIR=~/cluesurf-scoop
-export WINGET_PKGS_DIR=~/winget-pkgs
-export CHOCO_API_KEY=...
+APT_SIGNING_KEY=ABCD1234EF567890
+APT_REPO_DIR=deck
+RPM_REPO_DIR=deck
+ALPINE_REPO_DIR=deck
+ABUILD_KEY=~/.abuild/lp@elk.fm-1234abcd.rsa
+AUR_REMOTE=ssh://aur@aur.archlinux.org/cluesurf-task.git
+OBS_PROJECT=home:cluesurf
+GENTOO_OVERLAY_DIR=~/cluesurf-overlay
+SCOOP_BUCKET_DIR=~/cluesurf-scoop
+WINGET_PKGS_DIR=~/winget-pkgs
+CHOCO_API_KEY=...
 # NPM_TOKEN + GITHUB_TOKEN come from `npm login` / `gh auth login`
 ```
 
-After this, `cd deck/task/load && ./publish.sh` Just Works.
+Load it into the current shell:
+
+```sh
+cd deck/task
+set -a; source .env; set +a
+```
+
+Or, if you prefer it always-on, drop a `.envrc` next to `.env`:
+
+```sh
+# deck/task/.envrc
+dotenv
+```
+
+…then `direnv allow` once. Every future `cd deck/task` re-loads.
+
+After this, `cd deck/task/make/deck && ./publish.sh` Just Works
+because `publish.sh` already reads from the environment — it
+doesn't care whether the values came from `.env`, direnv, or a
+manually-exported shell.

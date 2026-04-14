@@ -20,26 +20,25 @@ macOS.
 
 ## Hosting model
 
-Every Linux repo (apt, rpm, apk) lives in **one branch on this same
-repo**, called `site`, under a `site/` folder served via GitHub
-Pages:
+Every Linux repo (apt, rpm, apk) lives in a dedicated repo,
+**`cluesurf/host`**, under a `docs/` folder served by GitHub Pages
+branch hosting (no workflow):
 
 ```
-cluesurf/task  (branch: site)
-  site/
-    apt/    →  https://cluesurf.github.io/task/apt
-    rpm/    →  https://cluesurf.github.io/task/rpm
-    apk/    →  https://cluesurf.github.io/task/apk
-    pubkey.asc
+cluesurf/host
+  docs/
+    task/
+      apt/  →  https://deck.clue.surf/task/apt
+      rpm/  →  https://deck.clue.surf/task/rpm
+      apk/  →  https://deck.clue.surf/task/apk
 ```
 
-Setup is documented in [`accounts.md` §2](./accounts.md). After the
-first push to `site`, a Pages workflow auto-deploys.
+Setup is documented in [`accounts.md` §2](./accounts.md).
 
 `pnpm host:pkg` writes into `$APT_REPO_DIR` / `$RPM_REPO_DIR` /
-`$ALPINE_REPO_DIR` (which point at `site/apt`, `site/rpm`,
-`site/apk` inside a worktree of the `site` branch). Then you commit
-+ push from that worktree to publish.
+`$ALPINE_REPO_DIR` (which point at the matching `docs/task/...`
+subdirs of your local `cluesurf/host` clone). `pnpm host:site` then
+commits + pushes — Pages re-serves in ~30s.
 
 Other channels (AUR, AUR overlay, Scoop bucket, winget-pkgs fork,
 Chocolatey feed, npm, ghcr.io) stay on their respective external

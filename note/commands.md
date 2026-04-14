@@ -385,11 +385,17 @@ task push ssh-key work ubuntu@10.0.0.5
 ## Remove
 
 ```sh
-task remove metadata  photo.jpg            # EXIF / XMP / ID3 strip
-task remove metadata  song.mp3             # routes to ffmpeg for mp3/wav
-task remove audio     clip.mp4 -o clip.silent.mp4
-task remove invisible text.txt             # zero-width / BOM / joiners
-task remove ssh-key   prod
+task remove metadata     photo.jpg            # EXIF / XMP / ID3 strip
+task remove metadata     song.mp3             # routes to ffmpeg for mp3/wav
+task remove exif         photo.jpg --preset gps                # surgical — keep camera, drop GPS
+task remove exif         photo.jpg --tag SerialNumber --overwrite
+task remove audio        clip.mp4 -o clip.silent.mp4
+task remove subtitles    clip.mkv -o clip.nosub.mkv             # ffmpeg -sn
+task remove password     secure.pdf --password hunter2          # qpdf --decrypt
+task remove profile      photo.jpg                              # drop embedded ICC / IPTC / XMP
+task remove transparency logo.png -b "#0b1020"                   # flatten alpha
+task remove invisible    text.txt                               # zero-width / BOM / joiners
+task remove ssh-key      prod
 ```
 
 ## Render
