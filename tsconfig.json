@@ -12,7 +12,6 @@
     "strict": true,
     "esModuleInterop": true,
     "noUncheckedIndexedAccess": true,
-    "baseUrl": ".",
     "allowJs": false,
     "noErrorTruncation": false,
     "resolveJsonModule": true,

@@ -60,18 +60,20 @@ export type ConvertDataNodeLocalInput = {
 export type ConvertDataNodeLocalInternalInput = {
   handle?: 'internal'
   input: {
-    format: string
-    file: FilePath | FileContent
+    format: DataFormat
+    directory: LocalPath
   }
   output: {
-    format: string
-    directory?: LocalOutputPath
-    file?: LocalPath
+    format: DataFormat
+    directory: LocalPath
   }
+  merge?: boolean
   pathScope?: string
 }
 export type ConvertDataNodeOutput = {
-  file: FilePath
+  converted: number
+  skipped: number
+  failed: number
 }
 export type ConvertDataNodeRemoteInput = {
   handle: 'remote'

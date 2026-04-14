@@ -1,110 +1,135 @@
 /**
- * Walk an input directory, convert every matching file of
- * `input.format` to `output.format` in a mirror output
- * directory. Uses DuckDB for the conversion.
+ * Walk an input directory, convert every file of `input.format`
+ * to `output.format` in a mirror output directory via DuckDB.
  *
- * Types and parsers are generated from `code/base/data/base.ts`
- * into `~/code/form/action/convert/data/*` via `pnpm make:type`.
+ * The per-pair dispatch is table-driven: every supported pair is
+ * one row in `DATA_CONVERT_ROUTES`. Adding a new format pair is a
+ * single append; no branches touch the walker.
+ *
+ * Types are generated from `./base.ts` into
+ * `~/code/form/action/convert/data/*` via `pnpm make:type`.
  */
 
 import fs from 'node:fs'
 import path from 'node:path'
 import {
-  convertParquetFileToJsonl,
   convertJsonlFileToParquet,
+  convertParquetFileToJsonl,
 } from './duckdb/node'
+import type {
+  ConvertDataNodeLocalInternalInput,
+  ConvertDataNodeOutput,
+} from '~/code/form/action/convert/data/node'
 
-export type ConvertDataResult = {
-  converted: number
-  skipped: number
-  failed: number
+type DataConvertRoute = {
+  input: string
+  output: string
+  run: (input: { source: string; destination: string }) => Promise<void>
+  /**
+   * When set and `merge` is requested, collapse multiple matching
+   * source files (e.g. `file.1.parquet`, `file.2.parquet`) into one
+   * destination via a glob pattern.
+   */
+  supportsMerge?: boolean
 }
 
-export type ConvertDataNodeLocalInput = {
-  input: {
-    format: 'parquet' | 'jsonl'
-    directory: { path: string }
-  }
-  output: {
-    format: 'parquet' | 'jsonl'
-    directory: { path: string }
-  }
-  merge?: boolean
-}
+const DATA_CONVERT_ROUTES: ReadonlyArray<DataConvertRoute> = [
+  {
+    input: 'parquet',
+    output: 'jsonl',
+    supportsMerge: true,
+    run: ({ source, destination }) =>
+      convertParquetFileToJsonl({ input: source, output: destination }),
+  },
+  {
+    input: 'jsonl',
+    output: 'parquet',
+    run: ({ source, destination }) =>
+      convertJsonlFileToParquet({ input: source, output: destination }),
+  },
+]
 
 export async function convertDataNode(
-  input: ConvertDataNodeLocalInput,
-): Promise<ConvertDataResult> {
-  const result: ConvertDataResult = {
+  input: ConvertDataNodeLocalInternalInput,
+): Promise<ConvertDataNodeOutput> {
+  const stats: ConvertDataNodeOutput = {
     converted: 0,
     skipped: 0,
     failed: 0,
   }
 
-  const srcRoot = input.input.directory.path
-  const dstRoot = input.output.directory.path
   const srcExt = `.${input.input.format}`
   const dstExt = `.${input.output.format}`
+  const srcRoot = input.input.directory.path
+  const dstRoot = input.output.directory.path
+
+  const route = DATA_CONVERT_ROUTES.find(
+    r => r.input === input.input.format && r.output === input.output.format,
+  )
+  if (!route) {
+    walk(srcRoot, abs => {
+      if (abs.endsWith(srcExt)) stats.skipped++
+    })
+    return stats
+  }
+
+  const mergeMode = input.merge === true && route.supportsMerge === true
 
   fs.mkdirSync(dstRoot, { recursive: true })
 
-  const mergeMode =
-    input.merge === true &&
-    input.input.format === 'parquet' &&
-    input.output.format === 'jsonl'
-
-  const groups = new Map<string, string[]>()
-
-  walk(srcRoot, abs => {
-    if (!abs.endsWith(srcExt)) return
-    const rel = path.relative(srcRoot, abs)
-    let groupKey = rel
-    if (mergeMode) {
-      const base = rel.slice(0, -srcExt.length).replace(/\.\d+$/, '')
-      groupKey = base
-    }
-    const arr = groups.get(groupKey) ?? []
-    arr.push(abs)
-    groups.set(groupKey, arr)
-  })
-
-  for (const [groupKey, files] of groups) {
+  for (const [groupKey, files] of groupSourceFiles({
+    root: srcRoot,
+    srcExt,
+    merge: mergeMode,
+  })) {
     try {
+      const first = files[0]!
       const relOut = mergeMode
         ? `${groupKey}${dstExt}`
-        : path.relative(srcRoot, files[0]!).replace(srcExt, dstExt)
-      const outAbs = path.join(dstRoot, relOut)
-      fs.mkdirSync(path.dirname(outAbs), { recursive: true })
+        : path.relative(srcRoot, first).replace(srcExt, dstExt)
+      const destination = path.join(dstRoot, relOut)
+      fs.mkdirSync(path.dirname(destination), { recursive: true })
 
-      if (mergeMode) {
-        const dir = path.dirname(files[0]!)
-        const baseName = path.basename(groupKey)
-        const glob = path.join(dir, `${baseName}.*${srcExt}`)
-        await convertParquetFileToJsonl({ input: glob, output: outAbs })
-      } else if (
-        input.input.format === 'parquet' &&
-        input.output.format === 'jsonl'
-      ) {
-        await convertParquetFileToJsonl({ input: files[0]!, output: outAbs })
-      } else if (
-        input.input.format === 'jsonl' &&
-        input.output.format === 'parquet'
-      ) {
-        await convertJsonlFileToParquet({ input: files[0]!, output: outAbs })
-      } else {
-        result.skipped++
-        continue
-      }
+      const source = mergeMode
+        ? path.join(
+            path.dirname(first),
+            `${path.basename(groupKey)}.*${srcExt}`,
+          )
+        : first
 
-      result.converted++
+      await route.run({ source, destination })
+      stats.converted++
     } catch (err) {
-      result.failed++
-      const msg = err instanceof Error ? err.message : String(err)
-      console.error(`  failed ${groupKey}: ${msg}`)
+      stats.failed++
+      const message = err instanceof Error ? err.message : String(err)
+      console.error(`  failed ${groupKey}: ${message}`)
     }
   }
 
-  return result
+  return stats
+}
+
+function groupSourceFiles({
+  root,
+  srcExt,
+  merge,
+}: {
+  root: string
+  srcExt: string
+  merge: boolean
+}): Map<string, string[]> {
+  const groups = new Map<string, string[]>()
+  walk(root, abs => {
+    if (!abs.endsWith(srcExt)) return
+    const rel = path.relative(root, abs)
+    const key = merge
+      ? rel.slice(0, -srcExt.length).replace(/\.\d+$/, '')
+      : rel
+    const bucket = groups.get(key) ?? []
+    bucket.push(abs)
+    groups.set(key, bucket)
+  })
+  return groups
 }
 
 function walk(dir: string, onFile: (abs: string) => void): void {
