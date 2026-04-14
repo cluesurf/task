@@ -25,9 +25,9 @@
 
 One library, three surfaces:
 
-- **CLI** — `task convert png --input image.png --output image.jpg`
-- **Node API** — every action, full filesystem / child-process access
-- **Browser API** — the subset that works in the browser, with remote fallback
+- **CLI**: `task convert image.png image.jpg`
+- **Node API**: every action, full filesystem / child-process access
+- **Browser API**: the subset that works in the browser, with remote fallback
 
 Every action takes a single object, returns a `Promise`. Dispatch on
 input/output format picks the right backend automatically (imagemagick
@@ -44,7 +44,7 @@ pnpm add @cluesurf/task
 ```
 
 Task shells out to native tools (ffmpeg, imagemagick, pandoc, ...).
-Install those per your OS — see [note/install.md](./note/install.md).
+Install those per your OS: see [note/install.md](./note/install.md).
 
 Prebuilt container with everything:
 
@@ -65,10 +65,10 @@ const out = await task.convert({
 })
 ```
 
-Remote execution against `task.surf`:
+Remote execution against a domain:
 
 ```ts
-const task = new Task({ host: 'https://task.surf', code: 'API-KEY' })
+const task = new Task({ host: 'https://example.com', code: '<bearer-token>' })
 
 const work = await task.convert({
   remote: true,
@@ -81,30 +81,70 @@ await task.wait(work)
 const output = await task.resolve(work)
 ```
 
-CLI (installed globally):
+CLI (installed globally). Every verb accepts the same shorthand:
+`task <verb> <file>` picks the right subcommand from the file's
+extension, and for convert you can chain two positionals.
 
 ```sh
-task convert image --input a.png --output a.jpg
-task format python --input hello.py
-task archive --format zip --input folder/ --output folder.zip
+# shorthand — extension routes to the subcommand
+task convert a.png a.jpg               # → convert image (2 positionals)
+task compress song.wav -o song.mp3     # → compress audio
+task trim clip.mp4 -o cut.mp4 -s 10 -e 30
+task inspect report.pdf
+task highlight paper.pdf -o marked.pdf -t "important"
+
+# explicit form still works
+task convert image -i a.png -o a.jpg
+task format python -i hello.py
+task archive --format zip -i folder/ -o folder.zip
 ```
 
-Or without installing, via `npx`:
+See [note/commands.md](./note/commands.md) for one example per verb
+and [note/examples.md](./note/examples.md) for full workflows.
 
-```sh
-npx @cluesurf/task convert image --input a.png --output a.jpg
-npx @cluesurf/task format python --input hello.py
-```
+## What it can do
 
-More examples: [note/examples.md](./note/examples.md).
+Cross-cutting verbs across media, fonts, documents, text, code,
+processes, SSH, and networks:
+
+- **Media** — `convert`, `compress`, `trim`, `rotate`, `flip`,
+  `resize`, `optimize`, `normalize`, `pad`, `split`, `combine`,
+  `remove audio`
+- **Fonts** — `inspect`, `subset`, `compress`, `shape`, `render`,
+  `dump` (TTX round-trip), `extract` (TTX / GSUB+GPOS), `update`
+  (compile .fea into GSUB/GPOS)
+- **Documents / PDFs** — `inspect`, `slice`, `crop`, `modify`
+  (pages), `mark` / `highlight`, `validate`
+- **Text** — `inspect` (type / mime / encoding / eol), `set
+  encoding`, `set eol`
+- **Code** — `compile` (c/cpp/rust/swift/wast), `format`,
+  `parse`, `sanitize`, `disassemble`
+- **Generate** — `generate hash`, `generate qrcode`,
+  `generate string`
+- **Env** — `set environment`, `get environment`
+- **SSH** — `add`, `set`, `get`, `list`, `rm`, `test`, `open`
+  entries in `~/.ssh/config`; `make / get / push / copy / remove
+  ssh-key`; `scan ssh <host>`; `edit ssh`
+- **Processes / ports** — `list process`, `list port`, `list
+  network connection|interface|route`, `inspect process`,
+  `halt process | port`, `watch process`
+- **Network** — `ping`, `measure <url>`, `trace route`,
+  `inspect network`, `inspect <host> --show dns:A,MX,...`
+- **System** — `inspect system --show cpu,memory,disk`
+
+Every verb speaks four global flags: `-f / --format`
+(pretty / text / json / json:pretty), `--help`, `--explain`
+(print the underlying native command without running it), and
+`--log [pattern]` (stream subprocess stdout/stderr, optionally
+grep-filtered).
 
 ## Docs
 
-- [API design](./note/public-api-design.md) — `Task` class, dispatch, overloads, remote/local/explain modes.
-- [Install](./note/install.md) — native tools per OS, Docker, Homebrew, Chocolatey.
-- [Examples](./note/examples.md) — representative calls for every verb.
-- [Contributing](./note/contributing.md) — repo layout, codegen, adding a new action.
-- [Roadmap](./note/roadmap.md) — what's missing.
+- [API design](./note/api.md): `Task` class, dispatch, overloads, remote/local/explain modes.
+- [Install](./note/install.md): native tools per OS, Docker, Homebrew, Chocolatey.
+- [Examples](./note/examples.md): representative calls for every verb.
+- [Contributing](./note/contributing.md): repo layout, codegen, adding a new action.
+- [Roadmap](./note/roadmap.md): what's missing.
 
 ## Tests
 

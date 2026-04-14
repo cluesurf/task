@@ -1,29 +1,23 @@
 #!/usr/bin/env bash
-#
-# task highlight — stamps a highlight + note on a PDF's first page.
-
-set -euo pipefail
-cd "$(dirname "$0")/../.."
+# highlight: positional form + explicit -i / -o.
+cd "$(dirname "$0")/../.." || exit 1
 . test/lib.sh
 
-FIXTURES=../seed-base/base
+F=../seed-base/base
 OUT=tmp/highlight
 mkdir -p "$OUT"
-
-cp -n "$FIXTURES/document/error.pdf" "$OUT/doc.pdf" 2>/dev/null || true
+cp "$F/document/magic.pdf" "$OUT/doc.pdf"
 
 suite "Highlight"
 
-step "positional form"
-OUT_POS="$OUT/doc.pos.pdf"
-rm -f "$OUT_POS"
-task highlight "$OUT/doc.pdf" -o "$OUT_POS" -t important -f text >/dev/null
-expect_file "$OUT_POS"
+step "positional"
+rm -f "$OUT/doc.pos.pdf"
+task highlight "$OUT/doc.pdf" -o "$OUT/doc.pos.pdf" -t important -f text >/dev/null 2>&1
+expect_file "$OUT/doc.pos.pdf"
 
-step "explicit -i / -o form"
-OUT_EXP="$OUT/doc.exp.pdf"
-rm -f "$OUT_EXP"
-task highlight -i "$OUT/doc.pdf" -o "$OUT_EXP" -t critical -f text >/dev/null
-expect_file "$OUT_EXP"
+step "explicit -i / -o"
+rm -f "$OUT/doc.exp.pdf"
+task highlight -i "$OUT/doc.pdf" -o "$OUT/doc.exp.pdf" -t critical -f text >/dev/null 2>&1
+expect_file "$OUT/doc.exp.pdf"
 
 summary

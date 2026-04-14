@@ -6,10 +6,10 @@ cd "$(dirname "$0")/../.." || exit 1
 F=../seed-base/base
 OUT=tmp/compress
 mkdir -p "$OUT"
-cp "$F/font/ancient.ttf" "$OUT/fnt.ttf"
-cp "$F/audio/piano.mp3"  "$OUT/song.mp3"
-cp "$F/image/fire.gif"   "$OUT/pic.gif"
-cp "$F/video/cell.mp4"   "$OUT/clip.mp4"
+cp "$F/font/ancient.ttf"     "$OUT/fnt.ttf"
+cp "$F/audio/piano.mp3"      "$OUT/song.mp3"
+cp "$F/image/landscape.jpg"  "$OUT/pic.jpg"
+cp "$F/video/cell.mp4"       "$OUT/clip.mp4"
 
 suite "Compress"
 
@@ -24,9 +24,9 @@ task compress "$OUT/song.mp3" -o "$OUT/song.96k.mp3" -b 96k -f text >/dev/null 2
 expect_file "$OUT/song.96k.mp3"
 
 step "image quality"
-rm -f "$OUT/pic.jpg"
-task compress "$OUT/pic.gif" -o "$OUT/pic.jpg" -q 50 -f text >/dev/null 2>&1
-expect_file "$OUT/pic.jpg"
+rm -f "$OUT/pic.small.jpg"
+task compress "$OUT/pic.jpg" -o "$OUT/pic.small.jpg" -q 50 -f text >/dev/null 2>&1
+expect_file "$OUT/pic.small.jpg"
 
 step "video crf"
 rm -f "$OUT/clip.small.mp4"

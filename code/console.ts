@@ -24,6 +24,7 @@ import {
   CliError,
   setTrace,
 } from '~/code/tool/node/log'
+import { registerGroupHelp } from '~/code/tool/node/log/registry'
 import { addConsole } from '~/code/call/add/console'
 import { archiveConsole } from '~/code/call/archive/console'
 import { checkConsole } from '~/code/call/check/console'
@@ -36,6 +37,7 @@ import { cropConsole } from '~/code/call/crop/console'
 import { disassembleConsole } from '~/code/call/disassemble/console'
 import { downloadConsole } from '~/code/call/download/console'
 import { dumpConsole } from '~/code/call/dump/console'
+import { editConsole } from '~/code/call/edit/console'
 import { extractConsole } from '~/code/call/extract/console'
 import { flipConsole } from '~/code/call/flip/console'
 import { formatConsole } from '~/code/call/format/console'
@@ -47,11 +49,13 @@ import { inspectConsole } from '~/code/call/inspect/console'
 import { listConsole } from '~/code/call/list/console'
 import { loadConsole } from '~/code/call/load/console'
 import { makeConsole } from '~/code/call/make/console'
+import { measureConsole } from '~/code/call/measure/console'
 import { normalizeConsole } from '~/code/call/normalize/console'
 import { openConsole } from '~/code/call/open/console'
 import { optimizeConsole } from '~/code/call/optimize/console'
 import { padConsole } from '~/code/call/pad/console'
 import { parseConsole } from '~/code/call/parse/console'
+import { pingConsole } from '~/code/call/ping/console'
 import { pushConsole } from '~/code/call/push/console'
 import { removeConsole } from '~/code/call/remove/console'
 import { renderConsole } from '~/code/call/render/console'
@@ -59,17 +63,85 @@ import { resizeConsole } from '~/code/call/resize/console'
 import { rmConsole } from '~/code/call/rm/console'
 import { rotateConsole } from '~/code/call/rotate/console'
 import { sanitizeConsole } from '~/code/call/sanitize/console'
+import { scanConsole } from '~/code/call/scan/console'
 import { searchConsole } from '~/code/call/search/console'
 import { setConsole } from '~/code/call/set/console'
 import { shapeConsole } from '~/code/call/shape/console'
+import { showConsole } from '~/code/call/show/console'
 import { sliceConsole } from '~/code/call/slice/console'
+import { splitConsole } from '~/code/call/split/console'
 import { subsetConsole } from '~/code/call/subset/console'
 import { testConsole } from '~/code/call/test/console'
+import { traceConsole } from '~/code/call/trace/console'
 import { trimConsole } from '~/code/call/trim/console'
 import { updateConsole } from '~/code/call/update/console'
 import { validateConsole } from '~/code/call/validate/console'
 import { verifyConsole } from '~/code/call/verify/console'
 import { watchConsole } from '~/code/call/watch/console'
+
+// Top-level help entry. Registered here (not inside any verb
+// console) so `task --help`, `task -h`, and any unrecognized path
+// fall back to a single tinted list of every verb. Verb descriptions
+// stay in sync with each verb's own registerGroupHelp / registerHelp
+// call automatically — this is just the index.
+registerGroupHelp({
+  command: 'task',
+  describe: 'One function registry for CLI, Node, and browser.',
+  commands: [
+    { name: 'add',         describe: 'Create a new entry in long-lived state (SSH, ...)' },
+    { name: 'archive',     describe: 'Create an archive from one or more inputs' },
+    { name: 'check',       describe: 'Check that a file exists and is readable' },
+    { name: 'combine',     describe: 'Combine a still image and audio track into a video' },
+    { name: 'compile',     describe: 'Compile source code to a binary or bytecode' },
+    { name: 'compress',    describe: 'Compress for web delivery or smaller size' },
+    { name: 'convert',     describe: 'Convert between formats' },
+    { name: 'copy',        describe: 'Copy an artifact to the clipboard' },
+    { name: 'crop',        describe: 'Crop a document or image' },
+    { name: 'disassemble', describe: 'Disassemble binaries' },
+    { name: 'download',    describe: 'Download from external sources' },
+    { name: 'dump',        describe: 'Dump a file to an editable source form (and back)' },
+    { name: 'edit',        describe: 'Open a config in $EDITOR' },
+    { name: 'extract',     describe: 'Extract content from containers' },
+    { name: 'flip',        describe: 'Flip a media file horizontally or vertically' },
+    { name: 'format',      describe: 'Format source code' },
+    { name: 'generate',    describe: 'Generate hashes, QR codes, random strings' },
+    { name: 'get',         describe: 'Read a single property or entry' },
+    { name: 'halt',        describe: 'Terminate processes or free a port' },
+    { name: 'highlight',   describe: 'Stamp a highlight + note on a PDF' },
+    { name: 'inspect',     describe: 'Inspect a file, process, network, or system' },
+    { name: 'list',        describe: 'List running resources or stored entries' },
+    { name: 'make',        describe: 'Create a new artifact (SSH key, ...)' },
+    { name: 'measure',     describe: 'Measure HTTP latency to a URL' },
+    { name: 'modify',      describe: 'Modify the structure of a file (PDF pages, ...)' },
+    { name: 'normalize',   describe: 'Normalize a media file (loudness, levels)' },
+    { name: 'open',        describe: 'Open an interactive session (SSH, ...)' },
+    { name: 'optimize',    describe: 'Optimize an asset' },
+    { name: 'pad',         describe: 'Pad an audio file with trailing silence' },
+    { name: 'parse',       describe: 'Parse source or data into a structured form' },
+    { name: 'ping',        describe: 'ICMP ping a host and report latency / loss' },
+    { name: 'push',        describe: 'Push an artifact to a remote (SSH key → host)' },
+    { name: 'remove',      describe: 'Remove content or a stored artifact' },
+    { name: 'render',      describe: 'Render a visual artifact (font sample, ...)' },
+    { name: 'resize',      describe: 'Resize an image or video' },
+    { name: 'rm',          describe: 'Remove a named entry from long-lived state' },
+    { name: 'rotate',      describe: 'Rotate an image or video by a given angle' },
+    { name: 'sanitize',    describe: 'Sanitize code or other content' },
+    { name: 'scan',        describe: 'Probe a remote for fingerprints and keys' },
+    { name: 'search',      describe: 'Search file contents or names under a path' },
+    { name: 'set',         describe: 'Write a property onto a target' },
+    { name: 'shape',       describe: 'Run HarfBuzz shaping (text → glyph sequence)' },
+    { name: 'slice',       describe: 'Slice a document or other asset' },
+    { name: 'split',       describe: 'Split a file into segments' },
+    { name: 'subset',      describe: 'Subset a file to a smaller slice' },
+    { name: 'test',        describe: 'Test reachability or connectivity' },
+    { name: 'trace',       describe: 'Trace the path a packet takes to a host' },
+    { name: 'trim',        describe: 'Cut a section out of a media file' },
+    { name: 'update',      describe: 'Apply an edit to a file' },
+    { name: 'validate',    describe: 'Validate a document or other artifact' },
+    { name: 'verify',      describe: 'Verify the integrity or content of an asset' },
+    { name: 'watch',       describe: 'Live-update a listing as state changes' },
+  ],
+})
 
 process.on('uncaughtException', err => {
   printCliError(err)
@@ -83,16 +155,26 @@ async function main() {
   // wins first. Peeling help off up-front sidesteps that entirely
   // and renders the custom layout for any registered command path.
   const raw = process.argv.slice(2)
-  // Only `--help` short-circuits help. `-h` stays available for
-  // per-command aliases (most usefully `--height` on resize).
-  if (raw.includes('--help')) {
+  // Both `--help` and `-h` short-circuit to the custom renderer.
+  // When the path isn't registered (`task show ip --help`, typos,
+  // unknown verbs), fall back to the top-level `task` entry so
+  // the output always stays in the tinted layout instead of
+  // yargs's stock commands dump.
+  if (raw.includes('--help') || raw.includes('-h')) {
     setLoggingStyle(resolveLoggingStyle('pretty'))
     const path = raw.filter(a => !a.startsWith('-'))
-    const out = renderHelpFor({
+    let out = renderHelpFor({
       commandPath: path,
       fallback: '',
       color: true,
     })
+    if (!out.trim()) {
+      out = renderHelpFor({
+        commandPath: [],
+        fallback: '',
+        color: true,
+      })
+    }
     if (out.trim()) {
       process.stdout.write(out + '\n')
       return
@@ -138,7 +220,7 @@ async function main() {
       }
     }, true)
     .middleware((argv, instance) => {
-      if (argv.help) {
+      if (argv.help || argv.h) {
         const path = (argv._ as Array<string | number>).map(String)
         instance.showHelp(text => {
           const out = renderHelpFor({
@@ -153,6 +235,7 @@ async function main() {
     }, true)
     .help(false)
     .option('help', {
+      alias: 'h',
       describe: 'Show help',
       type: 'boolean',
       global: true,
@@ -180,6 +263,7 @@ async function main() {
     .command(disassembleConsole)
     .command(downloadConsole)
     .command(dumpConsole)
+    .command(editConsole)
     .command(extractConsole)
     .command(flipConsole)
     .command(formatConsole)
@@ -191,11 +275,13 @@ async function main() {
     .command(listConsole)
     .command(loadConsole)
     .command(makeConsole)
+    .command(measureConsole)
     .command(normalizeConsole)
     .command(openConsole)
     .command(optimizeConsole)
     .command(padConsole)
     .command(parseConsole)
+    .command(pingConsole)
     .command(pushConsole)
     .command(removeConsole)
     .command(renderConsole)
@@ -203,12 +289,16 @@ async function main() {
     .command(rmConsole)
     .command(rotateConsole)
     .command(sanitizeConsole)
+    .command(scanConsole)
     .command(searchConsole)
     .command(setConsole)
     .command(shapeConsole)
+    .command(showConsole)
     .command(sliceConsole)
+    .command(splitConsole)
     .command(subsetConsole)
     .command(testConsole)
+    .command(traceConsole)
     .command(trimConsole)
     .command(updateConsole)
     .command(validateConsole)
@@ -274,7 +364,7 @@ type ImplicitConfig = {
 }
 
 const IMPLICIT_DEFAULTS: Record<string, ImplicitConfig> = {
-  inspect:   { subs: ['ast', 'color', 'file', 'metadata', 'process', 'system', 'webpage'], default: 'file' },
+  inspect:   { subs: ['ast', 'color', 'file', 'metadata', 'network', 'port', 'process', 'system', 'webpage'], default: 'file' },
   check:     { subs: ['file'], default: 'file' },
   compile:   { subs: ['c', 'cpp', 'rust', 'swift', 'wast'] },
   compress:  { subs: ['audio', 'font', 'image', 'video'] },
@@ -293,12 +383,21 @@ const IMPLICIT_DEFAULTS: Record<string, ImplicitConfig> = {
   convert:   { subs: ['archive', 'audio', 'data', 'document', 'font', 'image', 'video'] },
   extract:   { subs: ['archive', 'font', 'pages'] },
   slice:     { subs: ['document'] },
+  split:     { subs: ['audio', 'document'] },
   crop:      { subs: ['document'] },
   mark:      { subs: ['pdf'] },
   modify:    { subs: ['pdf'] },
   validate:  { subs: ['document'] },
   verify:    { subs: ['image'] },
 }
+
+/**
+ * Verbs that accept `task <verb> <in> <out>` as a three-positional
+ * shorthand. The second path is lifted into `-o <out>` before
+ * yargs parses so the downstream form sees it as an explicit
+ * output flag.
+ */
+const TWO_POSITIONAL_VERBS = new Set(['convert'])
 
 function rewriteImplicitSubcommands(argv: string[]): string[] {
   if (argv.length < 2) return argv
@@ -310,6 +409,27 @@ function rewriteImplicitSubcommands(argv: string[]): string[] {
   if (!positional || positional.startsWith('-')) return argv
   if (config.subs.includes(positional)) return argv
   const kind = kindFromPath(positional)
+
+  // `task convert a.png a.jpg` — two positionals, both paths. Lift
+  // the second into `-o <path>` so buildActionCommand's positional
+  // handler fills input from the first and yargs fills output from
+  // the flag. Only when the caller hasn't already passed `-o`.
+  const maybeOut = argv[2]
+  const alreadyHasOutputFlag = argv
+    .slice(2)
+    .some(a => a === '-o' || a === '--output-file-path')
+  if (
+    TWO_POSITIONAL_VERBS.has(verb) &&
+    kind &&
+    config.subs.includes(kind) &&
+    maybeOut &&
+    !maybeOut.startsWith('-') &&
+    kindFromPath(maybeOut) &&
+    !alreadyHasOutputFlag
+  ) {
+    return [verb, kind, positional, '-o', maybeOut, ...argv.slice(3)]
+  }
+
   if (kind && config.subs.includes(kind)) {
     return [verb, kind, ...argv.slice(1)]
   }

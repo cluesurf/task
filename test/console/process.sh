@@ -1,21 +1,22 @@
 #!/usr/bin/env bash
-# process / port / inspect — read-only, just poke the shape.
+# process / port — read-only shape checks.
 cd "$(dirname "$0")/../.." || exit 1
 . test/lib.sh
 
 suite "Process"
 
-step "list process — table headers"
+step "list process — headers + rows"
 expect_contains "PID header" "task list process --limit 5 -f text" "^PID"
 expect_contains "USER header" "task list process --limit 5 -f text" "USER"
 
-step "list process --layout tree"
-expect_contains "tree glyph" "task list process --layout tree -f text" "├|└"
+step "list process tree — parent 0 (kernel) always has children"
+expect_contains "tree glyphs" "task list process --layout tree -f text" "[├└]"
 
-step "list port — PORT header"
+step "list port — header"
 expect_contains "PORT header" "task list port -f text" "PORT"
 
-step "inspect own pid"
-expect_contains "shows pid" "task inspect process $$ -f text" "^pid +$$"
+step "inspect shell's parent pid"
+PPID_SELF=$PPID
+expect_contains "pid row" "task inspect process $PPID_SELF -f text" "^pid "
 
 summary

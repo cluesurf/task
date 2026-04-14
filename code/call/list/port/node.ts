@@ -1,11 +1,16 @@
-import { listPorts } from '~/code/tool/node/proc/base'
+import { listPorts, type PortRow } from '~/code/tool/node/proc/base'
 import { renderPorts } from '~/code/tool/node/proc/render'
 import { getLoggingStyle } from '~/code/tool/node/log'
+
+export type PortSortKey = 'port' | 'protocol' | 'status' | 'pid' | 'user' | 'command'
+export type Direction = 'increasing' | 'decreasing'
 
 export type ListPortNodeInput = {
   status?: string
   protocol?: 'tcp' | 'udp'
   user?: string
+  sort?: PortSortKey
+  direction?: Direction
 }
 
 export async function listPortNode(input: ListPortNodeInput) {
@@ -23,10 +28,29 @@ export async function listPortNode(input: ListPortNodeInput) {
     list = list.filter(p => p.protocol.toLowerCase().startsWith(want))
   }
   if (input.user) list = list.filter(p => p.user === input.user)
+  if (input.sort) {
+    list = sortPorts(list, input.sort, input.direction ?? 'increasing')
+  }
 
   const style = getLoggingStyle()
   if (style === 'pretty' || style === 'text') {
     process.stdout.write(renderPorts(list, style === 'pretty') + '\n')
   }
   return { ports: list }
+}
+
+function sortPorts(
+  list: PortRow[],
+  key: PortSortKey,
+  direction: Direction,
+): PortRow[] {
+  const sign = direction === 'decreasing' ? -1 : 1
+  return [...list].sort((a, b) => {
+    const av = a[key]
+    const bv = b[key]
+    if (typeof av === 'number' && typeof bv === 'number') {
+      return sign * (av - bv)
+    }
+    return sign * String(av).localeCompare(String(bv))
+  })
 }

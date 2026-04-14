@@ -98,7 +98,7 @@ export function renderTree(
 ): string {
   const out: string[] = []
   for (const root of nodes) {
-    out.push(...treeLines(root, '', true, color))
+    out.push(...treeLines(root, '', true, true, color))
   }
   return out.join('\n')
 }
@@ -107,20 +107,21 @@ function treeLines(
   node: ProcessTreeNode,
   prefix: string,
   isLast: boolean,
+  isRoot: boolean,
   color: boolean,
 ): string[] {
-  const connector = prefix === '' ? '' : isLast ? '└── ' : '├── '
+  const connector = isRoot ? '' : isLast ? '└── ' : '├── '
   const label =
     paint(String(node.pid), DIM, color) +
     '  ' +
     paint(node.name, CELL, color) +
     paint(`  ${node.command}`, DIM, color)
   const out = [paint(prefix + connector, DIM, color) + label]
-  const nextPrefix = prefix + (prefix === '' ? '' : isLast ? '    ' : '│   ')
+  const nextPrefix = isRoot ? '' : prefix + (isLast ? '    ' : '│   ')
   for (let i = 0; i < node.children.length; i++) {
     const child = node.children[i]!
     const last = i === node.children.length - 1
-    out.push(...treeLines(child, nextPrefix, last, color))
+    out.push(...treeLines(child, nextPrefix, last, false, color))
   }
   return out
 }

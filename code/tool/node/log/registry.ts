@@ -86,10 +86,10 @@ export function registerGroupHelp(input: {
 }
 
 export function findHelp(commandPath: string[]): HelpEntry | undefined {
-  // Try the full path first, then peel trailing segments off (so a
-  // user mistake like `task inspect ./file.pdf` still finds the
-  // `task inspect` help), then peel from the front (so deeply
-  // nested paths fall back to their leaf).
+  // Try the full path first, then peel trailing segments off (so
+  // `task inspect ./file.pdf` still lands on `task inspect`),
+  // then peel from the front (so deeply nested paths fall back to
+  // their leaf), then the bare `task` entry as a last resort.
   for (let n = commandPath.length; n >= 1; n--) {
     const key = ['task', ...commandPath.slice(0, n)].join(' ')
     const entry = REGISTRY.get(key)
@@ -100,5 +100,5 @@ export function findHelp(commandPath: string[]): HelpEntry | undefined {
     const entry = REGISTRY.get(key)
     if (entry) return entry
   }
-  return undefined
+  return REGISTRY.get('task')
 }

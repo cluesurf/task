@@ -46,6 +46,7 @@ export type RunActionInput<R> = {
  */
 const SILENT_ACTIONS = new Set([
   'inspect', 'get', 'check', 'shape', 'list', 'halt',
+  'show', 'ping', 'measure', 'trace', 'scan',
 ])
 
 export async function runAction<R>({
