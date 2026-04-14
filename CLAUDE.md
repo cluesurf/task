@@ -105,6 +105,16 @@ Never relative imports across top-level boundaries.
   command runners, etc.).
 - **Generated types and parsers**: `code/form/object/*` and
   `code/form/action/*`. Never hand-edit.
+  Each generated folder contains three files (new
+  `@cluesurf/form` naming — previously `parsers.ts` and
+  `constants.ts`):
+  - `index.ts` — TypeScript type exports
+  - `take.ts` — zod parsers (was `parsers.ts`)
+  - `base.ts` — constant values, enum lists, etc. (was
+    `constants.ts`)
+  When importing generated output, use the paths `~/code/form/.../index`
+  for types, `~/code/form/.../take` for parsers, `~/code/form/.../base`
+  for constants.
 - **CLI entrypoint**: `code/console.ts` — the file the `task` bin
   points to in `package.json`. Imports the top-level action-group
   consoles and wires them into yargs.
