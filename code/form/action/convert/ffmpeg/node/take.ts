@@ -35,6 +35,7 @@ export const ConvertVideoWithFfmpegNodeClientInputParser = z.object({
   audioBitRate: z.optional(z.number().int()),
   videoBitRate: z.optional(z.number().int()),
   frameRate: z.optional(z.number().int()),
+  fps: z.optional(z.number().int()),
   startTime: z.optional(
     z.union([
       z
@@ -96,6 +97,7 @@ export const ConvertVideoWithFfmpegNodeExternalInputParser = z.object({
   audioBitRate: z.optional(z.number().int()),
   videoBitRate: z.optional(z.number().int()),
   frameRate: z.optional(z.number().int()),
+  fps: z.optional(z.number().int()),
   startTime: z.optional(
     z.union([
       z
@@ -170,6 +172,7 @@ export const ConvertVideoWithFfmpegNodeLocalExternalInputParser =
     audioBitRate: z.optional(z.number().int()),
     videoBitRate: z.optional(z.number().int()),
     frameRate: z.optional(z.number().int()),
+    fps: z.optional(z.number().int()),
     startTime: z.optional(
       z.union([
         z
@@ -230,6 +233,7 @@ export const ConvertVideoWithFfmpegNodeLocalInputParser = z.object({
   audioBitRate: z.optional(z.number().int()),
   videoBitRate: z.optional(z.number().int()),
   frameRate: z.optional(z.number().int()),
+  fps: z.optional(z.number().int()),
   startTime: z.optional(
     z.union([
       z
@@ -294,6 +298,7 @@ export const ConvertVideoWithFfmpegNodeLocalInternalInputParser =
     audioBitRate: z.optional(z.number().int()),
     videoBitRate: z.optional(z.number().int()),
     frameRate: z.optional(z.number().int()),
+    fps: z.optional(z.number().int()),
     startTime: z.optional(
       z.union([
         z
@@ -366,6 +371,7 @@ export const ConvertVideoWithFfmpegNodeRemoteInputParser = z.object({
   audioBitRate: z.optional(z.number().int()),
   videoBitRate: z.optional(z.number().int()),
   frameRate: z.optional(z.number().int()),
+  fps: z.optional(z.number().int()),
   startTime: z.optional(
     z.union([
       z

@@ -21,6 +21,7 @@ export type ConvertVideoWithFfmpegCommandInput = {
   audioBitRate?: number
   videoBitRate?: number
   frameRate?: number
+  fps?: number
   startTime?: number | string
   endTime?: number | string
   strict?: FfmpegStrictOption

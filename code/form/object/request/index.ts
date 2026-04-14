@@ -60,6 +60,11 @@ export type CommandKey =
   | 'pdfimages'
   | 'mutool'
   | 'gs'
+  | 'pyftsubset'
+  | 'ttx'
+  | 'woff2_compress'
+  | 'hb-shape'
+  | 'hb-view'
 
 export type CommandName =
   | 'ffmpeg'
@@ -117,6 +122,11 @@ export type CommandName =
   | 'pdfimages'
   | 'mutool'
   | 'gs'
+  | 'pyftsubset'
+  | 'ttx'
+  | 'woff2_compress'
+  | 'hb-shape'
+  | 'hb-view'
 export type CommandSequence = {
   call: Array<Command>
 }

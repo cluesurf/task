@@ -56,6 +56,11 @@ export const COMMAND_KEY: ReadonlyArray<CommandKey> = [
   'pdfimages',
   'mutool',
   'gs',
+  'pyftsubset',
+  'ttx',
+  'woff2_compress',
+  'hb-shape',
+  'hb-view',
 ]
 export const COMMAND_NAME: ReadonlyArray<CommandName> = [
   'ffmpeg',
@@ -113,4 +118,9 @@ export const COMMAND_NAME: ReadonlyArray<CommandName> = [
   'pdfimages',
   'mutool',
   'gs',
+  'pyftsubset',
+  'ttx',
+  'woff2_compress',
+  'hb-shape',
+  'hb-view',
 ]

@@ -1,6 +1,12 @@
 import si from 'systeminformation'
 import omit from 'lodash/omit'
 
+export type InspectSystemNodeInput = { show?: string }
+
+export async function inspectSystemNode(_input: InspectSystemNodeInput = {}) {
+  return await inspectBasicSystem()
+}
+
 export async function inspectSystem() {
   return await inspectBasicSystem()
 }

@@ -94,12 +94,11 @@ task convert a.png a.jpg
 task compress song.wav -o song.mp3
 task trim clip.mp4 -o cut.mp4 -s 10 -e 30
 task inspect report.pdf
-task highlight paper.pdf -o marked.pdf -t "important"
 
 # explicit
 task convert image -I png -O jpg -i a.png -o a.jpg
-task format python -i hello.py
-task archive --tool zip -i folder/ -o folder.zip
+task format hello.py
+task archive folder/ -o folder.zip
 ```
 
 ### What it can do
@@ -127,14 +126,6 @@ task archive --tool zip -i folder/ -o folder.zip
 | `-v, --version`   | Print the installed `@cluesurf/task` version                    |
 | `--explain`       | Print the native commands the verb would run, without executing |
 | `--log [pattern]` | Stream subprocess output. Glob filter (`"*"` = all)             |
-
-### Standard short flags
-
-`-i` input path, `-o` output path, `-I` input format, `-O` output
-format, `-t` text, `-b` bitrate, `-q` quality, `-d` degree,
-`-w` width, `-s` start / show / scope, `-e` end, `-c` crop / count,
-`-F` fea path. See [note/commands.md](./note/commands.md) for the
-full matrix plus one illustrative example per verb.
 
 ### Process listing highlights
 

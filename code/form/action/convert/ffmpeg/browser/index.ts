@@ -29,6 +29,7 @@ export type ConvertVideoWithFfmpegBrowserLocalInput = {
   audioBitRate?: number
   videoBitRate?: number
   frameRate?: number
+  fps?: number
   startTime?: number | string
   endTime?: number | string
   strict?: FfmpegStrictOption
@@ -59,6 +60,7 @@ export type ConvertVideoWithFfmpegBrowserRemoteInput = {
   audioBitRate?: number
   videoBitRate?: number
   frameRate?: number
+  fps?: number
   startTime?: number | string
   endTime?: number | string
   strict?: FfmpegStrictOption

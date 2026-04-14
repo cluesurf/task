@@ -25,6 +25,7 @@ export const ConvertVideoWithFfmpegCommandInputParser = z.object({
   audioBitRate: z.optional(z.number().int()),
   videoBitRate: z.optional(z.number().int()),
   frameRate: z.optional(z.number().int()),
+  fps: z.optional(z.number().int()),
   startTime: z.optional(
     z.union([
       z

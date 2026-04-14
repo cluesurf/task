@@ -28,6 +28,7 @@ export type ConvertVideoWithFfmpegNodeClientInput = {
   audioBitRate?: number
   videoBitRate?: number
   frameRate?: number
+  fps?: number
   startTime?: number | string
   endTime?: number | string
   strict?: FfmpegStrictOption
@@ -55,6 +56,7 @@ export type ConvertVideoWithFfmpegNodeExternalInput = {
   audioBitRate?: number
   videoBitRate?: number
   frameRate?: number
+  fps?: number
   startTime?: number | string
   endTime?: number | string
   strict?: FfmpegStrictOption
@@ -88,6 +90,7 @@ export type ConvertVideoWithFfmpegNodeLocalExternalInput = {
   audioBitRate?: number
   videoBitRate?: number
   frameRate?: number
+  fps?: number
   startTime?: number | string
   endTime?: number | string
   strict?: FfmpegStrictOption
@@ -116,6 +119,7 @@ export type ConvertVideoWithFfmpegNodeLocalInput = {
   audioBitRate?: number
   videoBitRate?: number
   frameRate?: number
+  fps?: number
   startTime?: number | string
   endTime?: number | string
   strict?: FfmpegStrictOption
@@ -145,6 +149,7 @@ export type ConvertVideoWithFfmpegNodeLocalInternalInput = {
   audioBitRate?: number
   videoBitRate?: number
   frameRate?: number
+  fps?: number
   startTime?: number | string
   endTime?: number | string
   strict?: FfmpegStrictOption
@@ -177,6 +182,7 @@ export type ConvertVideoWithFfmpegNodeRemoteInput = {
   audioBitRate?: number
   videoBitRate?: number
   frameRate?: number
+  fps?: number
   startTime?: number | string
   endTime?: number | string
   strict?: FfmpegStrictOption

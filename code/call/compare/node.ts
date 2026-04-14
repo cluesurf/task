@@ -106,7 +106,9 @@ async function loadStructured(file: string, format: string): Promise<unknown> {
     return (yaml.default ?? yaml).parse(text)
   }
   if (format === 'toml') {
-    const toml = await import('@iarna/toml').catch(() => null)
+    const toml = await import('@iarna/toml' as string).catch(() => null) as
+      | { parse: (s: string) => unknown; default?: { parse: (s: string) => unknown } }
+      | null
     if (!toml) {
       throw new Error(
         'compare: toml parser not available — run `pnpm add @iarna/toml`',
