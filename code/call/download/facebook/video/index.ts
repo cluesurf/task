@@ -17,7 +17,7 @@ interface RequestOptions {
 
 export class Downloader {
   private static promises: Promise<Response>[] = []
-  protected body: string = ''
+  protected body = ''
 
   public async getSourceCode(url: string): Promise<string> {
     const response = await this.httpRequest(url)
@@ -39,7 +39,7 @@ export class Downloader {
   private async httpRequest(
     url: string,
     options: RequestOptions = {},
-    isAsyncRequest: boolean = false,
+    isAsyncRequest = false,
   ): Promise<Response | false> {
     if (!url || url.trim() === '') {
       return false
@@ -94,7 +94,7 @@ export class Downloader {
     if (!str) return ''
 
     // Create a temporary element to handle HTML entities
-    const doc = new DOMParser.parseFromString(str, 'text/html')
+    const doc = new DOMParser().parseFromString(str, 'text/html')
     return doc.body.textContent || ''
   }
 
@@ -106,9 +106,9 @@ export class Downloader {
     } else {
       const regex =
         /^http(?:s?):\/\/(?:www\.|web\.|m\.)?facebook\.com\/([A-z0-9\.]+)\/videos(?:\/[0-9A-z].+)?\/(\d+)(?:.+)?$/
-      const matches = url.match(regex)
+      const matches = regex.exec(url)
 
-      if (matches && matches[2]) {
+      if (matches?.[2]) {
         id = matches[2]
       }
     }
@@ -164,13 +164,13 @@ export class Downloader {
     let matches
 
     if (
-      (matches = this.body.match(
-        /h2 class="uiHeaderTitle"?[^>]+>(.+?)<\/h2>/,
+      (matches = /h2 class="uiHeaderTitle"?[^>]+>(.+?)<\/h2>/.exec(
+        this.body,
       ))
     ) {
       title = matches[1]
     } else if (
-      (matches = this.body.match(/<title[^>]*>([^<]+)<\/title>/im))
+      (matches = /<title[^>]*>([^<]+)<\/title>/im.exec(this.body))
     ) {
       title = matches[1]
     }
@@ -179,8 +179,8 @@ export class Downloader {
   }
 
   public getDescription(): string | false {
-    const matches = this.body.match(
-      /span class="hasCaption">(.+?)<\/span>/,
+    const matches = /span class="hasCaption">(.+?)<\/span>/.exec(
+      this.body,
     )
     if (matches) {
       return this.cleanStr(matches[1]!)
@@ -189,7 +189,7 @@ export class Downloader {
   }
 
   public getCreatedTime(): string | false {
-    const matches = this.body.match(/data-utime="(.+?)"/)
+    const matches = /data-utime="(.+?)"/.exec(this.body)
     if (matches) {
       return matches[1]!
     }
@@ -197,7 +197,7 @@ export class Downloader {
   }
 
   public getValueByKey(key: string): string | false {
-    const matches = this.body.match(new RegExp(`${key}:"(.*?)"`, 'i'))
+    const matches = new RegExp(`${key}:"(.*?)"`, 'i').exec(this.body)
     if (matches) {
       const str = this.decodeUnicode(matches[1]!)
       return decodeURIComponent(str.replace(/\\/g, ''))

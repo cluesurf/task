@@ -13,7 +13,7 @@ export async function resolveWorkFileNode<T extends WorkFile>(
   //   switch (data.type) {
   //     case 'output':
   //       await saveRemoteFileNode(
-  //         data.output.file.path,
+  //         data.output.file!.path,
   //         outputPath,
   //         signal,
   //       )

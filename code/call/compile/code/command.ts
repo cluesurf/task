@@ -51,7 +51,7 @@ export async function buildCommandToCompileC(
 
   cmd.link.push(
     `-o`,
-    `"${input.output.file.path}"`,
+    `"${input.output.file!.path}"`,
     `"${input.input.file.path}"`,
   )
 
@@ -86,7 +86,7 @@ export async function buildCommandToCompileCpp(
 
   cmd.link.push(
     `-o`,
-    `"${input.output.file.path}"`,
+    `"${input.output.file!.path}"`,
     `"${input.input.file.path}"`,
   )
 
@@ -107,7 +107,7 @@ export function buildCommandToCompileSwift(
   cmd.link.push(
     `"${input.input.file.path}"`,
     '-o',
-    `"${input.output.file.path}"`,
+    `"${input.output.file!.path}"`,
   )
 
   return buildCommandSequence(cmd)
@@ -147,7 +147,7 @@ export function buildCommandToCompileRust(
   cmd.link.push(
     `"${input.input.file.path}"`,
     '-o',
-    `"${input.output.file.path}"`,
+    `"${input.output.file!.path}"`,
   )
 
   return buildCommandSequence(cmd)
@@ -169,7 +169,7 @@ export function buildCommandToCompileLlvmIrToAssembly(
     `--x86-asm-syntax=${input.output.syntax}`,
     `-march=${architectureKey}`,
     `-o`,
-    `"${input.output.file.path}"`,
+    `"${input.output.file!.path}"`,
     `"${input.input.file.path}"`,
   )
 

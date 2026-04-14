@@ -1,7 +1,8 @@
 import {
   FileContent,
   FileReaderEncoding,
-} from '~/code/form/object/file'export async function readFileContentAsString(
+} from '~/code/form/object/file'
+export async function readFileContentAsString(
   content: FileContent,
   encoding?: FileReaderEncoding,
 ) {

@@ -7,7 +7,8 @@ import {
 } from '~/code/form/action/convert/crop/document/shared'
 import {
   CropPdfWithPdfCropParser,
-} from '~/code/form/action/convert/crop/document/shared/take'export async function cropPdfWithPdfCropNode(
+} from '~/code/form/action/convert/crop/document/shared/take'
+export async function cropPdfWithPdfCropNode(
   source: CropPdfWithPdfCrop,
 ) {
   const input = CropPdfWithPdfCropParser.parse(source)
@@ -18,7 +19,7 @@ import {
   }
 
   command.link.push(input.input.file.path)
-  command.link.push(input.output.file.path)
+  command.link.push(input.output.file!.path)
 
   return buildCommandSequence(command)
 }

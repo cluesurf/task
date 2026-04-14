@@ -91,7 +91,7 @@ export function testConvertDocumentWithLibreOfficeNode(
 //   const pdfCropInput = _.merge({}, input, {
 //     input: {
 //       file: {
-//         path: pdfOutput.output.file.path,
+//         path: pdfOutput.output.file!.path,
 //       },
 //     },
 //   })

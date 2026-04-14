@@ -114,3 +114,5 @@
 // objdump -S --x86-asm-syntax=intel example.out
 // objdump -f assert
 // objdump -x assert
+
+export {}

@@ -22,7 +22,7 @@ export async function buildCommandToConvertFontWithFontForge(
     `-c`,
     `'Open($1); Generate($2)'`,
     `"${input.input.file.path}"`,
-    `"${input.output.file.path}"`,
+    `"${input.output.file!.path}"`,
   )
 
   debug('buildCommandToConvertFontWithFontForge', cmd.link)

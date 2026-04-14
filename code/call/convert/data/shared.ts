@@ -39,8 +39,8 @@ export async function convertCSVToJSON(
     group_columns_by_name,
     skip_empty_lines,
     record_delimiter,
-  }).map((record: Record<string, string>) =>
-    unflattenObject(record, nested_delimiter),
+  }).map((record: unknown) =>
+    unflattenObject(record as Record<string, string>, nested_delimiter),
   )
 
   return records

@@ -5,7 +5,8 @@ import {
 } from '~/code/form/action/generate/hash/shared'
 import {
   GenerateHashParser,
-} from '~/code/form/action/generate/hash/shared/take'export function generateHash(source: GenerateHash) {
+} from '~/code/form/action/generate/hash/shared/take'
+export function generateHash(source: GenerateHash) {
   const input = GenerateHashParser.parse(source)
   const digest = createMessageDigest({ class: input.class })
   updateMessageDigest(digest, { content: input.content })

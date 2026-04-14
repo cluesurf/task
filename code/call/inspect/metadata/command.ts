@@ -5,7 +5,8 @@ import {
 } from '~/code/tool/shared/command'
 import {
   InspectMetadataFromImage,
-} from '~/code/form/action/inspect/metadata/shared'export function buildCommandToInspectMetadataFromImage(
+} from '~/code/form/action/inspect/metadata/shared'
+export function buildCommandToInspectMetadataFromImage(
   input: InspectMetadataFromImage,
 ) {
   const cmd = getCommand('exiftool')

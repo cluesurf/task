@@ -77,11 +77,11 @@ export async function convertDocumentWithLibreOfficeNodeRemote(
     )
 
   const request = buildRequestToConvert(clientInput)
-  await resolveWorkFileNode(request, input.output.file.path)
+  await resolveWorkFileNode(request, input.output.file!.path)
 
   return ConvertDocumentWithLibreOfficeNodeOutputParser.parse({
     file: {
-      path: input.output.file.path,
+      path: input.output.file!.path,
     },
   })
 }

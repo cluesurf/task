@@ -17,7 +17,8 @@ import {
 import {
   FormatRuby,
   FormatSqlWithContent,
-} from '~/code/form/action/format/code/shared'export function buildCommandToFormatCodeWithClangFormat(
+} from '~/code/form/action/format/code/shared'
+export function buildCommandToFormatCodeWithClangFormat(
   input: FormatCodeWithClangFormatCommandInput,
 ) {
   const cmd = getCommand(`clang-format`)

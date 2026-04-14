@@ -7,7 +7,9 @@ import {
   exec,
 } from '~/code/tool/node/process'
 import Kink from '@termsurf/kink'
-import { stripAnsiFromText } from '~/code/hook/logging'
+import stripAnsi from 'strip-ansi'
+const stripAnsiFromText = (input: { input: { text: string } }) =>
+  stripAnsi(input.input.text)
 
 // https://stackoverflow.com/questions/747982/can-ffmpeg-show-a-progress-bar
 

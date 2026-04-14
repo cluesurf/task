@@ -15,7 +15,7 @@ export function buildCommandToExtractWith7z(input: ExtractWith7Z) {
     `x`,
     `"${input.input.path}"`,
     `-o`,
-    `"${input.output.file.path}"`,
+    `"${input.output.file!.path}"`,
   )
   return buildCommandSequence(cmd)
 }

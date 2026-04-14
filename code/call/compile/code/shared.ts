@@ -3,7 +3,8 @@ import { omitNested } from '~/code/tool/shared/object'
 import { buildRemoteRequest } from '~/code/tool/shared/request'
 import {
   CompileApi,
-} from '~/code/form/action/compile/code'export type CompileFileTest = {
+} from '~/code/form/action/compile/code'
+export type CompileFileTest = {
   input: {
     format: string
   }

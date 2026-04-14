@@ -73,11 +73,11 @@ export async function formatCodeWithClangFormatNodeRemote(
     )
 
   const request = buildRequestToFormat(clientInput)
-  await resolveWorkFileNode(request, input.output.file.path)
+  await resolveWorkFileNode(request, input.output.file!.path)
 
   return {
     file: {
-      path: input.output.file.path,
+      path: input.output.file!.path,
     },
   }
 }
@@ -108,7 +108,7 @@ export async function formatCodeWithClangFormatNodeLocal(
 
   return {
     file: {
-      path: output.file.path,
+      path: output.file!.path,
     },
   }
 }

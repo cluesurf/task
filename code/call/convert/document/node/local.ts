@@ -100,7 +100,7 @@
 //     ConvertDocumentWithPandocNodeCommandInputParser.parse(input)
 //   const sequence = buildCommandToConvertDocumentWithPandoc(commandInput)
 //   await runCommandSequence(sequence)
-//   return input.output.file.path
+//   return input.output.file!.path
 // }
 
 // export async function convertDocumentWithLibreOfficeLocal(
@@ -141,7 +141,7 @@
 //   return {
 //     output: {
 //       file: {
-//         path: input.output.file.path,
+//         path: input.output.file!.path,
 //       },
 //     },
 //   }

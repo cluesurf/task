@@ -19,7 +19,8 @@ import {
 } from '~/code/form/action/convert/pandoc/cli'
 import {
   ConvertLatexWithPdfLatexCommandInput,
-} from '~/code/form/action/convert/pdf-latex/cli'export function buildCommandToConvertDocumentWithLibreOffice(
+} from '~/code/form/action/convert/pdf-latex/cli'
+export function buildCommandToConvertDocumentWithLibreOffice(
   input: ConvertDocumentWithLibreOfficeCommandInput,
 ) {
   const cmd = getCommand('soffice')
@@ -43,7 +44,7 @@ export function buildCommandToConvertDocumentWithPandoc(
     `-t`,
     `${input.output.format}`,
     `-o`,
-    `${input.output.file.path}`,
+    `${input.output.file!.path}`,
     `${input.input.file.path}`,
   )
 
@@ -72,7 +73,7 @@ export function buildCommandToConvertDocumentWithCalibre(
   input: ConvertDocumentWithCalibreCommandInput,
 ) {
   const cmd = getCommand(`ebook-convert`)
-  cmd.link.push(input.input.file.path, input.output.file.path)
+  cmd.link.push(input.input.file.path, input.output.file!.path)
   return buildCommandSequence(cmd)
 }
 

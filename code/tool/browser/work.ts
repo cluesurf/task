@@ -192,7 +192,7 @@ export function resolveWorkFileAsBlob(
           native,
         )
 
-      const fileResponse = await fetchWithTimeout(output.file.path, {
+      const fileResponse = await fetchWithTimeout(output.file!.path, {
         method: 'GET',
         signal,
       })

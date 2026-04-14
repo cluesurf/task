@@ -1,4 +1,4 @@
-import * as DOMPurify from 'dompurify'
+import DOMPurify from 'dompurify'
 import {
   SanitizeHtmlBrowserInput,
   SanitizeHtmlBrowserLocalInput,
@@ -43,7 +43,7 @@ export async function sanitizeHtmlBrowserLocal(
     input.input.file.content,
     'utf-8',
   )
-  const output = DOMPurify.sanitize(content)
+  const output = DOMPurify.sanitize(content as string)
 
   return {
     file: {

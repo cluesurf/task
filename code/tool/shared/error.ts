@@ -23,7 +23,7 @@ export type TimeCallLoad = RequestInit & { timeout?: number }
 
 export function isZodError<I>(
   input: any,
-): input is z.SafeParseError<I> {
+): input is z.ZodSafeParseError<I> {
   return !input.success && 'error' in input
 }
 

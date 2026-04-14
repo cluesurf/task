@@ -4,12 +4,13 @@ import {
 } from '~/code/tool/shared/command'
 import {
   BuildCommandToOptimizeGifWithGifsicle,
-} from '~/code/form/action/optimize/image/shared'export function buildCommandToOptimizeGifWithGifsicle(
+} from '~/code/form/action/optimize/image/shared'
+export function buildCommandToOptimizeGifWithGifsicle(
   input: BuildCommandToOptimizeGifWithGifsicle,
 ) {
   const cmd = getCommand('gifsicle')
   cmd.link.push(`--no-warnings`)
-  cmd.link.push(`-o`, input.output.file.path)
+  cmd.link.push(`-o`, input.output.file!.path)
 
   if (input.left || input.right || input.top || input.bottom) {
     const start = [input.left || '0', input.top || '0'].join(',')

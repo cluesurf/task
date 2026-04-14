@@ -62,7 +62,7 @@ export const ClangStyleAllParser = z.object({
   ),
   alignTrailingComments: z.optional(
     z.object({
-      kind: z.object({}),
+      kind: z.enum(['leave', 'always', 'never']),
       overEmptyLines: z.number().int(),
     }),
   ),
@@ -114,7 +114,7 @@ export const ClangStyleAllParser = z.object({
     z.object({
       afterCaseLabel: z.boolean(),
       afterClass: z.boolean(),
-      afterControlStatement: z.object({}),
+      afterControlStatement: z.enum(['never', 'multiLine', 'always']),
       afterEnum: z.boolean(),
       afterFunction: z.boolean(),
       afterNamespace: z.boolean(),
@@ -208,7 +208,16 @@ export const ClangStyleAllParser = z.object({
   insertBraces: z.optional(z.boolean()),
   insertNewlineAtEof: z.optional(z.boolean()),
   insertTrailingCommas: z.optional(z.enum(['none', 'wrapped'])),
-  integerLiteralSeparator: z.optional(z.object({})),
+  integerLiteralSeparator: z.optional(
+    z.enum([
+      'binary',
+      'binaryMinDigits',
+      'decimal',
+      'decimalMinDigits',
+      'hex',
+      'hexMinDigits',
+    ]),
+  ),
   keepEmptyLinesAtEof: z.optional(z.boolean()),
   keepEmptyLinesAtTheStartOfBlocks: z.optional(z.boolean()),
   lambdaBodyIndentation: z.optional(
@@ -316,7 +325,7 @@ export const ClangStyleAllParser = z.object({
       afterFunctionDefinitionName: z.boolean(),
       afterIfMacros: z.boolean(),
       afterOverloadedOperator: z.boolean(),
-      afterPlacementOperator: z.object({}),
+      afterPlacementOperator: z.enum(['never', 'always', 'leave']),
       afterRequiresInClause: z.boolean(),
       afterRequiresInExpression: z.boolean(),
       beforeNonEmptyParentheses: z.boolean(),
@@ -380,22 +389,20 @@ export const ClangStyleAllParser = z.object({
 
 export type ClangStyleAllRecord = z.infer<typeof ClangStyleAllParser>
 
-export const ClangStyleCppParser = (
-  ClangStyleAllParser as any
-).extend({
+export const ClangStyleCppParser = (ClangStyleAllParser as any).extend({
   cpp11BracedListStyle: z.optional(z.boolean()),
   spaceBeforeCpp11BracedList: z.optional(z.boolean()),
 })
 
 export type ClangStyleCppRecord = z.infer<typeof ClangStyleCppParser>
 
-export const ClangStyleJavaParser = (
-  ClangStyleAllParser as any
-).extend({
-  breakAfterJavaFieldAnnotations: z.optional(z.boolean()),
-  javaImportGroups: z.optional(z.array(z.string())),
-  sortJavaStaticImport: z.optional(z.enum(['before', 'after'])),
-})
+export const ClangStyleJavaParser = (ClangStyleAllParser as any).extend(
+  {
+    breakAfterJavaFieldAnnotations: z.optional(z.boolean()),
+    javaImportGroups: z.optional(z.array(z.string())),
+    sortJavaStaticImport: z.optional(z.enum(['before', 'after'])),
+  },
+)
 
 export type ClangStyleJavaRecord = z.infer<typeof ClangStyleJavaParser>
 
@@ -410,17 +417,17 @@ export type ClangStyleJavascriptRecord = z.infer<
   typeof ClangStyleJavascriptParser
 >
 
-export const ClangStyleObjcParser = (
-  ClangStyleAllParser as any
-).extend({
-  objCBinPackProtocolList: z.optional(
-    z.enum(['auto', 'always', 'never']),
-  ),
-  objCBlockIndentWidth: z.optional(z.number().int()),
-  objCBreakBeforeNestedBlockParam: z.optional(z.boolean()),
-  objCPropertyAttributeOrder: z.optional(z.array(z.string())),
-  objCSpaceAfterProperty: z.optional(z.boolean()),
-  objCSpaceBeforeProtocolList: z.optional(z.boolean()),
-})
+export const ClangStyleObjcParser = (ClangStyleAllParser as any).extend(
+  {
+    objCBinPackProtocolList: z.optional(
+      z.enum(['auto', 'always', 'never']),
+    ),
+    objCBlockIndentWidth: z.optional(z.number().int()),
+    objCBreakBeforeNestedBlockParam: z.optional(z.boolean()),
+    objCPropertyAttributeOrder: z.optional(z.array(z.string())),
+    objCSpaceAfterProperty: z.optional(z.boolean()),
+    objCSpaceBeforeProtocolList: z.optional(z.boolean()),
+  },
+)
 
 export type ClangStyleObjcRecord = z.infer<typeof ClangStyleObjcParser>

@@ -71,11 +71,11 @@ export async function convertDocumentWithPandocNodeRemote(
     )
 
   const request = buildRequestToConvert(clientInput)
-  await resolveWorkFileNode(request, input.output.file.path)
+  await resolveWorkFileNode(request, input.output.file!.path)
 
   return ConvertDocumentWithPandocNodeOutputParser.parse({
     file: {
-      path: input.output.file.path,
+      path: input.output.file!.path,
     },
   })
 }
@@ -94,7 +94,7 @@ export async function convertDocumentWithPandocNodeLocal(
 
   return ConvertDocumentWithPandocNodeOutputParser.parse({
     file: {
-      path: localInput.output.file.path,
+      path: localInput.output.file!.path,
     },
   })
 }

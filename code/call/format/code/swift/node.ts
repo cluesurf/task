@@ -66,11 +66,11 @@ export async function formatSwiftNodeRemote(
   )
 
   const request = buildRequestToFormat(clientInput)
-  await resolveWorkFileNode(request, input.output.file.path)
+  await resolveWorkFileNode(request, input.output.file!.path)
 
   return {
     file: {
-      path: input.output.file.path,
+      path: input.output.file!.path,
     },
   }
 }
@@ -86,7 +86,7 @@ export async function formatSwiftNodeLocal(
 
   return {
     file: {
-      path: input.output.file.path,
+      path: input.output.file!.path,
     },
   }
 }

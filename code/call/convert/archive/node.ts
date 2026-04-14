@@ -79,11 +79,11 @@ export async function convertArchiveNodeRemote(
   )
 
   const request = buildRequestToConvert(clientInput)
-  await resolveWorkFileNode(request, input.output.file.path)
+  await resolveWorkFileNode(request, input.output.file!.path)
 
   return ConvertArchiveNodeOutputParser.parse({
     file: {
-      path: input.output.file.path,
+      path: input.output.file!.path,
     },
   })
 }
@@ -121,7 +121,7 @@ export async function convertArchiveNodeLocal(
     case 'zip': {
       await archiveWithArchiver(
         archiveInput.input.path,
-        archiveInput.output.file.path,
+        archiveInput.output.file!.path,
       )
       break
     }
@@ -139,7 +139,7 @@ export async function convertArchiveNodeLocal(
 
   return {
     file: {
-      path: archiveInput.output.file.path,
+      path: archiveInput.output.file!.path,
     },
   }
 }

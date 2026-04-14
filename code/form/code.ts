@@ -1,6 +1,6 @@
 import { Make, Test } from '@cluesurf/form'
 import { FFMPEG_TIME_PATTERN } from './bond'
-import { ImageMagicColorMatrix } from '~/code/form/shared/index'
+import { ImageMagicColorMatrix } from '~/code/form/object/imagemagick'
 import capitalize from 'lodash/capitalize'
 import snakeCase from 'lodash/snakeCase'
 import { RefinementCtx, z } from 'zod'
@@ -9,8 +9,9 @@ import { getPathType } from '../tool/shared/file'
 
 export const transform_input_output_file: Make = {
   form: 'make',
+  save: '~/code/form/code',
   make: (v: Record<string, any>, ctx: RefinementCtx) => {
-    if (!v.output.file.path) {
+    if (!v.output.file!.path) {
       if (!v.output.format) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -18,7 +19,7 @@ export const transform_input_output_file: Make = {
           path: ['output', 'file'],
         })
       } else {
-        v.output.file.path = replaceFileExtension(
+        v.output.file!.path = replaceFileExtension(
           v.input.file.path as string,
           `.${v.output.format}`,
         )
@@ -31,6 +32,7 @@ export const transform_input_output_file: Make = {
 
 export const validate_input_file_path_or_content: Make = {
   form: 'make',
+  save: '~/code/form/code',
   make: (v: Record<string, any>, ctx: RefinementCtx) => {
     if (!v.input.file.path) {
       if (!v.input.file.content) {
@@ -48,6 +50,7 @@ export const validate_input_file_path_or_content: Make = {
 
 export const is_sha256: Test = {
   form: 'test',
+  save: '~/code/form/code',
   test: (bond: string, name: string) =>
     Boolean(bond.match(/^[abcdef0123456789]{64}$/i)) ||
     `${name} is not a valid SHA256 hash.`,
@@ -55,6 +58,7 @@ export const is_sha256: Test = {
 
 export const is_remote_path: Test = {
   form: 'test',
+  save: '~/code/form/code',
   test: (bond: string, name: string) =>
     getPathType(bond) !== 'file-uri' ||
     `${name} not a valid remote URI.`,
@@ -62,6 +66,7 @@ export const is_remote_path: Test = {
 
 export const is_local_path: Test = {
   form: 'test',
+  save: '~/code/form/code',
   test: (bond: string, name: string) =>
     getPathType(bond) === 'file-uri' ||
     `${name} not a valid local URI.`,
@@ -69,16 +74,18 @@ export const is_local_path: Test = {
 
 export const is_hex_color_8: Test = {
   form: 'test',
+  save: '~/code/form/code',
   test: (bond: string, name: string) =>
     Boolean(
-      bond.match(/^[abcdef0123456789]{8}$/i) ||
-        bond.match(/^[abcdef0123456789]{6}$/i) ||
-        `${name} is not a valid hex code.`,
+      bond.match(/^[abcdef0123456789]{8}$/i) ??
+      bond.match(/^[abcdef0123456789]{6}$/i) ??
+      `${name} is not a valid hex code.`,
     ),
 }
 
 export const is_hex_color_6: Test = {
   form: 'test',
+  save: '~/code/form/code',
   test: (bond: string, name: string) =>
     Boolean(bond.match(/^[abcdef0123456789]{6}$/i)) ||
     `${name} is not a valid hex code.`,
@@ -86,6 +93,7 @@ export const is_hex_color_6: Test = {
 
 export const test_time_string: Test = {
   form: 'test',
+  save: '~/code/form/code',
   test: (bond: string, name: string) =>
     !!bond.match(FFMPEG_TIME_PATTERN) ||
     `${name} has an invalid format.`,
@@ -93,6 +101,7 @@ export const test_time_string: Test = {
 
 export const test_time_integer: Test = {
   form: 'test',
+  save: '~/code/form/code',
   test: (bond: number, name: string) =>
     (Number.isInteger(bond) && bond > 0 && bond < 60) ||
     `${name} has an invalid format.`,
@@ -100,7 +109,8 @@ export const test_time_integer: Test = {
 
 export const test_image_magic_color_matrix: Test = {
   form: 'test',
-  test: (bond: ImageMagicColorMatrix, name: string) => {
+  save: '~/code/form/code',
+  test: (bond: ImageMagicColorMatrix) => {
     if (bond.row < 3 || bond.row > 6) {
       return `Color matrix can only have between 3 and 6 rows.`
     }
@@ -120,6 +130,7 @@ export const test_image_magic_color_matrix: Test = {
 
 export const hex_color: Test = {
   form: 'test',
+  save: '~/code/form/code',
   test: (bond: string, name: string) => {
     if (!bond.match(/#[abcdef0-9]{6}/i)) {
       const prop = capitalize(snakeCase(name)).replace(/_/g, ' ')

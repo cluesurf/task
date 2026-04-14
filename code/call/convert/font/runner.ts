@@ -2,7 +2,8 @@ import { ChildProcessError, exec } from '~/code/tool/node/process'
 import kink from '~/code/tool/shared/kink'
 import {
   Command,
-} from '~/code/form/object/request'export async function runFontforgeCommand(cmd: Command) {
+} from '~/code/form/object/request'
+export async function runFontforgeCommand(cmd: Command) {
   try {
     return await exec(cmd.link)
   } catch (e) {

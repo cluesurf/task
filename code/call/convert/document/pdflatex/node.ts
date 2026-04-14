@@ -72,11 +72,11 @@ export async function convertLatexWithPdfLatexNodeRemote(
     )
 
   const request = buildRequestToConvert(clientInput)
-  await resolveWorkFileNode(request, input.output.file.path)
+  await resolveWorkFileNode(request, input.output.file!.path)
 
   return ConvertLatexWithPdfLatexNodeOutputParser.parse({
     file: {
-      path: input.output.file.path,
+      path: input.output.file!.path,
     },
   })
 }

@@ -72,11 +72,11 @@ export async function convertImageWithInkscapeNodeRemote(
     )
 
   const request = buildRequestToConvert(clientInput)
-  await resolveWorkFileNode(request, input.output.file.path)
+  await resolveWorkFileNode(request, input.output.file!.path)
 
   return ConvertImageWithInkscapeNodeOutputParser.parse({
     file: {
-      path: input.output.file.path,
+      path: input.output.file!.path,
     },
   })
 }
@@ -95,7 +95,7 @@ export async function convertImageWithInkscapeNodeLocal(
 
   return ConvertImageWithInkscapeNodeOutputParser.parse({
     file: {
-      path: localInput.output.file.path,
+      path: localInput.output.file!.path,
     },
   })
 }

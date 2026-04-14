@@ -18,7 +18,8 @@ import {
   GenerateHaikuPhraseParser,
   GenerateRandomPhraseParser,
   GenerateRandomSymbolsParser,
-} from '~/code/form/action/generate/string/shared/take'export function generateRandomSymbols(source: GenerateRandomSymbols) {
+} from '~/code/form/action/generate/string/shared/take'
+export function generateRandomSymbols(source: GenerateRandomSymbols) {
   const input = GenerateRandomSymbolsParser.parse(source)
 
   const size = getRandomIntegerBetween({

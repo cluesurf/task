@@ -55,7 +55,7 @@ async function buildSymbolIndex(): Promise<SymbolIndex> {
   await walk(FORM, async absPath => {
     if (!absPath.endsWith('.ts')) return
     const base = path.basename(absPath)
-    if (base !== 'index.ts' && base !== 'take.ts') return
+    if (base !== 'index.ts' && base !== 'take.ts' && base !== 'base.ts') return
 
     const moduleSpec = toModuleSpec(absPath)
     const source = await fs.readFile(absPath, 'utf8')
@@ -185,7 +185,7 @@ function transform({
       lines.push(
         `${prefix}{\n  ${unique.join(',\n  ')},\n} from '${extractLegacyPath(
           match,
-        )}' // TODO: legacy symbols not found in generated output`,
+        )}' // TODO: legacy symbols not found in generated output\n`,
       )
     }
 

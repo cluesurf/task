@@ -1,18 +1,24 @@
+import { C_INPUT_FORMAT } from '~/code/form/action/compile/code/c/shared/base'
+import { CPP_INPUT_FORMAT } from '~/code/form/action/compile/code/cpp/base'
+import { SWIFT_INPUT_FORMAT } from '~/code/form/action/compile/code/swift/shared/base'
 import {
-  ARCHIVE_FORMAT,
-  ASSEMBLY_SYNTAX,
-  BACKEND_COMPILATION_OUTPUT,
-  C_INPUT_FORMAT,
-  CALIBRE_INPUT_FORMAT,
-  CALIBRE_INPUT_PROFILE,
-  CALIBRE_OUTPUT_FORMAT,
-  CALIBRE_OUTPUT_PROFILE,
-  CALL_HANDLE,
-  CIPHER,
-  CLANG_FORMAT,
-  CLI_LOG_FORMAT,
-  COMMAND_KEY,
-  COMMAND_NAME,
+  WAST_INPUT_FORMAT,
+  WAST_OUTPUT_FORMAT,
+} from '~/code/form/action/compile/code/wast/shared/base'
+import {
+  OBJDUMP_DEMANGLE_STYLE,
+  OBJDUMP_HIDE_OPTION,
+  OBJDUMP_SHOW_OPTION,
+} from '~/code/form/action/convert/disassemble/binary/shared/base'
+import {
+  CONVERT_LATEX_TO_PNG_INPUT_FORMAT,
+  CONVERT_LATEX_TO_PNG_OUTPUT_FORMAT,
+} from '~/code/form/action/convert/latex-to-png/shared/base'
+import {
+  PDF_LATEX_INPUT_FORMAT,
+  PDF_LATEX_OUTPUT_FORMAT,
+} from '~/code/form/action/convert/pdf-latex/shared/base'
+import {
   CONVERSION_UNIT_ACRE,
   CONVERSION_UNIT_AMPERE,
   CONVERSION_UNIT_ARCMINUTE,
@@ -197,11 +203,51 @@ import {
   CONVERSION_UNIT_WEEK,
   CONVERSION_UNIT_YARD,
   CONVERSION_UNIT_YEAR,
-  CONVERT_LATEX_TO_PNG_INPUT_FORMAT,
-  CONVERT_LATEX_TO_PNG_OUTPUT_FORMAT,
-  CPP_INPUT_FORMAT,
+  UNIT,
+} from '~/code/form/action/convert/unit/base'
+import {
+  CLANG_FORMAT,
+  FORMAT_CODE_FORMAT,
+  PRETTIER_ARROW_PARENS_OPTION,
+  PRETTIER_END_OF_LINE_OPTION,
+  PRETTIER_HTML_WHITESPACE_SENSITIVITY_OPTION,
+  PRETTIER_PLUGIN,
+  PRETTIER_PROSE_WRAP_OPTION,
+  PRETTIER_TYPESCRIPT_TRAILING_COMMA_OPTION,
+  PRETTIER_XML_QUOTE_ATTRIBUTES_OPTION,
+  PRETTIER_XML_WHITESPACE_SENSITIVITY_OPTION,
+} from '~/code/form/action/format/code/shared/base'
+import { FORGE_MESSAGE_DIGEST } from '~/code/form/action/generate/hash/shared/base'
+import {
+  QR_CODE_ERROR_CORRECTION_LEVEL,
+  QR_CODE_FORMAT,
+} from '~/code/form/action/generate/qrcode/shared/base'
+import {
+  PLEASANT_ADJECTIVE,
+  PLEASANT_NOUN,
+  SYMBOL_SET,
+  WORD_SET,
+} from '~/code/form/action/generate/string/shared/base'
+import {
+  FLIP,
+  GIFSICLE_OPTIMIZE_OPTION,
+} from '~/code/form/action/optimize/image/shared/base'
+import { ARCHIVE_FORMAT } from '~/code/form/object/archive/base'
+import { ASSEMBLY_SYNTAX } from '~/code/form/object/assembly/base'
+import {
+  CALIBRE_INPUT_FORMAT,
+  CALIBRE_INPUT_PROFILE,
+  CALIBRE_OUTPUT_FORMAT,
+  CALIBRE_OUTPUT_PROFILE,
+} from '~/code/form/object/calibre/base'
+import { CALL_HANDLE } from '~/code/form/object/call/base'
+import { CLI_LOG_FORMAT } from '~/code/form/object/cli-log/base'
+import { CIPHER } from '~/code/form/object/crypto/base'
+import {
   ENSCRIPT_INPUT_FORMAT,
   ENSCRIPT_OUTPUT_FORMAT,
+} from '~/code/form/object/enscript/base'
+import {
   FFMPEG_CODEC_AUDIO,
   FFMPEG_CODEC_SUBTITLE,
   FFMPEG_CODEC_VIDEO,
@@ -213,12 +259,10 @@ import {
   FFMPEG_ENCODER_VIDEO,
   FFMPEG_FORMAT,
   FFMPEG_STRICT_OPTION,
-  FILE_READER_ENCODING,
-  FLIP,
-  FONT_FORMAT,
-  FORGE_MESSAGE_DIGEST,
-  FORMAT_CODE_FORMAT,
-  GIFSICLE_OPTIMIZE_OPTION,
+} from '~/code/form/object/ffmpeg/base'
+import { FILE_READER_ENCODING } from '~/code/form/object/file/base'
+import { FONT_FORMAT } from '~/code/form/object/font/base'
+import {
   IMAGE_MAGICK_CHANNEL,
   IMAGE_MAGICK_COLOR_SPACE,
   IMAGE_MAGICK_COMPRESSION,
@@ -226,55 +270,49 @@ import {
   IMAGE_MAGICK_GRAVITY,
   IMAGE_MAGICK_INPUT_FORMAT,
   IMAGE_MAGICK_OUTPUT_FORMAT,
+} from '~/code/form/object/imagemagick/base'
+import {
   INKSCAPE_EXPORT_FORMAT,
   INKSCAPE_IMPORT_FORMAT,
+} from '~/code/form/object/inkscape/base'
+import {
   LIBRE_OFFICE_INPUT_FORMAT,
   LIBRE_OFFICE_OUTPUT_FORMAT,
+} from '~/code/form/object/libre-office/base'
+import {
+  BACKEND_COMPILATION_OUTPUT,
   LLVM_ARCHITECTURE,
   LLVM_CPU,
   LLVM_FEATURE,
   LLVM_OPTIMIZATION_LEVEL,
-  OBJDUMP_DEMANGLE_STYLE,
-  OBJDUMP_HIDE_OPTION,
-  OBJDUMP_SHOW_OPTION,
+} from '~/code/form/object/llvm/base'
+import {
   PANDOC_INPUT_FORMAT,
   PANDOC_OUTPUT_FORMAT,
-  PATOOL_FORMAT,
-  PDF_LATEX_INPUT_FORMAT,
-  PDF_LATEX_OUTPUT_FORMAT,
-  PLEASANT_ADJECTIVE,
-  PLEASANT_NOUN,
-  PRETTIER_ARROW_PARENS_OPTION,
-  PRETTIER_END_OF_LINE_OPTION,
-  PRETTIER_HTML_WHITESPACE_SENSITIVITY_OPTION,
-  PRETTIER_PLUGIN,
-  PRETTIER_PROSE_WRAP_OPTION,
-  PRETTIER_TYPESCRIPT_TRAILING_COMMA_OPTION,
-  PRETTIER_XML_QUOTE_ATTRIBUTES_OPTION,
-  PRETTIER_XML_WHITESPACE_SENSITIVITY_OPTION,
+} from '~/code/form/object/pandoc/base'
+import { PATOOL_FORMAT } from '~/code/form/object/patool/base'
+import {
   PUPPETEER_INPUT_FORMAT,
   PUPPETEER_LIFE_CYCLE_EVENT,
   PUPPETEER_MARKDOWN_INPUT_FORMAT,
   PUPPETEER_OUTPUT_FORMAT,
   PUPPETEER_TXT_INPUT_FORMAT,
-  QR_CODE_ERROR_CORRECTION_LEVEL,
-  QR_CODE_FORMAT,
+} from '~/code/form/object/puppeteer/base'
+import {
+  COMMAND_KEY,
+  COMMAND_NAME,
+} from '~/code/form/object/request/base'
+import {
   RUST_COMPILER_TARGET,
   RUST_INPUT_FORMAT,
   RUST_OUTPUT_FORMAT,
-  SHARED_GEMATRIA_LANGUAGE,
-  SWIFT_INPUT_FORMAT,
-  SYMBOL_SET,
-  TASK,
+} from '~/code/form/object/rust/base'
+import {
   TIME_ZONE,
   TIME_ZONE_ABBREVIATION,
   TIME_ZONE_LOCATION,
-  UNARCHIVER_FORMAT,
-  UNIT,
-  WAST_INPUT_FORMAT,
-  WAST_OUTPUT_FORMAT,
-  WORD_SET,
-} from '~/code/form/node/data'
+} from '~/code/form/object/time/base'
+import { UNARCHIVER_FORMAT } from '~/code/form/object/unarchiver/base'
 import { configure } from '~/code/tool/shared/config'
 
 configure('archive_format', ARCHIVE_FORMAT)
@@ -801,10 +839,8 @@ configure('qr_code_format', QR_CODE_FORMAT)
 configure('rust_compiler_target', RUST_COMPILER_TARGET)
 configure('rust_input_format', RUST_INPUT_FORMAT)
 configure('rust_output_format', RUST_OUTPUT_FORMAT)
-configure('shared_gematria_language', SHARED_GEMATRIA_LANGUAGE)
 configure('swift_input_format', SWIFT_INPUT_FORMAT)
 configure('symbol_set', SYMBOL_SET)
-configure('task', TASK)
 configure('time_zone', TIME_ZONE)
 configure('time_zone_abbreviation', TIME_ZONE_ABBREVIATION)
 configure('time_zone_location', TIME_ZONE_LOCATION)

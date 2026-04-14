@@ -11,7 +11,7 @@ import { Archive } from '~/code/form/action/archive/index'
 
 export function buildCommandToArchiveWithZip(input: Archive) {
   const cmd = getCommand(`zip`)
-  cmd.link.push('-r', input.output.file.path, input.input.path)
+  cmd.link.push('-r', input.output.file!.path, input.input.path)
   return buildCommandSequence(cmd)
 }
 
@@ -20,7 +20,7 @@ export function buildCommandToArchiveWithRar(input: Archive) {
   const cmd = getCommand(`rar`)
   cmd.link.push(
     `a`,
-    `"${input.output.file.path}"`,
+    `"${input.output.file!.path}"`,
     `"${input.input.path}"`,
   )
   return buildCommandSequence(cmd)

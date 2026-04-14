@@ -90,11 +90,11 @@ export async function convertTxtWithPuppeteerNodeRemote(
     )
 
   const request = buildRequestToConvert(clientInput)
-  await resolveWorkFileNode(request, input.output.file.path)
+  await resolveWorkFileNode(request, input.output.file!.path)
 
   return ConvertTxtWithPuppeteerNodeOutputParser.parse({
     file: {
-      path: input.output.file.path,
+      path: input.output.file!.path,
     },
   })
 }
@@ -224,7 +224,9 @@ export async function convertTxtWithPuppeteerNodeLocal(
   debug('convertTxtWithPuppeteerNodeLocal browser loaded')
 
   const p = await b.newPage()
-  const string = arrayBufferToString(input.input.file.content)
+  const string = arrayBufferToString(
+    (input.input.file as { content: ArrayBuffer }).content,
+  )
   const textCss = textStyleToCSS(
     merge(DEFAULT_TEXT_STYLE.text, input.style?.text ?? {}),
   )
@@ -257,7 +259,7 @@ ${textCss.map(line => `        ${line}`).join('\n')}
 
   const opts: Record<string, any> = {
     scale: 1,
-    path: input.output.file.path,
+    path: input.output.file!.path,
     printBackground: true,
     preferCSSPageSize: true,
   }
@@ -281,7 +283,7 @@ ${textCss.map(line => `        ${line}`).join('\n')}
 
   return ConvertTxtWithPuppeteerNodeOutputParser.parse({
     file: {
-      path: input.output.file.path,
+      path: input.output.file!.path,
     },
   })
 }
@@ -338,11 +340,11 @@ export async function convertMarkdownWithPuppeteerNodeRemote(
     )
 
   const request = buildRequestToConvert(clientInput)
-  await resolveWorkFileNode(request, input.output.file.path)
+  await resolveWorkFileNode(request, input.output.file!.path)
 
   return ConvertMarkdownWithPuppeteerNodeOutputParser.parse({
     file: {
-      path: input.output.file.path,
+      path: input.output.file!.path,
     },
   })
 }
@@ -361,7 +363,9 @@ export async function convertMarkdownWithPuppeteerNodeLocal(
 
   const p = await b.newPage()
   const string = marked.parse(
-    arrayBufferToString(input.input.file.content),
+    arrayBufferToString(
+      (input.input.file as { content: ArrayBuffer }).content,
+    ),
   )
   const h1Css = textStyleToCSS(
     merge(
@@ -500,7 +504,7 @@ ${linkCss.map(line => `        ${line}`).join('\n')}
 
   const opts: Record<string, any> = {
     scale: 1,
-    path: input.output.file.path,
+    path: input.output.file!.path,
     printBackground: true,
     preferCSSPageSize: true,
   }
@@ -524,7 +528,7 @@ ${linkCss.map(line => `        ${line}`).join('\n')}
 
   return ConvertTxtWithPuppeteerNodeOutputParser.parse({
     file: {
-      path: input.output.file.path,
+      path: input.output.file!.path,
     },
   })
 }
@@ -539,7 +543,7 @@ export async function convertHtmlToPngWithPuppeteerNode(
   // await p.waitForNavigation({ waitUntil: input.waitUntil })
   // const opts: Record<string, any> = {
   //   scale: 1,
-  //   path: input.output.file.path,
+  //   path: input.output.file!.path,
   //   printBackground: true,
   //   preferCSSPageSize: true,
   // }
@@ -568,7 +572,7 @@ export async function convertHtmlToPdfWithPuppeteer(
   // await p.waitForNavigation({ waitUntil: input.waitUntil })
   // const opts: Record<string, any> = {
   //   scale: 1,
-  //   path: input.output.file.path,
+  //   path: input.output.file!.path,
   //   printBackground: true,
   //   preferCSSPageSize: true,
   // }

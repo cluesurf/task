@@ -125,6 +125,10 @@ export function applyFormOptions<Y extends { option: Function }>(
   y: Y,
   options: CliOption[],
 ): Y {
+  const addOption = (y as unknown as {
+    option: (name: string, config: unknown) => Y
+  }).option
+
   for (const opt of options) {
     const spec: Record<string, unknown> = {
       type: mapLikeToYargsType(opt.like),
@@ -133,10 +137,7 @@ export function applyFormOptions<Y extends { option: Function }>(
     if (opt.short) spec.alias = opt.short
     if (opt.list) spec.array = true
     if (opt.note) spec.describe = opt.note
-    ;(y as { option: (name: string, config: unknown) => Y }).option(
-      opt.long,
-      spec,
-    )
+    addOption(opt.long, spec)
   }
   return y
 }

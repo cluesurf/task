@@ -2,7 +2,7 @@ import {
   buildCommandSequence,
   getCommand,
 } from '~/code/tool/shared/command'
-import { IOPath } from '~/code/form/index'
+type IOPath = { inputPath: string; outputPath: string }
 import {
   ConvertVideoWithFfmpegCommandInput,
 } from '~/code/form/action/convert/ffmpeg/cli'
@@ -160,7 +160,7 @@ export async function buildCommandToConvertVideoWithFfmpeg(
     cmd.link.push(`-s:a`, `${subtitleCodec}`)
   }
 
-  cmd.link.push(`${output.file.path}`)
+  cmd.link.push(`${output.file!.path}`)
 
   return buildCommandSequence(cmd)
 }
@@ -200,7 +200,7 @@ export async function buildCommandToConvertMP4ToGifWithFfmpeg(source) {
     `"fps=${fps},scale=${width}:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"`,
     `-loop`,
     `0`,
-    `"${input.output.file.path}"`,
+    `"${input.output.file!.path}"`,
   )
 
   return [cmd]

@@ -372,7 +372,8 @@ import {
   ConvertWeekParser,
   ConvertYardParser,
   ConvertYearParser,
-} from '~/code/form/action/convert/unit/take'export function convertUnit(source: ConvertUnit) {
+} from '~/code/form/action/convert/unit/take'
+export function convertUnit(source: ConvertUnit) {
   const input = ConvertUnitParser.parse(source) as any
 
   switch (source.input.format) {

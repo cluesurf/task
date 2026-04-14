@@ -47,7 +47,7 @@ export type ClangStyleAll = {
   alignEscapedNewlines?: 'dontAlign' | 'left' | 'right'
   alignOperands?: 'dontAlign' | 'align' | 'alignAfterOperator'
   alignTrailingComments?: {
-    kind: {}
+    kind: 'leave' | 'always' | 'never'
     overEmptyLines: number
   }
   allowAllArgumentsOnNextLine?: boolean
@@ -90,7 +90,7 @@ export type ClangStyleAll = {
   braceWrapping?: {
     afterCaseLabel: boolean
     afterClass: boolean
-    afterControlStatement: {}
+    afterControlStatement: 'never' | 'multiLine' | 'always'
     afterEnum: boolean
     afterFunction: boolean
     afterNamespace: boolean
@@ -169,7 +169,13 @@ export type ClangStyleAll = {
   insertBraces?: boolean
   insertNewlineAtEof?: boolean
   insertTrailingCommas?: 'none' | 'wrapped'
-  integerLiteralSeparator?: {}
+  integerLiteralSeparator?:
+    | 'binary'
+    | 'binaryMinDigits'
+    | 'decimal'
+    | 'decimalMinDigits'
+    | 'hex'
+    | 'hexMinDigits'
   keepEmptyLinesAtEof?: boolean
   keepEmptyLinesAtTheStartOfBlocks?: boolean
   lambdaBodyIndentation?: 'signature' | 'outerScope'
@@ -255,7 +261,7 @@ export type ClangStyleAll = {
     afterFunctionDefinitionName: boolean
     afterIfMacros: boolean
     afterOverloadedOperator: boolean
-    afterPlacementOperator: {}
+    afterPlacementOperator: 'never' | 'always' | 'leave'
     afterRequiresInClause: boolean
     afterRequiresInExpression: boolean
     beforeNonEmptyParentheses: boolean

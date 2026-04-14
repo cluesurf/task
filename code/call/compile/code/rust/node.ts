@@ -63,11 +63,11 @@ export async function compileRustNodeRemote(
   )
 
   const request = buildRequestToCompile(clientInput)
-  await resolveWorkFileNode(request, input.output.file.path)
+  await resolveWorkFileNode(request, input.output.file!.path)
 
   return {
     file: {
-      path: input.output.file.path,
+      path: input.output.file!.path,
     },
   }
 }
@@ -84,7 +84,7 @@ export async function compileRustNodeLocal(
 
   return {
     file: {
-      path: localInput.output.file.path,
+      path: localInput.output.file!.path,
     },
   }
 }

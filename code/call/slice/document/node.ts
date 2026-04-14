@@ -12,7 +12,7 @@ import fs from 'fs/promises'
 //       },
 //     }),
 //   )
-//   await fs.writeFile(input.output.file.path as string, outputBuffer)
+//   await fs.writeFile(input.output.file!.path as string, outputBuffer)
 // }
 
 export const slice = true

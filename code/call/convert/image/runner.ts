@@ -2,7 +2,8 @@ import snakeCase from 'lodash/snakeCase'
 import { ChildProcessError, exec } from '~/code/tool/node/process'
 import {
   Command,
-} from '~/code/form/object/request'export async function runConvertCommand(cmd: Command) {
+} from '~/code/form/object/request'
+export async function runConvertCommand(cmd: Command) {
   try {
     return await exec(cmd.link)
   } catch (e) {

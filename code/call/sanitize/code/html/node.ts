@@ -80,11 +80,11 @@ export async function sanitizeHtmlNodeRemote(
   )
 
   const request = buildRequestToSanitize(clientInput)
-  await resolveWorkFileNode(request, input.output.file.path)
+  await resolveWorkFileNode(request, input.output.file!.path)
 
   return SanitizeHtmlNodeOutputParser.parse({
     file: {
-      path: input.output.file.path,
+      path: input.output.file!.path,
     },
   })
 }
@@ -101,11 +101,11 @@ export async function sanitizeHtmlNodeLocal(
 
   const output = getSanitizer().sanitize(content)
 
-  await fsp.writeFile(localInput.output.file.path, output)
+  await fsp.writeFile(localInput.output.file!.path, output)
 
   return {
     file: {
-      path: localInput.output.file.path,
+      path: localInput.output.file!.path,
     },
   }
 }

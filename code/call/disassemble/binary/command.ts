@@ -1,7 +1,8 @@
 import { getCommand } from '~/code/tool/shared/command'
 import {
   DisassembleBinaryWithObjdump,
-} from '~/code/form/action/convert/disassemble/binary/shared'export async function buildCommandToDisassembleBinaryWithObjdump(
+} from '~/code/form/action/convert/disassemble/binary/shared'
+export async function buildCommandToDisassembleBinaryWithObjdump(
   input: DisassembleBinaryWithObjdump,
 ) {
   const cmd = getCommand(`objdump`)

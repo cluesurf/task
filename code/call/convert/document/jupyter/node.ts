@@ -72,11 +72,11 @@ export async function convertDocumentWithJupyterNodeRemote(
     )
 
   const request = buildRequestToConvert(clientInput)
-  await resolveWorkFileNode(request, input.output.file.path)
+  await resolveWorkFileNode(request, input.output.file!.path)
 
   return ConvertDocumentWithJupyterNodeOutputParser.parse({
     file: {
-      path: input.output.file.path,
+      path: input.output.file!.path,
     },
   })
 }
@@ -95,7 +95,7 @@ export async function convertDocumentWithJupyterNodeLocal(
 
   return ConvertDocumentWithJupyterNodeOutputParser.parse({
     file: {
-      path: localInput.output.file.path,
+      path: localInput.output.file!.path,
     },
   })
 }

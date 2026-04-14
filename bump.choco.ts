@@ -1,5 +1,5 @@
 import fs from 'fs'
-import pkg from 'package.json'
+import pkg from './package.json'
 
 const TOOL = `tool/chocolateyinstall.ps1`
 const SPEC = `load/choco/task.nuspec`

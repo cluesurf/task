@@ -106,7 +106,7 @@ export const SymbolSetParser = z.enum(
 ) as z.ZodType<SymbolSet>
 
 export const SymbolSetDataParser = z.object({
-  list: z.string().gte(1).lte(256),
+  list: z.string().min(1).max(256),
 })
 
 export type SymbolSetDataRecord = z.infer<typeof SymbolSetDataParser>

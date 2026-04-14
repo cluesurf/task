@@ -13,8 +13,8 @@ void make()
 async function make(): Promise<void> {
   const options: Load = {
     name: NAME,
-    mesh: MESH,
-    link: MESH,
+    mesh: MESH as unknown as Load['mesh'],
+    link: MESH as unknown as Load['link'],
     testLink: '~/code/form/code',
     codeLink: './code',
   }
@@ -46,12 +46,12 @@ async function make(): Promise<void> {
   await writeTaskInterface('browser')
 }
 
-// Legacy aggregator barrels at `code/form/{shared,node,browser}/`.
-// Older call-site code imports types/parsers from these flat paths;
-// the real definitions live at `code/form/{object,action}/...`. This
-// emits re-export shims so existing imports keep working while the
-// codebase migrates to per-action imports. Safe to delete once all
-// callers point directly at the per-action modules.
+// Legacy barrels at `code/form/{shared,node,browser}/` were
+// removed — they eagerly pulled in every parser + type, defeating
+// the per-action lazy-load design. The codemod
+// `make/rewrite-imports.ts` migrated call sites to per-module
+// imports. Kept here as a dormant helper only in case a bulk
+// re-audit is ever needed; not invoked from `make()`.
 async function writeLegacyBarrels(): Promise<void> {
   const objectDir = path.join('.', 'code', 'form', 'object')
   const actionDir = path.join('.', 'code', 'form', 'action')

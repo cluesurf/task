@@ -31,7 +31,7 @@ export function buildCommandToConvertImageWithImageMagick(
     input.pathScope,
   )
   const op = resolvePathRelativeToScope(
-    input.output.file.path,
+    input.output.file!.path,
     input.pathScope,
   )
 
@@ -164,7 +164,7 @@ export async function buildCommandToConvertImageWithInkscape(
     input.pathScope,
   )
   const outputPath = resolvePathRelativeToScope(
-    input.output.file.path,
+    input.output.file!.path,
     input.pathScope,
   )
 
