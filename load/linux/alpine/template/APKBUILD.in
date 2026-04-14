@@ -11,5 +11,7 @@ options="!check"
 source=""
 
 package() {
-  : # metapackage — owns no files
+  # metapackage — owns no files. Just create the empty pkgdir so
+  # abuild's postcheck doesn't complain.
+  mkdir -p "$pkgdir"
 }

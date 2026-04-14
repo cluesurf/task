@@ -27,7 +27,7 @@ render_template "$here/template/PKGBUILD.in" "$stage/PKGBUILD" \
   MAINTAINER="$(meta_maintainer)" \
   DEPS="$arch_deps"
 
-( cd "$stage" && makepkg -f --noextract )
+( cd "$stage" && makepkg -f --noextract --nodeps )
 
 find "$stage" -maxdepth 1 -name '*.pkg.tar.zst' -exec cp {} "$here/dist/" \;
 

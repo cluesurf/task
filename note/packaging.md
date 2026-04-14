@@ -151,3 +151,45 @@ deck/task/
 
 Each subdir has its own `readme.md` with build + publish
 instructions.
+
+## What the GitHub Pages site has to be
+
+**Just static file hosting. No UI required.**
+
+apt / dnf / apk are HTTP clients. They fetch raw files at fixed
+paths and parse them — they never render HTML. The Pages site only
+needs to serve the file tree the publishers wrote:
+
+```
+https://cluesurf.github.io/host/task/
+  apt/
+    pool/main/cluesurf-task_<ver>_all.deb
+    dists/stable/Release
+    dists/stable/InRelease
+    dists/stable/Release.gpg
+    dists/stable/main/binary-all/Packages
+    dists/stable/main/binary-all/Packages.gz
+    pubkey.asc
+  rpm/
+    cluesurf-task-<ver>-1.noarch.rpm
+    repodata/repomd.xml
+    repodata/repomd.xml.asc
+    repodata/<sha>-primary.xml.gz
+    pubkey.asc
+  apk/
+    cluesurf-task-<ver>-r0.apk
+    APKINDEX.tar.gz
+    cluesurf.rsa.pub
+```
+
+Pages serves all of that with the right `Content-Type` and CORS
+defaults already. **You don't need Jekyll, a theme, `_config.yml`,
+or any rendering pipeline.** The deploy workflow in
+[`accounts.md` §2](./accounts.md) just uploads `site/` as the
+artifact.
+
+A bare `site/index.md` (or `index.html`) is a nice-to-have for
+humans who paste the root URL into a browser — a one-paragraph
+"this is the cluesurf-task package mirror, install instructions
+here: …" landing page. **Optional.** Without it the root URL
+returns a 404, which is fine for package managers.

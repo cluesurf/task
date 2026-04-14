@@ -6,60 +6,95 @@
 #   ./docker-build.sh deb            # one format
 #   ./docker-build.sh deb rpm arch   # many
 #   ./docker-build.sh                # everything
+#
+# Written for plain bash (macOS ships 3.2 — no associative arrays).
 
 set -euo pipefail
 
 here="$(cd "$(dirname "$0")" && pwd)"
-root="$(cd "$here/.." && pwd)"
+# Mount the task package root (where package.json lives), so make.sh
+# can resolve the version via load/shared/meta.sh.
+root="$(cd "$here/../.." && pwd)"
 
-declare -A image=(
-  [deb]="debian:stable"
-  [rpm]="fedora:latest"
-  [arch]="archlinux:latest"
-  [alpine]="alpine:latest"
-  [gentoo]="debian:stable"       # just renders; any node host works
-)
+# Per-format config. Anything missing here is "unknown format".
+fmt_image() {
+  case "$1" in
+    deb)    echo "debian:stable" ;;
+    rpm)    echo "fedora:latest" ;;
+    arch)   echo "archlinux:latest" ;;
+    alpine) echo "alpine:latest" ;;
+    gentoo) echo "debian:stable" ;;     # just renders; any node host works
+    *) return 1 ;;
+  esac
+}
 
-declare -A bootstrap=(
-  [deb]="apt-get update && apt-get install -y --no-install-recommends nodejs dpkg-dev"
-  [rpm]="dnf install -y nodejs rpm-build"
-  [arch]="pacman -Sy --noconfirm nodejs base-devel sudo && useradd -m build && echo 'build ALL=(ALL) NOPASSWD: ALL' >/etc/sudoers.d/build"
-  [alpine]="apk add --no-cache nodejs bash alpine-sdk sudo && adduser -D build && addgroup build abuild && echo 'build ALL=(ALL) NOPASSWD: ALL' >/etc/sudoers.d/build"
-  [gentoo]="apt-get update && apt-get install -y --no-install-recommends nodejs"
-)
+fmt_bootstrap() {
+  case "$1" in
+    deb)
+      echo "apt-get update && apt-get install -y --no-install-recommends nodejs dpkg-dev" ;;
+    rpm)
+      echo "dnf install -y nodejs rpm-build" ;;
+    arch)
+      # pacman 7's landlock sandbox doesn't work under Docker; disable it.
+      echo "echo 'DisableSandbox' >> /etc/pacman.conf && pacman -Sy --noconfirm --disable-sandbox nodejs base-devel sudo && useradd -m build && echo 'build ALL=(ALL) NOPASSWD: ALL' >/etc/sudoers.d/build" ;;
+    alpine)
+      # abuild needs a packager key — generate a throwaway one for
+      # the build. Real signing happens at repo-index time via the
+      # ABUILD_KEY the publisher already controls.
+      echo "apk add --no-cache nodejs bash alpine-sdk sudo && adduser -D build && addgroup build abuild && echo 'build ALL=(ALL) NOPASSWD: ALL' >/etc/sudoers.d/build && su - build -c 'abuild-keygen -a -i -n'" ;;
+    gentoo)
+      echo "apt-get update && apt-get install -y --no-install-recommends nodejs" ;;
+    *) return 1 ;;
+  esac
+}
 
-declare -A run_as=(
-  [arch]="build"
-  [alpine]="build"
-)
+fmt_run_as() {
+  case "$1" in
+    arch|alpine) echo "build" ;;
+    *)           echo "root" ;;
+  esac
+}
+
+# Per-format docker-run flags. arch's pacman uses seccomp syscalls
+# Docker Desktop's default profile blocks; loosen for that case.
+fmt_extra_flags() {
+  case "$1" in
+    arch) echo "--security-opt seccomp=unconfined" ;;
+    *)    echo "" ;;
+  esac
+}
 
 run_one() {
-  local fmt="$1"
-  local img="${image[$fmt]}"
-  local boot="${bootstrap[$fmt]}"
-  local user="${run_as[$fmt]:-root}"
-  local script
+  fmt="$1"
+  img=$(fmt_image "$fmt") || { echo "unknown format: $fmt" >&2; exit 1; }
+  boot=$(fmt_bootstrap "$fmt")
+  user=$(fmt_run_as "$fmt")
 
-  # arch/alpine's makepkg/abuild refuse to run as root, so su to `build`.
   if [ "$user" = "root" ]; then
     script="set -e; cd /src/load/linux/$fmt && ./make.sh"
   else
-    script="set -e; chown -R $user:$user /src && su - $user -c 'cd /src/load/linux/$fmt && ./make.sh'"
+    # arch/alpine's makepkg/abuild refuse to run as root, so su to `build`.
+    # Only chown the build's own dist dir — recursively chowning /src
+    # blows up on macOS osxfs mounts (e.g. .git permissions).
+    script="set -e; mkdir -p /src/load/linux/$fmt/dist && chown -R $user:$user /src/load/linux/$fmt/dist && su - $user -c 'cd /src/load/linux/$fmt && ./make.sh'"
   fi
 
+  extra=$(fmt_extra_flags "$fmt")
+
   echo "===> building $fmt inside $img"
-  docker run --rm --platform linux/amd64 -v "$root":/src -w /src "$img" \
-    bash -c "$boot; $script"
+  # `sh -c` works on every distro (alpine doesn't ship bash by default).
+  docker run --rm --platform linux/amd64 $extra \
+    -v "$root":/src -w /src "$img" \
+    sh -c "$boot; $script"
 }
 
 if [ "$#" -gt 0 ]; then
-  keys=("$@")
+  keys="$*"
 else
-  keys=(deb rpm arch alpine gentoo)
+  keys="deb rpm arch alpine gentoo"
 fi
 
-for key in "${keys[@]}"; do
-  [[ -v image[$key] ]] || { echo "unknown format: $key" >&2; exit 1; }
+for key in $keys; do
   run_one "$key"
 done
 

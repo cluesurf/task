@@ -24,7 +24,7 @@ render_template "$here/template/APKBUILD.in" "$stage/APKBUILD" \
   MAINTAINER="$(meta_maintainer)" \
   DEPS="$(deps_for alpine " ")"
 
-( cd "$stage" && abuild -r -P "$here/dist" )
+( cd "$stage" && abuild -F -P "$here/dist" rootpkg )
 
 echo "built apk(s) in $here/dist/"
 find "$here/dist" -name '*.apk'

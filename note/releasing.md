@@ -12,8 +12,6 @@ A release ships **two layers**:
 
 Both layers track the same version in `package.json`.
 
----
-
 ## One-time setup
 
 Done once per maintainer machine. Account creation, key generation,
@@ -47,8 +45,6 @@ Other channels (AUR, AUR overlay, Scoop bucket, winget-pkgs fork,
 Chocolatey feed, npm, ghcr.io) stay on their respective external
 hosts.
 
----
-
 ## Per-release flow
 
 ### 1. Bump
@@ -74,7 +70,7 @@ Equivalent to:
 ```sh
 pnpm test            # node + browser + cli
 pnpm make            # tsc + tsc-alias
-pnpm docker:build       # docker build (linux/amd64)
+pnpm docker:build    # docker build (linux/amd64)
 pnpm make:pkg        # every native package the host can build
 pnpm make:pkg:linux  # the Linux formats your host can't build natively
 ```
@@ -137,16 +133,12 @@ For Arch / openSUSE / Gentoo / Scoop / WinGet / Choco, no equivalent
 one-liner — install the package by hand on a target machine when
 debugging.
 
----
-
 ## All in one
 
 ```sh
 pnpm release          # build + host (after pnpm version + pnpm sync:vers)
 pnpm release:hotfix   # patch bump + sync + release
 ```
-
----
 
 ## One ecosystem at a time
 
@@ -167,8 +159,6 @@ pnpm host:pkg:nix
 
 Each runs the matching `load/<...>/publish.sh` and fails fast if any
 required env var (see [`accounts.md`](./accounts.md)) is missing.
-
----
 
 ## Script reference
 
@@ -191,8 +181,6 @@ required env var (see [`accounts.md`](./accounts.md)) is missing.
 | `pnpm release`           | release:build + release:host                              |
 | `pnpm release:hotfix`    | `pnpm version patch && pnpm sync:vers && pnpm release`    |
 
----
-
 ## What not to forget
 
 - Run `pnpm host` (npm) **before** `pnpm host:gh`. The npm version
@@ -205,8 +193,6 @@ required env var (see [`accounts.md`](./accounts.md)) is missing.
   The Nix install URL and winget `InstallerUrl` both depend on it.
 - Don't ship if `pnpm test` is red. Don't ship from a dirty working
   tree.
-
----
 
 ## CI
 

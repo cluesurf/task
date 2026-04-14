@@ -1,13 +1,23 @@
-FROM --platform=linux/amd64 amd64/ubuntu:noble
+# hadolint ignore=DL3026,DL3029
+# The --platform pin is intentional: LibreOffice, Swift, and a
+# handful of other tooling only ship prebuilt amd64 binaries here.
+# Native arm64 builds on Apple Silicon go through emulation.
+ARG TARGETPLATFORM=linux/amd64
+FROM --platform=$TARGETPLATFORM amd64/ubuntu:noble
+
+# `noble` = Ubuntu 24.04 LTS, the current LTS line. Next LTS
+# (26.04) releases April 2026 — bump to `ubuntu:26.04` once it's
+# tagged and our native-tool coverage is verified there.
 
 # WORKDIR /root
 
-ENV TERM linux
-ENV DEBIAN_FRONTEND noninteractive
+ENV TERM=linux
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Declare constants
-ENV NVM_VERSION v0.39.7
-ENV NODE_VERSION 20.10
+# Declare constants — we install Node via NodeSource rather than
+# NVM, so NVM_VERSION is kept only for legacy callers and docs.
+ENV NVM_VERSION=v0.40.4
+ENV NODE_VERSION=24.14.1
 
 # Replace shell with bash so we can source files
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
@@ -32,7 +42,8 @@ RUN apt-get -y install woff2
 RUN apt-get -y install libharfbuzz-bin
 RUN apt-get -y install pandoc
 RUN apt-get -y install texlive texlive-xetex texlive-luatex texlive-extra-utils
-RUN apt-get -y install make4ht
+# `make4ht` ships inside texlive-extra-utils on Ubuntu noble — no
+# separate apt package. The binary lands at /usr/bin/make4ht.
 RUN apt-get -y install ffmpeg
 RUN apt-get -y install id3v2
 RUN apt-get -y install ripgrep
@@ -72,10 +83,13 @@ RUN apt-get update -y -q
 RUN apt-get upgrade -y -q
 RUN apt-get -y install curl
 
-# Install Node.js
+# Install Node.js via NodeSource. Pinned to the v24 LTS line
+# (Krypton); `setup_24.x` tracks the latest v24 patch so rebuilds
+# pick up security fixes automatically. NVM install line kept
+# commented in case we need a runtime-managed install later.
 # https://stackoverflow.com/questions/25899912/how-to-install-nvm-in-docker
-# RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-RUN curl -sL https://deb.nodesource.com/setup_20.x | bash
+# RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+RUN curl -sL https://deb.nodesource.com/setup_24.x | bash
 RUN apt-get -y install nodejs
 RUN npm install -g pnpm
 
@@ -99,18 +113,16 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && ap
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && apt-get -q -y install zlib1g-dev
 RUN rm -r /var/lib/apt/lists/*
 
-# Install swift
+# Install swift — the signing key is a *public* GPG fingerprint
+# published by Apple, not a secret. We keep it as an ARG (build-time
+# only) so it doesn't ship in the final image env, which also
+# silences BuildKit's SecretsUsedInArgOrEnv warning. RUN below still
+# expands these because RUN inherits ARG values.
 ARG SWIFT_SIGNING_KEY=A62AE125BBBFBB96A6E042EC925CC1CCED3D1561
 ARG SWIFT_PLATFORM=ubuntu22.04
 ARG SWIFT_BRANCH=swift-5.9.2-release
 ARG SWIFT_VERSION=swift-5.9.2-RELEASE
 ARG SWIFT_WEBROOT=https://download.swift.org
-
-ENV SWIFT_SIGNING_KEY=$SWIFT_SIGNING_KEY \
-    SWIFT_PLATFORM=$SWIFT_PLATFORM \
-    SWIFT_BRANCH=$SWIFT_BRANCH \
-    SWIFT_VERSION=$SWIFT_VERSION \
-    SWIFT_WEBROOT=$SWIFT_WEBROOT
 
 RUN set -e; \
     ARCH_NAME="$(dpkg --print-architecture)"; \
@@ -205,9 +217,9 @@ RUN tar -xvzf obvconv.v2.50.tar.gz
 RUN cd objconv-2.50/src && ./build.sh && mv objconv /usr/local/bin
 
 # Label the container
-LABEL org.opencontainers.image.source https://github.com/cluesurf/task
-LABEL org.opencontainers.image.title "Task: Common Actions Interface"
-LABEL org.opencontainers.image.description "A wrapper around a lot of tools to make it easier to use them all."
+LABEL org.opencontainers.image.source="https://github.com/cluesurf/task"
+LABEL org.opencontainers.image.title="Task: A Function Registry"
+LABEL org.opencontainers.image.description="A wrapper around a lot of tools to make it easier to use them all."
 
 RUN /home/python/venv/bin/pip install antlr4-tools
 RUN ln -s /home/python/venv/bin/antlr4-parse /usr/bin/antlr4-parse
