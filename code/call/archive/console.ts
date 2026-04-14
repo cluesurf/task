@@ -11,6 +11,6 @@ export const archiveConsole: CommandModule = buildActionCommand({
   command: 'archive',
   describe: 'Create an archive from one or more inputs',
   mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'archive_command_input',
+  formName: 'archive',
   loadHandler: () => import('./node'),
 })

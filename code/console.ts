@@ -15,6 +15,10 @@
 
 import yargs from 'yargs'
 
+import {
+  setLoggingStyle,
+  resolveLoggingStyle,
+} from '~/code/tool/node/spinner'
 import { archiveConsole } from '~/code/call/archive/console'
 import { checkConsole } from '~/code/call/check/console'
 import { compileConsole } from '~/code/call/compile/console'
@@ -46,6 +50,20 @@ async function main() {
   await yargs(argv)
     .scriptName('task')
     .usage('$0 <action> [thing] [options]')
+    .option('format', {
+      alias: 'f',
+      describe:
+        'Output style. `pretty` (default) uses colors + ora spinner; ' +
+        '`text` strips ANSI; `json` / `json:pretty` emit one JSON ' +
+        'object per action on stdout.',
+      type: 'string',
+      choices: ['pretty', 'text', 'plain', 'json', 'json:pretty'],
+      default: 'pretty',
+      global: true,
+    })
+    .middleware(argv => {
+      setLoggingStyle(resolveLoggingStyle(argv.format))
+    })
     .command(archiveConsole)
     .command(checkConsole)
     .command(compileConsole)

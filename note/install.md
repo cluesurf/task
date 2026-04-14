@@ -10,27 +10,27 @@ up.
 FROM --platform=linux/amd64 ghcr.io/cluesurf/task:latest
 ```
 
-Image: [`ghcr.io/cluesurf/task`](https://ghcr.io/cluesurf/task).
+Docker image: [`ghcr.io/cluesurf/task`](https://ghcr.io/cluesurf/task).
 
-## macOS
+## MacOS
 
 ```sh
-brew install cluesurf/load/basetask
+brew install cluesurf/code/task
 ```
 
-Source: [cluesurf/homebrew-load](https://github.com/cluesurf/homebrew-load/blob/make/Casks/task.rb).
+Source: [cluesurf/homebrew-code](https://github.com/cluesurf/homebrew-code/blob/make/Casks/task.rb).
 
 `docx2pdf` additionally requires Microsoft Word installed.
 
 ## Windows
 
 A unified Chocolatey package was rejected by the community, so install
-each dep directly.
+each dep directly. Run the bundled script
+[`task/windows/install.sh`](../task/windows/install.sh) from an
+elevated shell (git-bash / msys / WSL with `choco` on PATH):
 
-```bat
-choco install libreoffice-fresh imagemagick fontforge ffmpeg miktex.install
-choco install inkscape gifsicle golang python3 rust ruby calibre unar
-choco install maven llvm julia pandoc exiftool dart-sdk php
+```sh
+./task/windows/install.sh
 ```
 
 Source for the partial choco package: [load/choco](https://github.com/cluesurf/task/tree/make/load/choco).
@@ -47,7 +47,7 @@ With the native deps present:
 
 ```sh
 pnpm add -g @cluesurf/task   # CLI everywhere
-pnpm add    @cluesurf/task   # library in one project
+pnpm add @cluesurf/task   # library in one project
 ```
 
 Inside a project, run the CLI via pnpm:

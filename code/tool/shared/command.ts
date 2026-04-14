@@ -51,6 +51,9 @@ export const COMMAND: Record<CommandName, Array<string> | undefined> = {
   ps2pdf: ['ps2pdf'],
   enscript: ['enscript'],
   duckdb: ['duckdb'],
+  atool: ['atool'],
+  unzip: ['unzip'],
+  unrar: ['unrar'],
 }
 
 export function getCommand(name: CommandName): Command {

@@ -45,6 +45,9 @@ export const command_name: List = {
     'enscript',
     'ps2pdf',
     'duckdb',
+    'atool',
+    'unzip',
+    'unrar',
   ],
 }
 

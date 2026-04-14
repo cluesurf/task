@@ -35,12 +35,12 @@ function call() {
 # cp test/file/code/example.hs test/hold/example.hs
 # cp test/file/code/example.cl test/hold/example.cl
 
-alias task="pnpm tsx code/cli"
+alias task="pnpm tsx code/console"
 
-# call "task convert -I txt -O pdf -i ../file/base/document/example.txt -o test/hold/example.txt.pdf"
-# call "task convert -I md -O pdf -i ../file/base/document/example.md -o test/hold/example.md.pdf --style-text-color ff0000"
+# call "task convert -I txt -O pdf -i ../seed-base/base/document/example.txt -o test/hold/example.txt.pdf"
+# call "task convert -I md -O pdf -i ../seed-base/base/document/example.md -o test/hold/example.md.pdf --style-text-color ff0000"
 # # convert and verify
-# call "task convert png jpg -i ../file/base/image/fire.png -o test/hold/fire.jpg"
+# call "task convert png jpg -i ../seed-base/base/image/fire.png -o test/hold/fire.jpg"
 # call "task verify jpg -i test/hold/fire.jpg"
 
 # call "task convert -I cr2 -O jpg -i test/file/image/trees.cr2 -o test/hold/trees.jpg"
@@ -48,7 +48,7 @@ alias task="pnpm tsx code/cli"
 
 # # task convert -I rar -i test/file/archive/archive.rar -O zip -o test/hold/archive.rar.zip
 
-# call "task convert -I ttf -O woff -i ../file/base/font/etch.ttf -o test/hold/etch.woff"
+# call "task convert -I ttf -O woff -i ../seed-base/base/font/etch.ttf -o test/hold/etch.woff"
 # call "task convert -I epub -O mobi -i test/file/document/test.epub -o test/hold/test.mobi"
 # task convert -I docx -O markdown -i test/file/document/sample.docx -o test/hold/sample.docx.markdown
 # task convert -I docx -O pdf -i test/file/document/sample.docx -b test/hold/pdf -n document
@@ -61,13 +61,13 @@ alias task="pnpm tsx code/cli"
 
 # format
 # task format rust -i test/hold/example.rs -o test/hold/example.rs
-# task format c -i ../file/base/code/example.c -o test/hold/example.c
+# task format c -i ../seed-base/base/code/example.c -o test/hold/example.c
 # task format julia -i test/file/code/example.jl -o test/hold/example.jl
-# task format python ../file/base/code/example.py -o test/hold/example.py
+# task format python ../seed-base/base/code/example.py -o test/hold/example.py
 # task format swift test/file/code/example.swift -o test/hold/example.swift
 # task format ruby test/file/code/example.rb -o test/hold/example.rb
-# task format kotlin ../file/base/code/example.kt -o test/hold/example.kt
-# task format assembly ../file/base/code/example.asm -o test/hold/example.asm
+# task format kotlin ../seed-base/base/code/example.kt -o test/hold/example.kt
+# task format assembly ../seed-base/base/code/example.asm -o test/hold/example.asm
 # task format cpp -i test/file/code/quicksort.cpp -o test/hold/quicksort.cpp
 # task format shell -i test/file/code/quicksort.sh -o test/hold/quicksort.sh
 # task format typescript -i test/file/code/quicksort.ts -o test/hold/quicksort.ts
@@ -92,11 +92,11 @@ alias task="pnpm tsx code/cli"
 # # verilog
 
 # # compile
-task compile c -O binary -i ../file/base/code/quicksort.c -o test/hold/quicksort
+task compile c -O binary -i ../seed-base/base/code/quicksort.c -o test/hold/quicksort
 # task compile cpp -O binary -i test/file/code/quicksort.cpp -o test/hold/quicksort
 # task compile java -O jar -i test/file/code/quicksort.java -o test/hold/quicksort.jar
-task compile rust -O binary -i ../file/base/code/quicksort/quicksort.rs -o test/hold/quicksort.rust.o
-task compile rust -O assembly -i ../file/base/code/quicksort/quicksort.rs -o test/hold/quicksort.rust.asm
+task compile rust -O binary -i ../seed-base/base/code/quicksort/quicksort.rs -o test/hold/quicksort.rust.o
+task compile rust -O assembly -i ../seed-base/base/code/quicksort/quicksort.rs -o test/hold/quicksort.rust.asm
 # task compile swift -O binary -i test/file/code/quicksort/quicksort.swift -o test/hold/quicksort.swift.o
 # task compile swift -O assembly -i test/file/code/quicksort/quicksort.swift -o test/hold/quicksort.swift.asm
 # task compile wast -O wasm -i test/file/code/quicksort.wast -o test/hold/quicksort.wasm

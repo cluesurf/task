@@ -12,7 +12,7 @@
 
 <h3 align='center'>@cluesurf/task</h3>
 <p align='center'>
-  A function registry for common actions: convert, compile, format, extract, archive, optimize, ...
+  A Function Registry
 </p>
 
 <br/>
@@ -81,12 +81,19 @@ await task.wait(work)
 const output = await task.resolve(work)
 ```
 
-CLI:
+CLI (installed globally):
 
 ```sh
 task convert image --input a.png --output a.jpg
 task format python --input hello.py
 task archive --format zip --input folder/ --output folder.zip
+```
+
+Or without installing, via `npx`:
+
+```sh
+npx @cluesurf/task convert image --input a.png --output a.jpg
+npx @cluesurf/task format python --input hello.py
 ```
 
 More examples: [note/examples.md](./note/examples.md).

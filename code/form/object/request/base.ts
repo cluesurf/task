@@ -42,6 +42,9 @@ export const COMMAND_KEY: ReadonlyArray<CommandKey> = [
   'enscript',
   'ps2pdf',
   'duckdb',
+  'atool',
+  'unzip',
+  'unrar',
 ]
 export const COMMAND_NAME: ReadonlyArray<CommandName> = [
   'ffmpeg',
@@ -85,4 +88,7 @@ export const COMMAND_NAME: ReadonlyArray<CommandName> = [
   'enscript',
   'ps2pdf',
   'duckdb',
+  'atool',
+  'unzip',
+  'unrar',
 ]

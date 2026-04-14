@@ -1,6 +1,7 @@
-import { ArchiveFormat } from '~/code/form/object/archive'
+import { ArchiveFormat, ArchiveTool } from '~/code/form/object/archive'
 
 export type Archive = {
+  tool?: ArchiveTool
   input: {
     path: string
   }

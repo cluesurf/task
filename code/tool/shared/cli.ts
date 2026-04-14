@@ -125,9 +125,13 @@ export function applyFormOptions<Y extends { option: Function }>(
   y: Y,
   options: CliOption[],
 ): Y {
-  const addOption = (y as unknown as {
+  // Cast once; yargs's `option` must stay bound to the yargs
+  // instance — extracting the method into a variable drops `this`
+  // and yargs breaks with a cryptic `kTrackManuallySetKeys` error
+  // on the first call.
+  const withOption = y as unknown as {
     option: (name: string, config: unknown) => Y
-  }).option
+  }
 
   for (const opt of options) {
     const spec: Record<string, unknown> = {
@@ -137,7 +141,7 @@ export function applyFormOptions<Y extends { option: Function }>(
     if (opt.short) spec.alias = opt.short
     if (opt.list) spec.array = true
     if (opt.note) spec.describe = opt.note
-    addOption(opt.long, spec)
+    withOption.option(opt.long, spec)
   }
   return y
 }
@@ -202,7 +206,15 @@ export function buildActionCommand(input: {
         argv as Record<string, unknown>,
         options,
       )
-      await fn(unpacked)
+
+      const verb = input.command.split(' ')[0] ?? input.command
+      const { runAction } = await import('~/code/tool/node/spinner')
+
+      await runAction({
+        action: verb,
+        input: unpacked,
+        run: () => fn(unpacked),
+      })
     },
   }
 }

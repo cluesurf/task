@@ -46,6 +46,9 @@ export type CommandKey =
   | 'enscript'
   | 'ps2pdf'
   | 'duckdb'
+  | 'atool'
+  | 'unzip'
+  | 'unrar'
 
 export type CommandName =
   | 'ffmpeg'
@@ -89,6 +92,9 @@ export type CommandName =
   | 'enscript'
   | 'ps2pdf'
   | 'duckdb'
+  | 'atool'
+  | 'unzip'
+  | 'unrar'
 export type CommandSequence = {
   call: Array<Command>
 }

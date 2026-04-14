@@ -49,6 +49,13 @@ RUN apt-get -y install rubygems-integration
 RUN apt-get -y install calibre
 RUN apt-get -y install wabt
 RUN apt-get -y install unar
+RUN apt-get -y install atool
+RUN apt-get -y install p7zip-full
+RUN apt-get -y install zip
+RUN apt-get -y install unzip
+RUN apt-get -y install zstd
+RUN apt-get -y install xz-utils
+RUN apt-get -y install bzip2
 RUN apt-get -y install default-jdk-headless
 RUN apt-get -y install maven
 
