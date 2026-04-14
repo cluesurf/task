@@ -28,11 +28,21 @@ Every command is verb-first: `task <verb> [thing] [path-or-args]`.
 task add ssh prod --host 1.2.3.4 --user ubuntu --key ~/.ssh/prod
 ```
 
+## Aggregate
+
+```sh
+task aggregate log app.log --key status         # tally by status
+task aggregate log app.log --key level --top 10
+```
+
 ## Archive
 
 ```sh
+task archive ./src -o dist/src.tar.gz           # two-positional shorthand
 task archive --tool tar -i ./src -O tar.gz -o dist/src.tar.gz
 ```
+
+Absolute / nested input paths are stored flat: `task archive /Users/x/Desktop/foo -o foo.tar.gz` produces `foo/...` inside the archive, not the full path tree.
 
 ## Check
 
@@ -43,6 +53,7 @@ task check report.pdf
 ## Combine
 
 ```sh
+task combine a.pdf b.pdf -o merged.pdf          # two-positional shorthand
 task combine -i a.pdf -i b.pdf -o merged.pdf
 ```
 
@@ -86,16 +97,32 @@ task convert time     --input 2026-04-14T12:00:00Z --output-format unix
 task convert unit     --value 100 --from kg --to lb
 ```
 
+## Compare
+
+```sh
+task compare a.json b.json                       # semantic JSON diff
+task compare a.yaml b.yaml -f yaml
+task compare old.txt new.txt -f text             # LCS line diff
+```
+
 ## Copy
 
 ```sh
-task copy ssh-key prod    # → clipboard (pbcopy / clip / wl-copy / xclip)
+task copy ssh-key     prod                      # → clipboard
+task copy environment API_KEY                   # env var → clipboard
+task copy environment API_KEY --file .env.prod
 ```
 
 ## Crop
 
 ```sh
 task crop paper.pdf -o paper.trimmed.pdf --margin 20
+```
+
+## Detect
+
+```sh
+task detect bidi source.ts                       # Trojan Source scan
 ```
 
 ## Disassemble
@@ -124,13 +151,15 @@ task dump etch.ttx -o etch.ttf                   # TTX → font
 task edit ssh        # opens ~/.ssh/config in $EDITOR / vi
 ```
 
-## Extract
+## Unpack
+
+Replaces `extract` as the standard verb for pulling content out of a container.
 
 ```sh
-task extract src.tar.gz -o src/
-task extract doc.pdf    -o pages.pdf --pages 1-3
-task extract etch.ttf   -O ttx
-task extract etch.ttf   -O fea -o etch.features.ttx
+task unpack src.tar.gz -o src/
+task unpack doc.pdf    -o pages.pdf --pages 1-3
+task unpack etch.ttf   -O ttx
+task unpack etch.ttf   -O fea -o etch.features.ttx
 ```
 
 ## Flip
@@ -155,7 +184,7 @@ task format Main.swift
 ```sh
 task generate hash   -i file.bin --algorithm sha256
 task generate qrcode -t "https://example.com" -o qr.png
-task generate string --length 32 --kind base32
+task generate string --length 32 --format base32
 ```
 
 ## Get
@@ -180,8 +209,15 @@ task halt port 3000
 ## Highlight
 
 ```sh
-task highlight paper.pdf -o paper.marked.pdf -t "important"
-task highlight -i paper.pdf -o paper.marked.pdf -t "important"
+# basic PDF highlight stamp
+task highlight -i paper.pdf -o paper.marked.pdf --text "important"
+
+# or
+task highlight paper.pdf -o paper.marked.pdf --text "important"
+
+# log level highlighter
+task highlight log app.log --level error
+task highlight log app.log --text "5\\d\\d"
 ```
 
 ## Inspect
@@ -197,6 +233,7 @@ task inspect notes.txt            # shows type / mime / encoding / eol
 task inspect color    -i image.png
 task inspect file     -i clip.mp4 -f json | jq .groups
 task inspect metadata -i photo.jpg
+task inspect unicode  text.txt                    # codepoint table
 
 # processes / network / system
 task inspect process 1234
@@ -205,6 +242,11 @@ task inspect network                              # summary
 task inspect network example.com -s dns:A,MX,TXT
 task inspect system
 task inspect system -s memory,disk
+
+# web / wire
+task inspect http https://example.com             # status + headers
+task inspect tls  example.com                     # cert chain
+task inspect parquet data.parquet                 # schema + column stats
 ```
 
 ## List
@@ -212,12 +254,15 @@ task inspect system -s memory,disk
 ```sh
 task list process                        # all processes
 task list process --port 3000            # who owns that port
-task list process --text node            # substring match
+task list process --name chrome          # glob / substring on name
+task list process --text node            # ranked fuzzy search
+task list process --filter "memory > 500mb AND name ~ node"
 task list process --user lance
 task list process --top memory
-task list process --sort cpu --direction descending
+task list process --sort cpu --direction descending    # or asc / desc
 task list process --group name           # aggregate by name
-task list process --layout tree          # full process tree
+task list process --show cpu:sum --show memory:sum     # column aggregates
+task list process --layout tree          # full process tree (subtree memory rolled up)
 task list process 1234 --layout tree     # subtree from PID
 task list process 1234 -s children
 
@@ -240,14 +285,6 @@ task make ssh-key prod --comment "lance@laptop"
 task make ssh-key prod --host 1.2.3.4 --user ubuntu  # key + config
 ```
 
-## Mark
-
-```sh
-task mark pdf -i paper.pdf -o paper.marked.pdf --highlight "important"
-# prefer the top-level form:
-task highlight paper.pdf -o paper.marked.pdf -t "important"
-```
-
 ## Measure
 
 ```sh
@@ -266,6 +303,7 @@ task modify doc.pdf -o doc.trimmed.pdf   --remove 2
 ```sh
 task normalize song.mp3 -o normalized.mp3                 # EBU R128 defaults
 task normalize song.mp3 -o podcast.mp3 --target -18
+task normalize unicode text.txt --form NFC                # NFC / NFD / NFKC / NFKD
 ```
 
 ## Open
@@ -292,6 +330,8 @@ task pad tone.wav  -o tone.padded.wav  --to 12.5
 
 ```sh
 task parse code -i snippet.ts -o snippet.ast.json
+task parse log  nginx.log -f json
+task parse log  app.log   -f yaml
 ```
 
 ## Ping
@@ -311,10 +351,11 @@ task push ssh-key work ubuntu@10.0.0.5
 ## Remove
 
 ```sh
-task remove metadata photo.jpg            # EXIF / XMP / ID3 strip
-task remove metadata song.mp3             # routes to ffmpeg for mp3/wav
-task remove audio    clip.mp4 -o clip.silent.mp4
-task remove ssh-key  prod
+task remove metadata  photo.jpg            # EXIF / XMP / ID3 strip
+task remove metadata  song.mp3             # routes to ffmpeg for mp3/wav
+task remove audio     clip.mp4 -o clip.silent.mp4
+task remove invisible text.txt             # zero-width / BOM / joiners
+task remove ssh-key   prod
 ```
 
 ## Render
@@ -362,6 +403,7 @@ task scan ssh github.com -t ed25519
 
 ```sh
 task search --query "TODO" --path src/
+task search logs/*.log --filter "error"
 ```
 
 ## Set

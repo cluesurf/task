@@ -1,3 +1,4 @@
+import path from 'node:path'
 import {
   buildCommandSequence,
   getCommand,
@@ -35,8 +36,14 @@ export function buildCommandToArchiveWithTar(input: ArchiveWithTar) {
       cmd.link.push(`--exclude=${pattern}`)
     }
   }
+  let entry = input.input.path
   if (input.changeDirectory) {
     cmd.link.push('-C', input.changeDirectory)
+  } else if (path.isAbsolute(entry) || entry.includes('/')) {
+    const parent = path.dirname(entry) || '.'
+    const base = path.basename(entry)
+    cmd.link.push('-C', parent)
+    entry = base
   }
 
   if (typeof input.compressionLevel === 'number') {
@@ -45,7 +52,7 @@ export function buildCommandToArchiveWithTar(input: ArchiveWithTar) {
     // to the caller via a future `compressorFlags` field.
   }
 
-  cmd.link.push(input.input.path)
+  cmd.link.push(entry)
 
   return buildCommandSequence(cmd)
 }
