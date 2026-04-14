@@ -107,7 +107,7 @@ import type {
   SanitizeHtmlNodeOutput,
 } from '~/code/form/action/sanitize/code/node'
 
-export interface Task {
+export interface TaskSurface {
   compile(input: CompileCNodeInput): Promise<CompileCNodeOutput>
   compile(input: CompileCppNodeInput): Promise<CompileCppNodeOutput>
   compile(input: CompileRustNodeInput): Promise<CompileRustNodeOutput>

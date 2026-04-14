@@ -123,7 +123,7 @@ async function writeTaskInterface(runtime: Runtime): Promise<void> {
     header,
     importLines.join('\n'),
     '',
-    `export interface Task {`,
+    `export interface TaskSurface {`,
     methodLines.join('\n').trimEnd(),
     `}`,
     '',

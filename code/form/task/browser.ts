@@ -103,7 +103,7 @@ import type {
   SanitizeHtmlBrowserOutput,
 } from '~/code/form/action/sanitize/code/browser'
 
-export interface Task {
+export interface TaskSurface {
   compile(input: CompileCBrowserInput): Promise<CompileCBrowserOutput>
   compile(input: CompileCppBrowserInput): Promise<CompileCppBrowserOutput>
   compile(input: CompileRustBrowserInput): Promise<CompileRustBrowserOutput>
