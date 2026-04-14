@@ -33,7 +33,7 @@ some immediately helpful resources:
 The `task` JavaScript/TypeScript library has these features:
 
 - CLI
-- Programmatic Browser API (for where we can do browser hacks)
+- Programmatic Browser API (for where we can do browser tasks)
 - Programmatic Node.js API (for everything)
 
 ## Installing the Library
@@ -82,7 +82,7 @@ choco install dart-sdk
 choco install php
 ```
 
-Not all hacks/subcommands are supported yet, see the
+Not all tasks/subcommands are supported yet, see the
 [Choco TODO](https://github.com/cluesurf/task#todo-choco).
 
 The source code for enabling this Choco package is at
@@ -105,7 +105,7 @@ above.
 
 ### Node Package Installation
 
-With the native dependencies installed, you can install hack globally to
+With the native dependencies installed, you can install task globally to
 enable the CLI:
 
 ```bash
@@ -115,7 +115,7 @@ pnpm install -g @cluesurf/task
 ```
 
 ```bash
-hack convert png -O jpg -i image.png -o image.jpg
+task convert png -O jpg -i image.png -o image.jpg
 ```
 
 You can also install it locally to get access to the commands in
@@ -130,58 +130,58 @@ pnpm install @cluesurf/task
 _Some of this is future code._
 
 ```ts
-import hack from '@cluesurf/task'
+import task from '@cluesurf/task'
 
 test()
 
 async function test() {
   // no remote server, just the bare basics.
-  const result = await hack.convert({
+  const result = await task.convert({
     input: { format: 'png', file: { path: 'image.png' } },
     output: { format: 'jpg', file: { path: 'image.jpg' } },
   })
-  await hack.open({
+  await task.open({
     format: 'window',
     input: result.output,
   })
 
   // using the remote server.
-  hack.code('api-key')
+  task.code('api-key')
 
-  const work = await hack.convert({
+  const work = await task.convert({
     surf: true,
     work: true,
     input: { format: 'png', file: { path: 'image.png' } },
     output: { format: 'jpg', file: { path: 'image.jpg' } },
   })
 
-  await hack.wait(work)
+  await task.wait(work)
 
-  const output = await hack.resolve(work)
+  const output = await task.resolve(work)
 
-  const explainer = await hack.convert({
+  const explainer = await task.convert({
     explain: true,
     input: { format: 'png', file: { path: 'image.png' } },
     output: { format: 'jpg', file: { path: 'image.jpg' } },
   })
 
-  await hack.format({
+  await task.format({
     input: { format: 'c', file: { path: 'hello.c' } },
   })
 
-  await hack.upload({
+  await task.upload({
     location: { service: 's3', bucket: 'my-bucket' },
     input: { file: { path: 'hello.jpg' } },
     output: { file: { path: 'foo/image.jpg' } },
   })
 
-  await hack.download({
+  await task.download({
     location: { service: 's3', bucket: 'my-bucket' },
     reference: { file: { path: 'hello.jpg' } },
     output: { file: { path: 'foo/image.jpg' } },
   })
 
-  await hack.archive({
+  await task.archive({
     input: { path: 'hello.jpg' },
     output: { format: 'zip', file: { path: 'foo/image.jpg' } },
   })
@@ -198,14 +198,14 @@ json, json:pretty, plain, color
 -E, --show (explain the command)
 -s, --syntax
 
-hack resize --width --height --left --right --top --bottom
-hack optimize gif --scale 0.5 --color-count 16 --lossy=80
+task resize --width --height --left --right --top --bottom
+task optimize gif --scale 0.5 --color-count 16 --lossy=80
 ```
 
 Having it installed locally, you can still use the CLI as well like:
 
 ```bash
-pnpm run hack convert -I png -O jpg -i image.png -o image.jpg
+pnpm run task convert -I png -O jpg -i image.png -o image.jpg
 ```
 
 ## Tests
@@ -326,8 +326,8 @@ export async function convertFontWithFontForgeBrowserRemote(
 export async function convertFontWithFontForgeBrowserLocal(
   input: ConvertFontWithFontForgeBrowserLocalInput,
 ) {
-  throw kink('hack_not_implemented', {
-    hack: 'convertFontWithFontForgeBrowserLocal',
+  throw kink('task_not_implemented', {
+    task: 'convertFontWithFontForgeBrowserLocal',
   })
 }
 ```
@@ -436,7 +436,7 @@ export async function convertFontWithFontForgeNodeLocal(input) {
 
 ### Task Organization
 
-Each hack in Node.js basically starts from one of the top simple action
+Each task in Node.js basically starts from one of the top simple action
 methods:
 
 - `compile`
@@ -445,10 +445,10 @@ methods:
 - etc.
 
 First it takes the `input` from the top-level call, and parses the input
-and passes the parsed input to the implementation hack like
+and passes the parsed input to the implementation task like
 `convertImageWithImageMagick`. Then that function checks for the `surf`
 argument, and if present, it branches to make a remote API call against
-`hack.surf`. This serializes all local file paths into readable streams
+`task.surf`. This serializes all local file paths into readable streams
 for upload, but keeps remote file paths unchanged. No further input
 parsing occurs after the first two top-level parsings.
 
@@ -505,7 +505,7 @@ under the hood it uses the parser with `convertInternal`. Then there are
 
 ### Adding a new Task
 
-To add a new hack, just place it in either of the shared/no/browser
+To add a new task, just place it in either of the shared/node/browser
 folders, and add a source type definition for the input. Run
 `pnpm tsx make` to generate the types. Then just write the code to
 implement the command. If the command invokes a CLI tool, you can create

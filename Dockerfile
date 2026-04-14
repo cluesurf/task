@@ -236,3 +236,13 @@ RUN apt-get update \
   && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
     --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
+
+# Install DuckDB CLI (for parquet <-> jsonl conversion)
+RUN curl -L -o /tmp/duckdb.zip https://github.com/duckdb/duckdb/releases/download/v1.1.3/duckdb_cli-linux-amd64.zip \
+  && unzip -q -o /tmp/duckdb.zip -d /usr/local/bin/ \
+  && chmod +x /usr/local/bin/duckdb \
+  && rm /tmp/duckdb.zip
+
+# Install HuggingFace `hf` CLI (for dataset/model repo download + upload)
+RUN /home/python/venv/bin/pip install huggingface_hub \
+  && ln -sf /home/python/venv/bin/hf /usr/local/bin/hf
