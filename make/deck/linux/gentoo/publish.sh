@@ -36,9 +36,12 @@ if [ -z "$version" ]; then
 fi
 
 (
-  cd "$overlay" && git add "$category/cluesurf-task" \
-  && git commit -m "cluesurf-task $version" \
-  && git push
+  cd "$overlay" && git add "$category/cluesurf-task"
+  if git diff --cached --quiet; then
+    echo "publish gentoo: no changes for $version, skipping commit"
+  else
+    git commit -m "cluesurf-task $version"
+    git push
+    echo "pushed $version to overlay at $overlay"
+  fi
 )
-
-echo "pushed $version to overlay at $overlay"

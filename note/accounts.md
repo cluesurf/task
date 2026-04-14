@@ -328,34 +328,89 @@ masters = gentoo
 
 Then `emerge --sync cluesurf && emerge cluesurf-task`.
 
-## 7. Scoop bucket repo (Windows)
+## 7. Scoop bucket — nested in `cluesurf/deck`
 
-Same idea: a git repo of JSON manifests under `bucket/`.
+Same nesting pattern as apt / rpm / apk / gentoo. A scoop
+"bucket" is just a directory of manifest JSONs served over HTTPS;
+Pages hosts them at `https://deck.clue.surf/task/scoop/<name>.json`.
 
-```sh
-gh repo create cluesurf/scoop-bucket --public
-git clone git@github.com:cluesurf/scoop-bucket ~/cluesurf-scoop
-cd ~/cluesurf-scoop
-mkdir bucket
-git add . && git commit --allow-empty -m "init bucket" && git push
+Layout inside `cluesurf/deck`:
 
-export SCOOP_BUCKET_DIR=~/cluesurf-scoop
+```
+docs/task/scoop/
+  cluesurf-task.json   ← scoop manifest
 ```
 
-No signing — scoop trusts the bucket by URL.
-
-## 8. winget-pkgs fork (Windows)
+Publish config:
 
 ```sh
-gh repo fork microsoft/winget-pkgs --clone
-cd winget-pkgs
-git remote add upstream https://github.com/microsoft/winget-pkgs
+# deck/task/.env
+SCOOP_BUCKET_DIR=/Users/you/base/crew/cluesurf/deck/docs/task/scoop
+```
 
-export WINGET_PKGS_DIR=$PWD
+`pnpm host:pkg:scoop` renders the manifest, copies it into that
+path, and commits along with the rest of the Pages publish cycle.
+No init script needed — a scoop bucket doesn't require any bootstrap
+metadata (unlike a gentoo overlay).
+
+### User install
+
+Because the bucket is nested inside a larger repo, `scoop bucket
+add cluesurf <url>` doesn't work (it assumes `bucket/` at repo
+root). Users install via the manifest URL directly — scoop
+supports this natively and will auto-update on `scoop update`:
+
+```powershell
+scoop install https://deck.clue.surf/task/scoop/cluesurf-task.json
+```
+
+No signing — scoop trusts the manifest by URL + hash.
+
+## 8. winget-pkgs fork — under `cluesurf` org
+
+Fork into the org with a distinct name so it's clearly a
+vendor-tracked fork rather than a fresh project. Skip `--clone`
+on the fork command and do a shallow clone manually — the full
+winget-pkgs history is several GB and you don't need it just to
+open a PR.
+
+```sh
+# 1. fork on github, no local clone yet
+gh repo fork microsoft/winget-pkgs \
+  --org cluesurf \
+  --fork-name fork-winget-pkgs
+
+# 2. shallow clone — ~50 MB instead of ~6 GB
+gh repo clone cluesurf/fork-winget-pkgs fork-winget-pkgs -- \
+  --depth 1 --filter=blob:none --no-tags --single-branch
+
+cd fork-winget-pkgs
+git remote add upstream https://github.com/microsoft/winget-pkgs
+```
+
+What each flag does:
+
+| flag | effect |
+| --- | --- |
+| `--depth 1` | only the tip commit, no history |
+| `--filter=blob:none` | skip file contents; git lazy-fetches them on demand |
+| `--no-tags` | winget-pkgs has hundreds of release tags you don't need |
+| `--single-branch` | only the default branch, no extra remotes |
+
+Then point `.env` at the clone:
+
+```sh
+# deck/task/.env
+WINGET_PKGS_DIR=/Users/you/base/crew/cluesurf/fork-winget-pkgs
 ```
 
 `gh` is what `publish.sh` uses to open the PR after pushing the
-branch. Make sure `gh auth login` has been run.
+branch. Make sure `gh auth login` has run and the authenticated
+account has push rights on `cluesurf/fork-winget-pkgs`.
+
+If you ever need the full history (`git log` on old commits,
+bisect, etc.), run `git fetch --unshallow && git fetch --refetch`
+— converts the shallow + partial clone into a full one.
 
 ## 9. Chocolatey API key (Windows)
 

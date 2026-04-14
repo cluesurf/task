@@ -56,6 +56,26 @@ pulls in every native CLI task uses (ffmpeg, imagemagick, pandoc,
 libreoffice, etc.). Swift is not in apt — install from swift.org when
 `task compile swift` is needed.
 
+### Gentoo
+
+Add the overlay, then emerge:
+
+```ini
+# /etc/portage/repos.conf/cluesurf.conf
+[cluesurf]
+location = /var/db/repos/cluesurf
+sync-type = git
+sync-uri = https://github.com/cluesurf/deck.git
+masters = gentoo
+```
+
+Then:
+
+```sh
+emerge --sync cluesurf
+emerge cluesurf-task
+```
+
 ### Other distros
 
 No prebuilt package. See the repo `Dockerfile` for the canonical list

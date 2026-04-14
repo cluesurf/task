@@ -22,14 +22,28 @@
 ARG BASE_IMAGE=ghcr.io/cluesurf/task:latest
 FROM ${BASE_IMAGE}
 
-ARG TASK_VERSION=latest
+# TASK_SPEC selects the install target:
+#   "latest"                             → from npm (default)
+#   "0.5.4"                              → specific version from npm
+#   "/smoke/cluesurf-task.tgz"           → from a mounted tarball
+ARG TASK_SPEC=latest
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Pull the published Node CLI from npm. `BASE_IMAGE` already provides
-# every native binary the CLI shells out to. Using `npm install -g`
-# directly (not pnpm) — pnpm's global install needs PNPM_HOME+PATH
-# set up, which is ceremony we don't need for a smoke test.
-RUN npm install -g "@cluesurf/task@${TASK_VERSION}"
+# Stage any tarball that might be in the build context. The wildcard
+# silently no-ops when `test/smoke.tgz` isn't present, so this stays
+# compatible with plain `npm`-install builds.
+COPY test/smoke.tgz* /smoke/
+
+# Pull the published Node CLI with pnpm, matching the documented
+# install path. pnpm's global install needs PNPM_HOME on PATH.
+ENV PNPM_HOME=/root/.pnpm
+ENV PATH=$PNPM_HOME:$PATH
+RUN npm install -g pnpm \
+  && if [ -f /smoke/smoke.tgz ]; then \
+       pnpm add -g /smoke/smoke.tgz ; \
+     else \
+       pnpm add -g "@cluesurf/task@${TASK_SPEC}" ; \
+     fi
 
 # Stage tiny fixtures the smoke checks operate on.
 WORKDIR /smoke

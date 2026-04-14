@@ -14,7 +14,8 @@ set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
 # Mount the task package root (where package.json lives), so make.sh
 # can resolve the version via make/deck/shared/meta.sh.
-root="$(cd "$here/../.." && pwd)"
+# $here == make/deck/linux, so task root is 3 ups.
+root="$(cd "$here/../../.." && pwd)"
 
 # Per-format config. Anything missing here is "unknown format".
 fmt_image() {
