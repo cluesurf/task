@@ -38,7 +38,6 @@ import { disassembleConsole } from '~/code/call/disassemble/console'
 import { downloadConsole } from '~/code/call/download/console'
 import { dumpConsole } from '~/code/call/dump/console'
 import { editConsole } from '~/code/call/edit/console'
-import { extractConsole } from '~/code/call/extract/console'
 import { flipConsole } from '~/code/call/flip/console'
 import { formatConsole } from '~/code/call/format/console'
 import { generateConsole } from '~/code/call/generate/console'
@@ -74,6 +73,7 @@ import { subsetConsole } from '~/code/call/subset/console'
 import { testConsole } from '~/code/call/test/console'
 import { traceConsole } from '~/code/call/trace/console'
 import { trimConsole } from '~/code/call/trim/console'
+import { unpackConsole } from '~/code/call/unpack/console'
 import { updateConsole } from '~/code/call/update/console'
 import { validateConsole } from '~/code/call/validate/console'
 import { verifyConsole } from '~/code/call/verify/console'
@@ -264,7 +264,6 @@ async function main() {
     .command(downloadConsole)
     .command(dumpConsole)
     .command(editConsole)
-    .command(extractConsole)
     .command(flipConsole)
     .command(formatConsole)
     .command(generateConsole)
@@ -300,6 +299,7 @@ async function main() {
     .command(testConsole)
     .command(traceConsole)
     .command(trimConsole)
+    .command(unpackConsole)
     .command(updateConsole)
     .command(validateConsole)
     .command(verifyConsole)
@@ -381,8 +381,8 @@ const IMPLICIT_DEFAULTS: Record<string, ImplicitConfig> = {
   render:    { subs: ['font'] },
   update:    { subs: ['font', 'image', 'video'] },
   convert:   { subs: ['archive', 'audio', 'data', 'document', 'font', 'image', 'video'] },
-  extract:   { subs: ['archive', 'font', 'pages'] },
-  slice:     { subs: ['document'] },
+  unpack:    { subs: ['archive', 'font'] },
+  slice:     { subs: ['document', 'pdf'], default: 'document' },
   split:     { subs: ['audio', 'document'] },
   crop:      { subs: ['document'] },
   mark:      { subs: ['pdf'] },

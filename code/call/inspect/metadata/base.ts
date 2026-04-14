@@ -1,5 +1,24 @@
 import { Form } from '@cluesurf/form'
 
+/**
+ * `task inspect metadata <path>` — shells out to exiftool and
+ * renders every non-trivial tag. Covers EXIF / XMP / IPTC / ID3
+ * / PDF info / plenty more — whatever exiftool can read.
+ */
+export const inspect_metadata: Form = {
+  form: 'form',
+  save: '~/code/form/action/inspect/metadata',
+  link: {
+    input: {
+      link: {
+        file: {
+          link: { path: { like: 'string', name: { mark: 'i' } } },
+        },
+      },
+    },
+  },
+}
+
 export const inspect_metadata_from_image: Form = {
   form: 'form',
   save: '~/code/form/action/inspect/metadata/shared',

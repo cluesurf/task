@@ -29,24 +29,27 @@ One library, three surfaces:
 - **Node API**: every action, full filesystem / child-process access
 - **Browser API**: the subset that works in the browser, with remote fallback
 
-Every action takes a single object, returns a `Promise`. Dispatch on
-input/output format picks the right backend automatically (imagemagick
-for `png:jpg`, ffmpeg for video, pandoc for documents, ...).
+Every action takes a single object and returns a `Promise`.
+Dispatch on input / output format picks the right backend
+automatically — ImageMagick for `png:jpg`, ffmpeg for video,
+pandoc for documents, fontTools for fonts, qpdf for PDFs, and so
+on.
 
 ## Install
 
 ```sh
-# node module (for CLI + library)
+# node module (CLI + library)
 pnpm add -g @cluesurf/task
 
 # or inside a project
 pnpm add @cluesurf/task
 ```
 
-Task shells out to native tools (ffmpeg, imagemagick, pandoc, ...).
-Install those per your OS: see [note/install.md](./note/install.md).
+Task shells out to native tools (ffmpeg, ImageMagick, pandoc,
+fontTools, qpdf, HarfBuzz, ...). Install them per your OS — see
+[note/install.md](./note/install.md).
 
-Prebuilt container with everything:
+Prebuilt container with everything baked in:
 
 ```Dockerfile
 FROM --platform=linux/amd64 ghcr.io/cluesurf/task:latest
@@ -65,10 +68,10 @@ const out = await task.convert({
 })
 ```
 
-Remote execution against a domain:
+Remote execution against a hosted task server:
 
 ```ts
-const task = new Task({ host: 'https://example.com', code: '<bearer-token>' })
+const task = new Task({ host: 'https://example.com', code: '<bearer>' })
 
 const work = await task.convert({
   remote: true,
@@ -81,76 +84,103 @@ await task.wait(work)
 const output = await task.resolve(work)
 ```
 
-CLI (installed globally). Every verb accepts the same shorthand:
-`task <verb> <file>` picks the right subcommand from the file's
-extension, and for convert you can chain two positionals.
+## CLI
+
+Every verb understands the same three invocation shapes:
 
 ```sh
-# shorthand — extension routes to the subcommand
-task convert a.png a.jpg               # → convert image (2 positionals)
-task compress song.wav -o song.mp3     # → compress audio
+# shorthand — extension routes to the subcommand, 2-positional convert
+task convert a.png a.jpg
+task compress song.wav -o song.mp3
 task trim clip.mp4 -o cut.mp4 -s 10 -e 30
 task inspect report.pdf
 task highlight paper.pdf -o marked.pdf -t "important"
 
-# explicit form still works
-task convert image -i a.png -o a.jpg
+# explicit
+task convert image -I png -O jpg -i a.png -o a.jpg
 task format python -i hello.py
-task archive --format zip -i folder/ -o folder.zip
+task archive --tool zip -i folder/ -o folder.zip
 ```
 
-See [note/commands.md](./note/commands.md) for one example per verb
-and [note/examples.md](./note/examples.md) for full workflows.
+### What it can do
 
-## What it can do
+| Area         | What you can do                                                                             |
+| ------------ | ------------------------------------------------------------------------------------------- |
+| Media        | Convert, compress, trim, rotate, flip, resize, normalize, pad, split, combine media files  |
+| Fonts        | Inspect, subset, compress to WOFF2, shape text, render previews, round-trip TTX, apply FEA |
+| Documents    | Inspect, slice, crop, reorder pages, highlight, validate PDFs                               |
+| Text         | Inspect encoding / line endings, convert character encoding, normalize EOL                  |
+| Code         | Compile (C / C++ / Rust / Swift / WASM text), format, parse, sanitize, disassemble          |
+| Generate     | Hashes, QR codes, random strings                                                            |
+| Environment  | Read and write `.env` keys without editing the file by hand                                 |
+| SSH          | Manage `~/.ssh/config`, generate / push / copy keys, scan host keys, test and open sessions |
+| Processes    | List, search, filter, group, top, tree, live-watch, inspect, or kill running processes      |
+| Network      | Ping, HTTP latency, traceroute, DNS lookup, show IP, interfaces, connections, routes        |
+| System       | CPU, memory, disk, uptime snapshot                                                          |
 
-Cross-cutting verbs across media, fonts, documents, text, code,
-processes, SSH, and networks:
+### Global flags (every verb)
 
-- **Media** — `convert`, `compress`, `trim`, `rotate`, `flip`,
-  `resize`, `optimize`, `normalize`, `pad`, `split`, `combine`,
-  `remove audio`
-- **Fonts** — `inspect`, `subset`, `compress`, `shape`, `render`,
-  `dump` (TTX round-trip), `extract` (TTX / GSUB+GPOS), `update`
-  (compile .fea into GSUB/GPOS)
-- **Documents / PDFs** — `inspect`, `slice`, `crop`, `modify`
-  (pages), `mark` / `highlight`, `validate`
-- **Text** — `inspect` (type / mime / encoding / eol), `set
-  encoding`, `set eol`
-- **Code** — `compile` (c/cpp/rust/swift/wast), `format`,
-  `parse`, `sanitize`, `disassemble`
-- **Generate** — `generate hash`, `generate qrcode`,
-  `generate string`
-- **Env** — `set environment`, `get environment`
-- **SSH** — `add`, `set`, `get`, `list`, `rm`, `test`, `open`
-  entries in `~/.ssh/config`; `make / get / push / copy / remove
-  ssh-key`; `scan ssh <host>`; `edit ssh`
-- **Processes / ports** — `list process`, `list port`, `list
-  network connection|interface|route`, `inspect process`,
-  `halt process | port`, `watch process`
-- **Network** — `ping`, `measure <url>`, `trace route`,
-  `inspect network`, `inspect <host> --show dns:A,MX,...`
-- **System** — `inspect system --show cpu,memory,disk`
+| flag              | meaning                                                         |
+| ----------------- | --------------------------------------------------------------- |
+| `-f, --format`    | `pretty` (default), `text`, `plain`, `json`, `json:pretty`      |
+| `-h, --help`      | Tinted help layout for the current path                         |
+| `-v, --version`   | Print the installed `@cluesurf/task` version                    |
+| `--explain`       | Print the native commands the verb would run, without executing |
+| `--log [pattern]` | Stream subprocess output. Glob filter (`"*"` = all)             |
 
-Every verb speaks four global flags: `-f / --format`
-(pretty / text / json / json:pretty), `--help`, `--explain`
-(print the underlying native command without running it), and
-`--log [pattern]` (stream subprocess stdout/stderr, optionally
-grep-filtered).
+### Standard short flags
+
+`-i` input path, `-o` output path, `-I` input format, `-O` output
+format, `-t` text, `-b` bitrate, `-q` quality, `-d` degree,
+`-w` width, `-s` start / show / scope, `-e` end, `-c` crop / count,
+`-F` fea path. See [note/commands.md](./note/commands.md) for the
+full matrix plus one illustrative example per verb.
+
+### Process listing highlights
+
+```sh
+task list process --top memory
+task list process --name chrome          # case-insensitive substring
+task list process --name "*ode"          # glob
+task list process --filter "memory > 500mb and cpu > 10%"
+task list process --layout tree          # subtree memory rollups
+task list process --layout tree --name node --show children
+task list process --show memory,cpu,user
+task list process --sort cpu --direction desc --limit 50 --page 2
+```
+
+`--layout tree` paints memory in purple, CPU in blue, branch
+glyphs in gray, process names in bright white. Tree filters keep
+every match's ancestor chain visible; `--show children` brings
+descendants along too.
 
 ## Docs
 
-- [API design](./note/api.md): `Task` class, dispatch, overloads, remote/local/explain modes.
-- [Install](./note/install.md): native tools per OS, Docker, Homebrew, Chocolatey.
-- [Examples](./note/examples.md): representative calls for every verb.
-- [Contributing](./note/contributing.md): repo layout, codegen, adding a new action.
-- [Roadmap](./note/roadmap.md): what's missing.
+- [Commands reference](./note/commands.md) — one example per verb.
+- [API design](./note/api.md) — `Task` class, dispatch, overloads,
+  remote / local / explain modes.
+- [Install](./note/install.md) — native tools per OS, Docker,
+  Homebrew, Chocolatey.
+- [Examples](./note/examples.md) — full workflows.
+- [Contributing](./note/contributing.md) — repo layout, codegen,
+  adding a new action.
+- [Roadmap](./note/roadmap.md) — what's missing.
 
 ## Tests
 
+CLI suites live under `test/console/*.sh` and share the scaffolding
+in `test/lib.sh`:
+
 ```sh
-./test/cli.sh
+# run one
+bash test/console/font.sh
+
+# run everything
+bash test/console/all.sh
 ```
+
+Programmatic API tests (Node + browser) run via `pnpm test` per
+the usual TypeScript pipeline.
 
 <img src='https://github.com/cluesurf/task/blob/make/view/test-line.gif?raw=true' />
 

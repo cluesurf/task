@@ -17,7 +17,7 @@ import { buildExtractFontCommand } from './command'
 export type ExtractFontNodeInput = {
   input: { file: { path: string } }
   output?: { file?: { path?: string } }
-  format?: string
+  as?: string
 }
 
 export type ExtractFontNodeOutput = {
@@ -29,10 +29,10 @@ export async function extractFontNode(
   source: ExtractFontNodeInput,
 ): Promise<ExtractFontNodeOutput> {
   const inputPath = source.input.file.path
-  const format = (source.format ?? 'ttx').toLowerCase() as 'ttx' | 'fea'
+  const format = (source.as ?? 'ttx').toLowerCase() as 'ttx' | 'fea'
   if (format !== 'ttx' && format !== 'fea') {
     throw new Error(
-      `extract font: unknown --format "${source.format}". Use ttx or fea.`,
+      `unpack font: unknown --as "${source.as}". Use ttx or fea.`,
     )
   }
 

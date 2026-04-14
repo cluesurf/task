@@ -32,7 +32,10 @@ export const extract_font: Form = {
         },
       },
     },
-    format: {
+    // Named `as` (not `format`) to avoid colliding with the
+    // global `--format` output-style flag. Short alias is still
+    // `-O` per the output-format convention.
+    as: {
       like: 'string',
       need: false,
       name: { mark: 'O' },
