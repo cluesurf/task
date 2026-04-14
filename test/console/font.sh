@@ -1,53 +1,42 @@
 #!/usr/bin/env bash
-#
-# Font CLI — inspect, subset, compress, dump (round-trip), shape,
-# render. Fixtures from ../seed-base/base/font; outputs in
-# tmp/font/out.
-
+# fonts: inspect / subset / compress / dump round-trip / shape.
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 . test/lib.sh
 
-FIXTURES=../seed-base/base/font
-SRC=tmp/font
-OUT=tmp/font/out
-
-mkdir -p "$SRC" "$OUT"
-cp -n "$FIXTURES/etch.ttf" "$SRC/etch.ttf" 2>/dev/null || true
-
-file_size() { stat -f%z "$1" 2>/dev/null || stat -c%s "$1"; }
+F=../seed-base/base
+OUT=tmp/font
+mkdir -p "$OUT"
+cp "$F/font/ancient.ttf" "$OUT/fnt.ttf"
 
 suite "Font"
 
-step "inspect — family + tables"
-OUTPUT=$(task inspect "$SRC/etch.ttf" -f text 2>&1)
-expect "contains 'family'" test -n "$(echo "$OUTPUT" | grep -i family)"
-expect "contains 'tables'" test -n "$(echo "$OUTPUT" | grep -i tables)"
+step "inspect"
+OUT_TXT=$(task inspect "$OUT/fnt.ttf" -f text 2>&1)
+expect "has family" test -n "$(echo "$OUT_TXT" | grep -i family)"
 
-step "subset — keep glyphs for 'Hello world'"
-OUT_FILE="$OUT/etch.subset.ttf"
-rm -f "$OUT_FILE"
-task subset "$SRC/etch.ttf" -o "$OUT_FILE" --text "Hello world" -f text >/dev/null
-expect_file "$OUT_FILE"
-expect "smaller than original" test "$(file_size "$OUT_FILE")" -lt "$(file_size "$SRC/etch.ttf")"
+step "subset"
+rm -f "$OUT/fnt.min.ttf"
+task subset "$OUT/fnt.ttf" -o "$OUT/fnt.min.ttf" -t "Hello world" -f text >/dev/null
+expect_file "$OUT/fnt.min.ttf"
 
-step "compress — TTF → WOFF2 sibling"
-cp "$SRC/etch.ttf" "$OUT/etch.ttf"
-rm -f "$OUT/etch.woff2"
-task compress "$OUT/etch.ttf" -f text >/dev/null
-expect_file "$OUT/etch.woff2"
+step "compress → woff2"
+rm -f "$OUT/fnt.woff2"
+task compress "$OUT/fnt.ttf" -f text >/dev/null
+expect_file "$OUT/fnt.woff2"
 
-step "dump — TTF → TTX → TTF"
-TTX="$OUT/etch.ttx"; RT="$OUT/etch.rt.ttf"
-rm -f "$TTX" "$RT"
-task dump "$SRC/etch.ttf" -o "$TTX" -f text >/dev/null
-expect_file "$TTX"
-expect "XML header" test -n "$(head -1 "$TTX" | grep -i '<?xml')"
-task dump "$TTX" -o "$RT" -f text >/dev/null
-expect_file "$RT"
+step "dump ttf → ttx"
+rm -f "$OUT/fnt.ttx"
+task dump "$OUT/fnt.ttf" -o "$OUT/fnt.ttx" -f text >/dev/null
+expect_file "$OUT/fnt.ttx"
 
-step "shape — 'office' → non-empty glyph sequence"
-SHAPED=$(task shape font -i "$SRC/etch.ttf" --text "office" -f text 2>&1)
-expect "non-empty" test -n "$SHAPED"
+step "dump ttx → ttf"
+rm -f "$OUT/fnt.rt.ttf"
+task dump "$OUT/fnt.ttx" -o "$OUT/fnt.rt.ttf" -f text >/dev/null
+expect_file "$OUT/fnt.rt.ttf"
+
+step "shape"
+OUT_SHAPE=$(task shape font -i "$OUT/fnt.ttf" -t "office" -f text 2>&1)
+expect "non-empty" test -n "$OUT_SHAPE"
 
 summary

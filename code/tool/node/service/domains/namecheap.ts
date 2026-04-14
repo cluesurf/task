@@ -1,9 +1,6 @@
-import Namecheap from 'namecheap'
+// Placeholder. The `namecheap` npm package was removed because it is
+// abandoned and drags in vulnerable transitive dependencies (request,
+// form-data, hoek, joi). Re-implement against the Namecheap HTTP API
+// with `fetch` when needed.
 
-const namecheap = new Namecheap(
-  process.env.NAMECHEAP_USERNAME!,
-  process.env.NAMECHEAP_KEY!,
-  process.env.NAMECHEAP_IP!,
-)
-
-export default namecheap
+export default null

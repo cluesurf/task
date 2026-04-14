@@ -83,7 +83,9 @@ async function main() {
   // wins first. Peeling help off up-front sidesteps that entirely
   // and renders the custom layout for any registered command path.
   const raw = process.argv.slice(2)
-  if (raw.includes('--help') || raw.includes('-h')) {
+  // Only `--help` short-circuits help. `-h` stays available for
+  // per-command aliases (most usefully `--height` on resize).
+  if (raw.includes('--help')) {
     setLoggingStyle(resolveLoggingStyle('pretty'))
     const path = raw.filter(a => !a.startsWith('-'))
     const out = renderHelpFor({
@@ -95,7 +97,6 @@ async function main() {
       process.stdout.write(out + '\n')
       return
     }
-    // No custom entry for this path — let yargs handle it.
   }
 
   const argv = rewriteImplicitSubcommands(raw)
@@ -137,7 +138,7 @@ async function main() {
       }
     }, true)
     .middleware((argv, instance) => {
-      if (argv.help || argv.h) {
+      if (argv.help) {
         const path = (argv._ as Array<string | number>).map(String)
         instance.showHelp(text => {
           const out = renderHelpFor({
@@ -152,7 +153,6 @@ async function main() {
     }, true)
     .help(false)
     .option('help', {
-      alias: 'h',
       describe: 'Show help',
       type: 'boolean',
       global: true,
