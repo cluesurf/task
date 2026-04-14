@@ -28,10 +28,17 @@ if command -v ebuild >/dev/null 2>&1; then
   done
 fi
 
+root="$(cd "$here/../../../.." && pwd)"
+version="$(node -p "require('$root/package.json').version")"
+if [ -z "$version" ]; then
+  echo "publish gentoo: could not read version from $root/package.json" >&2
+  exit 1
+fi
+
 (
   cd "$overlay" && git add "$category/cluesurf-task" \
-  && git commit -m "cluesurf-task $(node -p "require('$here/../../../package.json').version")" \
+  && git commit -m "cluesurf-task $version" \
   && git push
 )
 
-echo "pushed to overlay at $overlay"
+echo "pushed $version to overlay at $overlay"

@@ -26,9 +26,10 @@ ARG TASK_VERSION=latest
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Pull the published Node CLI from npm. `BASE_IMAGE` already provides
-# every native binary the CLI shells out to.
-RUN npm install -g pnpm \
-  && pnpm add -g "@cluesurf/task@${TASK_VERSION}"
+# every native binary the CLI shells out to. Using `npm install -g`
+# directly (not pnpm) — pnpm's global install needs PNPM_HOME+PATH
+# set up, which is ceremony we don't need for a smoke test.
+RUN npm install -g "@cluesurf/task@${TASK_VERSION}"
 
 # Stage tiny fixtures the smoke checks operate on.
 WORKDIR /smoke

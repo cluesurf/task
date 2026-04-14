@@ -60,20 +60,76 @@ One key signs three repos.
 
 ```sh
 gpg --full-generate-key
-# RSA, 4096, no expiry, "ClueSurf APT" / lp@elk.fm
-
-gpg --list-secret-keys --keyid-format=long
-# copy the long key id (e.g. ABCD1234EF567890)
-
-export APT_SIGNING_KEY=ABCD1234EF567890
 ```
 
-Back up the secret key:
+Answer the prompts:
+
+| prompt | answer | why |
+| --- | --- | --- |
+| Key kind | **`1` — RSA and RSA** | `dpkg-sig` / `apt-secure` / `rpmsign` accept RSA universally; ECC (the default) breaks older distros |
+| Key size | **`4096`** | 2048 works but 4096 is cheap insurance |
+| Expiry  | **`0`** (never) | or 5y and rotate — either is fine |
+| Name / email | `ClueSurf APT` / `lp@elk.fm` | purely cosmetic |
+| Passphrase | set one | cached by `gpg-agent` so you only type it occasionally |
+
+Then grab the key id and stash it in `.env`:
 
 ```sh
-gpg --export-secret-keys --armor "$APT_SIGNING_KEY" > ~/cluesurf-apt.key.asc
-# stash this offline / in 1Password
+gpg --list-secret-keys --keyid-format=long
+# copy the long key id, e.g. ABCD1234EF567890
+
+# deck/task/.env
+APT_SIGNING_KEY=ABCD1234EF567890
 ```
+
+### Back up the private key
+
+Pick one. All three get the key off-machine without leaving it in
+`~/` forever.
+
+**A. Pipe into macOS keychain** — no disk write. Use bare `-w`
+(no `$(cat)` argument, that form hangs because the shell
+evaluates the substitution before wiring up the pipe):
+
+```sh
+gpg --export-secret-keys --armor "$APT_SIGNING_KEY" \
+  | security add-generic-password \
+      -a "$(whoami)" -s cluesurf-apt-signing -w
+```
+
+**B. Two-step via `/tmp`** — more verbose but each step is easy
+to verify, and it's the pattern that actually works with
+`security`'s `-w "$(...)"` form:
+
+```sh
+umask 077    # so the file isn't world-readable
+gpg --export-secret-keys --armor "$APT_SIGNING_KEY" > /tmp/key.asc
+
+security add-generic-password \
+  -a "$(whoami)" -s cluesurf-apt-signing \
+  -w "$(cat /tmp/key.asc)"
+
+rm -P /tmp/key.asc    # -P = overwrite before unlinking (macOS)
+```
+
+**C. Paste into 1Password manually** — simplest, no CLI deps:
+
+```sh
+gpg --export-secret-keys --armor "$APT_SIGNING_KEY" | pbcopy
+# paste into a new 1Password Secure Note called "cluesurf-apt-signing"
+pbcopy < /dev/null     # wipe clipboard when done
+```
+
+Do **not** commit any of these files, leave them in `~/Downloads`,
+or let them sync via Dropbox / iCloud — a backup file in a
+syncing folder is a data leak. The key already lives at mode 600
+in `~/.gnupg/`; the backup only needs to survive your laptop
+dying, not live next to the original.
+
+Do **not** commit the file, leave it in `~/Downloads`, or let it
+sync via Dropbox / iCloud. Avoid `~/cluesurf-apt.key.asc` unless
+you're certain your home directory isn't being backed up to a
+cloud service.
 
 Used by: `apt`, `rpm`. The Alpine repo uses a separate scheme — see §4.
 
@@ -215,21 +271,62 @@ end-user machine.
 4. Configure target distros in the OBS web UI: *Repositories → Add*
    → openSUSE_Tumbleweed, Leap_15.6, Fedora rawhide, etc.
 
-## 6. Gentoo overlay repo
+## 6. Gentoo overlay — nested in `cluesurf/deck`
 
-Portage consumes ebuilds straight from a git repo.
+Portage consumes ebuilds straight from a git repo. Rather than
+maintain a dedicated `cluesurf/gentoo-overlay`, nest the overlay
+as a subdirectory of the existing `cluesurf/deck` Pages repo —
+same pattern as apt / rpm / alpine.
+
+Layout inside `cluesurf/deck`:
+
+```
+docs/
+  task/
+    apt/   rpm/   apk/   gentoo/   ← overlay root
+                           profiles/repo_name    → cluesurf
+                           metadata/layout.conf  → masters = gentoo
+                           app-misc/cluesurf-task/*.ebuild
+```
+
+### One-time setup
+
+Point `.env` at the overlay subdir, then run the init script:
 
 ```sh
-gh repo create cluesurf/gentoo-overlay --public
-git clone git@github.com:cluesurf/gentoo-overlay ~/cluesurf-overlay
-cd ~/cluesurf-overlay
-mkdir -p metadata profiles app-misc/cluesurf-task
-echo 'cluesurf' > profiles/repo_name
-echo 'masters = gentoo' > metadata/layout.conf
-git add . && git commit -m "init overlay" && git push
-
-export GENTOO_OVERLAY_DIR=~/cluesurf-overlay
+# deck/task/.env
+GENTOO_OVERLAY_DIR=/Users/you/base/crew/cluesurf/deck/docs/task/gentoo
 ```
+
+```sh
+pnpm gentoo:init
+```
+
+`gentoo:init` is idempotent — it creates `profiles/repo_name` and
+`metadata/layout.conf` if they don't exist and stages a single
+commit in the parent `cluesurf/deck` clone. No separate repo, no
+second clone.
+
+Afterwards every `pnpm host:pkg:gentoo` writes a fresh ebuild
+into the overlay alongside the rest of the Pages publish cycle.
+
+### User install
+
+Because the overlay root is a subdirectory, Gentoo users can't
+rely on `eselect repository enable cluesurf` (which assumes the
+git root == overlay root). They add it manually via
+`repos.conf`:
+
+```ini
+# /etc/portage/repos.conf/cluesurf.conf
+[cluesurf]
+location = /var/db/repos/cluesurf
+sync-type = git
+sync-uri = https://github.com/cluesurf/deck.git
+masters = gentoo
+```
+
+Then `emerge --sync cluesurf && emerge cluesurf-task`.
 
 ## 7. Scoop bucket repo (Windows)
 

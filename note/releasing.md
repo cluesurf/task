@@ -86,7 +86,7 @@ Equivalent to:
 
 ```sh
 pnpm host            # npm publish (the Node CLI)
-pnpm docker:push       # docker push to ghcr.io
+pnpm docker:push     # docker push to ghcr.io
 pnpm host:gh         # gh release create + upload winget zip
 pnpm host:pkg        # publish.sh for every ecosystem
 pnpm host:cask       # commit + push the homebrew Cask

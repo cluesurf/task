@@ -1,7 +1,7 @@
 {
   "name": "@cluesurf/task",
-  "version": "0.5.2",
-  "chocoVersion": "0.5.2",
+  "version": "0.5.4",
+  "chocoVersion": "0.5.4",
   "bin": {
     "task": "./host/code/console.js"
   },
@@ -246,6 +246,7 @@
     "make:pkg:windows": "cd make/deck && ./make.sh scoop winget choco",
     "make:pkg:nix": "cd make/deck && ./make.sh nix",
     "host:pkg": "./make/deck/with-env.sh ./make/deck/publish.sh",
+    "gentoo:init": "./make/deck/with-env.sh ./make/deck/linux/gentoo/init.sh",
     "host:pkg:deb": "./make/deck/with-env.sh ./make/deck/publish.sh deb",
     "host:pkg:rpm": "./make/deck/with-env.sh ./make/deck/publish.sh rpm",
     "host:pkg:arch": "./make/deck/with-env.sh ./make/deck/publish.sh arch",
@@ -356,7 +357,6 @@
     "parse-css-color": "^0.2.1",
     "path": "^0.12.7",
     "pdf-lib": "^1.17.1",
-    "plugin-php": "link:@types/@prettier/plugin-php",
     "prettier-plugin-gherkin": "3.1.3",
     "prettier-plugin-java": "2.8.1",
     "prettier-plugin-kotlin": "^2.1.0",
