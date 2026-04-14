@@ -1,2 +1,9 @@
 onlyBuiltDependencies:
   - puppeteer
+
+overrides:
+  css-tree: ^3.2.1
+
+peerDependencyRules:
+  allowedVersions:
+    typescript: '6'

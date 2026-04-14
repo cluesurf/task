@@ -1,5 +1,14 @@
 import type { CommandModule } from 'yargs'
+import { registerGroupHelp } from '~/code/tool/node/log/registry'
 import { checkFileConsole } from './file/console'
+
+registerGroupHelp({
+  command: 'task check',
+  describe: 'Check files and other artifacts',
+  commands: [
+    { name: 'file', describe: 'Check that a file exists and is readable' },
+  ],
+})
 
 export const checkConsole: CommandModule = {
   command: 'check <thing>',

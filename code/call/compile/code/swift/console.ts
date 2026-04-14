@@ -7,4 +7,11 @@ export const compileSwiftConsole = buildActionCommand({
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'compile_swift_command_input',
   loadHandler: () => import('./node'),
+  examples: [
+    {
+      comment: 'compile a Swift file to a binary',
+      command:
+        'task compile swift -i hello.swift -o hello -O binary',
+    },
+  ],
 })

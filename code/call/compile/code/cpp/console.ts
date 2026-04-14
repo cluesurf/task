@@ -7,4 +7,11 @@ export const compileCppConsole = buildActionCommand({
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'compile_cpp_command_input',
   loadHandler: () => import('./node'),
+  examples: [
+    {
+      comment: 'compile a C++ file to a binary',
+      command:
+        'task compile cpp -i quicksort.cpp -o quicksort -O binary',
+    },
+  ],
 })

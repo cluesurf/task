@@ -139,4 +139,20 @@ export const convertRouteNode: ReadonlyArray<ConvertRoute> = [
       }
     },
   },
+  {
+    tool: 'fontforge',
+    loadBase: async () => {
+      const mod = await import('~/code/form/object/font/base')
+      return {
+        input: mod.FONT_FORMAT,
+        output: mod.FONT_FORMAT,
+      }
+    },
+    loadCall: async () => {
+      const mod = await import('~/code/call/convert/font/node')
+      return {
+        run: source => mod.convertFontWithFontForgeNode(source as never),
+      }
+    },
+  },
 ]

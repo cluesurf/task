@@ -18,6 +18,7 @@
 
 import stripAnsi from 'strip-ansi'
 import tint, { Tint } from '@termsurf/tint-text'
+import snakeCase from 'lodash/snakeCase'
 import ora, { Ora } from 'ora'
 
 export type LoggingStyle = 'pretty' | 'text' | 'json' | 'json:pretty'
@@ -80,7 +81,7 @@ export async function runAction<R>({
         action,
         input,
         result,
-        durationMs: Date.now() - started,
+        duration_ms: Date.now() - started,
       })
       return result
     } catch (error) {
@@ -89,7 +90,7 @@ export async function runAction<R>({
         action,
         input,
         error: error instanceof Error ? error.message : String(error),
-        durationMs: Date.now() - started,
+        duration_ms: Date.now() - started,
       })
       throw error
     }
@@ -97,8 +98,13 @@ export async function runAction<R>({
 
   if (STYLE === 'text') {
     process.stderr.write(
-      renderStartLine({ action, from, to, path: inputPath, color: false }) +
-        '\n',
+      renderStartLine({
+        action,
+        from,
+        to,
+        path: inputPath,
+        color: false,
+      }) + '\n',
     )
     try {
       const result = await run()
@@ -123,7 +129,8 @@ export async function runAction<R>({
           action,
           from,
           to,
-          reason: error instanceof Error ? error.message : String(error),
+          reason:
+            error instanceof Error ? error.message : String(error),
           color: false,
           ok: false,
         }) + '\n',
@@ -243,7 +250,9 @@ function renderDoneLine({
   pieces.push(paint('task <', DIM, color))
   pieces.push(
     paint(
-      ok ? verbPast(action) : `Failed ${verbPresent(action).toLowerCase()}`,
+      ok
+        ? verbPast(action)
+        : `Failed ${verbPresent(action).toLowerCase()}`,
       TONE_HEAD,
       color,
     ),
@@ -283,7 +292,34 @@ function paint(text: string, tone: Tint, color: boolean): string {
 
 function emitJson(payload: Record<string, unknown>): void {
   const spaced = STYLE === 'json:pretty'
-  process.stdout.write(JSON.stringify(payload, null, spaced ? 2 : 0) + '\n')
+  process.stdout.write(
+    JSON.stringify(toSnakeKeys(payload), null, spaced ? 2 : 0) + '\n',
+  )
+}
+
+/**
+ * Recursively rewrite every object key as snake_case. Lets the
+ * JSON output stay consumable from snake-style ecosystems
+ * (Python, SQL, Ruby) without per-field renaming.
+ */
+function toSnakeKeys(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map(toSnakeKeys)
+  }
+  if (
+    value &&
+    typeof value === 'object' &&
+    value.constructor === Object
+  ) {
+    const out: Record<string, unknown> = {}
+    for (const [key, v] of Object.entries(
+      value as Record<string, unknown>,
+    )) {
+      out[snakeCase(key)] = toSnakeKeys(v)
+    }
+    return out
+  }
+  return value
 }
 
 function readPath(
@@ -366,4 +402,51 @@ function verbPresent(action: string): string {
 function capitalize(word: string): string {
   if (word.length === 0) return word
   return word[0]!.toUpperCase() + word.slice(1)
+}
+
+const HELP_HEADLINE: Tint = { tone: 'cyan', bold: true }
+const HELP_SECTION: Tint = { tone: 'magenta', bold: true }
+const HELP_FLAG: Tint = { tone: 'cyan' }
+const HELP_REQUIRED: Tint = { tone: 'red', bold: true }
+const HELP_META: Tint = { tone: 'blackBright' }
+
+/**
+ * Tint yargs's default help output for the `pretty` logging mode.
+ * Plain-text input → ANSI-colored output. Recognised patterns:
+ *
+ *   - First non-blank line (`task <verb>`) → bold cyan headline
+ *   - Section headers (`Options:`, `Commands:`) → bold magenta
+ *   - `[required]` markers → red bold
+ *   - `[string]` / `[boolean]` / `[number]` / `[choices: ...]` /
+ *     `[default: ...]` → dim
+ *   - Short/long flag prefixes like `  -h, --help` → bold cyan
+ */
+export function prettifyYargsHelp(text: string): string {
+  const lines = text.split('\n')
+  let headlineSeen = false
+
+  return lines
+    .map(raw => {
+      if (!headlineSeen && raw.trim().length > 0) {
+        headlineSeen = true
+        return tint(raw, HELP_HEADLINE)
+      }
+
+      if (/^[A-Z][A-Za-z]+:$/.test(raw.trim())) {
+        return tint(raw, HELP_SECTION)
+      }
+
+      let out = raw
+      out = out.replace(/(\[required\])/g, m => tint(m, HELP_REQUIRED))
+      out = out.replace(
+        /(\[string\]|\[boolean\]|\[number\]|\[array\]|\[count\]|\[default:[^\]]*\]|\[choices:[^\]]*\])/g,
+        m => tint(m, HELP_META),
+      )
+      out = out.replace(
+        /(^\s+)(-[A-Za-z](?:,\s+--[A-Za-z][A-Za-z0-9-]*)?|--[A-Za-z][A-Za-z0-9-]*)/,
+        (_, lead, flag) => `${lead}${tint(flag, HELP_FLAG)}`,
+      )
+      return out
+    })
+    .join('\n')
 }

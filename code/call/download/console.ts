@@ -7,7 +7,16 @@
  */
 
 import type { CommandModule } from 'yargs'
+import { registerGroupHelp } from '~/code/tool/node/log/registry'
 import { downloadHuggingFaceConsole } from './hugging-face/console'
+
+registerGroupHelp({
+  command: 'task download',
+  describe: 'Download from external sources',
+  commands: [
+    { name: 'hugging-face', describe: 'Download a model or dataset from Hugging Face' },
+  ],
+})
 
 export const downloadConsole: CommandModule = {
   command: 'download <thing>',

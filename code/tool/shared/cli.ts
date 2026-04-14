@@ -14,6 +14,13 @@ import type { BaseHash, Form, FormLink } from '@cluesurf/form'
 import camelCase from 'lodash/camelCase'
 import kebabCase from 'lodash/kebabCase'
 import set from 'lodash/set'
+import {
+  registerHelp,
+  type HelpExample,
+} from '~/code/tool/node/log/registry'
+import { CliError } from '~/code/tool/node/log/error'
+
+export type { HelpExample }
 
 export type CliOption = {
   /** Full dotted path into the input shape (e.g. `input.format`). */
@@ -42,13 +49,21 @@ export function collectCliOptions(
   mesh: BaseHash,
   form: Form | FormLink,
   prefix: string[] = [],
+  /**
+   * When false, every leaf collected from this subtree is forced
+   * to optional regardless of its own `need`. Lets a parent
+   * marked `need: false` (e.g. `cover: { need: false, link: {...} }`)
+   * propagate down to its `--cover-file-path` leaf so the CLI
+   * doesn't insist on it.
+   */
+  ancestorNeed: boolean = true,
 ): CliOption[] {
   const out: CliOption[] = []
 
   if ('base' in form && form.base) {
     const base = mesh[form.base]
     if (base && base.form === 'form') {
-      out.push(...collectCliOptions(mesh, base, prefix))
+      out.push(...collectCliOptions(mesh, base, prefix, ancestorNeed))
     }
   }
 
@@ -57,9 +72,10 @@ export function collectCliOptions(
       const link = form.link[name]
       if (!link) continue
       const path = [...prefix, name]
+      const subNeed = ancestorNeed && link.need !== false
 
       if (link.link) {
-        out.push(...collectCliOptions(mesh, link, path))
+        out.push(...collectCliOptions(mesh, link, path, subNeed))
         continue
       }
 
@@ -71,7 +87,7 @@ export function collectCliOptions(
           if (typeof c === 'object' && 'like' in c && c.like) {
             const sub = mesh[c.like]
             if (sub && sub.form === 'form') {
-              out.push(...collectCliOptions(mesh, sub, path))
+              out.push(...collectCliOptions(mesh, sub, path, subNeed))
             }
           }
         }
@@ -81,7 +97,7 @@ export function collectCliOptions(
       if (link.like && mesh[link.like]?.form === 'form') {
         const sub = mesh[link.like]
         if (sub && sub.form === 'form') {
-          out.push(...collectCliOptions(mesh, sub, path))
+          out.push(...collectCliOptions(mesh, sub, path, subNeed))
           continue
         }
       }
@@ -92,7 +108,7 @@ export function collectCliOptions(
         short: link.name?.mark,
         like: link.like,
         list: link.list === true,
-        need: link.need !== false,
+        need: subNeed,
         note: link.note,
       })
     }
@@ -101,7 +117,7 @@ export function collectCliOptions(
       if (typeof c === 'object' && 'like' in c && c.like) {
         const sub = mesh[c.like]
         if (sub && sub.form === 'form') {
-          out.push(...collectCliOptions(mesh, sub, prefix))
+          out.push(...collectCliOptions(mesh, sub, prefix, ancestorNeed))
         }
       }
     }
@@ -169,6 +185,15 @@ export function buildActionCommand(input: {
   describe: string
   mesh: Record<string, unknown>
   formName: string
+  /** Full command path used for the help registry. Defaults to
+   *  the leaf of `command`. Pass `['extract', 'archive']` (or
+   *  similar) when the leaf alone collides with another verb's
+   *  subcommand of the same name. */
+  path?: string[]
+  /** Optional examples printed under the OPTIONS block in the
+   *  help screen. Each entry is `{ comment?, command }` — the
+   *  comment renders dim, the command renders cyan. */
+  examples?: HelpExample[]
   /** Optional. When omitted the command prints a "not yet routed"
    *  message — useful for scaffolding while the node handler
    *  doesn't exist at this exact path yet. */
@@ -181,15 +206,85 @@ export function buildActionCommand(input: {
     ? collectCliOptions(input.mesh as never, form as never)
     : []
 
-  return {
-    command: input.command,
+  // Detect whether this command operates on `input.file.path` and
+  // `output.file.path`. When both exist, the command also accepts
+  // a single positional path: `task pad song.mp3 --to 3:00.000`.
+  // The positional fills BOTH input + output, so the file is
+  // edited in place. `-i` and `-o` still work and override.
+  const hasInputPath = options.some(
+    o => arraysEqual(o.path, ['input', 'file', 'path']),
+  )
+  const hasOutputPath = options.some(
+    o => arraysEqual(o.path, ['output', 'file', 'path']),
+  )
+  // Positional `file` is accepted when the schema has an input path.
+  // If the schema also has an output path, the positional fills both
+  // (in-place edit). Read-only verbs like `inspect file` get the
+  // positional too; output just stays empty.
+  const acceptsPositional = hasInputPath
+  const yargsCommand = acceptsPositional
+    ? `${input.command} [file]`
+    : input.command
+
+  // Register this command in the custom-help registry so the
+  // global `--help` middleware can render it without going
+  // through yargs's stock formatter. Synchronous — the registry
+  // itself is a tiny in-memory map with no side-effects of its
+  // own. This file already pulls yargs, so it's node-only too.
+  const leaf = input.command.split(' ')[0] ?? input.command
+  const fullPath = input.path ?? [leaf]
+  registerHelp({
+    command: `task ${fullPath.join(' ')}`,
     describe: input.describe,
-    builder: y => applyFormOptions(y, options),
+    options: options.map(o => ({
+      long: o.long,
+      short: o.short,
+      required: o.need,
+      describe: o.note,
+    })),
+    examples: input.examples,
+  })
+
+  return {
+    command: yargsCommand,
+    describe: input.describe,
+    builder: y => {
+      // When a positional `file` is allowed, drop yargs's required
+      // check from the matching option specs so the user can pass
+      // EITHER the positional OR explicit -i / -o. We enforce
+      // exactly-one-of in the handler below.
+      const tunedOptions = acceptsPositional
+        ? options.map(o =>
+            arraysEqual(o.path, ['input', 'file', 'path'])
+              ? { ...o, need: false }
+              : o,
+          )
+        : options
+      const next = applyFormOptions(y, tunedOptions)
+      if (acceptsPositional) {
+        ;(next as unknown as {
+          positional: (name: string, opts: unknown) => unknown
+        }).positional('file', {
+          describe:
+            'Single path used for both input and output (in-place edit). ' +
+            'Mutually exclusive with -i / -o.',
+          type: 'string',
+        })
+      }
+      return next
+    },
     handler: async argv => {
+      const verbPath =
+        input.path ?? [input.command.split(' ')[0] ?? input.command]
+      const fullLabel = `task ${verbPath.join(' ')}`
+      const parentLabel = `task ${verbPath.slice(0, -1).join(' ')}`.trim()
+      const helpHint = parentLabel
+        ? `run \`${parentLabel} --help\` to see available commands`
+        : `run \`task --help\` to see available commands`
       if (!input.loadHandler) {
-        throw new Error(
-          `'${input.command}' is not yet routed to a Node handler. ` +
-            `Add a loadHandler to its console.ts.`,
+        throw new CliError(
+          `no handler found for command '${verbPath[verbPath.length - 1]}'`,
+          { hint: helpHint },
         )
       }
       const mod = await input.loadHandler()
@@ -198,8 +293,9 @@ export function buildActionCommand(input: {
           ? (mod.default as (x: unknown) => Promise<unknown>)
           : findFirstFunction(mod as Record<string, unknown>)
       if (!fn) {
-        throw new Error(
-          `No handler function exported by module for command '${input.command}'`,
+        throw new CliError(
+          `no handler found for command '${verbPath[verbPath.length - 1]}'`,
+          { hint: helpHint },
         )
       }
       const unpacked = unpackFormArgv(
@@ -207,8 +303,64 @@ export function buildActionCommand(input: {
         options,
       )
 
-      const verb = input.command.split(' ')[0] ?? input.command
-      const { runAction } = await import('~/code/tool/node/spinner')
+      // Positional `<file>` fills INPUT. If the verb has an
+      // output slot and the user didn't pass `-o`, the same path
+      // ALSO fills output (in-place edit).
+      //
+      // Positional + `-i` is rejected — two sources fighting for
+      // the input slot. Positional + `-o` is fine:
+      //
+      //   task compress etch.ttf -o dist/etch.woff2
+      //     → positional fills input, -o fills output.
+      //
+      //   task set metadata -i in.mp3 -o in.mp3 --title "..."
+      //     → no positional; -i / -o both explicit.
+      if (acceptsPositional) {
+        const positional = (argv as Record<string, unknown>).file
+        const hasPositional =
+          typeof positional === 'string' && positional.length > 0
+        const explicitInput =
+          readPath(unpacked, ['input', 'file', 'path']) !== undefined
+
+        if (hasPositional && explicitInput) {
+          throw new CliError(
+            'pass either a positional `<file>` OR `-i`, not both',
+            { hint: helpHint },
+          )
+        }
+
+        if (hasPositional) {
+          ensurePathAt(unpacked, ['input', 'file', 'path'], positional as string)
+          if (hasOutputPath) {
+            ensurePathAt(unpacked, ['output', 'file', 'path'], positional as string)
+          }
+        }
+
+        const hasInput =
+          readPath(unpacked, ['input', 'file', 'path']) !== undefined
+        if (!hasInput) {
+          throw new CliError(
+            `pass either \`task ${input.command.split(' ')[0]} <file>\` or \`-i <file>\``,
+            { hint: helpHint },
+          )
+        }
+        if (hasOutputPath) {
+          const hasOutput =
+            readPath(unpacked, ['output', 'file', 'path']) !== undefined
+          if (!hasOutput) {
+            throw new CliError(
+              `pass either \`task ${input.command.split(' ')[0]} <file>\` for an in-place edit, or \`-o <file>\``,
+              { hint: helpHint },
+            )
+          }
+        }
+      }
+
+      // Use the parent verb (`inspect`) for the spinner label,
+      // not the leaf (`file`). Falls back to the leaf when there's
+      // no explicit path.
+      const verb = input.path?.[0] ?? input.command.split(' ')[0] ?? input.command
+      const { runAction } = await import('~/code/tool/node/log')
 
       await runAction({
         action: verb,
@@ -216,6 +368,48 @@ export function buildActionCommand(input: {
         run: () => fn(unpacked),
       })
     },
+  }
+}
+
+function arraysEqual(a: string[], b: string[]): boolean {
+  if (a.length !== b.length) return false
+  for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false
+  return true
+}
+
+function readPath(
+  obj: Record<string, unknown>,
+  path: string[],
+): unknown {
+  let cursor: unknown = obj
+  for (const key of path) {
+    if (cursor == null || typeof cursor !== 'object') return undefined
+    cursor = (cursor as Record<string, unknown>)[key]
+  }
+  return cursor
+}
+
+/** Set `obj[path] = value` only when nothing already lives there. */
+function ensurePathAt(
+  obj: Record<string, unknown>,
+  path: string[],
+  value: string,
+): void {
+  let cursor: Record<string, unknown> = obj
+  for (let i = 0; i < path.length - 1; i++) {
+    const key = path[i]!
+    const next = cursor[key]
+    if (typeof next === 'object' && next !== null) {
+      cursor = next as Record<string, unknown>
+    } else {
+      const fresh: Record<string, unknown> = {}
+      cursor[key] = fresh
+      cursor = fresh
+    }
+  }
+  const leaf = path[path.length - 1]!
+  if (cursor[leaf] === undefined || cursor[leaf] === '') {
+    cursor[leaf] = value
   }
 }
 

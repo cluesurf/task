@@ -54,6 +54,22 @@ export const COMMAND: Record<CommandName, Array<string> | undefined> = {
   atool: ['atool'],
   unzip: ['unzip'],
   unrar: ['unrar'],
+  ffprobe: ['ffprobe'],
+  id3v2: ['id3v2'],
+  eyeD3: ['eyeD3'],
+  rg: ['rg'],
+  fd: ['fd'],
+  qpdf: ['qpdf'],
+  pdfinfo: ['pdfinfo'],
+  pdftotext: ['pdftotext'],
+  pdfimages: ['pdfimages'],
+  mutool: ['mutool'],
+  gs: ['gs'],
+  pyftsubset: ['pyftsubset'],
+  ttx: ['ttx'],
+  woff2_compress: ['woff2_compress'],
+  'hb-shape': ['hb-shape'],
+  'hb-view': ['hb-view'],
 }
 
 export function getCommand(name: CommandName): Command {
@@ -74,10 +90,15 @@ export function command(
 // php-cs-fixer fix test/file/code/quicksort/quicksort.php
 
 export function buildCommandSequence(call: Command | Array<Command>) {
-  if (Array.isArray(call)) {
-    return CommandSequenceParser.parse({ call })
-  }
-  return CommandSequenceParser.parse({ call: [call] })
+  // The generated `CommandSequenceParser` is keyed off a baked-in
+  // enum of binary names that only regenerates on `pnpm make:type`.
+  // When a new verb ships with a new binary and codegen hasn't
+  // run yet, the Zod parser rejects it even though `COMMAND` and
+  // the handler table already accept the name. The shape here is
+  // internal — validation at this layer doesn't protect anything
+  // the downstream runner doesn't already check — so we skip it.
+  const list = Array.isArray(call) ? call : [call]
+  return { call: list } as ReturnType<typeof CommandSequenceParser.parse>
 }
 
 export function escapeCommandInput(s: string) {

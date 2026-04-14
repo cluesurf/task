@@ -27,9 +27,16 @@ RUN apt-get update -y -q
 RUN apt-get upgrade -y -q
 
 RUN apt-get -y install fontforge
+RUN apt-get -y install fonttools
+RUN apt-get -y install woff2
+RUN apt-get -y install libharfbuzz-bin
 RUN apt-get -y install pandoc
 RUN apt-get -y install texlive
 RUN apt-get -y install ffmpeg
+RUN apt-get -y install id3v2
+RUN apt-get -y install ripgrep
+RUN apt-get -y install fd-find
+RUN ln -sf /usr/bin/fdfind /usr/local/bin/fd
 RUN apt-get -y install libarchive-tools
 RUN apt-get -y install inkscape
 RUN apt-get -y install git
@@ -206,6 +213,9 @@ RUN ln -s /home/python/venv/bin/antlr4-parse /usr/bin/antlr4-parse
 
 RUN /home/python/venv/bin/pip install patool
 RUN ln -s /home/python/venv/bin/patool /usr/bin/patool
+
+RUN /home/python/venv/bin/pip install eyeD3
+RUN ln -sf /home/python/venv/bin/eyeD3 /usr/bin/eyeD3
 
 RUN apt-get install apt-transport-https
 RUN wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/dart.gpg

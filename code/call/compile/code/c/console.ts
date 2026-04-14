@@ -7,4 +7,11 @@ export const compileCConsole = buildActionCommand({
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'compile_c_command_input',
   loadHandler: () => import('./node'),
+  examples: [
+    {
+      comment: 'compile a C file to a binary',
+      command:
+        'task compile c -i hello.c -o hello -O binary',
+    },
+  ],
 })

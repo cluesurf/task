@@ -13,4 +13,11 @@ export const archiveConsole: CommandModule = buildActionCommand({
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'archive',
   loadHandler: () => import('./node'),
+  examples: [
+    {
+      comment: 'archive a directory as a tarball',
+      command:
+        'task archive --tool tar --input-path ./src -O tar.gz --output-file-path ./dist/src.tar.gz',
+    },
+  ],
 })

@@ -49,6 +49,17 @@ export type CommandKey =
   | 'atool'
   | 'unzip'
   | 'unrar'
+  | 'ffprobe'
+  | 'id3v2'
+  | 'eyeD3'
+  | 'rg'
+  | 'fd'
+  | 'qpdf'
+  | 'pdfinfo'
+  | 'pdftotext'
+  | 'pdfimages'
+  | 'mutool'
+  | 'gs'
 
 export type CommandName =
   | 'ffmpeg'
@@ -95,6 +106,17 @@ export type CommandName =
   | 'atool'
   | 'unzip'
   | 'unrar'
+  | 'ffprobe'
+  | 'id3v2'
+  | 'eyeD3'
+  | 'rg'
+  | 'fd'
+  | 'qpdf'
+  | 'pdfinfo'
+  | 'pdftotext'
+  | 'pdfimages'
+  | 'mutool'
+  | 'gs'
 export type CommandSequence = {
   call: Array<Command>
 }

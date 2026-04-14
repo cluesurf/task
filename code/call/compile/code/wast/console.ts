@@ -6,5 +6,11 @@ export const compileWastConsole = buildActionCommand({
   describe: 'Compile WebAssembly text (wast) to wasm',
   mesh: MESH as unknown as Record<string, unknown>,
   formName: 'compile_wast_command_input',
-
+  examples: [
+    {
+      comment: 'compile WebAssembly text to a wasm binary',
+      command:
+        'task compile wast -i module.wast -o module.wasm',
+    },
+  ],
 })
