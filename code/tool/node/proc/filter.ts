@@ -11,7 +11,7 @@
  * Examples:
  *   memory > 500mb
  *   cpu >= 50% and name ~ node
- *   user = lance or user = root
+ *   user = foo or bar = root
  *
  * Logical operators are left-associative and have equal precedence
  * — the user can parenthesise with `()` when that matters. Field
@@ -34,7 +34,7 @@ const FIELD_ALIASES: Record<string, keyof Process> = {
 }
 
 const UNIT_MULTIPLIERS: Record<string, number> = {
-  b: 1 / 1024,      // rss is in KB; a raw byte count needs to shrink
+  b: 1 / 1024, // rss is in KB; a raw byte count needs to shrink
   kb: 1,
   mb: 1024,
   gb: 1024 * 1024,
@@ -78,8 +78,16 @@ function tokenize(input: string): Token[] {
       i++
       continue
     }
-    if (ch === '(') { tokens.push({ kind: 'lparen', value: '(' }); i++; continue }
-    if (ch === ')') { tokens.push({ kind: 'rparen', value: ')' }); i++; continue }
+    if (ch === '(') {
+      tokens.push({ kind: 'lparen', value: '(' })
+      i++
+      continue
+    }
+    if (ch === ')') {
+      tokens.push({ kind: 'rparen', value: ')' })
+      i++
+      continue
+    }
     // Quoted string (supports ' or ").
     if (ch === '"' || ch === "'") {
       let j = i + 1
@@ -97,25 +105,33 @@ function tokenize(input: string): Token[] {
     }
     const logMatch = input.slice(i).match(/^(&&|\|\|)/)
     if (logMatch) {
-      tokens.push({ kind: 'logical', value: logMatch[1] === '&&' ? 'and' : 'or' })
+      tokens.push({
+        kind: 'logical',
+        value: logMatch[1] === '&&' ? 'and' : 'or',
+      })
       i += logMatch[1]!.length
       continue
     }
     // Number (optionally with unit suffix).
-    const numMatch = input.slice(i).match(/^(\d+(?:\.\d+)?)([a-zA-Z%]+)?/)
+    const numMatch = input
+      .slice(i)
+      .match(/^(\d+(?:\.\d+)?)([a-zA-Z%]+)?/)
     if (numMatch) {
       tokens.push({
         kind: 'number',
-        value: numMatch[1]! + (numMatch[2] ? numMatch[2].toLowerCase() : ''),
+        value:
+          numMatch[1]! + (numMatch[2] ? numMatch[2].toLowerCase() : ''),
       })
-      i += numMatch[0]!.length
+      i += numMatch[0].length
       continue
     }
     // Bare identifier — a field name, `and` / `or`, or an
     // unquoted string value.
-    const identMatch = input.slice(i).match(/^[A-Za-z_][A-Za-z0-9_.\-/]*/)
+    const identMatch = input
+      .slice(i)
+      .match(/^[A-Za-z_][A-Za-z0-9_.\-/]*/)
     if (identMatch) {
-      const word = identMatch[0]!
+      const word = identMatch[0]
       if (/^(and|or)$/i.test(word)) {
         tokens.push({ kind: 'logical', value: word.toLowerCase() })
       } else {
@@ -146,9 +162,10 @@ class Parser {
       const op = this.consume().value
       const right = this.parseTerm()
       const left = predicate
-      predicate = op === 'and'
-        ? p => left(p) && right(p)
-        : p => left(p) || right(p)
+      predicate =
+        op === 'and'
+          ? p => left(p) && right(p)
+          : p => left(p) || right(p)
     }
     return predicate
   }
@@ -170,12 +187,20 @@ class Parser {
     }
     const op = this.expect('op', 'comparison operator').value
     const valueToken = this.consume()
-    return buildComparator({ field, op, value: valueToken, source: this.source })
+    return buildComparator({
+      field,
+      op,
+      value: valueToken,
+      source: this.source,
+    })
   }
 
   expectEnd(): void {
     if (this.index !== this.tokens.length) {
-      const rest = this.tokens.slice(this.index).map(t => t.value).join(' ')
+      const rest = this.tokens
+        .slice(this.index)
+        .map(t => t.value)
+        .join(' ')
       throw new Error(
         `filter: trailing tokens "${rest}" in \`${this.source}\``,
       )
@@ -220,7 +245,8 @@ function buildComparator(input: {
 
   if (value.kind === 'number') {
     const numeric = parseNumeric(value.value, field)
-    return p => compareNumeric(Number(p[field] as unknown as number), op, numeric)
+    return p =>
+      compareNumeric(Number(p[field] as unknown as number), op, numeric)
   }
 
   // Strings get compared as strings regardless of op, except that
@@ -246,7 +272,9 @@ function parseNumeric(raw: string, field: keyof Process): number {
   if (unit === '%') return n
   const mult = UNIT_MULTIPLIERS[unit]
   if (mult === undefined) {
-    throw new Error(`filter: unknown unit "${unit}" (use kb, mb, gb, tb, %)`)
+    throw new Error(
+      `filter: unknown unit "${unit}" (use kb, mb, gb, tb, %)`,
+    )
   }
   // Memory units (kb/mb/gb/tb) are only meaningful for rss.
   if (field !== 'rss') {
@@ -259,14 +287,21 @@ function parseNumeric(raw: string, field: keyof Process): number {
 
 function compareNumeric(a: number, op: string, b: number): boolean {
   switch (op) {
-    case '>':  return a > b
-    case '>=': return a >= b
-    case '<':  return a < b
-    case '<=': return a <= b
+    case '>':
+      return a > b
+    case '>=':
+      return a >= b
+    case '<':
+      return a < b
+    case '<=':
+      return a <= b
     case '=':
-    case '==': return a === b
-    case '!=': return a !== b
-    case '~':  return String(a).includes(String(b))
+    case '==':
+      return a === b
+    case '!=':
+      return a !== b
+    case '~':
+      return String(a).includes(String(b))
   }
   throw new Error(`filter: operator "${op}" not supported for numbers`)
 }
@@ -279,9 +314,12 @@ function compareString(
 ): boolean {
   switch (op) {
     case '=':
-    case '==': return a === b
-    case '!=': return a !== b
-    case '~':  return a.toLowerCase().includes(b.toLowerCase())
+    case '==':
+      return a === b
+    case '!=':
+      return a !== b
+    case '~':
+      return a.toLowerCase().includes(b.toLowerCase())
   }
   throw new Error(
     `filter: operator "${op}" not supported for strings in \`${source}\``,

@@ -1,0 +1,9 @@
+{
+  "version": "__VERSION__",
+  "description": "__SUMMARY__",
+  "homepage": "__HOMEPAGE__",
+  "license": "__LICENSE__",
+  "depends": [__DEPS__],
+  "bin": [],
+  "notes": "Install @cluesurf/task itself with: pnpm add -g @cluesurf/task"
+}

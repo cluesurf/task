@@ -1,0 +1,33 @@
+#!/bin/sh
+# Install the Python + Go helper tools the macOS cask provisions in
+# its postflight block. Failures are warned about but do not abort
+# the apt transaction — a workstation without `go` or `pip3` is still
+# a valid install for most task actions.
+
+set -e
+
+warn() { echo "cluesurf-task: $*" >&2; }
+
+if command -v pip3 >/dev/null 2>&1; then
+  for pkg in nbconvert docx2pdf "black[jupyter]" patool huggingface_hub fonttools; do
+    pip3 install --upgrade --no-cache-dir --break-system-packages "$pkg" \
+      || warn "pip install $pkg failed (skip)"
+  done
+else
+  warn "pip3 not found; skipping python helper tools"
+fi
+
+if command -v go >/dev/null 2>&1; then
+  go install github.com/klauspost/asmfmt/cmd/asmfmt@ef134b9cec704e2b7b336fb02153b7d1a58247da \
+    || warn "go install asmfmt failed (skip)"
+  go install mvdan.cc/sh/v3/cmd/shfmt@v3.7.0 \
+    || warn "go install shfmt failed (skip)"
+else
+  warn "go not found; skipping go helper tools"
+fi
+
+if [ ! -e /usr/local/bin/fd ] && [ -x /usr/bin/fdfind ]; then
+  ln -sf /usr/bin/fdfind /usr/local/bin/fd
+fi
+
+exit 0

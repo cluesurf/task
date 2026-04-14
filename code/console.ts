@@ -39,6 +39,7 @@ import { disassembleConsole } from '~/code/call/disassemble/console'
 import { downloadConsole } from '~/code/call/download/console'
 import { dumpConsole } from '~/code/call/dump/console'
 import { editConsole } from '~/code/call/edit/console'
+import { fetchConsole } from '~/code/call/fetch/console'
 import { flipConsole } from '~/code/call/flip/console'
 import { formatConsole } from '~/code/call/format/console'
 import { generateConsole } from '~/code/call/generate/console'
@@ -60,6 +61,7 @@ import { pushConsole } from '~/code/call/push/console'
 import { removeConsole } from '~/code/call/remove/console'
 import { renderConsole } from '~/code/call/render/console'
 import { resizeConsole } from '~/code/call/resize/console'
+import { restoreConsole } from '~/code/call/restore/console'
 import { rmConsole } from '~/code/call/rm/console'
 import { rotateConsole } from '~/code/call/rotate/console'
 import { sanitizeConsole } from '~/code/call/sanitize/console'
@@ -71,10 +73,12 @@ import { showConsole } from '~/code/call/show/console'
 import { sliceConsole } from '~/code/call/slice/console'
 import { splitConsole } from '~/code/call/split/console'
 import { subsetConsole } from '~/code/call/subset/console'
+import { syncConsole } from '~/code/call/sync/console'
 import { testConsole } from '~/code/call/test/console'
 import { traceConsole } from '~/code/call/trace/console'
 import { trimConsole } from '~/code/call/trim/console'
 import { unpackConsole } from '~/code/call/unpack/console'
+import { uploadConsole } from '~/code/call/upload/console'
 import { updateConsole } from '~/code/call/update/console'
 import { validateConsole } from '~/code/call/validate/console'
 import { verifyConsole } from '~/code/call/verify/console'
@@ -103,6 +107,7 @@ registerGroupHelp({
     { name: 'dump',        describe: 'Dump a file to an editable source form (and back)' },
     { name: 'edit',        describe: 'Open a config in $EDITOR' },
     { name: 'extract',     describe: 'Extract content from containers' },
+    { name: 'fetch',       describe: 'Download URLs (wget / curl / aria2c)' },
     { name: 'flip',        describe: 'Flip a media file horizontally or vertically' },
     { name: 'format',      describe: 'Format source code' },
     { name: 'generate',    describe: 'Generate hashes, QR codes, random strings' },
@@ -124,6 +129,7 @@ registerGroupHelp({
     { name: 'remove',      describe: 'Remove content or a stored artifact' },
     { name: 'render',      describe: 'Render a visual artifact (font sample, ...)' },
     { name: 'resize',      describe: 'Resize an image or video' },
+    { name: 'restore',     describe: 'Restore a database from a dump' },
     { name: 'rm',          describe: 'Remove a named entry from long-lived state' },
     { name: 'rotate',      describe: 'Rotate an image or video by a given angle' },
     { name: 'sanitize',    describe: 'Sanitize code or other content' },
@@ -134,10 +140,12 @@ registerGroupHelp({
     { name: 'slice',       describe: 'Slice a document or other asset' },
     { name: 'split',       describe: 'Split a file into segments' },
     { name: 'subset',      describe: 'Subset a file to a smaller slice' },
+    { name: 'sync',        describe: 'Mirror / backup (rsync, SMB/NAS, restic/borg/kopia)' },
     { name: 'test',        describe: 'Test reachability or connectivity' },
     { name: 'trace',       describe: 'Trace the path a packet takes to a host' },
     { name: 'trim',        describe: 'Cut a section out of a media file' },
     { name: 'update',      describe: 'Apply an edit to a file' },
+    { name: 'upload',      describe: 'Upload to S3 / GCS / Azure / FTP / SFTP / WebDAV / IPFS' },
     { name: 'validate',    describe: 'Validate a document or other artifact' },
     { name: 'verify',      describe: 'Verify the integrity or content of an asset' },
     { name: 'watch',       describe: 'Live-update a listing as state changes' },
@@ -266,6 +274,7 @@ async function main() {
     .command(downloadConsole)
     .command(dumpConsole)
     .command(editConsole)
+    .command(fetchConsole)
     .command(flipConsole)
     .command(formatConsole)
     .command(generateConsole)
@@ -287,6 +296,7 @@ async function main() {
     .command(removeConsole)
     .command(renderConsole)
     .command(resizeConsole)
+    .command(restoreConsole)
     .command(rmConsole)
     .command(rotateConsole)
     .command(sanitizeConsole)
@@ -298,11 +308,13 @@ async function main() {
     .command(sliceConsole)
     .command(splitConsole)
     .command(subsetConsole)
+    .command(syncConsole)
     .command(testConsole)
     .command(traceConsole)
     .command(trimConsole)
     .command(unpackConsole)
     .command(updateConsole)
+    .command(uploadConsole)
     .command(validateConsole)
     .command(verifyConsole)
     .command(watchConsole)

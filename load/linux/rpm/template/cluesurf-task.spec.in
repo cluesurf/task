@@ -1,0 +1,28 @@
+Name:           __NAME__
+Version:        __VERSION__
+Release:        1%{?dist}
+Summary:        __SUMMARY__
+License:        __LICENSE__
+URL:            __HOMEPAGE__
+BuildArch:      noarch
+
+%description
+__DESCRIPTION__
+
+Requires: __DEPS__
+
+%prep
+# metapackage — nothing to unpack
+
+%build
+# metapackage — nothing to build
+
+%install
+# metapackage — nothing to install
+
+%files
+# metapackage — owns no files
+
+%changelog
+* __DATE__ __MAINTAINER__ - __VERSION__-1
+- Release __VERSION__

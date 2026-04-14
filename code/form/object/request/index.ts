@@ -65,6 +65,15 @@ export type CommandKey =
   | 'woff2_compress'
   | 'hb-shape'
   | 'hb-view'
+  | 'xelatex'
+  | 'lualatex'
+  | 'make4ht'
+  | 'llvm-objdump'
+  | 'radare2'
+  | 'rizin'
+  | 'wasm2wat'
+  | 'javap'
+  | 'ildasm'
 
 export type CommandName =
   | 'ffmpeg'
@@ -127,6 +136,15 @@ export type CommandName =
   | 'woff2_compress'
   | 'hb-shape'
   | 'hb-view'
+  | 'xelatex'
+  | 'lualatex'
+  | 'make4ht'
+  | 'llvm-objdump'
+  | 'radare2'
+  | 'rizin'
+  | 'wasm2wat'
+  | 'javap'
+  | 'ildasm'
 export type CommandSequence = {
   call: Array<Command>
 }

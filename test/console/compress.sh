@@ -6,7 +6,7 @@ cd "$(dirname "$0")/../.." || exit 1
 F=../seed-base/base
 OUT=tmp/compress
 mkdir -p "$OUT"
-cp "$F/font/ancient.ttf"     "$OUT/fnt.ttf"
+cp "$F/font/etch.ttf"     "$OUT/fnt.ttf"
 cp "$F/audio/piano.mp3"      "$OUT/song.mp3"
 cp "$F/image/landscape.jpg"  "$OUT/pic.jpg"
 cp "$F/video/cell.mp4"       "$OUT/clip.mp4"

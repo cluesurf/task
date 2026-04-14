@@ -53,10 +53,19 @@ export function buildCommandToConvertDocumentWithPandoc(
 
 // https://www.reddit.com/r/hacking/comments/108sp8f/how_to_know_if_a_pdf_contains_malware/
 
+/**
+ * `pdflatex` is the default engine. `xelatex` is the pick for
+ * OpenType / system fonts (Unicode, RTL, CJK). `lualatex` is the
+ * modern successor that embeds Lua scripting. All three accept the
+ * same top-level flags we use here. Pick via `engine`.
+ */
 export function buildCommandToConvertLatexWithPdfLatex(
-  input: ConvertLatexWithPdfLatexCommandInput,
+  input: ConvertLatexWithPdfLatexCommandInput & {
+    engine?: 'pdflatex' | 'xelatex' | 'lualatex'
+  },
 ) {
-  const cmd = getCommand(`pdflatex`)
+  const engine = input.engine ?? 'pdflatex'
+  const cmd = getCommand(engine)
   cmd.link.push(
     `-interaction=nonstopmode`,
     `-halt-on-error`,
@@ -66,6 +75,26 @@ export function buildCommandToConvertLatexWithPdfLatex(
     `${input.input.file.path}`,
   )
 
+  return buildCommandSequence(cmd)
+}
+
+/**
+ * `make4ht` drives tex4ht to produce HTML (+ CSS + images) from
+ * `.tex`. Output format strings are the make4ht build-file names
+ * (`html5`, `mathml`, `odt`, etc.). `--output-dir` keeps generated
+ * sidecars contained.
+ */
+export function buildCommandToConvertLatexWithMake4ht(input: {
+  input: { file: { path: string } }
+  output: { directory: { path: string }; format?: string }
+  /** Build file format, e.g. `html5`, `mathml`. Default `html5`. */
+  buildFile?: string
+}) {
+  const cmd = getCommand('make4ht')
+  cmd.link.push('--utf8')
+  cmd.link.push('--output-dir', input.output.directory.path)
+  cmd.link.push(input.input.file.path)
+  cmd.link.push(input.buildFile ?? 'html5')
   return buildCommandSequence(cmd)
 }
 

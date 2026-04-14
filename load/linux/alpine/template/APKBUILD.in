@@ -1,0 +1,15 @@
+# Maintainer: __MAINTAINER__
+pkgname=__NAME__
+pkgver=__VERSION__
+pkgrel=0
+pkgdesc="__SUMMARY__"
+url="__HOMEPAGE__"
+arch="noarch"
+license="__LICENSE__"
+depends="__DEPS__"
+options="!check"
+source=""
+
+package() {
+  : # metapackage — owns no files
+}

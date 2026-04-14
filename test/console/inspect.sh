@@ -10,7 +10,7 @@ cp "$F/document/magic.pdf"  "$OUT/doc.pdf"
 cp "$F/image/landscape.jpg" "$OUT/pic.jpg"
 cp "$F/audio/piano.mp3"     "$OUT/song.mp3"
 cp "$F/video/cell.mp4"      "$OUT/clip.mp4"
-cp "$F/font/ancient.ttf"    "$OUT/fnt.ttf"
+cp "$F/font/etch.ttf"    "$OUT/fnt.ttf"
 printf 'hello\nworld\n' > "$OUT/plain.txt"
 
 suite "Inspect"

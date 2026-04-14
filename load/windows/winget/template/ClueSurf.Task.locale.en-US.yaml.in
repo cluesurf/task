@@ -1,0 +1,24 @@
+PackageIdentifier: ClueSurf.Task
+PackageVersion: __VERSION__
+PackageLocale: en-US
+Publisher: ClueSurf
+PublisherUrl: https://clue.surf
+PublisherSupportUrl: https://github.com/cluesurf/task/issues
+Author: Lance Pollard
+PackageName: cluesurf-task
+PackageUrl: __HOMEPAGE__
+License: __LICENSE__
+LicenseUrl: https://github.com/cluesurf/task/blob/make/license.md
+ShortDescription: __SUMMARY__
+Description: |-
+  __DESCRIPTION_YAML__
+Moniker: cluesurf-task
+Tags:
+  - cluesurf
+  - metapackage
+  - ffmpeg
+  - imagemagick
+  - pandoc
+  - libreoffice
+ManifestType: defaultLocale
+ManifestVersion: 1.6.0

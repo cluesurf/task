@@ -31,7 +31,8 @@ RUN apt-get -y install fonttools
 RUN apt-get -y install woff2
 RUN apt-get -y install libharfbuzz-bin
 RUN apt-get -y install pandoc
-RUN apt-get -y install texlive
+RUN apt-get -y install texlive texlive-xetex texlive-luatex texlive-extra-utils
+RUN apt-get -y install make4ht
 RUN apt-get -y install ffmpeg
 RUN apt-get -y install id3v2
 RUN apt-get -y install ripgrep

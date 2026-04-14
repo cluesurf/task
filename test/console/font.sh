@@ -6,7 +6,7 @@ cd "$(dirname "$0")/../.." || exit 1
 F=../seed-base/base
 OUT=tmp/font
 mkdir -p "$OUT"
-cp "$F/font/ancient.ttf" "$OUT/fnt.ttf"
+cp "$F/font/etch.ttf" "$OUT/fnt.ttf"
 
 suite "Font"
 

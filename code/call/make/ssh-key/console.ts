@@ -3,21 +3,38 @@ import { registerHelp } from '~/code/tool/node/log/registry'
 
 registerHelp({
   command: 'task make ssh-key',
-  describe: 'Generate a new SSH key pair; optionally wire it into ~/.ssh/config',
+  describe:
+    'Generate a new SSH key pair; optionally wire it into ~/.ssh/config',
   options: [
-    { long: 'type', describe: 'Key type (ed25519 default, rsa, ecdsa)' },
+    {
+      long: 'type',
+      describe: 'Key type (ed25519 default, rsa, ecdsa)',
+    },
     { long: 'bits', describe: 'Key length — only for --type rsa' },
     { long: 'comment', describe: 'Key comment (default: $USER@$HOST)' },
     { long: 'empty-pass', describe: 'No passphrase' },
-    { long: 'force', describe: 'Overwrite an existing key with this name' },
-    { long: 'host', describe: 'Also add a matching `task add ssh` entry' },
+    {
+      long: 'force',
+      describe: 'Overwrite an existing key with this name',
+    },
+    {
+      long: 'host',
+      describe: 'Also add a matching `task add ssh` entry',
+    },
     { long: 'user', describe: 'Login user (only used with --host)' },
     { long: 'port', describe: 'Port (only used with --host)' },
   ],
   examples: [
     { comment: 'basic ed25519 key', command: 'task make ssh-key prod' },
-    { comment: 'comment + no passphrase', command: 'task make ssh-key prod --comment "lance@laptop" --empty-pass' },
-    { comment: 'also register in ssh config', command: 'task make ssh-key prod --host 1.2.3.4 --user ubuntu' },
+    {
+      comment: 'comment + no passphrase',
+      command:
+        'task make ssh-key prod --comment "someone@laptop" --empty-pass',
+    },
+    {
+      comment: 'also register in ssh config',
+      command: 'task make ssh-key prod --host 1.2.3.4 --user ubuntu',
+    },
   ],
 })
 

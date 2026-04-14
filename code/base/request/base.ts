@@ -64,6 +64,15 @@ export const command_name: List = {
     'woff2_compress',
     'hb-shape',
     'hb-view',
+    'xelatex',
+    'lualatex',
+    'make4ht',
+    'llvm-objdump',
+    'radare2',
+    'rizin',
+    'wasm2wat',
+    'javap',
+    'ildasm',
   ],
 }
 

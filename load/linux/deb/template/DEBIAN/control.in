@@ -1,0 +1,16 @@
+Package: __NAME__
+Version: __VERSION__
+Section: utils
+Priority: optional
+Architecture: all
+Maintainer: __MAINTAINER__
+Homepage: __HOMEPAGE__
+Description: __SUMMARY__
+__DESCRIPTION_INDENTED__
+Depends: __DEPS__
+Recommends: jupyter,
+ antlr4,
+ black,
+ php-cs-fixer,
+ duckdb
+Suggests: swift

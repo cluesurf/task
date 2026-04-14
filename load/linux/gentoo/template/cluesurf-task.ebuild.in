@@ -1,0 +1,18 @@
+EAPI=8
+
+DESCRIPTION="__SUMMARY__"
+HOMEPAGE="__HOMEPAGE__"
+LICENSE="__LICENSE__"
+SLOT="0"
+KEYWORDS="~amd64 ~arm64"
+RDEPEND="__DEPS__"
+DEPEND=""
+BDEPEND=""
+
+# metapackage — no src to fetch.
+S="${WORKDIR}"
+
+src_install() {
+  # metapackage — owns no files.
+  :
+}

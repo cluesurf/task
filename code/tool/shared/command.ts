@@ -70,6 +70,15 @@ export const COMMAND: Record<CommandName, Array<string> | undefined> = {
   woff2_compress: ['woff2_compress'],
   'hb-shape': ['hb-shape'],
   'hb-view': ['hb-view'],
+  xelatex: ['xelatex'],
+  lualatex: ['lualatex'],
+  make4ht: ['make4ht'],
+  'llvm-objdump': ['llvm-objdump'],
+  radare2: ['radare2'],
+  rizin: ['rizin'],
+  wasm2wat: ['wasm2wat'],
+  javap: ['javap'],
+  ildasm: ['ildasm'],
 }
 
 export function getCommand(name: CommandName): Command {

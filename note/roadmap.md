@@ -41,8 +41,8 @@ Pull requests welcome.
   add `asciidoctor` for the asciidoc side).
 - Notebooks: `ipynb` ↔ `py`/`md`/`html` (`jupyter nbconvert`).
 - Slides: `pptx` ↔ `pdf`, `md` ↔ reveal.js / marp.
-- LaTeX pipelines: `tex` → `pdf` via `pdflatex`, `xelatex`, `lualatex`;
-  `tex` → `html` via `pandoc` / `make4ht`.
+- Done: `tex` → `pdf` via `pdflatex` / `xelatex` / `lualatex` (select via
+  `--engine`). `tex` → `html` via `make4ht` or `pandoc`.
 
 **audio**
 - Container + codec transcoding (`mp3`/`aac`/`ogg`/`opus`/`flac`/`wav`)
@@ -206,11 +206,12 @@ Pull requests welcome.
 
 ### download / upload
 
-- Already: hugging-face.
-- Add: `s3`, `gcs`, `azure-blob`, `r2` (already), `ftp`, `sftp`,
-  generic `http` with resume + checksum verify, `webdav`,
-  `ipfs`, `magnet` / `torrent` (`webtorrent`).
-- Auth: OAuth device flow, service accounts, signed-URL upload.
+- Done (download + upload): `s3` (incl. R2 via `--endpoint`), `gcs`,
+  `azure`, `ftp`, `sftp`, `webdav`, `ipfs`. Download-only:
+  `torrent` (magnet + .torrent via aria2c), `hugging-face`. Generic
+  http resume → `task fetch`.
+- Add: OAuth device flow, service-account auth helpers,
+  signed-URL upload, integrity check (`--checksum`).
 
 ### scrape (new verb)
 
@@ -221,11 +222,11 @@ Pull requests welcome.
 
 ### disassemble
 
-- Already: binary (partial).
-- Add: demangle style flags for `objdump`, `llvm-objdump`,
-  `radare2` /`rizin` scripted sessions, `ghidra` headless export
-  (function list, call graph), wasm → wat (`wabt`), jvm `javap`,
-  `.net` `ildasm`.
+- Done: `binary` (objdump, `--tool llvm-objdump`, demangle flags),
+  `wasm` (wasm2wat), `jvm` (javap), `dotnet` (ildasm),
+  `radare` (radare2 / rizin scripted, profile presets), `ghidra`
+  (headless analyze with `--profile functions|calls|imports|exports|strings`
+  via auto-generated Jython post-script).
 
 ### encrypt / decrypt (new verb)
 
@@ -265,11 +266,14 @@ Pull requests welcome.
 - Image gen via local `sdxl` / `stable-diffusion.cpp`, or hosted
   APIs.
 
-### backup / sync (new verb)
+### sync
 
-- Rsync-style directory mirror, with dry-run + checksum mode.
-- `restic`, `borg`, `kopia` wrappers for snapshot-style backup.
-- Git-based doc history extract.
+- Done: `task sync` (rsync-style mirror with dry-run + checksum,
+  local / ssh / SMB NAS auto-mount on macOS + Linux).
+- Done: `task sync snapshot` (restic / borg / kopia with
+  backup / restore / list / prune / init + retention flags).
+- Add: Windows SMB auto-mount (via `net use`), Git-based doc history
+  extract, S3 / rclone transports as first-class targets.
 
 ### measure / benchmark (new verb)
 

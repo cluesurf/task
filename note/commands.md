@@ -91,6 +91,8 @@ task convert audio.wav audio.mp3
 task convert image    -I png  -O webp -i icon.png   -o icon.webp
 task convert audio    -i in.wav -o out.mp3 -b 192k
 task convert document -I docx -O pdf  -i memo.docx  -o memo.pdf
+task convert document -I tex  -O pdf  -i paper.tex  -o paper.pdf --engine xelatex
+task convert document -I tex  -O html -i paper.tex  --tool make4ht
 task convert archive  -I zip  -O tar.gz -i in.zip   -o out.tar.gz
 task convert font     -I ttf  -O woff  -i etch.ttf  -o etch.woff
 task convert time     --input 2026-04-14T12:00:00Z --output-format unix
@@ -128,13 +130,45 @@ task detect bidi source.ts                       # Trojan Source scan
 ## Disassemble
 
 ```sh
-task disassemble binary -i a.out
+task disassemble binary -i a.out                          # objdump
+task disassemble binary -i a.out --tool llvm-objdump       # llvm variant
+task disassemble wasm   mod.wasm                          # wasm2wat
+task disassemble jvm    Main.class --verbose              # javap
+task disassemble dotnet app.dll -o app.il                 # ildasm
+task disassemble radare ./hello --profile functions       # radare2
+task disassemble radare ./hello --tool rizin --profile calls -o graph.dot
 ```
 
 ## Download
 
 ```sh
 task download hugging-face --repo bert-base-uncased -o models/bert
+
+# cloud / storage
+task download s3      s3://bucket/key.bin ./key.bin
+task download s3      s3://bucket/key      ./key --endpoint https://<acct>.r2.cloudflarestorage.com
+task download gcs     gs://bucket/dir/ ./dir/ -r
+task download azure   myblob ./file --account acct --container data
+
+# wire
+task download ftp     ftp://host/file ./file --user me --password secret
+task download sftp    user@host:/path/file ./file -i ~/.ssh/prod
+task download webdav  https://cloud.example.com/remote.php/dav/files/me/a.txt ./a.txt --user me --password pat
+task download ipfs    bafy... ./out
+task download torrent "magnet:?xt=urn:btih:..." ./downloads
+```
+
+## Upload
+
+```sh
+task upload s3      ./key.bin s3://bucket/key.bin
+task upload s3      ./key      s3://bucket/key --endpoint https://<acct>.r2.cloudflarestorage.com
+task upload gcs     ./dir/     gs://bucket/dir/ -r
+task upload azure   ./file.bin myblob --account acct --container data
+task upload ftp     ./file.zip ftp://host/incoming/file.zip --user me --password secret
+task upload sftp    ./file     user@host:/path/file
+task upload webdav  ./a.txt    https://cloud.example.com/remote.php/dav/files/me/a.txt --user me --password pat
+task upload ipfs    ./dir -r --cid-version 1
 ```
 
 ## Dump
@@ -257,7 +291,7 @@ task list process --port 3000            # who owns that port
 task list process --name chrome          # glob / substring on name
 task list process --text node            # ranked fuzzy search
 task list process --filter "memory > 500mb AND name ~ node"
-task list process --user lance
+task list process --user foobar
 task list process --top memory
 task list process --sort cpu --direction descending    # or asc / desc
 task list process --group name           # aggregate by name
@@ -281,7 +315,7 @@ task list ssh                            # ~/.ssh/config entries
 
 ```sh
 task make ssh-key prod
-task make ssh-key prod --comment "lance@laptop"
+task make ssh-key prod --comment "someone@laptop"
 task make ssh-key prod --host 1.2.3.4 --user ubuntu  # key + config
 ```
 
@@ -451,6 +485,23 @@ task subset etch.ttf -o etch.min.ttf -t "Hello world"
 task subset etch.ttf -o etch.latin.woff2 -u U+0020-007F --flavor woff2
 ```
 
+## Sync
+
+```sh
+# rsync-style mirror
+task sync ./src/ /Volumes/Backup/src/ --delete
+task sync ./src/ ./dst/ --dry-run --checksum
+task sync ./site/ user@box:/var/www/site/          # ssh
+task sync ./photos/ smb://nas.local/photos/2026 --user foobar  # NAS / Synology
+
+# snapshot-style (deduplicated, versioned)
+task sync snapshot ~/Documents --repo /backups/home           # default: restic
+task sync snapshot ~/src --tool borg --repo /backups/borg
+task sync snapshot --action list  --repo /backups/home
+task sync snapshot --action prune --repo /backups/home \
+  --keep-daily 7 --keep-weekly 4 --keep-monthly 12
+```
+
 ## Test
 
 ```sh
@@ -517,7 +568,7 @@ task scan ssh   prod                                 # read host keys
 task test ssh   prod
 task open ssh   prod
 
-task add ssh work --host 10.0.0.5 --user lance --key ~/.ssh/work
+task add ssh work --host 10.0.0.5 --user foobar --key ~/.ssh/work
 task set ssh work --port 2222
 task list ssh
 task rm  ssh old

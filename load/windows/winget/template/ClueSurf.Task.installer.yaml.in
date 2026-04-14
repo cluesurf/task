@@ -1,0 +1,16 @@
+PackageIdentifier: ClueSurf.Task
+PackageVersion: __VERSION__
+InstallerType: zip
+NestedInstallerType: portable
+Installers:
+  - Architecture: neutral
+    InstallerUrl: __INSTALLER_URL__
+    InstallerSha256: __INSTALLER_SHA256__
+    NestedInstallerFiles:
+      - RelativeFilePath: cluesurf-task.cmd
+        PortableCommandAlias: cluesurf-task
+Dependencies:
+  PackageDependencies:
+__DEPS__
+ManifestType: installer
+ManifestVersion: 1.6.0

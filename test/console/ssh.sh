@@ -25,7 +25,7 @@ task set ssh prod --port 2222 -f text >/dev/null 2>&1
 expect_contains "Port 2222" "cat $HOME/.ssh/config" "Port 2222"
 
 step "add second entry"
-task add ssh work --host 10.0.0.5 --user lance -f text >/dev/null 2>&1
+task add ssh work --host 10.0.0.5 --user foobar -f text >/dev/null 2>&1
 expect "two Host blocks" test "$(grep -c '^Host ' "$HOME/.ssh/config")" -eq 2
 
 step "list shows both"

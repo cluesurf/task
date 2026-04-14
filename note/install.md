@@ -38,8 +38,28 @@ Missing tools tracked in [roadmap.md](./roadmap.md).
 
 ## Linux
 
-No prebuilt package yet. See the repo `Dockerfile` for the canonical
-list of apt/brew packages. A `.deb` repo is planned ([roadmap.md](./roadmap.md)).
+### Ubuntu / Debian
+
+Pull the native toolchain via apt:
+
+```sh
+curl -fsSL https://cluesurf.github.io/apt/pubkey.asc \
+  | sudo gpg --dearmor -o /usr/share/keyrings/cluesurf.gpg
+echo "deb [signed-by=/usr/share/keyrings/cluesurf.gpg] https://cluesurf.github.io/apt stable main" \
+  | sudo tee /etc/apt/sources.list.d/cluesurf.list
+sudo apt update
+sudo apt install cluesurf-task
+```
+
+Source: [load/deb](../load/deb). `cluesurf-task` is a metapackage that
+pulls in every native CLI task uses (ffmpeg, imagemagick, pandoc,
+libreoffice, etc.). Swift is not in apt — install from swift.org when
+`task compile swift` is needed.
+
+### Other distros
+
+No prebuilt package. See the repo `Dockerfile` for the canonical list
+of apt packages and adapt per your package manager.
 
 ## Node package
 
@@ -54,4 +74,49 @@ Inside a project, run the CLI via pnpm:
 
 ```sh
 pnpm exec task convert image --input a.png --output a.jpg
+```
+
+## Archive tool matrix
+
+`task archive` / `task extract` route by extension. Install only the
+backends you need — `7z` + `unar` + `tar` + `unzip` covers most real
+input. RAR creation is proprietary and rarely needed; skip it unless
+you have to.
+
+| format | extract                    | create                                           |
+| ------ | -------------------------- | ------------------------------------------------ |
+| `.zip` | `unzip` / `7z` / `unar`    | `zip` / `7z`                                     |
+| `.rar` | `unar` (preferred) / `unrar` | `rar` (non-free)                               |
+| `.7z`  | `7z`                       | `7z`                                             |
+| `.tar(.*)` | `tar`                  | `tar`                                            |
+| `.gz` / `.bz2` / `.xz` / `.zst` | `7z` / `tar`  | `7z` / `tar`                                     |
+| unknown container | `atool` / `patool` | `atool` / `patool`                               |
+
+### macOS (`brew`)
+
+```sh
+brew install unar                 # .rar + generic extract
+brew install sevenzip             # .7z + generic (zip/tar) extract
+brew install p7zip                # alias; either works
+brew install atool                # wraps everything by extension
+brew install --cask rar           # .rar *creation* (proprietary)
+# unzip / tar ship in the base OS.
+```
+
+### Linux (`apt` shown; `pacman` / `dnf` analogous)
+
+```sh
+apt install unar unzip p7zip-full atool
+pip install patool                # wider format dispatch
+# `rar` / `unrar-nonfree` are in non-free repos, download direct
+# from https://www.rarlab.com/rar_add.htm when needed.
+```
+
+### Windows (`winget` / `scoop` / `choco`)
+
+```sh
+winget install 7zip.7zip            # extract + create .zip / .7z / .tar
+winget install RARLab.WinRAR        # installs `Rar.exe` + `UnRAR.exe`
+scoop install unar                  # or via MSYS2
+# `unzip` / `tar` are in Windows 10+ via BSD-tar; `curl` too.
 ```
