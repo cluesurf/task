@@ -149,7 +149,7 @@ async function test() {
   task.code('api-key')
 
   const work = await task.convert({
-    surf: true,
+    remote: true,
     work: true,
     input: { format: 'png', file: { path: 'image.png' } },
     output: { format: 'jpg', file: { path: 'image.jpg' } },
@@ -193,8 +193,10 @@ async function test() {
 json, json:pretty, plain, color
 -i, --input-file-path
 -o, --output-file-path
+-I, --input-format
+-O, --output-format
 -W, --work (return work instead of output)
--S, --surf (use http API)
+-R, --remote (use http API)
 -E, --show (explain the command)
 -s, --syntax
 

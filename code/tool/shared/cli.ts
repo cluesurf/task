@@ -154,6 +154,60 @@ function mapLikeToYargsType(like?: string): string {
 }
 
 /**
+ * Build a yargs CommandModule for a single action-thing, given
+ * its form schema name and a lazy importer for its Node handler.
+ * Reduces each `<thing>/console.ts` to one tiny export.
+ */
+
+export function buildActionCommand(input: {
+  command: string
+  describe: string
+  mesh: Record<string, unknown>
+  formName: string
+  loadHandler: () => Promise<{ default: (input: unknown) => Promise<unknown> } | Record<string, unknown>>
+}): import('yargs').CommandModule {
+  const form = input.mesh[input.formName]
+  const options = form
+    ? collectCliOptions(input.mesh as never, form as never)
+    : []
+
+  return {
+    command: input.command,
+    describe: input.describe,
+    builder: y => applyFormOptions(y, options),
+    handler: async argv => {
+      const mod = await input.loadHandler()
+      const fn =
+        'default' in mod && typeof mod.default === 'function'
+          ? (mod.default as (x: unknown) => Promise<unknown>)
+          : findFirstFunction(mod as Record<string, unknown>)
+      if (!fn) {
+        throw new Error(
+          `No handler function exported by module for command '${input.command}'`,
+        )
+      }
+      const unpacked = unpackFormArgv(
+        argv as Record<string, unknown>,
+        options,
+      )
+      await fn(unpacked)
+    },
+  }
+}
+
+function findFirstFunction(
+  mod: Record<string, unknown>,
+): ((x: unknown) => Promise<unknown>) | null {
+  for (const key of Object.keys(mod)) {
+    const v = mod[key]
+    if (typeof v === 'function') {
+      return v as (x: unknown) => Promise<unknown>
+    }
+  }
+  return null
+}
+
+/**
  * Unflatten a yargs argv back into the nested input shape.
  * Uses each CliOption's `path` to place the value.
  */

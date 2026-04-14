@@ -123,12 +123,71 @@ Never relative imports across top-level boundaries.
   `download/console.ts`). Each defines the yargs `CommandModule`
   for its verb and imports its concrete sub-things.
 - **Concrete per-thing consoles**:
-  `code/call/<action>/<thing>/console.ts`. Exports a yargs
-  `CommandModule` whose handler lazy-imports `./node` so heavy
-  deps (DuckDB, ffmpeg, etc.) only load when the command runs.
-  Options are derived from the generated form schema via
-  `code/tool/shared/cli.ts` helpers — don't hand-write yargs
-  option specs.
+  `code/call/<action>/<thing>/console.ts`, and sometimes deeper
+  when an action ships per-implementation subfolders. For
+  example `format` and `compile` both nest under a `/code/`
+  folder and then split by language:
+  `code/call/format/code/<language>/node.ts` and
+  `code/call/compile/code/<language>/node.ts`. **The intermediate
+  `/code/` path segment is organizational only; it is NOT a CLI
+  level.** From the shell the command is flat
+  (`task format python ...`, `task compile c ...`), so the
+  group-level `code/call/format/console.ts` and
+  `code/call/compile/console.ts` import the language consoles
+  directly (`./code/python/console`, `./code/c/console`, etc.)
+  without a mid-level aggregator.
+  Each concrete console exports a yargs `CommandModule` whose
+  handler lazy-imports `./node` so heavy deps (DuckDB, ffmpeg,
+  etc.) only load when the command runs. Options are derived
+  from the generated form schema via `code/tool/shared/cli.ts`
+  helpers — don't hand-write yargs option specs.
+
+## Action handler pattern
+
+Every Node action implementation in `code/call/<action>/<thing>/node.ts`
+dispatches on an input `handle` field that splits the request into
+one of three call modes. Preserve this shape; don't flatten it even
+for simple actions.
+
+```ts
+export async function <action>Node(source, native) {
+  const input = <Action>NodeInputParser().parse(source)
+
+  switch (input.handle) {
+    case 'remote':
+      return await <action>NodeRemote(input, native)
+    case 'external':
+      return await <action>NodeLocalExternal(input, native)
+    default:
+      return await <action>NodeLocalInternal(input, native)
+  }
+}
+```
+
+The three modes:
+
+- **`local / internal`** (default): input and output paths are
+  already inside the repo's own working area. Straight pass-through
+  to the local worker.
+- **`local / external`**: input files live at arbitrary filesystem
+  paths outside our working area.
+  `resolveInputForLocalExternalNode` normalizes them before calling
+  the shared `local` worker.
+- **`remote`**: input arrived over the network (task.surf HTTP
+  server, another worker). `resolveInputForRemoteNode` pulls the
+  bytes down; `<action>NodeClientInputParser` validates the
+  client-facing shape; the request is then dispatched via
+  `buildRequestTo<Action>` + `resolveWorkFileNode` rather than
+  running locally.
+
+Both `local` branches converge on a single `<action>NodeLocal`
+worker that calls into `./command.ts` (or a per-tool
+`./<tool>/node.ts`) to actually run the binary.
+
+Canonical reference: `code/call/compile/code/c/node.ts`. Shared
+resolver helpers live at `code/call/<action>/<thing>/tool/node.ts`
+(e.g. `code/call/compile/code/tool/node.ts`) and are reused across
+every concrete sub-thing of that action.
 
 ## Principles
 

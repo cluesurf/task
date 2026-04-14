@@ -9,15 +9,31 @@
  * heavy native deps (DuckDB, ffmpeg, etc.) only load when a
  * command actually runs.
  *
- * To register a new top-level action verb (e.g. `extract`,
- * `validate`, etc.): create `code/call/<action>/console.ts` and
- * import it here.
+ * To add a new action verb: create `code/call/<action>/console.ts`
+ * and import it here.
  */
 
 import yargs from 'yargs'
 
+import { archiveConsole } from '~/code/call/archive/console'
+import { checkConsole } from '~/code/call/check/console'
+import { compileConsole } from '~/code/call/compile/console'
 import { convertConsole } from '~/code/call/convert/console'
+import { cropConsole } from '~/code/call/crop/console'
+import { disassembleConsole } from '~/code/call/disassemble/console'
 import { downloadConsole } from '~/code/call/download/console'
+import { extractConsole } from '~/code/call/extract/console'
+import { formatConsole } from '~/code/call/format/console'
+import { generateConsole } from '~/code/call/generate/console'
+import { inspectConsole } from '~/code/call/inspect/console'
+import { optimizeConsole } from '~/code/call/optimize/console'
+import { parseConsole } from '~/code/call/parse/console'
+import { removeConsole } from '~/code/call/remove/console'
+import { resizeConsole } from '~/code/call/resize/console'
+import { sanitizeConsole } from '~/code/call/sanitize/console'
+import { sliceConsole } from '~/code/call/slice/console'
+import { validateConsole } from '~/code/call/validate/console'
+import { verifyConsole } from '~/code/call/verify/console'
 
 process.on('uncaughtException', err => {
   logError(err)
@@ -29,10 +45,27 @@ async function main() {
 
   await yargs(argv)
     .scriptName('task')
-    .usage('$0 <action> <thing> [options]')
+    .usage('$0 <action> [thing] [options]')
+    .command(archiveConsole)
+    .command(checkConsole)
+    .command(compileConsole)
     .command(convertConsole)
+    .command(cropConsole)
+    .command(disassembleConsole)
     .command(downloadConsole)
-    .demandCommand(1, 'Specify an action (convert, download, etc.)')
+    .command(extractConsole)
+    .command(formatConsole)
+    .command(generateConsole)
+    .command(inspectConsole)
+    .command(optimizeConsole)
+    .command(parseConsole)
+    .command(removeConsole)
+    .command(resizeConsole)
+    .command(sanitizeConsole)
+    .command(sliceConsole)
+    .command(validateConsole)
+    .command(verifyConsole)
+    .demandCommand(1, 'Specify an action')
     .strict()
     .help()
     .alias('help', 'h')

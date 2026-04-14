@@ -2,7 +2,7 @@ import {
   CompileCNodeInputParser,
   CompileCNodeLocalInputParser,
   CompileCNodeClientInputParser,
-} from '~/code/form/action/compile/code/c/node/parsers'
+} from '~/code/form/action/compile/code/c/node/take'
 import {
   CompileCNodeInput,
   CompileCNodeLocalInternalInput,

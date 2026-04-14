@@ -1,4 +1,4 @@
-import { CompileCBrowserInputParser } from '~/code/form/action/compile/code/c/browser/parsers'
+import { CompileCBrowserInputParser } from '~/code/form/action/compile/code/c/browser/take'
 import {
   CompileCBrowserInput,
   CompileCBrowserLocalInput,

@@ -7,7 +7,7 @@ function call() {
   eval "$line"
 }
 
-# cp ../file/base/code/example.rs test/hold/example.rs
+# cp ../seed-base/base/code/example.rs test/hold/example.rs
 # cp test/file/code/example.c test/hold/example.c
 # cp test/file/code/quicksort.jl test/hold/quicksort.jl
 # cp test/file/code/quicksort.py test/hold/quicksort.py
