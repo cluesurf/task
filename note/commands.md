@@ -654,13 +654,10 @@ run `task <verb> --help` to see available commands
 
 ## Not yet implemented
 
-- Filter DSL: `task list process --filter "memory > 500mb"`
-- Aggregation shortcuts: `--show cpu:sum`, `--show memory:sum`
-- Ranked fuzzy search (fuse.js) — `--text` is substring match today
+- Spreadsheet data verbs: `task select / filter / sort / group / style /
+  freeze` for xlsx / csv / parquet (DuckDB + exceljs split planned)
 - Font metadata updates: `task update font --name/--family/--style`
 - `task combine image.png audio.mp3 -o video.mp4` (heterogeneous)
-- `task convert video.mp4 --fps 30` (knob exists on the schema as
-  `--frame-rate`; `fps` alias pending)
 - FEA DSL shortcuts: `--dotless-i`, `--anchor`, `--attach`, etc.
 - `task map font` (variable-font axis control)
 - Folder listing with `--first / --last / --sort`
