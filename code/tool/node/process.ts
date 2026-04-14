@@ -23,7 +23,11 @@ export function exec(
   const args = list.slice(1)
 
   return new Promise(function (resolve, reject) {
-    const child = child_process.spawn(command, args, { shell: true })
+    // No `shell: true`: our commands build argv arrays, so there's
+    // nothing to expand. Node 22.12 deprecated the combo because
+    // argv isn't shell-escaped; bypassing the shell is safer AND
+    // silences DEP0190.
+    const child = child_process.spawn(command, args)
 
     const stdout: Array<string> = []
     child.stdout.setEncoding('utf-8')
