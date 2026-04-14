@@ -1,8 +1,8 @@
 import {
+  FileContent,
   FileContentWithSha256,
   FileInputPath,
   FilePath,
-  LocalOutputPath,
   LocalPath,
   RemoteInputPath,
 } from '~/code/form/object/file'
@@ -35,35 +35,35 @@ export type ConvertFontWithFontForgeNodeInput =
 export type ConvertFontWithFontForgeNodeLocalExternalInput = {
   handle: 'external'
   input: {
-    format: FontFormat
-    file: RemoteInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: FontFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
 export type ConvertFontWithFontForgeNodeLocalInput = {
   input: {
-    format: FontFormat
+    format: string
     file: LocalPath
   }
   output: {
-    format: FontFormat
-    file: LocalPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
 export type ConvertFontWithFontForgeNodeLocalInternalInput = {
   handle?: 'internal'
   input: {
-    format: FontFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: FontFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
@@ -73,12 +73,12 @@ export type ConvertFontWithFontForgeNodeOutput = {
 export type ConvertFontWithFontForgeNodeRemoteInput = {
   handle: 'remote'
   input: {
-    format: FontFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: FontFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }

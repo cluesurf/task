@@ -1,4 +1,4 @@
-import { ImageMagickGravity } from '~/code/form/object/image-magick'
+import { ImageMagickGravity } from '~/code/form/object/imagemagick'
 
 export type ReplaceImageColorWithImageMagick = {
   inputPath: string

@@ -3,10 +3,10 @@ import { z } from 'zod'
 import * as code from '~/code/form/code'
 
 import {
+  FileContentParser,
   FileContentWithSha256Parser,
   FileInputPathParser,
   FilePathParser,
-  LocalOutputPathParser,
   LocalPathParser,
   RemoteInputPathParser,
 } from '~/code/form/object/file/take'
@@ -16,7 +16,7 @@ import {
   ImageMagickCompressionParser,
   ImageMagickInputFormatParser,
   ImageMagickOutputFormatParser,
-} from '~/code/form/object/image-magick/take'
+} from '~/code/form/object/imagemagick/take'
 
 export const ConvertImageWithImageMagickNodeClientInputParser =
   z.object({
@@ -95,15 +95,15 @@ export const ConvertImageWithImageMagickNodeLocalExternalInputParser =
   z.object({
     handle: z.literal('external'),
     input: z.object({
-      format: z.lazy(() => ImageMagickInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => RemoteInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => ImageMagickOutputFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
     colorCount: z.optional(z.number().int().gte(0)),
@@ -129,12 +129,12 @@ export type ConvertImageWithImageMagickNodeLocalExternalInputRecord =
 export const ConvertImageWithImageMagickNodeLocalInputParser = z.object(
   {
     input: z.object({
-      format: z.lazy(() => ImageMagickInputFormatParser),
+      format: z.string(),
       file: z.lazy(() => LocalPathParser),
     }),
     output: z.object({
-      format: z.lazy(() => ImageMagickOutputFormatParser),
-      file: z.lazy(() => LocalPathParser),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
     colorCount: z.optional(z.number().int().gte(0)),
@@ -161,15 +161,15 @@ export const ConvertImageWithImageMagickNodeLocalInternalInputParser =
   z.object({
     handle: z.optional(z.literal('internal')),
     input: z.object({
-      format: z.lazy(() => ImageMagickInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => FileInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => ImageMagickOutputFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
     colorCount: z.optional(z.number().int().gte(0)),
@@ -204,15 +204,15 @@ export const ConvertImageWithImageMagickNodeRemoteInputParser =
   z.object({
     handle: z.literal('remote'),
     input: z.object({
-      format: z.lazy(() => ImageMagickInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => FileInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => ImageMagickOutputFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
     colorCount: z.optional(z.number().int().gte(0)),

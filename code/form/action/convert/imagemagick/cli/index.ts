@@ -3,18 +3,16 @@ import {
   ImageMagicColorMatrix,
   ImageMagickColorSpace,
   ImageMagickCompression,
-  ImageMagickInputFormat,
-  ImageMagickOutputFormat,
-} from '~/code/form/object/image-magick'
+} from '~/code/form/object/imagemagick'
 
 export type ConvertImageWithImageMagickCommandInput = {
   input: {
-    format: ImageMagickInputFormat
+    format: string
     file: LocalPath
   }
   output: {
-    format: ImageMagickOutputFormat
-    file: LocalPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   colorCount?: number

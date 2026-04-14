@@ -1,17 +1,13 @@
-import {
-  EnscriptInputFormat,
-  EnscriptOutputFormat,
-} from '~/code/form/object/enscript'
 import { LocalPath } from '~/code/form/object/file'
 
 export type ConvertDocumentWithEnscriptCommandInput = {
   input: {
-    format: EnscriptInputFormat
+    format: string
     file: LocalPath
   }
   output: {
-    format: EnscriptOutputFormat
-    file: LocalPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }

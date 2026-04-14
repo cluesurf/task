@@ -7,18 +7,16 @@ import {
   ImageMagicColorMatrixParser,
   ImageMagickColorSpaceParser,
   ImageMagickCompressionParser,
-  ImageMagickInputFormatParser,
-  ImageMagickOutputFormatParser,
-} from '~/code/form/object/image-magick/take'
+} from '~/code/form/object/imagemagick/take'
 
 export const ConvertImageWithImageMagickCommandInputParser = z.object({
   input: z.object({
-    format: z.lazy(() => ImageMagickInputFormatParser),
+    format: z.string(),
     file: z.lazy(() => LocalPathParser),
   }),
   output: z.object({
-    format: z.lazy(() => ImageMagickOutputFormatParser),
-    file: z.lazy(() => LocalPathParser),
+    format: z.string(),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
   colorCount: z.optional(z.number().int().gte(0)),

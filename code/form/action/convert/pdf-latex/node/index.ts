@@ -39,34 +39,37 @@ export type ConvertLatexWithPdfLatexNodeInput =
 export type ConvertLatexWithPdfLatexNodeLocalExternalInput = {
   handle: 'external'
   input: {
-    format: PdfLatexInputFormat
-    file: RemoteInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PdfLatexOutputFormat
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
 export type ConvertLatexWithPdfLatexNodeLocalInput = {
   input: {
-    format: PdfLatexInputFormat
+    format: string
     file: LocalPath
   }
   output: {
-    format: PdfLatexOutputFormat
+    format: string
     directory: LocalPath
+    file?: LocalPath
   }
   pathScope?: string
 }
 export type ConvertLatexWithPdfLatexNodeLocalInternalInput = {
   handle?: 'internal'
   input: {
-    format: PdfLatexInputFormat
-    file: FileInputPath | FileContent
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PdfLatexOutputFormat
+    format: string
     directory?: LocalOutputPath
+    file?: LocalPath
   }
   pathScope?: string
 }
@@ -76,12 +79,13 @@ export type ConvertLatexWithPdfLatexNodeOutput = {
 export type ConvertLatexWithPdfLatexNodeRemoteInput = {
   handle: 'remote'
   input: {
-    format: PdfLatexInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PdfLatexOutputFormat
+    format: string
     directory?: LocalOutputPath
+    file?: LocalPath
   }
   pathScope?: string
 }

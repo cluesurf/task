@@ -1,10 +1,10 @@
 import { z } from 'zod'
 
 import {
+  FileContentParser,
   FileContentWithSha256Parser,
   FileInputPathParser,
   FilePathParser,
-  LocalOutputPathParser,
   LocalPathParser,
   RemoteInputPathParser,
 } from '~/code/form/object/file/take'
@@ -64,15 +64,15 @@ export const ConvertDocumentWithPandocNodeLocalExternalInputParser =
   z.object({
     handle: z.literal('external'),
     input: z.object({
-      format: z.lazy(() => PandocInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => RemoteInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => PandocOutputFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
   })
@@ -82,12 +82,12 @@ export type ConvertDocumentWithPandocNodeLocalExternalInputRecord =
 
 export const ConvertDocumentWithPandocNodeLocalInputParser = z.object({
   input: z.object({
-    format: z.lazy(() => PandocInputFormatParser),
+    format: z.string(),
     file: z.lazy(() => LocalPathParser),
   }),
   output: z.object({
-    format: z.lazy(() => PandocOutputFormatParser),
-    file: z.lazy(() => LocalPathParser),
+    format: z.string(),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
 })
@@ -100,15 +100,15 @@ export const ConvertDocumentWithPandocNodeLocalInternalInputParser =
   z.object({
     handle: z.optional(z.literal('internal')),
     input: z.object({
-      format: z.lazy(() => PandocInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => FileInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => PandocOutputFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
   })
@@ -127,15 +127,15 @@ export type ConvertDocumentWithPandocNodeOutputRecord = z.infer<
 export const ConvertDocumentWithPandocNodeRemoteInputParser = z.object({
   handle: z.literal('remote'),
   input: z.object({
-    format: z.lazy(() => PandocInputFormatParser),
+    format: z.string(),
     file: z.union([
-      z.lazy(() => FileInputPathParser),
-      z.lazy(() => FileContentWithSha256Parser),
+      z.lazy(() => FilePathParser),
+      z.lazy(() => FileContentParser),
     ]),
   }),
   output: z.object({
-    format: z.lazy(() => PandocOutputFormatParser),
-    file: z.optional(z.lazy(() => LocalOutputPathParser)),
+    format: z.string(),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
 })

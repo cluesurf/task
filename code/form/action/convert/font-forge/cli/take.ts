@@ -1,16 +1,15 @@
 import { z } from 'zod'
 
 import { LocalPathParser } from '~/code/form/object/file/take'
-import { FontFormatParser } from '~/code/form/object/font/take'
 
 export const ConvertFontWithFontForgeCommandInputParser = z.object({
   input: z.object({
-    format: z.lazy(() => FontFormatParser),
+    format: z.string(),
     file: z.lazy(() => LocalPathParser),
   }),
   output: z.object({
-    format: z.lazy(() => FontFormatParser),
-    file: z.lazy(() => LocalPathParser),
+    format: z.string(),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
 })

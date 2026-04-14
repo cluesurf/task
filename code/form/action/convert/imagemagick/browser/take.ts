@@ -12,7 +12,7 @@ import {
   ImageMagickCompressionParser,
   ImageMagickInputFormatParser,
   ImageMagickOutputFormatParser,
-} from '~/code/form/object/image-magick/take'
+} from '~/code/form/object/imagemagick/take'
 
 export const ConvertImageWithImageMagickBrowserInputParser = z.union([
   z.lazy(() => ConvertImageWithImageMagickBrowserRemoteInputParser),

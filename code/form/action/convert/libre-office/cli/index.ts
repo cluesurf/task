@@ -1,17 +1,14 @@
 import { LocalPath } from '~/code/form/object/file'
-import {
-  LibreOfficeInputFormat,
-  LibreOfficeOutputFormat,
-} from '~/code/form/object/libre-office'
 
 export type ConvertDocumentWithLibreOfficeCommandInput = {
   input: {
-    format: LibreOfficeInputFormat
+    format: string
     file: LocalPath
   }
   output: {
-    format: LibreOfficeOutputFormat
+    format: string
     directory: LocalPath
+    file?: LocalPath
   }
   pathScope?: string
 }

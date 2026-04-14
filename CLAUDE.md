@@ -82,7 +82,7 @@ Never relative imports across top-level boundaries.
   any raw JSON data files those lists point to. **Never put
   node.ts or any `child_process` code here** — it belongs next
   to the action that uses it. Canonical example:
-  `code/base/image-magick/` has only `base.ts` + JSON format
+  `code/base/imagemagick/` has only `base.ts` + JSON format
   lists.
 - **Action implementations**: `code/call/<action>/<thing>/` —
   `base.ts` (action-input form schemas, via `buildConvertForms`
@@ -291,6 +291,87 @@ For download/upload or other action kinds without a helper, hand-write
 the `Form`/`List`/`Hash` declarations in `base.ts` (still using
 `@cluesurf/form` primitives, not zod). The codegen picks them up the
 same way.
+
+## Format-pair dispatch (public API)
+
+The public `task.convert({...})` API takes only `input.format` +
+`output.format` — never a tool name. The caller writes:
+
+```ts
+await task.convert({
+  input:  { format: 'pptx', file: { path: 'a.pptx' } },
+  output: { format: 'xlsx', file: { path: 'a.xlsx' } },
+})
+```
+
+The right backend (libre-office, pandoc, imagemagick, ffmpeg, ...) is
+resolved from the `(inputFormat, outputFormat)` pair. The tool name
+is an implementation detail, not part of the API.
+
+### How the mapping is derived
+
+Each tool declares its supported formats as `*_input_format` and
+`*_output_format` `List` schemas in `code/base/<tool>/base.ts` (e.g.
+`libre_office_input_format`, `pandoc_output_format`). Those lists are
+the source of truth for which tool handles which pair.
+
+At codegen time (`pnpm make:type`, driven by `make/index.ts`), walk
+every `convert_<thing>_with_<tool>_forms` declaration and emit, into
+`code/form/task.ts`:
+
+1. A flat `(inputFormat × outputFormat) → tool` map per action,
+   derived by crossing the two format lists referenced by
+   `buildConvertForms`.
+2. One TypeScript overload per `(inputFormat, outputFormat)` pair,
+   whose return type points at the matching tool's
+   `Convert<Thing>With<Tool>NodeOutput`.
+
+Because the lists are known statically at generation time, the
+overload set is finite. TypeScript narrowing picks the right one from
+the literal `format` strings — no conditional types, no inference
+gymnastics at compile time.
+
+### Runtime dispatch
+
+A flat `Record<"in:out", loader>` does not scale — ffmpeg alone
+declares hundreds of input × hundreds of output formats. Codegen
+instead emits **one entry per tool**, each holding the tool's
+`*_input_format` and `*_output_format` lists as `Set`s plus a lazy
+`load()`:
+
+```ts
+// code/form/task/dispatch.node.ts (AUTO-GENERATED)
+export const convertDispatchNode: ConvertEntry[] = [
+  { tool: 'imagemagick', input: new Set(IMAGEMAGICK_IN), output: new Set(IMAGEMAGICK_OUT), load: () => import('~/code/call/convert/image/imagemagick/node') },
+  { tool: 'ffmpeg',      input: new Set(FFMPEG_IN),      output: new Set(FFMPEG_OUT),      load: () => import('~/code/call/convert/video/ffmpeg/node') },
+  // ...
+]
+```
+
+Lookup walks the table and picks the first entry whose `input` and
+`output` sets both contain the requested formats. `O(tools)` — usually
+under 20 — not `O(in × out)`. The generated dispatch table and the
+generated `Task` overloads come from the same pass and stay in sync
+automatically.
+
+This replaces every `testConvertDocumentWithLibreOffice`-style runtime
+chain of `if` branches in `code/call/<action>/<thing>/node.ts`.
+
+### Conflicts
+
+When two tools claim the same `(in, out)` pair (e.g. pandoc and
+libre-office both handle `docx:pdf`), disambiguate with an explicit
+`tool: 'pandoc'` field on the input. The generated overloads include
+both; the dispatch map checks for `input.tool` first, then falls back
+to a per-pair default picked in `code/call/<action>/<thing>/base.ts`.
+
+### Canonical reference
+
+See `code/call/convert/document/base.ts` — multiple backends
+(libre-office, pandoc, calibre, puppeteer, pdf-latex) each declaring
+their own input/output format lists. The dispatch layer in
+`code/form/task.ts` (generated) crosses those lists into a single
+typed `convert` surface.
 
 ## Known tech debt
 

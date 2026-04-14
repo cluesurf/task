@@ -1,20 +1,17 @@
 import { z } from 'zod'
 
 import { LocalPathParser } from '~/code/form/object/file/take'
-import {
-  LibreOfficeInputFormatParser,
-  LibreOfficeOutputFormatParser,
-} from '~/code/form/object/libre-office/take'
 
 export const ConvertDocumentWithLibreOfficeCommandInputParser =
   z.object({
     input: z.object({
-      format: z.lazy(() => LibreOfficeInputFormatParser),
+      format: z.string(),
       file: z.lazy(() => LocalPathParser),
     }),
     output: z.object({
-      format: z.lazy(() => LibreOfficeOutputFormatParser),
+      format: z.string(),
       directory: z.lazy(() => LocalPathParser),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
   })

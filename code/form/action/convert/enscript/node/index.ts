@@ -3,10 +3,10 @@ import {
   EnscriptOutputFormat,
 } from '~/code/form/object/enscript'
 import {
+  FileContent,
   FileContentWithSha256,
   FileInputPath,
   FilePath,
-  LocalOutputPath,
   LocalPath,
   RemoteInputPath,
 } from '~/code/form/object/file'
@@ -38,35 +38,35 @@ export type ConvertDocumentWithEnscriptNodeInput =
 export type ConvertDocumentWithEnscriptNodeLocalExternalInput = {
   handle: 'external'
   input: {
-    format: EnscriptInputFormat
-    file: RemoteInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: EnscriptOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
 export type ConvertDocumentWithEnscriptNodeLocalInput = {
   input: {
-    format: EnscriptInputFormat
+    format: string
     file: LocalPath
   }
   output: {
-    format: EnscriptOutputFormat
-    file: LocalPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
 export type ConvertDocumentWithEnscriptNodeLocalInternalInput = {
   handle?: 'internal'
   input: {
-    format: EnscriptInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: EnscriptOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
@@ -76,12 +76,12 @@ export type ConvertDocumentWithEnscriptNodeOutput = {
 export type ConvertDocumentWithEnscriptNodeRemoteInput = {
   handle: 'remote'
   input: {
-    format: EnscriptInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: EnscriptOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }

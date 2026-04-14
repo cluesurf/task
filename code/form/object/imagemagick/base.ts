@@ -10,7 +10,7 @@ import {
   ImageMagickGravity,
   ImageMagickInputFormat,
   ImageMagickOutputFormat,
-} from '~/code/form/object/image-magick'
+} from '~/code/form/object/imagemagick'
 
 export const IMAGE_MAGICK_CHANNEL: ReadonlyArray<ImageMagickChannel> = [
   'red',

@@ -1,8 +1,8 @@
 import {
+  FileContent,
   FileContentWithSha256,
   FileInputPath,
   FilePath,
-  LocalOutputPath,
   LocalPath,
   RemoteInputPath,
 } from '~/code/form/object/file'
@@ -38,35 +38,35 @@ export type ConvertDocumentWithPandocNodeInput =
 export type ConvertDocumentWithPandocNodeLocalExternalInput = {
   handle: 'external'
   input: {
-    format: PandocInputFormat
-    file: RemoteInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PandocOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
 export type ConvertDocumentWithPandocNodeLocalInput = {
   input: {
-    format: PandocInputFormat
+    format: string
     file: LocalPath
   }
   output: {
-    format: PandocOutputFormat
-    file: LocalPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
 export type ConvertDocumentWithPandocNodeLocalInternalInput = {
   handle?: 'internal'
   input: {
-    format: PandocInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PandocOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
@@ -76,12 +76,12 @@ export type ConvertDocumentWithPandocNodeOutput = {
 export type ConvertDocumentWithPandocNodeRemoteInput = {
   handle: 'remote'
   input: {
-    format: PandocInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PandocOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }

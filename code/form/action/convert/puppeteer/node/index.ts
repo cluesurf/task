@@ -1,9 +1,9 @@
 import { TextStyle } from '~/code/form/action/convert'
 import {
+  FileContent,
   FileContentWithSha256,
   FileInputPath,
   FilePath,
-  LocalOutputPath,
   LocalPath,
   RemoteInputPath,
 } from '~/code/form/object/file'
@@ -54,12 +54,12 @@ export type ConvertHtmlWithPuppeteerNodeInput =
 export type ConvertHtmlWithPuppeteerNodeLocalExternalInput = {
   handle: 'external'
   input: {
-    format: PuppeteerInputFormat
-    file: RemoteInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PuppeteerOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   viewport: {
@@ -71,12 +71,12 @@ export type ConvertHtmlWithPuppeteerNodeLocalExternalInput = {
 }
 export type ConvertHtmlWithPuppeteerNodeLocalInput = {
   input: {
-    format: PuppeteerInputFormat
+    format: string
     file: LocalPath
   }
   output: {
-    format: PuppeteerOutputFormat
-    file: LocalPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   viewport: {
@@ -89,12 +89,12 @@ export type ConvertHtmlWithPuppeteerNodeLocalInput = {
 export type ConvertHtmlWithPuppeteerNodeLocalInternalInput = {
   handle?: 'internal'
   input: {
-    format: PuppeteerInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PuppeteerOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   viewport: {
@@ -110,12 +110,12 @@ export type ConvertHtmlWithPuppeteerNodeOutput = {
 export type ConvertHtmlWithPuppeteerNodeRemoteInput = {
   handle: 'remote'
   input: {
-    format: PuppeteerInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PuppeteerOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   viewport: {
@@ -192,12 +192,12 @@ export type ConvertMarkdownWithPuppeteerNodeInput =
 export type ConvertMarkdownWithPuppeteerNodeLocalExternalInput = {
   handle: 'external'
   input: {
-    format: PuppeteerMarkdownInputFormat
-    file: RemoteInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PuppeteerOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   viewport?: {
@@ -223,14 +223,12 @@ export type ConvertMarkdownWithPuppeteerNodeLocalExternalInput = {
 }
 export type ConvertMarkdownWithPuppeteerNodeLocalInput = {
   input: {
-    format: PuppeteerMarkdownInputFormat
-    file: {
-      content: ArrayBuffer
-    }
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PuppeteerOutputFormat
-    file: LocalPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   viewport?: {
@@ -257,12 +255,12 @@ export type ConvertMarkdownWithPuppeteerNodeLocalInput = {
 export type ConvertMarkdownWithPuppeteerNodeLocalInternalInput = {
   handle?: 'internal'
   input: {
-    format: PuppeteerMarkdownInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PuppeteerOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   viewport?: {
@@ -292,12 +290,12 @@ export type ConvertMarkdownWithPuppeteerNodeOutput = {
 export type ConvertMarkdownWithPuppeteerNodeRemoteInput = {
   handle: 'remote'
   input: {
-    format: PuppeteerMarkdownInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PuppeteerOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   viewport?: {
@@ -374,12 +372,12 @@ export type ConvertTxtWithPuppeteerNodeInput =
 export type ConvertTxtWithPuppeteerNodeLocalExternalInput = {
   handle: 'external'
   input: {
-    format: PuppeteerTxtInputFormat
-    file: RemoteInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PuppeteerOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   viewport?: {
@@ -398,14 +396,12 @@ export type ConvertTxtWithPuppeteerNodeLocalExternalInput = {
 }
 export type ConvertTxtWithPuppeteerNodeLocalInput = {
   input: {
-    format: PuppeteerTxtInputFormat
-    file: {
-      content: ArrayBuffer
-    }
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PuppeteerOutputFormat
-    file: LocalPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   viewport?: {
@@ -425,12 +421,12 @@ export type ConvertTxtWithPuppeteerNodeLocalInput = {
 export type ConvertTxtWithPuppeteerNodeLocalInternalInput = {
   handle?: 'internal'
   input: {
-    format: PuppeteerTxtInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PuppeteerOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   viewport?: {
@@ -453,12 +449,12 @@ export type ConvertTxtWithPuppeteerNodeOutput = {
 export type ConvertTxtWithPuppeteerNodeRemoteInput = {
   handle: 'remote'
   input: {
-    format: PuppeteerTxtInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: PuppeteerOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   viewport?: {

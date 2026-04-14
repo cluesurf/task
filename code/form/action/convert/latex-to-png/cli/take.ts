@@ -1,19 +1,15 @@
 import { z } from 'zod'
 
-import {
-  ConvertLatexToPngInputFormatParser,
-  ConvertLatexToPngOutputFormatParser,
-} from '~/code/form/action/convert/latex-to-png/shared/take'
 import { LocalPathParser } from '~/code/form/object/file/take'
 
 export const ConvertLatexToPngCommandInputParser = z.object({
   input: z.object({
-    format: z.lazy(() => ConvertLatexToPngInputFormatParser),
+    format: z.string(),
     file: z.lazy(() => LocalPathParser),
   }),
   output: z.object({
-    format: z.lazy(() => ConvertLatexToPngOutputFormatParser),
-    file: z.lazy(() => LocalPathParser),
+    format: z.string(),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
 })

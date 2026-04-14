@@ -6,19 +6,18 @@ import {
   FfmpegCodecAudioParser,
   FfmpegCodecSubtitleParser,
   FfmpegCodecVideoParser,
-  FfmpegFormatParser,
   FfmpegStrictOptionParser,
 } from '~/code/form/object/ffmpeg/take'
 import { LocalPathParser } from '~/code/form/object/file/take'
 
 export const ConvertVideoWithFfmpegCommandInputParser = z.object({
   input: z.object({
-    format: z.lazy(() => FfmpegFormatParser),
+    format: z.string(),
     file: z.lazy(() => LocalPathParser),
   }),
   output: z.object({
-    format: z.lazy(() => FfmpegFormatParser),
-    file: z.lazy(() => LocalPathParser),
+    format: z.string(),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
   audioCodec: z.optional(z.lazy(() => FfmpegCodecAudioParser)),

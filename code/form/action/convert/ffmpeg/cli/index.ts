@@ -2,19 +2,18 @@ import {
   FfmpegCodecAudio,
   FfmpegCodecSubtitle,
   FfmpegCodecVideo,
-  FfmpegFormat,
   FfmpegStrictOption,
 } from '~/code/form/object/ffmpeg'
 import { LocalPath } from '~/code/form/object/file'
 
 export type ConvertVideoWithFfmpegCommandInput = {
   input: {
-    format: FfmpegFormat
+    format: string
     file: LocalPath
   }
   output: {
-    format: FfmpegFormat
-    file: LocalPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   audioCodec?: FfmpegCodecAudio

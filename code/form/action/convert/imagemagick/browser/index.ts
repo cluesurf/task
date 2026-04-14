@@ -8,7 +8,7 @@ import {
   ImageMagickCompression,
   ImageMagickInputFormat,
   ImageMagickOutputFormat,
-} from '~/code/form/object/image-magick'
+} from '~/code/form/object/imagemagick'
 
 export type ConvertImageWithImageMagickBrowserInput =
   | ConvertImageWithImageMagickBrowserRemoteInput

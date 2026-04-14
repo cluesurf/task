@@ -1,10 +1,10 @@
 import { z } from 'zod'
 
 import {
+  FileContentParser,
   FileContentWithSha256Parser,
   FileInputPathParser,
   FilePathParser,
-  LocalOutputPathParser,
   LocalPathParser,
   RemoteInputPathParser,
 } from '~/code/form/object/file/take'
@@ -63,13 +63,13 @@ export const ConvertImageWithInkscapeNodeLocalExternalInputParser =
     input: z.object({
       format: z.string(),
       file: z.union([
-        z.lazy(() => RemoteInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
       format: z.string(),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
   })
@@ -84,7 +84,7 @@ export const ConvertImageWithInkscapeNodeLocalInputParser = z.object({
   }),
   output: z.object({
     format: z.string(),
-    file: z.lazy(() => LocalPathParser),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
 })
@@ -99,13 +99,13 @@ export const ConvertImageWithInkscapeNodeLocalInternalInputParser =
     input: z.object({
       format: z.string(),
       file: z.union([
-        z.lazy(() => FileInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
       format: z.string(),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
   })
@@ -126,13 +126,13 @@ export const ConvertImageWithInkscapeNodeRemoteInputParser = z.object({
   input: z.object({
     format: z.string(),
     file: z.union([
-      z.lazy(() => FileInputPathParser),
-      z.lazy(() => FileContentWithSha256Parser),
+      z.lazy(() => FilePathParser),
+      z.lazy(() => FileContentParser),
     ]),
   }),
   output: z.object({
     format: z.string(),
-    file: z.optional(z.lazy(() => LocalOutputPathParser)),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
 })

@@ -5,10 +5,10 @@ import {
   CalibreOutputFormatParser,
 } from '~/code/form/object/calibre/take'
 import {
+  FileContentParser,
   FileContentWithSha256Parser,
   FileInputPathParser,
   FilePathParser,
-  LocalOutputPathParser,
   LocalPathParser,
   RemoteInputPathParser,
 } from '~/code/form/object/file/take'
@@ -66,15 +66,15 @@ export const ConvertDocumentWithCalibreNodeLocalExternalInputParser =
   z.object({
     handle: z.literal('external'),
     input: z.object({
-      format: z.lazy(() => CalibreInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => RemoteInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => CalibreOutputFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
   })
@@ -84,12 +84,12 @@ export type ConvertDocumentWithCalibreNodeLocalExternalInputRecord =
 
 export const ConvertDocumentWithCalibreNodeLocalInputParser = z.object({
   input: z.object({
-    format: z.lazy(() => CalibreInputFormatParser),
+    format: z.string(),
     file: z.lazy(() => LocalPathParser),
   }),
   output: z.object({
-    format: z.lazy(() => CalibreOutputFormatParser),
-    file: z.lazy(() => LocalPathParser),
+    format: z.string(),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
 })
@@ -102,15 +102,15 @@ export const ConvertDocumentWithCalibreNodeLocalInternalInputParser =
   z.object({
     handle: z.optional(z.literal('internal')),
     input: z.object({
-      format: z.lazy(() => CalibreInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => FileInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => CalibreOutputFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
   })
@@ -130,15 +130,15 @@ export const ConvertDocumentWithCalibreNodeRemoteInputParser = z.object(
   {
     handle: z.literal('remote'),
     input: z.object({
-      format: z.lazy(() => CalibreInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => FileInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => CalibreOutputFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
   },

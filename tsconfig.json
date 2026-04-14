@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "ESNext",
     "target": "ES2015",
     "lib": ["es2020", "dom"],
     "outDir": "host",
     "rootDir": ".",
     "sourceMap": true,
     "declaration": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "strictNullChecks": true,
     "strict": true,
     "esModuleInterop": true,

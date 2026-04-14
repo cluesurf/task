@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { ImageMagickGravityParser } from '~/code/form/object/image-magick/take'
+import { ImageMagickGravityParser } from '~/code/form/object/imagemagick/take'
 
 export const ReplaceImageColorWithImageMagickParser = z.object({
   inputPath: z.string(),

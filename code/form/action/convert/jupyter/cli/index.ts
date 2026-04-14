@@ -7,7 +7,7 @@ export type ConvertDocumentWithJupyterCommandInput = {
   }
   output: {
     format: string
-    file: LocalPath
+    file?: LocalPath
   }
   pathScope?: string
 }

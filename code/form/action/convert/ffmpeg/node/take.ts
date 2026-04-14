@@ -10,10 +10,10 @@ import {
   FfmpegStrictOptionParser,
 } from '~/code/form/object/ffmpeg/take'
 import {
+  FileContentParser,
   FileContentWithSha256Parser,
   FileInputPathParser,
   FilePathParser,
-  LocalOutputPathParser,
   LocalPathParser,
   RemoteInputPathParser,
 } from '~/code/form/object/file/take'
@@ -154,15 +154,15 @@ export const ConvertVideoWithFfmpegNodeLocalExternalInputParser =
   z.object({
     handle: z.literal('external'),
     input: z.object({
-      format: z.lazy(() => FfmpegFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => RemoteInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => FfmpegFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
     audioCodec: z.optional(z.lazy(() => FfmpegCodecAudioParser)),
@@ -217,12 +217,12 @@ export type ConvertVideoWithFfmpegNodeLocalExternalInputRecord =
 
 export const ConvertVideoWithFfmpegNodeLocalInputParser = z.object({
   input: z.object({
-    format: z.lazy(() => FfmpegFormatParser),
+    format: z.string(),
     file: z.lazy(() => LocalPathParser),
   }),
   output: z.object({
-    format: z.lazy(() => FfmpegFormatParser),
-    file: z.lazy(() => LocalPathParser),
+    format: z.string(),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
   audioCodec: z.optional(z.lazy(() => FfmpegCodecAudioParser)),
@@ -278,15 +278,15 @@ export const ConvertVideoWithFfmpegNodeLocalInternalInputParser =
   z.object({
     handle: z.optional(z.literal('internal')),
     input: z.object({
-      format: z.lazy(() => FfmpegFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => FileInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => FfmpegFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
     audioCodec: z.optional(z.lazy(() => FfmpegCodecAudioParser)),
@@ -350,15 +350,15 @@ export type ConvertVideoWithFfmpegNodeOutputRecord = z.infer<
 export const ConvertVideoWithFfmpegNodeRemoteInputParser = z.object({
   handle: z.literal('remote'),
   input: z.object({
-    format: z.lazy(() => FfmpegFormatParser),
+    format: z.string(),
     file: z.union([
-      z.lazy(() => FileInputPathParser),
-      z.lazy(() => FileContentWithSha256Parser),
+      z.lazy(() => FilePathParser),
+      z.lazy(() => FileContentParser),
     ]),
   }),
   output: z.object({
-    format: z.lazy(() => FfmpegFormatParser),
-    file: z.optional(z.lazy(() => LocalOutputPathParser)),
+    format: z.string(),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
   audioCodec: z.optional(z.lazy(() => FfmpegCodecAudioParser)),

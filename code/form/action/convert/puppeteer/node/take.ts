@@ -2,10 +2,10 @@ import { z } from 'zod'
 
 import { TextStyleParser } from '~/code/form/action/convert/take'
 import {
+  FileContentParser,
   FileContentWithSha256Parser,
   FileInputPathParser,
   FilePathParser,
-  LocalOutputPathParser,
   LocalPathParser,
   RemoteInputPathParser,
 } from '~/code/form/object/file/take'
@@ -81,15 +81,15 @@ export const ConvertHtmlWithPuppeteerNodeLocalExternalInputParser =
   z.object({
     handle: z.literal('external'),
     input: z.object({
-      format: z.lazy(() => PuppeteerInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => RemoteInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => PuppeteerOutputFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
     viewport: z.object({
@@ -105,12 +105,12 @@ export type ConvertHtmlWithPuppeteerNodeLocalExternalInputRecord =
 
 export const ConvertHtmlWithPuppeteerNodeLocalInputParser = z.object({
   input: z.object({
-    format: z.lazy(() => PuppeteerInputFormatParser),
+    format: z.string(),
     file: z.lazy(() => LocalPathParser),
   }),
   output: z.object({
-    format: z.lazy(() => PuppeteerOutputFormatParser),
-    file: z.lazy(() => LocalPathParser),
+    format: z.string(),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
   viewport: z.object({
@@ -129,15 +129,15 @@ export const ConvertHtmlWithPuppeteerNodeLocalInternalInputParser =
   z.object({
     handle: z.optional(z.literal('internal')),
     input: z.object({
-      format: z.lazy(() => PuppeteerInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => FileInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => PuppeteerOutputFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
     viewport: z.object({
@@ -162,15 +162,15 @@ export type ConvertHtmlWithPuppeteerNodeOutputRecord = z.infer<
 export const ConvertHtmlWithPuppeteerNodeRemoteInputParser = z.object({
   handle: z.literal('remote'),
   input: z.object({
-    format: z.lazy(() => PuppeteerInputFormatParser),
+    format: z.string(),
     file: z.union([
-      z.lazy(() => FileInputPathParser),
-      z.lazy(() => FileContentWithSha256Parser),
+      z.lazy(() => FilePathParser),
+      z.lazy(() => FileContentParser),
     ]),
   }),
   output: z.object({
-    format: z.lazy(() => PuppeteerOutputFormatParser),
-    file: z.optional(z.lazy(() => LocalOutputPathParser)),
+    format: z.string(),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
   viewport: z.object({
@@ -292,15 +292,15 @@ export const ConvertMarkdownWithPuppeteerNodeLocalExternalInputParser =
   z.object({
     handle: z.literal('external'),
     input: z.object({
-      format: z.lazy(() => PuppeteerMarkdownInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => RemoteInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => PuppeteerOutputFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
     viewport: z.optional(
@@ -339,14 +339,15 @@ export type ConvertMarkdownWithPuppeteerNodeLocalExternalInputRecord =
 export const ConvertMarkdownWithPuppeteerNodeLocalInputParser =
   z.object({
     input: z.object({
-      format: z.lazy(() => PuppeteerMarkdownInputFormatParser),
-      file: z.object({
-        content: z.instanceof(ArrayBuffer),
-      }),
+      format: z.string(),
+      file: z.union([
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
+      ]),
     }),
     output: z.object({
-      format: z.lazy(() => PuppeteerOutputFormatParser),
-      file: z.lazy(() => LocalPathParser),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
     viewport: z.optional(
@@ -385,15 +386,15 @@ export const ConvertMarkdownWithPuppeteerNodeLocalInternalInputParser =
   z.object({
     handle: z.optional(z.literal('internal')),
     input: z.object({
-      format: z.lazy(() => PuppeteerMarkdownInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => FileInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => PuppeteerOutputFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
     viewport: z.optional(
@@ -441,15 +442,15 @@ export const ConvertMarkdownWithPuppeteerNodeRemoteInputParser =
   z.object({
     handle: z.literal('remote'),
     input: z.object({
-      format: z.lazy(() => PuppeteerMarkdownInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => FileInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => PuppeteerOutputFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
     viewport: z.optional(
@@ -572,15 +573,15 @@ export const ConvertTxtWithPuppeteerNodeLocalExternalInputParser =
   z.object({
     handle: z.literal('external'),
     input: z.object({
-      format: z.lazy(() => PuppeteerTxtInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => RemoteInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => PuppeteerOutputFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
     viewport: z.optional(
@@ -609,14 +610,15 @@ export type ConvertTxtWithPuppeteerNodeLocalExternalInputRecord =
 
 export const ConvertTxtWithPuppeteerNodeLocalInputParser = z.object({
   input: z.object({
-    format: z.lazy(() => PuppeteerTxtInputFormatParser),
-    file: z.object({
-      content: z.instanceof(ArrayBuffer),
-    }),
+    format: z.string(),
+    file: z.union([
+      z.lazy(() => FilePathParser),
+      z.lazy(() => FileContentParser),
+    ]),
   }),
   output: z.object({
-    format: z.lazy(() => PuppeteerOutputFormatParser),
-    file: z.lazy(() => LocalPathParser),
+    format: z.string(),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
   viewport: z.optional(
@@ -648,15 +650,15 @@ export const ConvertTxtWithPuppeteerNodeLocalInternalInputParser =
   z.object({
     handle: z.optional(z.literal('internal')),
     input: z.object({
-      format: z.lazy(() => PuppeteerTxtInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => FileInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => PuppeteerOutputFormatParser),
-      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
     viewport: z.optional(
@@ -694,15 +696,15 @@ export type ConvertTxtWithPuppeteerNodeOutputRecord = z.infer<
 export const ConvertTxtWithPuppeteerNodeRemoteInputParser = z.object({
   handle: z.literal('remote'),
   input: z.object({
-    format: z.lazy(() => PuppeteerTxtInputFormatParser),
+    format: z.string(),
     file: z.union([
-      z.lazy(() => FileInputPathParser),
-      z.lazy(() => FileContentWithSha256Parser),
+      z.lazy(() => FilePathParser),
+      z.lazy(() => FileContentParser),
     ]),
   }),
   output: z.object({
-    format: z.lazy(() => PuppeteerOutputFormatParser),
-    file: z.optional(z.lazy(() => LocalOutputPathParser)),
+    format: z.string(),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
   viewport: z.optional(

@@ -8,7 +8,7 @@ import {
   ImageMagickGravity,
   ImageMagickInputFormat,
   ImageMagickOutputFormat,
-} from '~/code/form/object/image-magick'
+} from '~/code/form/object/imagemagick'
 import {
   IMAGE_MAGICK_CHANNEL,
   IMAGE_MAGICK_COLOR_SPACE,
@@ -17,7 +17,7 @@ import {
   IMAGE_MAGICK_GRAVITY,
   IMAGE_MAGICK_INPUT_FORMAT,
   IMAGE_MAGICK_OUTPUT_FORMAT,
-} from '~/code/form/object/image-magick/base'
+} from '~/code/form/object/imagemagick/base'
 
 export const ImageMagicColorMatrixParser = z.object({
   row: z.number().int().gte(0),

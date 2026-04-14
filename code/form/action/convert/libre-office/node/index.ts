@@ -39,34 +39,37 @@ export type ConvertDocumentWithLibreOfficeNodeInput =
 export type ConvertDocumentWithLibreOfficeNodeLocalExternalInput = {
   handle: 'external'
   input: {
-    format: LibreOfficeInputFormat
-    file: RemoteInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: LibreOfficeOutputFormat
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
 export type ConvertDocumentWithLibreOfficeNodeLocalInput = {
   input: {
-    format: LibreOfficeInputFormat
+    format: string
     file: LocalPath
   }
   output: {
-    format: LibreOfficeOutputFormat
+    format: string
     directory: LocalPath
+    file?: LocalPath
   }
   pathScope?: string
 }
 export type ConvertDocumentWithLibreOfficeNodeLocalInternalInput = {
   handle?: 'internal'
   input: {
-    format: LibreOfficeInputFormat
-    file: FileInputPath | FileContent
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: LibreOfficeOutputFormat
+    format: string
     directory?: LocalOutputPath
+    file?: LocalPath
   }
   pathScope?: string
 }
@@ -76,12 +79,13 @@ export type ConvertDocumentWithLibreOfficeNodeOutput = {
 export type ConvertDocumentWithLibreOfficeNodeRemoteInput = {
   handle: 'remote'
   input: {
-    format: LibreOfficeInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: LibreOfficeOutputFormat
+    format: string
     directory?: LocalOutputPath
+    file?: LocalPath
   }
   pathScope?: string
 }

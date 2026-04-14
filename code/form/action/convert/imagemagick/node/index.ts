@@ -1,8 +1,8 @@
 import {
+  FileContent,
   FileContentWithSha256,
   FileInputPath,
   FilePath,
-  LocalOutputPath,
   LocalPath,
   RemoteInputPath,
 } from '~/code/form/object/file'
@@ -12,7 +12,7 @@ import {
   ImageMagickCompression,
   ImageMagickInputFormat,
   ImageMagickOutputFormat,
-} from '~/code/form/object/image-magick'
+} from '~/code/form/object/imagemagick'
 
 export type ConvertImageWithImageMagickNodeClientInput = {
   handle: 'client'
@@ -55,12 +55,12 @@ export type ConvertImageWithImageMagickNodeInput =
 export type ConvertImageWithImageMagickNodeLocalExternalInput = {
   handle: 'external'
   input: {
-    format: ImageMagickInputFormat
-    file: RemoteInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: ImageMagickOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   colorCount?: number
@@ -73,12 +73,12 @@ export type ConvertImageWithImageMagickNodeLocalExternalInput = {
 }
 export type ConvertImageWithImageMagickNodeLocalInput = {
   input: {
-    format: ImageMagickInputFormat
+    format: string
     file: LocalPath
   }
   output: {
-    format: ImageMagickOutputFormat
-    file: LocalPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   colorCount?: number
@@ -92,12 +92,12 @@ export type ConvertImageWithImageMagickNodeLocalInput = {
 export type ConvertImageWithImageMagickNodeLocalInternalInput = {
   handle?: 'internal'
   input: {
-    format: ImageMagickInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: ImageMagickOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   colorCount?: number
@@ -114,12 +114,12 @@ export type ConvertImageWithImageMagickNodeOutput = {
 export type ConvertImageWithImageMagickNodeRemoteInput = {
   handle: 'remote'
   input: {
-    format: ImageMagickInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: ImageMagickOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   colorCount?: number

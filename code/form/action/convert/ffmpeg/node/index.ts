@@ -6,10 +6,10 @@ import {
   FfmpegStrictOption,
 } from '~/code/form/object/ffmpeg'
 import {
+  FileContent,
   FileContentWithSha256,
   FileInputPath,
   FilePath,
-  LocalOutputPath,
   LocalPath,
   RemoteInputPath,
 } from '~/code/form/object/file'
@@ -75,12 +75,12 @@ export type ConvertVideoWithFfmpegNodeInput =
 export type ConvertVideoWithFfmpegNodeLocalExternalInput = {
   handle: 'external'
   input: {
-    format: FfmpegFormat
-    file: RemoteInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: FfmpegFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   audioCodec?: FfmpegCodecAudio
@@ -103,12 +103,12 @@ export type ConvertVideoWithFfmpegNodeLocalExternalInput = {
 }
 export type ConvertVideoWithFfmpegNodeLocalInput = {
   input: {
-    format: FfmpegFormat
+    format: string
     file: LocalPath
   }
   output: {
-    format: FfmpegFormat
-    file: LocalPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   audioCodec?: FfmpegCodecAudio
@@ -132,12 +132,12 @@ export type ConvertVideoWithFfmpegNodeLocalInput = {
 export type ConvertVideoWithFfmpegNodeLocalInternalInput = {
   handle?: 'internal'
   input: {
-    format: FfmpegFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: FfmpegFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   audioCodec?: FfmpegCodecAudio
@@ -164,12 +164,12 @@ export type ConvertVideoWithFfmpegNodeOutput = {
 export type ConvertVideoWithFfmpegNodeRemoteInput = {
   handle: 'remote'
   input: {
-    format: FfmpegFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: FfmpegFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
   audioCodec?: FfmpegCodecAudio

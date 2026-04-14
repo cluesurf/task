@@ -1,8 +1,8 @@
 import {
+  FileContent,
   FileContentWithSha256,
   FileInputPath,
   FilePath,
-  LocalOutputPath,
   LocalPath,
   RemoteInputPath,
 } from '~/code/form/object/file'
@@ -35,11 +35,11 @@ export type ConvertDocumentWithJupyterNodeLocalExternalInput = {
   handle: 'external'
   input: {
     format: string
-    file: RemoteInputPath | FileContentWithSha256
+    file: FilePath | FileContent
   }
   output: {
     format: string
-    file?: LocalOutputPath
+    file?: LocalPath
   }
   pathScope?: string
 }
@@ -50,7 +50,7 @@ export type ConvertDocumentWithJupyterNodeLocalInput = {
   }
   output: {
     format: string
-    file: LocalPath
+    file?: LocalPath
   }
   pathScope?: string
 }
@@ -58,11 +58,11 @@ export type ConvertDocumentWithJupyterNodeLocalInternalInput = {
   handle?: 'internal'
   input: {
     format: string
-    file: FileInputPath | FileContentWithSha256
+    file: FilePath | FileContent
   }
   output: {
     format: string
-    file?: LocalOutputPath
+    file?: LocalPath
   }
   pathScope?: string
 }
@@ -73,11 +73,11 @@ export type ConvertDocumentWithJupyterNodeRemoteInput = {
   handle: 'remote'
   input: {
     format: string
-    file: FileInputPath | FileContentWithSha256
+    file: FilePath | FileContent
   }
   output: {
     format: string
-    file?: LocalOutputPath
+    file?: LocalPath
   }
   pathScope?: string
 }

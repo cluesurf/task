@@ -9,7 +9,7 @@ export const ConvertDocumentWithJupyterCommandInputParser = z.object({
   }),
   output: z.object({
     format: z.string(),
-    file: z.lazy(() => LocalPathParser),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
 })

@@ -66,14 +66,15 @@ export const ConvertLatexWithPdfLatexNodeLocalExternalInputParser =
   z.object({
     handle: z.literal('external'),
     input: z.object({
-      format: z.lazy(() => PdfLatexInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => RemoteInputPathParser),
-        z.lazy(() => FileContentWithSha256Parser),
+        z.lazy(() => FilePathParser),
+        z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => PdfLatexOutputFormatParser),
+      format: z.string(),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
   })
@@ -83,12 +84,13 @@ export type ConvertLatexWithPdfLatexNodeLocalExternalInputRecord =
 
 export const ConvertLatexWithPdfLatexNodeLocalInputParser = z.object({
   input: z.object({
-    format: z.lazy(() => PdfLatexInputFormatParser),
+    format: z.string(),
     file: z.lazy(() => LocalPathParser),
   }),
   output: z.object({
-    format: z.lazy(() => PdfLatexOutputFormatParser),
+    format: z.string(),
     directory: z.lazy(() => LocalPathParser),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
 })
@@ -101,15 +103,16 @@ export const ConvertLatexWithPdfLatexNodeLocalInternalInputParser =
   z.object({
     handle: z.optional(z.literal('internal')),
     input: z.object({
-      format: z.lazy(() => PdfLatexInputFormatParser),
+      format: z.string(),
       file: z.union([
-        z.lazy(() => FileInputPathParser),
+        z.lazy(() => FilePathParser),
         z.lazy(() => FileContentParser),
       ]),
     }),
     output: z.object({
-      format: z.lazy(() => PdfLatexOutputFormatParser),
+      format: z.string(),
       directory: z.optional(z.lazy(() => LocalOutputPathParser)),
+      file: z.optional(z.lazy(() => LocalPathParser)),
     }),
     pathScope: z.optional(z.string()),
   })
@@ -128,15 +131,16 @@ export type ConvertLatexWithPdfLatexNodeOutputRecord = z.infer<
 export const ConvertLatexWithPdfLatexNodeRemoteInputParser = z.object({
   handle: z.literal('remote'),
   input: z.object({
-    format: z.lazy(() => PdfLatexInputFormatParser),
+    format: z.string(),
     file: z.union([
-      z.lazy(() => FileInputPathParser),
-      z.lazy(() => FileContentWithSha256Parser),
+      z.lazy(() => FilePathParser),
+      z.lazy(() => FileContentParser),
     ]),
   }),
   output: z.object({
-    format: z.lazy(() => PdfLatexOutputFormatParser),
+    format: z.string(),
     directory: z.optional(z.lazy(() => LocalOutputPathParser)),
+    file: z.optional(z.lazy(() => LocalPathParser)),
   }),
   pathScope: z.optional(z.string()),
 })

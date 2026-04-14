@@ -1,17 +1,13 @@
 import { LocalPath } from '~/code/form/object/file'
-import {
-  PandocInputFormat,
-  PandocOutputFormat,
-} from '~/code/form/object/pandoc'
 
 export type ConvertDocumentWithPandocCommandInput = {
   input: {
-    format: PandocInputFormat
+    format: string
     file: LocalPath
   }
   output: {
-    format: PandocOutputFormat
-    file: LocalPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }

@@ -1,14 +1,13 @@
 import { LocalPath } from '~/code/form/object/file'
-import { FontFormat } from '~/code/form/object/font'
 
 export type ConvertFontWithFontForgeCommandInput = {
   input: {
-    format: FontFormat
+    format: string
     file: LocalPath
   }
   output: {
-    format: FontFormat
-    file: LocalPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }

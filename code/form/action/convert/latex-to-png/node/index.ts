@@ -3,10 +3,10 @@ import {
   ConvertLatexToPngOutputFormat,
 } from '~/code/form/action/convert/latex-to-png/shared'
 import {
+  FileContent,
   FileContentWithSha256,
   FileInputPath,
   FilePath,
-  LocalOutputPath,
   LocalPath,
   RemoteInputPath,
 } from '~/code/form/object/file'
@@ -38,35 +38,35 @@ export type ConvertLatexToPngNodeInput =
 export type ConvertLatexToPngNodeLocalExternalInput = {
   handle: 'external'
   input: {
-    format: ConvertLatexToPngInputFormat
-    file: RemoteInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: ConvertLatexToPngOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
 export type ConvertLatexToPngNodeLocalInput = {
   input: {
-    format: ConvertLatexToPngInputFormat
+    format: string
     file: LocalPath
   }
   output: {
-    format: ConvertLatexToPngOutputFormat
-    file: LocalPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
 export type ConvertLatexToPngNodeLocalInternalInput = {
   handle?: 'internal'
   input: {
-    format: ConvertLatexToPngInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: ConvertLatexToPngOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
@@ -76,12 +76,12 @@ export type ConvertLatexToPngNodeOutput = {
 export type ConvertLatexToPngNodeRemoteInput = {
   handle: 'remote'
   input: {
-    format: ConvertLatexToPngInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: ConvertLatexToPngOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }

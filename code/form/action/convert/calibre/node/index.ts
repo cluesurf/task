@@ -3,10 +3,10 @@ import {
   CalibreOutputFormat,
 } from '~/code/form/object/calibre'
 import {
+  FileContent,
   FileContentWithSha256,
   FileInputPath,
   FilePath,
-  LocalOutputPath,
   LocalPath,
   RemoteInputPath,
 } from '~/code/form/object/file'
@@ -38,35 +38,35 @@ export type ConvertDocumentWithCalibreNodeInput =
 export type ConvertDocumentWithCalibreNodeLocalExternalInput = {
   handle: 'external'
   input: {
-    format: CalibreInputFormat
-    file: RemoteInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: CalibreOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
 export type ConvertDocumentWithCalibreNodeLocalInput = {
   input: {
-    format: CalibreInputFormat
+    format: string
     file: LocalPath
   }
   output: {
-    format: CalibreOutputFormat
-    file: LocalPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
 export type ConvertDocumentWithCalibreNodeLocalInternalInput = {
   handle?: 'internal'
   input: {
-    format: CalibreInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: CalibreOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }
@@ -76,12 +76,12 @@ export type ConvertDocumentWithCalibreNodeOutput = {
 export type ConvertDocumentWithCalibreNodeRemoteInput = {
   handle: 'remote'
   input: {
-    format: CalibreInputFormat
-    file: FileInputPath | FileContentWithSha256
+    format: string
+    file: FilePath | FileContent
   }
   output: {
-    format: CalibreOutputFormat
-    file?: LocalOutputPath
+    format: string
+    file?: LocalPath
   }
   pathScope?: string
 }

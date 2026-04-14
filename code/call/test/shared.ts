@@ -2,7 +2,7 @@ import { Action, Object, Tool } from '../shared'
 
 // export type TestExtension = {
 //   'convert:ffmpeg:video': ConvertFileTest
-//   'convert:image-magick:image': ConvertFileTest
+//   'convert:imagemagick:image': ConvertFileTest
 //   'convert:pandoc:document': ConvertFileTest
 //   'convert:libre-office:document': ConvertFileTest
 //   'convert:calibre:document': ConvertFileTest

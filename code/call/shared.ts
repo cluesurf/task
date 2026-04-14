@@ -4,6 +4,6 @@ export type Object = 'video' | 'image' | 'document'
 
 export type Tool =
   | 'ffmpeg'
-  | 'image-magick'
+  | 'imagemagick'
   | 'libre-office'
   | 'calibre'

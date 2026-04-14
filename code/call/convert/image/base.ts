@@ -4,7 +4,7 @@ import { buildConvertForms } from '../../../tool/shared/base'
 
 const convert_image_with_image_magick_forms = buildConvertForms(
   'convert_image_with_image_magick',
-  '~/code/form/action/convert/image-magick',
+  '~/code/form/action/convert/imagemagick',
   'image_magick_input_format',
   'image_magick_output_format',
   {
