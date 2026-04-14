@@ -5,7 +5,7 @@ import {
   LocalOutputPath,
   LocalPath,
   RemoteInputPath,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 
 export type SanitizeHtmlCommandInput = {
   input: {

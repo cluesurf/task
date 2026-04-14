@@ -1,8 +1,8 @@
 import {
   CalibreInputFormat,
   CalibreOutputFormat,
-} from '~/code/form/object/calibre/index'
-import { LocalPath } from '~/code/form/object/file/index'
+} from '~/code/form/object/calibre'
+import { LocalPath } from '~/code/form/object/file'
 
 export type ConvertDocumentWithCalibreCommandInput = {
   input: {

@@ -1,4 +1,5 @@
-import { CppInputFormat } from '~/code/form/action/compile/code/cpp/index'
+import { CppInputFormat } from '~/code/form/action/compile/code/cpp'
+import { AssemblySyntax } from '~/code/form/object/assembly'
 import {
   FileContentWithSha256,
   FileInputPath,
@@ -6,13 +7,12 @@ import {
   LocalOutputPath,
   LocalPath,
   RemoteInputPath,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 import {
   BackendCompilationOutput,
   LlvmArchitecture,
   LlvmOptimizationLevel,
-} from '~/code/form/object/llvm/index'
-import { AssemblySyntax } from '~/code/form/object/assembly/index'
+} from '~/code/form/object/llvm'
 
 export type CompileCppNodeClientInput = {
   handle: 'client'

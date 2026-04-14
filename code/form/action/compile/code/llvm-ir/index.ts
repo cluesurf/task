@@ -1,5 +1,5 @@
-import { AssemblySyntax } from '~/code/form/object/assembly/index'
-import { LlvmArchitecture } from '~/code/form/object/llvm/index'
+import { AssemblySyntax } from '~/code/form/object/assembly'
+import { LlvmArchitecture } from '~/code/form/object/llvm'
 
 export type CompileLlvmIrToAssembly = {
   input: {

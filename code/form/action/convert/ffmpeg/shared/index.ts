@@ -3,7 +3,7 @@ import {
   FfmpegCodecSubtitle,
   FfmpegCodecVideo,
   FfmpegStrictOption,
-} from '~/code/form/object/ffmpeg/index'
+} from '~/code/form/object/ffmpeg'
 
 export type AddAudioToVideoWithFfmpeg = {
   inputVideoPath: string

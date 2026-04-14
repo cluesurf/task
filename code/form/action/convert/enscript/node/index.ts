@@ -1,7 +1,7 @@
 import {
   EnscriptInputFormat,
   EnscriptOutputFormat,
-} from '~/code/form/object/enscript/index'
+} from '~/code/form/object/enscript'
 import {
   FileContentWithSha256,
   FileInputPath,
@@ -9,7 +9,7 @@ import {
   LocalOutputPath,
   LocalPath,
   RemoteInputPath,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 
 export type ConvertDocumentWithEnscriptNodeClientInput = {
   handle: 'client'

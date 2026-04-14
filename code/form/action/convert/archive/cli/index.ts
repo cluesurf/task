@@ -1,5 +1,5 @@
-import { ArchiveFormat } from '~/code/form/object/archive/index'
-import { LocalPath } from '~/code/form/object/file/index'
+import { ArchiveFormat } from '~/code/form/object/archive'
+import { LocalPath } from '~/code/form/object/file'
 
 export type ConvertArchiveCommandInput = {
   input: {

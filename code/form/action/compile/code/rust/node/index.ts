@@ -1,16 +1,16 @@
 import {
-  RustCompilerTarget,
-  RustInputFormat,
-  RustOutputFormat,
-} from '~/code/form/object/rust/index'
-import {
   FileContentWithSha256,
   FileInputPath,
   FilePath,
   LocalOutputPath,
   LocalPath,
   RemoteInputPath,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
+import {
+  RustCompilerTarget,
+  RustInputFormat,
+  RustOutputFormat,
+} from '~/code/form/object/rust'
 
 export type CompileRustNodeClientInput = {
   handle: 'client'

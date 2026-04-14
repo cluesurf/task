@@ -1,9 +1,9 @@
+import { LocalPath } from '~/code/form/object/file'
 import {
   PuppeteerInputFormat,
   PuppeteerLifeCycleEvent,
   PuppeteerOutputFormat,
-} from '~/code/form/object/puppeteer/index'
-import { LocalPath } from '~/code/form/object/file/index'
+} from '~/code/form/object/puppeteer'
 
 export type ConvertHtmlWithPuppeteerCommandInput = {
   input: {

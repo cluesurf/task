@@ -1,4 +1,3 @@
-import { FontFormat } from '~/code/form/object/font/index'
 import {
   FileContentWithSha256,
   FileInputPath,
@@ -6,7 +5,8 @@ import {
   LocalOutputPath,
   LocalPath,
   RemoteInputPath,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
+import { FontFormat } from '~/code/form/object/font'
 
 export type ConvertFontWithFontForgeNodeClientInput = {
   handle: 'client'

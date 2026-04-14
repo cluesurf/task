@@ -1,23 +1,13 @@
-/**
- * CLI input for downloading a HuggingFace repo (dataset, model, or
- * space) to a local directory. Shells out to the `hf` CLI.
- */
-
-export type HuggingFaceRepoType = 'dataset' | 'model' | 'space'
+import { HuggingFaceRepoType } from '~/code/form/object/hugging-face'
 
 export type DownloadHuggingFaceCommandInput = {
-  /** `<org>/<name>` slug, e.g. `cluesurf/leipzig-frequency`. */
   repo: string
   repoType?: HuggingFaceRepoType
-  /** Local directory the repo is mirrored into. Created if missing. */
   directory: {
     path: string
   }
-  /** Glob patterns to include. Empty = everything. */
-  include?: string[]
-  /** Glob patterns to exclude. */
-  exclude?: string[]
-  /** Pin to a specific revision / branch / tag. */
+  include?: Array<string>
+  exclude?: Array<string>
   revision?: string
   help?: boolean
 }

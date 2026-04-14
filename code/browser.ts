@@ -1,7 +1,7 @@
 import { configure } from '~/code/tool/shared/config'
 
-const out = {
+const task = {
   configure,
 }
 
-export default out
+export default task

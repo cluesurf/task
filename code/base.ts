@@ -56,6 +56,4 @@ export * from '~/code/base/hugging-face/base'
 export * from '~/code/call/convert/data/base'
 export * from '~/code/call/download/hugging-face/base'
 
-export * from '~/code/hook/base'
-
 export * from '~/code/form/code'

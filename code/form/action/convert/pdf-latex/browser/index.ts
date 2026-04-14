@@ -1,11 +1,11 @@
 import {
   PdfLatexInputFormat,
   PdfLatexOutputFormat,
-} from '~/code/form/action/convert/pdf-latex/shared/index'
+} from '~/code/form/action/convert/pdf-latex/shared'
 import {
   FileContent,
   FileContentWithSha256,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 
 export type ConvertLatexWithPdfLatexBrowserInput =
   | ConvertLatexWithPdfLatexBrowserRemoteInput

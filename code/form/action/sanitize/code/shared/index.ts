@@ -2,7 +2,7 @@ import {
   FileContent,
   FilePath,
   LocalPath,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 
 export type ResolveInputForSanitizeLocalExternal = {
   pathScope?: string

@@ -4,8 +4,8 @@ import {
   FfmpegCodecVideo,
   FfmpegFormat,
   FfmpegStrictOption,
-} from '~/code/form/object/ffmpeg/index'
-import { LocalPath } from '~/code/form/object/file/index'
+} from '~/code/form/object/ffmpeg'
+import { LocalPath } from '~/code/form/object/file'
 
 export type ConvertVideoWithFfmpegCommandInput = {
   input: {

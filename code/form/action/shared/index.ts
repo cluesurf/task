@@ -1,4 +1,4 @@
-import { FileContent, FilePath } from '~/code/form/object/file/index'
+import { FileContent, FilePath } from '~/code/form/object/file'
 
 export type BuildBaseFileInput = {
   tool?: string

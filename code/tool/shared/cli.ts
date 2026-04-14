@@ -11,6 +11,7 @@
  */
 
 import type { BaseHash, Form, FormLink } from '@cluesurf/form'
+import camelCase from 'lodash/camelCase'
 import kebabCase from 'lodash/kebabCase'
 import set from 'lodash/set'
 
@@ -163,14 +164,10 @@ export function unpackFormArgv(
 ): Record<string, unknown> {
   const out: Record<string, unknown> = {}
   for (const opt of options) {
-    const camel = toCamel(opt.long)
+    const camel = camelCase(opt.long)
     const value = argv[camel]
     if (value === undefined) continue
     set(out, opt.path, value)
   }
   return out
-}
-
-function toCamel(kebab: string): string {
-  return kebab.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())
 }

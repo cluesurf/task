@@ -12,7 +12,7 @@ import path from 'node:path'
 import {
   convertParquetFileToJsonl,
   convertJsonlFileToParquet,
-} from '~/code/base/duckdb/node'
+} from './duckdb/node'
 
 export type ConvertDataResult = {
   converted: number

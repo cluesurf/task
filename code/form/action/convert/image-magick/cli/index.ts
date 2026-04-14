@@ -1,11 +1,11 @@
+import { LocalPath } from '~/code/form/object/file'
 import {
   ImageMagicColorMatrix,
   ImageMagickColorSpace,
   ImageMagickCompression,
   ImageMagickInputFormat,
   ImageMagickOutputFormat,
-} from '~/code/form/object/image-magick/index'
-import { LocalPath } from '~/code/form/object/file/index'
+} from '~/code/form/object/image-magick'
 
 export type ConvertImageWithImageMagickCommandInput = {
   input: {

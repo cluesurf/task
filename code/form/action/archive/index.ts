@@ -1,4 +1,4 @@
-import { ArchiveFormat } from '~/code/form/object/archive/index'
+import { ArchiveFormat } from '~/code/form/object/archive'
 
 export type Archive = {
   input: {

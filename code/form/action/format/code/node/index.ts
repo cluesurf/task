@@ -1,3 +1,5 @@
+import { ClangFormat } from '~/code/form/action/format/code/shared'
+import { ClangStyleAll } from '~/code/form/object/clang-format'
 import {
   FileContentWithSha256,
   FileInputPath,
@@ -5,9 +7,7 @@ import {
   LocalOutputPath,
   LocalPath,
   RemoteInputPath,
-} from '~/code/form/object/file/index'
-import { ClangStyleAll } from '~/code/form/object/clang-format/index'
-import { ClangFormat } from '~/code/form/action/format/code/shared/index'
+} from '~/code/form/object/file'
 
 export type FormatAssemblyNodeClientInput = {
   handle: 'client'

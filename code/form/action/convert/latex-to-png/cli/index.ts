@@ -1,8 +1,8 @@
 import {
   ConvertLatexToPngInputFormat,
   ConvertLatexToPngOutputFormat,
-} from '~/code/form/action/convert/latex-to-png/shared/index'
-import { LocalPath } from '~/code/form/object/file/index'
+} from '~/code/form/action/convert/latex-to-png/shared'
+import { LocalPath } from '~/code/form/object/file'
 
 export type ConvertLatexToPngCommandInput = {
   input: {

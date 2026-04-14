@@ -1,7 +1,7 @@
 import {
   WastInputFormat,
   WastOutputFormat,
-} from '~/code/form/action/compile/code/wast/shared/index'
+} from '~/code/form/action/compile/code/wast/shared'
 import {
   FileContentWithSha256,
   FileInputPath,
@@ -9,7 +9,7 @@ import {
   LocalOutputPath,
   LocalPath,
   RemoteInputPath,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 
 export type CompileWastNodeClientInput = {
   handle: 'client'

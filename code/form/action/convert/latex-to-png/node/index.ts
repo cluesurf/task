@@ -1,7 +1,7 @@
 import {
   ConvertLatexToPngInputFormat,
   ConvertLatexToPngOutputFormat,
-} from '~/code/form/action/convert/latex-to-png/shared/index'
+} from '~/code/form/action/convert/latex-to-png/shared'
 import {
   FileContentWithSha256,
   FileInputPath,
@@ -9,7 +9,7 @@ import {
   LocalOutputPath,
   LocalPath,
   RemoteInputPath,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 
 export type ConvertLatexToPngNodeClientInput = {
   handle: 'client'

@@ -8,7 +8,7 @@
  */
 
 import type { CommandModule } from 'yargs'
-import * as MESH from '~/code/source'
+import * as MESH from '~/code/base'
 import {
   collectCliOptions,
   applyFormOptions,

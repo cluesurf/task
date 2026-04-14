@@ -1,11 +1,11 @@
 import {
-  LibreOfficeInputFormat,
-  LibreOfficeOutputFormat,
-} from '~/code/form/object/libre-office/index'
-import {
   FileContent,
   FileContentWithSha256,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
+import {
+  LibreOfficeInputFormat,
+  LibreOfficeOutputFormat,
+} from '~/code/form/object/libre-office'
 
 export type ConvertDocumentWithLibreOfficeBrowserInput =
   | ConvertDocumentWithLibreOfficeBrowserRemoteInput

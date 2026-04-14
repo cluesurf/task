@@ -1,8 +1,8 @@
 import {
   PdfLatexInputFormat,
   PdfLatexOutputFormat,
-} from '~/code/form/action/convert/pdf-latex/shared/index'
-import { LocalPath } from '~/code/form/object/file/index'
+} from '~/code/form/action/convert/pdf-latex/shared'
+import { LocalPath } from '~/code/form/object/file'
 
 export type ConvertLatexWithPdfLatexCommandInput = {
   input: {

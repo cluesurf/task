@@ -4,7 +4,7 @@ import {
   FfmpegCodecVideo,
   FfmpegFormat,
   FfmpegStrictOption,
-} from '~/code/form/object/ffmpeg/index'
+} from '~/code/form/object/ffmpeg'
 import {
   FileContentWithSha256,
   FileInputPath,
@@ -12,7 +12,7 @@ import {
   LocalOutputPath,
   LocalPath,
   RemoteInputPath,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 
 export type ConvertVideoWithFfmpegNodeClientInput = {
   handle: 'client'

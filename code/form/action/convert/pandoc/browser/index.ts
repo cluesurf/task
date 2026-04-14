@@ -1,11 +1,11 @@
 import {
-  PandocInputFormat,
-  PandocOutputFormat,
-} from '~/code/form/object/pandoc/index'
-import {
   FileContent,
   FileContentWithSha256,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
+import {
+  PandocInputFormat,
+  PandocOutputFormat,
+} from '~/code/form/object/pandoc'
 
 export type ConvertDocumentWithPandocBrowserInput =
   | ConvertDocumentWithPandocBrowserRemoteInput

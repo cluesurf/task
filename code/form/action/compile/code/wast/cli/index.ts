@@ -1,8 +1,8 @@
 import {
   WastInputFormat,
   WastOutputFormat,
-} from '~/code/form/action/compile/code/wast/shared/index'
-import { LocalPath } from '~/code/form/object/file/index'
+} from '~/code/form/action/compile/code/wast/shared'
+import { LocalPath } from '~/code/form/object/file'
 
 export type CompileWastCommandInput = {
   input: {

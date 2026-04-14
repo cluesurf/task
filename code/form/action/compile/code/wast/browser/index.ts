@@ -1,11 +1,11 @@
 import {
   WastInputFormat,
   WastOutputFormat,
-} from '~/code/form/action/compile/code/wast/shared/index'
+} from '~/code/form/action/compile/code/wast/shared'
 import {
   FileContent,
   FileContentWithSha256,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 
 export type CompileWastBrowserInput =
   | CompileWastBrowserRemoteInput

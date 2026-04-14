@@ -77,15 +77,27 @@ Never relative imports across top-level boundaries.
   (formats, enums, codecs) AND the action input/output forms (via
   `buildConvertForms` etc.). Generates `code/form/object/*` and
   `code/form/action/*`.
-- **Native-tool wrappers**: also under `code/base/<tool>/` —
-  (pandoc, ffmpeg, imagemagick, duckdb, hugging-face, etc.). Own
-  the command-line assembly and stdout/stderr handling. `call/*`
-  uses these, never shells out directly.
+- **`code/base/<tool>/` is schema-only.** Holds `base.ts` with
+  the `@cluesurf/form` declarations (formats, codecs, enums) and
+  any raw JSON data files those lists point to. **Never put
+  node.ts or any `child_process` code here** — it belongs next
+  to the action that uses it. Canonical example:
+  `code/base/image-magick/` has only `base.ts` + JSON format
+  lists.
 - **Action implementations**: `code/call/<action>/<thing>/` —
-  `shared.ts` (cross-env logic), `node.ts` (Node implementation),
-  `browser.ts` (browser implementation), `handler.ts` (dispatch),
-  `console.ts` (yargs subcommand definition, see below).
-  No `base.ts` here — that lives in `code/base/<domain>/`.
+  `base.ts` (action-input form schemas, via `buildConvertForms`
+  etc.), `shared.ts` (cross-env logic), `node.ts` (Node entry
+  point for the action), `browser.ts` (browser equivalent),
+  `handler.ts` (dispatch), `console.ts` (yargs subcommand).
+- **Command-line assembly**: `code/call/<action>/<thing>/command.ts`
+  — pure functions that return argv arrays or SQL strings. No
+  `execSync` / `spawn` here. See
+  `code/call/archive/command.ts` for the canonical example.
+- **Per-tool execution wrappers** (when an action can use one
+  of several tools): `code/call/<action>/<thing>/<tool>/node.ts`
+  actually spawns the binary. Canonical example:
+  `code/call/convert/image/imagemagick/node.ts` runs imagemagick.
+  `./command.ts` assembles the argv; `./<tool>/node.ts` runs it.
 - **Utilities used throughout the task repo**: `code/tool/`, split by
   runtime — `code/tool/shared/` (cross-env), `code/tool/node/` (Node
   only), `code/tool/browser/` (browser only). Put helpers here that
@@ -94,14 +106,19 @@ Never relative imports across top-level boundaries.
 - **Generated types and parsers**: `code/form/object/*` and
   `code/form/action/*`. Never hand-edit.
 - **CLI entrypoint**: `code/console.ts` — the file the `task` bin
-  points to in `package.json`. Eagerly imports every
-  `code/call/<action>/<thing>/console.ts` (cheap — each is just
-  option metadata + a handler thunk) and wires them into the
-  top-level action groups (`convert`, `download`, etc.) via yargs.
-- **Per-action CLI definitions**: `code/call/<action>/<thing>/console.ts`
-  — exports a yargs `CommandModule` with the command name, option
-  builder, and handler. The handler lazy-imports `./node` so heavy
+  points to in `package.json`. Imports the top-level action-group
+  consoles and wires them into yargs.
+- **Top-level action-group consoles**:
+  `code/call/<action>/console.ts` (e.g. `convert/console.ts`,
+  `download/console.ts`). Each defines the yargs `CommandModule`
+  for its verb and imports its concrete sub-things.
+- **Concrete per-thing consoles**:
+  `code/call/<action>/<thing>/console.ts`. Exports a yargs
+  `CommandModule` whose handler lazy-imports `./node` so heavy
   deps (DuckDB, ffmpeg, etc.) only load when the command runs.
+  Options are derived from the generated form schema via
+  `code/tool/shared/cli.ts` helpers — don't hand-write yargs
+  option specs.
 
 ## Principles
 
@@ -133,15 +150,25 @@ Never relative imports across top-level boundaries.
   `@cluesurf/form/make`, and writes generated form/take/base files
   back under `code/form/*`. Run after any change to a
   `code/call/<action>/<thing>/base.ts` or `code/base/<tool>/base.ts`.
-  **When you add a new `base.ts`, remember to add an `export *`
-  line for it to `code/source.ts`** or the codegen won't see it.
+- **`code/base.ts` is the single registration point.** It
+  re-exports every `base.ts` schema in the project so both the
+  codegen (`make/index.ts`) and the compiled runtime can see
+  every form. When you add a new `base.ts` under
+  `code/base/<domain>/` or `code/call/<action>/<thing>/`, add
+  a matching `export * from ...` line to `code/base.ts` or
+  nothing will register it. **Never use `~/code/source` — that
+  pattern is gone; there's only `code/base.ts`.**
 - `pnpm make` — `tsc && tsc-alias` over the whole package.
-- Dockerfile (`/Users/lancepollard/base/crew/cluesurf/deck/task/Dockerfile`)
-  and the homebrew cask
-  (`/Users/lancepollard/base/crew/cluesurf/deck/homebrew-code/Tool/task.rb`)
-  install the external CLIs the actions depend on (ffmpeg, pandoc,
-  duckdb, hf, etc.). When you add a new external dependency for an
-  action, update both.
+- **External tools live in two install manifests**:
+  - `deck/task/Dockerfile` installs everything the scripts shell
+    out to (ffmpeg, pandoc, imagemagick, duckdb, hf CLI, etc.)
+    so the containerized version of task can run every action.
+  - `deck/homebrew-code/Tool/task/` + `deck/homebrew-code/Casks/task.rb`
+    do the same for macOS
+    developer installs via `brew install cluesurf/code/task`.
+  Whenever an action adds a new `code/base/<tool>/` wrapper
+  that shells out to a new binary, update both of these so the
+  binary is present wherever task runs.
 
 ## Schema definitions and code generation
 

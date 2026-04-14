@@ -1,8 +1,8 @@
-import { FontFormat } from '~/code/form/object/font/index'
 import {
   FileContent,
   FileContentWithSha256,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
+import { FontFormat } from '~/code/form/object/font'
 
 export type ConvertFontWithFontForgeBrowserInput =
   | ConvertFontWithFontForgeBrowserRemoteInput

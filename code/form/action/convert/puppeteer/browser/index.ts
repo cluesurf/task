@@ -1,14 +1,14 @@
 import {
+  FileContent,
+  FileContentWithSha256,
+} from '~/code/form/object/file'
+import {
   PuppeteerInputFormat,
   PuppeteerLifeCycleEvent,
   PuppeteerMarkdownInputFormat,
   PuppeteerOutputFormat,
   PuppeteerTxtInputFormat,
-} from '~/code/form/object/puppeteer/index'
-import {
-  FileContent,
-  FileContentWithSha256,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/puppeteer'
 
 export type ConvertHtmlWithPuppeteerBrowserInput =
   | ConvertHtmlWithPuppeteerBrowserRemoteInput

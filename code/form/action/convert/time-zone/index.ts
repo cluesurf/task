@@ -1,4 +1,4 @@
-import { TimeZone } from '~/code/form/object/time/index'
+import { TimeZone } from '~/code/form/object/time'
 
 export type ConvertTimeZone = {
   input: {

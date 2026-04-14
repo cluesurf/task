@@ -1,5 +1,5 @@
-import { LocalPath } from '~/code/form/object/file/index'
-import { ClangFormat } from '~/code/form/action/format/code/shared/index'
+import { ClangFormat } from '~/code/form/action/format/code/shared'
+import { LocalPath } from '~/code/form/object/file'
 
 export type FormatAssemblyCommandInput = {
   format: string

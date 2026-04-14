@@ -1,14 +1,14 @@
-import { CInputFormat } from '~/code/form/action/compile/code/c/shared/index'
+import { CInputFormat } from '~/code/form/action/compile/code/c/shared'
+import { AssemblySyntax } from '~/code/form/object/assembly'
 import {
   FileContent,
   FileContentWithSha256,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 import {
   BackendCompilationOutput,
   LlvmArchitecture,
   LlvmOptimizationLevel,
-} from '~/code/form/object/llvm/index'
-import { AssemblySyntax } from '~/code/form/object/assembly/index'
+} from '~/code/form/object/llvm'
 
 export type CompileCBrowserInput =
   | CompileCBrowserRemoteInput

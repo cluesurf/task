@@ -1,7 +1,7 @@
 import {
   CalibreInputFormat,
   CalibreOutputFormat,
-} from '~/code/form/object/calibre/index'
+} from '~/code/form/object/calibre'
 import {
   FileContentWithSha256,
   FileInputPath,
@@ -9,7 +9,7 @@ import {
   LocalOutputPath,
   LocalPath,
   RemoteInputPath,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 
 export type ConvertDocumentWithCalibreNodeClientInput = {
   handle: 'client'

@@ -1,11 +1,11 @@
 import {
   EnscriptInputFormat,
   EnscriptOutputFormat,
-} from '~/code/form/object/enscript/index'
+} from '~/code/form/object/enscript'
 import {
   FileContent,
   FileContentWithSha256,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 
 export type ConvertDocumentWithEnscriptBrowserInput =
   | ConvertDocumentWithEnscriptBrowserRemoteInput

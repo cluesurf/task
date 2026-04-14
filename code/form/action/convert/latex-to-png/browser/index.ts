@@ -1,11 +1,11 @@
 import {
   ConvertLatexToPngInputFormat,
   ConvertLatexToPngOutputFormat,
-} from '~/code/form/action/convert/latex-to-png/shared/index'
+} from '~/code/form/action/convert/latex-to-png/shared'
 import {
   FileContent,
   FileContentWithSha256,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 
 export type ConvertLatexToPngBrowserInput =
   | ConvertLatexToPngBrowserRemoteInput

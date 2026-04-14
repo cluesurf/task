@@ -1,15 +1,15 @@
 import {
-  PandocInputFormat,
-  PandocOutputFormat,
-} from '~/code/form/object/pandoc/index'
-import {
   FileContentWithSha256,
   FileInputPath,
   FilePath,
   LocalOutputPath,
   LocalPath,
   RemoteInputPath,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
+import {
+  PandocInputFormat,
+  PandocOutputFormat,
+} from '~/code/form/object/pandoc'
 
 export type ConvertDocumentWithPandocNodeClientInput = {
   handle: 'client'

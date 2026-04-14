@@ -1,10 +1,4 @@
-import {
-  PuppeteerInputFormat,
-  PuppeteerLifeCycleEvent,
-  PuppeteerMarkdownInputFormat,
-  PuppeteerOutputFormat,
-  PuppeteerTxtInputFormat,
-} from '~/code/form/object/puppeteer/index'
+import { TextStyle } from '~/code/form/action/convert'
 import {
   FileContentWithSha256,
   FileInputPath,
@@ -12,8 +6,14 @@ import {
   LocalOutputPath,
   LocalPath,
   RemoteInputPath,
-} from '~/code/form/object/file/index'
-import { TextStyle } from '~/code/form/action/convert/index'
+} from '~/code/form/object/file'
+import {
+  PuppeteerInputFormat,
+  PuppeteerLifeCycleEvent,
+  PuppeteerMarkdownInputFormat,
+  PuppeteerOutputFormat,
+  PuppeteerTxtInputFormat,
+} from '~/code/form/object/puppeteer'
 
 export type ConvertHtmlWithPuppeteerNodeClientInput = {
   handle: 'client'

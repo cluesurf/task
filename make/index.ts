@@ -1,6 +1,6 @@
 import makeTree from '@cluesurf/form/make'
 import type { Load } from '@cluesurf/form'
-import * as MESH from '~/code/source'
+import * as MESH from '~/code/base'
 import NAME from '~/code/base/name'
 import fsp from 'fs/promises'
 import path from 'path'

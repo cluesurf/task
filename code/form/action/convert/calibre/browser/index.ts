@@ -1,11 +1,11 @@
 import {
   CalibreInputFormat,
   CalibreOutputFormat,
-} from '~/code/form/object/calibre/index'
+} from '~/code/form/object/calibre'
 import {
   FileContent,
   FileContentWithSha256,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 
 export type ConvertDocumentWithCalibreBrowserInput =
   | ConvertDocumentWithCalibreBrowserRemoteInput

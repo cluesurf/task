@@ -1,4 +1,4 @@
-import { LocalPath } from '~/code/form/object/file/index'
+import { LocalPath } from '~/code/form/object/file'
 
 export type ConvertImageWithInkscapeCommandInput = {
   input: {

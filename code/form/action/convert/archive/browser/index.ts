@@ -1,8 +1,8 @@
-import { ArchiveFormat } from '~/code/form/object/archive/index'
+import { ArchiveFormat } from '~/code/form/object/archive'
 import {
   FileContent,
   FileContentWithSha256,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 
 export type ConvertArchiveBrowserInput =
   | ConvertArchiveBrowserRemoteInput

@@ -1,9 +1,9 @@
+import { ClangFormat } from '~/code/form/action/format/code/shared'
+import { ClangStyleAll } from '~/code/form/object/clang-format'
 import {
   FileContent,
   FileContentWithSha256,
-} from '~/code/form/object/file/index'
-import { ClangStyleAll } from '~/code/form/object/clang-format/index'
-import { ClangFormat } from '~/code/form/action/format/code/shared/index'
+} from '~/code/form/object/file'
 
 export type FormatAssemblyBrowserInput =
   | FormatAssemblyBrowserRemoteInput

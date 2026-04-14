@@ -1,14 +1,14 @@
 import {
+  FileContent,
+  FileContentWithSha256,
+} from '~/code/form/object/file'
+import {
   ImageMagicColorMatrix,
   ImageMagickColorSpace,
   ImageMagickCompression,
   ImageMagickInputFormat,
   ImageMagickOutputFormat,
-} from '~/code/form/object/image-magick/index'
-import {
-  FileContent,
-  FileContentWithSha256,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/image-magick'
 
 export type ConvertImageWithImageMagickBrowserInput =
   | ConvertImageWithImageMagickBrowserRemoteInput

@@ -4,11 +4,11 @@ import {
   FfmpegCodecVideo,
   FfmpegFormat,
   FfmpegStrictOption,
-} from '~/code/form/object/ffmpeg/index'
+} from '~/code/form/object/ffmpeg'
 import {
   FileContent,
   FileContentWithSha256,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 
 export type ConvertVideoWithFfmpegBrowserInput =
   | ConvertVideoWithFfmpegBrowserRemoteInput

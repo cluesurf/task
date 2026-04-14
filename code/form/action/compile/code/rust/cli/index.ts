@@ -1,9 +1,9 @@
+import { LocalPath } from '~/code/form/object/file'
 import {
   RustCompilerTarget,
   RustInputFormat,
   RustOutputFormat,
-} from '~/code/form/object/rust/index'
-import { LocalPath } from '~/code/form/object/file/index'
+} from '~/code/form/object/rust'
 
 export type CompileRustCommandInput = {
   input: {

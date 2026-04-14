@@ -1,5 +1,5 @@
-import { FontFormat } from '~/code/form/object/font/index'
-import { LocalPath } from '~/code/form/object/file/index'
+import { LocalPath } from '~/code/form/object/file'
+import { FontFormat } from '~/code/form/object/font'
 
 export type ConvertFontWithFontForgeCommandInput = {
   input: {

@@ -6,7 +6,7 @@
  */
 
 import fs from 'node:fs'
-import { runHfDownload } from '~/code/base/hugging-face/node'
+import { runHfDownload } from './hf/node'
 
 export type DownloadHuggingFaceNodeInput = {
   repo: string

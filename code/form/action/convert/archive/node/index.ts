@@ -1,4 +1,4 @@
-import { ArchiveFormat } from '~/code/form/object/archive/index'
+import { ArchiveFormat } from '~/code/form/object/archive'
 import {
   FileContentWithSha256,
   FileInputPath,
@@ -6,7 +6,7 @@ import {
   LocalOutputPath,
   LocalPath,
   RemoteInputPath,
-} from '~/code/form/object/file/index'
+} from '~/code/form/object/file'
 
 export type ConvertArchiveNodeClientInput = {
   handle: 'client'
