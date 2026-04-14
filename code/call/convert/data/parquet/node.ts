@@ -12,30 +12,34 @@ import path from 'node:path'
 import {
   convertParquetFileToJsonl,
   convertJsonlFileToParquet,
-} from '~/code/base/duckdb/node'
+} from '../duckdb/node'
+import type { ConvertParquetNodeLocalInput } from '~/code/form/action/convert/parquet/node'
 
-export type ConvertParquetJsonlResult = {
+// TODO: the generated `code/base/data/base.ts` schema currently
+// describes a single-file input (`input.file`) and a `{ file }`
+// output, while this handler walks an input directory tree and
+// returns per-file stats. Extend `buildConvertFormsWithOutputDirectory`
+// (or add a folder-walk variant) so both sides match, then drop
+// this cast and the hand-written stats type.
+export type ConvertParquetNodeStats = {
   converted: number
   skipped: number
   failed: number
 }
 
-export type ConvertParquetNodeLocalInput = {
-  input: {
-    format: 'parquet' | 'jsonl'
-    directory: { path: string }
-  }
-  output: {
-    format: 'parquet' | 'jsonl'
-    directory: { path: string }
-  }
+type ConvertParquetNodeLocalDirectoryInput = Omit<
+  ConvertParquetNodeLocalInput,
+  'input' | 'output'
+> & {
+  input: { format: string; directory: { path: string } }
+  output: { format: string; directory: { path: string } }
   merge?: boolean
 }
 
 export async function convertParquetNode(
-  input: ConvertParquetNodeLocalInput,
-): Promise<ConvertParquetJsonlResult> {
-  const result: ConvertParquetJsonlResult = {
+  input: ConvertParquetNodeLocalDirectoryInput,
+): Promise<ConvertParquetNodeStats> {
+  const result: ConvertParquetNodeStats = {
     converted: 0,
     skipped: 0,
     failed: 0,

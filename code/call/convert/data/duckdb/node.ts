@@ -1,13 +1,13 @@
 /**
  * Execute data-conversion actions by shelling out to the
- * `duckdb` CLI. Uses SQL strings assembled in `../command.ts`.
+ * `duckdb` CLI. Uses SQL strings assembled in `./command.ts`.
  */
 
 import { execSync } from 'node:child_process'
 import {
   buildSqlToConvertJsonlToParquet,
   buildSqlToConvertParquetToJsonl,
-} from '../command'
+} from './command'
 
 /** Run arbitrary SQL through the duckdb CLI. */
 function runDuckdbSql(sql: string, timeout?: number): string {

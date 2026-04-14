@@ -11,13 +11,20 @@ Yes, TypeScript handles this cleanly via function overloads.
 ## Shape
 
 ```ts
-import task from '@cluesurf/task'
+import Task from '@cluesurf/task'
+
+const task = new Task({ host: 'https://task.surf' }) // host optional
 
 const out = await task.convert({
   input:  { format: 'png', file: { path: 'a.png' } },
   output: { format: 'jpg', file: { path: 'a.jpg' } },
 })
 ```
+
+`Task` is a class, not a singleton. Construct it with an optional
+`host` (for remote dispatch) and optional `code`. Multiple instances
+with different hosts / keys can coexist — useful for tests and for
+apps talking to more than one backend.
 
 One verb method per top-level action. Input is a nested object.
 Output depends on the dispatched sub-thing.
@@ -51,38 +58,106 @@ entries per tool, most of them never hit.
 Instead, codegen emits one **entry per tool**, pointing at the
 already-existing format `List`s:
 
-```ts
-// code/form/task/dispatch.node.ts (AUTO-GENERATED)
-import IMAGEMAGICK_IN from '~/code/form/object/imagemagick/imagemagick.format.input.json'
-import IMAGEMAGICK_OUT from '~/code/form/object/imagemagick/imagemagick.format.output.json'
-import FFMPEG_IN from '~/code/form/object/ffmpeg/ffmpeg.format.input.json'
-import FFMPEG_OUT from '~/code/form/object/ffmpeg/ffmpeg.format.output.json'
-// ... one pair per tool
+### Two-level lazy loading
 
-export const convertDispatchNode: ConvertEntry[] = [
+The format lists can be huge — ffmpeg has hundreds of codecs,
+imagemagick has 200+ formats — and the handler modules themselves
+pull in `child_process`, WASM binaries, pandoc wrappers, etc. The
+router should pay for neither until it has to. So each route entry
+holds **two** lazy loaders:
+
+1. **`loadBase()`** — imports just the tool's format definitions
+   (`code/form/object/<tool>/base.ts`, a small value-only module of
+   string arrays). Used to *decide* whether this tool handles the
+   requested `(in, out)` pair.
+2. **`loadCall()`** — imports the actual handler
+   (`code/call/<action>/<thing>/<tool>/node.ts`), which pulls in the
+   native-tool wrapper, `child_process`, etc. Only loaded after the
+   base-level probe picks this tool.
+
+```ts
+// code/form/task/route/node.ts (AUTO-GENERATED)
+export type ConvertRoute = {
+  tool: string
+  loadBase: () => Promise<{
+    input: ReadonlyArray<string>
+    output: ReadonlyArray<string>
+  }>
+  loadCall: () => Promise<{
+    run: (input: any, ctx: CallContext) => Promise<any>
+  }>
+}
+
+export const convertRouteNode: ConvertRoute[] = [
   {
     tool: 'imagemagick',
-    input:  new Set(IMAGEMAGICK_IN),
-    output: new Set(IMAGEMAGICK_OUT),
-    load:   () => import('~/code/call/convert/image/imagemagick/node'),
+    loadBase: () => import('~/code/form/object/imagemagick/base'),
+    loadCall: () => import('~/code/call/convert/image/imagemagick/node'),
   },
   {
     tool: 'ffmpeg',
-    input:  new Set(FFMPEG_IN),
-    output: new Set(FFMPEG_OUT),
-    load:   () => import('~/code/call/convert/video/ffmpeg/node'),
+    loadBase: () => import('~/code/form/object/ffmpeg/base'),
+    loadCall: () => import('~/code/call/convert/video/ffmpeg/node'),
   },
   // ...
 ]
 ```
+
+Router walks the table, awaits `loadBase()` for each tool until the
+format sets match, then awaits `loadCall()` on the winner and runs:
+
+```ts
+async function runConvert(input: any, ctx: CallContext) {
+  for (const route of convertRouteNode) {
+    if (input.tool && route.tool !== input.tool) continue
+    const base = await route.loadBase()
+    if (
+      base.input.includes(input.input.format) &&
+      base.output.includes(input.output.format)
+    ) {
+      const call = await route.loadCall()
+      return call.run(input, ctx)
+    }
+  }
+  throw new Error(
+    `No handler for convert ${input.input.format} → ${input.output.format}`,
+  )
+}
+```
+
+Both levels are cached by the module system. A repeated
+`task.convert(...)` with the same tool pair pays zero additional
+imports. An explicit `input.tool: 'pandoc'` skips the probe entirely:
+only pandoc's `loadBase` + `loadCall` fire.
+
+Base modules stay small on purpose — they export only string arrays
+of supported formats, no runtime code, no heavy imports. If a
+`form/object/<tool>/base.ts` ever starts pulling in non-trivial
+dependencies, split out a dedicated `format.ts` sibling and point
+`loadBase` at that instead.
+
+### Eager vs lazy rule
+
+The only things allowed to be imported eagerly (non-`import type`)
+anywhere in the `Task` class entrypoint (`code/node.ts`,
+`code/browser.ts`) or the generated `code/form/task/route/*.ts` are
+**pure type declarations** — what lives in `code/form/.../index.ts`
+and the `TaskSurface` interface itself. Those import statements
+erase to nothing at runtime.
+
+Every value — format arrays, codec lists, constants from
+`code/form/object/<tool>/base.ts`, the tool's `run` function —
+must only be reachable through a `() => import(...)` in a route
+entry. That keeps the boot cost of `new Task()` to exactly the size
+of the type-stripped entrypoint plus the route tables.
 
 Lookup walks the table and picks the first entry whose `input` and
 `output` sets both contain the requested formats. `O(tools)` — usually
 under 20 — not `O(in × out)`.
 
 ```ts
-function pickConvertEntry(inFmt: string, outFmt: string, tool?: string) {
-  for (const entry of convertDispatchNode) {
+function pickConvertRoute(inFmt: string, outFmt: string, tool?: string) {
+  for (const entry of convertRouteNode) {
     if (tool && entry.tool !== tool) continue
     if (entry.input.has(inFmt) && entry.output.has(outFmt)) return entry
   }
@@ -96,8 +171,8 @@ preference and let the caller override with `input.tool: 'pandoc'`,
 or keep the preferred tool first in the list.
 
 The same codegen pass that emits `code/form/task/node.ts` and
-`code/form/task/browser.ts` also emits `code/form/task/dispatch.node.ts`
-and `code/form/task/dispatch.browser.ts` from the same schema
+`code/form/task/browser.ts` also emits `code/form/task/route/node.ts`
+and `code/form/task/route/browser.ts` from the same schema
 data — single source of truth.
 
 ## Typing: overloads
@@ -107,19 +182,24 @@ Per-overload types come from the generated schema output in
 `code/form/action/<action>/<thing>/node/index.ts`.
 
 ```ts
-// Generated per action/thing by pnpm make:type.
-import type { ConvertImageWithImageMagickNodeInput, ConvertImageWithImageMagickNodeOutput } from '@/form/action/convert/image/imagemagick/node'
-import type { ConvertVideoWithFfmpegNodeInput, ConvertVideoWithFfmpegNodeOutput } from '@/form/action/convert/video/ffmpeg/node'
-import type { ConvertArchiveNodeInput, ConvertArchiveNodeOutput } from '@/form/action/convert/archive/node'
+// code/form/task/node.ts — AUTO-GENERATED by pnpm make:type.
+import type { ConvertImageWithImageMagickNodeInput, ConvertImageWithImageMagickNodeOutput } from '~/code/form/action/convert/imagemagick/node'
+import type { ConvertVideoWithFfmpegNodeInput, ConvertVideoWithFfmpegNodeOutput } from '~/code/form/action/convert/ffmpeg/node'
+import type { ConvertArchiveNodeInput, ConvertArchiveNodeOutput } from '~/code/form/action/convert/archive/node'
 // ... more
 
-export interface Task {
+export interface TaskSurface {
   convert(input: ConvertImageWithImageMagickNodeInput): Promise<ConvertImageWithImageMagickNodeOutput>
   convert(input: ConvertVideoWithFfmpegNodeInput): Promise<ConvertVideoWithFfmpegNodeOutput>
   convert(input: ConvertArchiveNodeInput): Promise<ConvertArchiveNodeOutput>
   // ... and so on for every (from-format → to-format) the system supports
 }
 ```
+
+The generated file declares the typed overload surface as an
+`interface TaskSurface`. The runtime class `Task` (below) implements
+that interface — the class carries the constructor, `host`, and
+`code` state; the interface carries the typed method signatures.
 
 TypeScript picks the right overload when the user passes an
 object whose `format` combination matches one declared shape.
@@ -181,62 +261,79 @@ collect them into a Task interface.
 
 ## Runtime implementation
 
-Minimal, shared between browser and node:
+`Task` is a class. Each instance holds its own `host` and `code`,
+so multiple clients (different backends, tests) can coexist.
 
 ```ts
-// code/index.ts (shared default export)
-import { convert } from './dispatch/convert'
-import { format } from './dispatch/format'
-import { archive } from './dispatch/archive'
-import { extract } from './dispatch/extract'
-import { compile } from './dispatch/compile'
-import { upload } from './dispatch/upload'
-import { download } from './dispatch/download'
-import { open } from './dispatch/open'
-import type { Task } from './form/task'
+// code/node.ts — default export
+import type { TaskSurface } from '~/code/form/task/node'
+import { convertNode } from '~/code/call/convert/node'
+import { formatNode } from '~/code/call/format/node'
+import { archiveNode } from '~/code/call/archive/node'
+// ... one per verb
 
-let apiKey: string | undefined
-
-const task: Task & {
-  code(key: string): void
-  wait(work: Work): Promise<void>
-  resolve<T>(work: Work): Promise<T>
-} = {
-  convert,
-  format,
-  archive,
-  extract,
-  compile,
-  upload,
-  download,
-  open,
-
-  code(key) {
-    apiKey = key
-  },
-  async wait(work) {
-    /* poll remote server until done */
-  },
-  async resolve(work) {
-    /* fetch final output by work id */
-  },
+export type TaskOptions = {
+  host?: string   // remote dispatch endpoint (default: https://task.surf)
+  code?: string // API key for remote calls
 }
 
-export default task
+export type Work = { id: string }
+
+export default class Task implements TaskSurface {
+  private host: string
+  private code?: string
+
+  constructor(options: TaskOptions = {}) {
+    this.host = options.host ?? 'https://task.surf'
+    this.code = options.code
+  }
+
+  convert(input: any): Promise<any> {
+    return convertNode(input, { host: this.host, code: this.code })
+  }
+  format(input: any): Promise<any> {
+    return formatNode(input, { host: this.host, code: this.code })
+  }
+  archive(input: any): Promise<any> {
+    return archiveNode(input, { host: this.host, code: this.code })
+  }
+  // ... one method per verb
+
+  async wait(work: Work): Promise<void> {
+    /* poll remote server until done */
+  }
+
+  async resolve<T>(work: Work): Promise<T> {
+    /* fetch final output by work id */
+    return {} as T
+  }
+}
 ```
 
-Each dispatch function reads the input, finds the matching tool entry,
-lazy-imports it, and invokes:
+The method bodies all have a single implementation signature (`input: any`)
+that is broader than the overloads declared on `TaskSurface`. TypeScript
+uses the interface overloads for call-site type checking; the broad
+body signature is what actually runs. This is the standard way to
+implement overloaded methods on a class.
+
+Browser entrypoint mirrors this at `code/browser.ts`, importing
+browser-side verb routers and `TaskSurface` from `~/code/form/task/browser`.
+
+Each dispatch function reads the input, finds the tool route,
+lazy-imports it, and invokes. The class passes its per-instance
+`host` + `code` through as a second argument:
 
 ```ts
-// code/dispatch/convert.node.ts
-import { convertDispatchNode } from '~/code/form/task/dispatch.node'
+// code/call/convert/node.ts
+import { convertRouteNode } from '~/code/form/task/route/node'
 
-export async function convert(input: any): Promise<any> {
-  if (input.remote) return runRemote('convert', input)
+export type CallContext = { host: string; code?: string }
+
+export async function convertNode(input: any, ctx: CallContext): Promise<any> {
+  if (input.remote) return runRemote('convert', input, ctx)
   if (input.explain) return describe('convert', input)
 
-  const entry = pickConvertEntry(
+  const entry = pickConvertRoute(
     input.input.format,
     input.output.format,
     input.tool,
@@ -258,27 +355,28 @@ Controlled by the `remote` flag on input:
 
 - `remote: false` (default): run locally via the lazy-loaded
   `node.ts` or `browser.ts`.
-- `remote: true`: serialize the input, POST to the task.surf
-  HTTP server, return a `Work` handle. Uses the `code(...)`
-  registered API key.
+- `remote: true`: serialize the input, POST to the configured
+  `host`, return a `Work` handle. Uses the instance's `code`.
 
 `work: true` returns immediately with the work handle. Without
 it, the remote path blocks until completion and returns the
 final output.
 
-Single helper function covers remote dispatch; every verb calls
-it up front:
+Single helper covers remote dispatch; every verb calls it up front:
 
 ```ts
-async function runRemote(verb: string, input: any) {
-  const res = await fetch(`${TASK_SURF_URL}/${verb}`, {
+async function runRemote(verb: string, input: any, ctx: CallContext) {
+  const res = await fetch(`${ctx.host}/${verb}`, {
     method: 'POST',
-    headers: { 'x-api-key': apiKey, 'content-type': 'application/json' },
+    headers: {
+      ...(ctx.code ? { 'x-api-key': ctx.code } : {}),
+      'content-type': 'application/json',
+    },
     body: JSON.stringify(input),
   })
   if (!res.ok) throw new Error(await res.text())
   const work = await res.json()
-  return input.work ? work : resolveWork(work)
+  return input.work ? work : resolveWork(work, ctx)
 }
 ```
 
@@ -286,8 +384,8 @@ async function runRemote(verb: string, input: any) {
 
 Two different default exports, same interface:
 
-- `code/index.node.ts` — dispatches to `node.ts` files.
-- `code/index.browser.ts` — dispatches to `browser.ts` files.
+- `code/node.ts` — default export: `class Task` for Node.
+- `code/browser.ts` — default export: `class Task` for browser.
   Browser-only transports (WASM, fetch) are what the
   per-thing `browser.ts` files already wrap.
 
@@ -298,9 +396,9 @@ Two different default exports, same interface:
 {
   "exports": {
     ".": {
-      "node": "./host/code/index.node.js",
-      "browser": "./host/code/index.browser.js",
-      "default": "./host/code/index.node.js",
+      "node": "./host/code/node.js",
+      "browser": "./host/code/browser.js",
+      "default": "./host/code/node.js",
       "types": "./host/code/form/task.d.ts"
     }
   }
@@ -315,8 +413,8 @@ the public TypeScript surface is identical.
 - **`task.open(...)`**: opens output in a viewer window (local)
   or browser tab (browser). Dispatches on `format` (`window`,
   `tab`, `preview`). Same shape as other verbs.
-- **`task.code(apiKey)`**: sets module-level API key for remote
-  calls. Not a verb, no overloads needed.
+- **`new Task({ code })`**: API key for remote calls. Passed to the
+  constructor; no separate setter method.
 - **`task.wait(work)` / `task.resolve(work)`**: Work helpers.
   Poll the remote server for status or fetch the final output
   by work ID. Typed against a `Work` handle returned by
@@ -333,15 +431,16 @@ the public TypeScript surface is identical.
    One overload per concrete action.thing.tool that has a
    `_node_input` / `_browser_input` form. **(done)**
 2. Extend `make/index.ts` to also emit
-   `code/form/task/dispatch.node.ts` and
-   `code/form/task/dispatch.browser.ts` — one entry per tool, each
+   `code/form/task/route/node.ts` and
+   `code/form/task/route/browser.ts` — one entry per tool, each
    entry holding the tool's `*_input_format` / `*_output_format`
    `List`s as `Set`s plus a lazy `load()`. No `in×out` cross-product.
-3. Write `code/dispatch/<verb>.ts` for each top-level verb. Each
+3. Write `code/call/<verb>/{node,browser}.ts` for each top-level verb. Each
    imports the generated dispatch table, scans for a matching entry,
    and invokes. Handles `remote` / `explain` up front.
-4. Write `code/index.node.ts` and `code/index.browser.ts` as
-   thin wrappers that expose the `Task` object.
+4. Write `code/node.ts` and `code/browser.ts` — thin entrypoints that
+   export a `default class Task implements TaskSurface`, with a
+   constructor taking `{ host?, code? }` and one method per verb.
 5. Add `remote`, `work`, `explain` flags to every action schema
    (or add them in a common-inputs helper so they're applied
    uniformly).

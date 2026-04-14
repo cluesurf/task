@@ -137,3 +137,73 @@ export interface TaskSurface {
 
   sanitize(input: SanitizeHtmlBrowserInput): Promise<SanitizeHtmlBrowserOutput>
 }
+
+export type CompileBrowserInput =
+  | CompileCBrowserInput
+  | CompileCppBrowserInput
+  | CompileRustBrowserInput
+  | CompileSwiftBrowserInput
+  | CompileWastBrowserInput
+export type CompileBrowserOutput =
+  | CompileCBrowserOutput
+  | CompileCppBrowserOutput
+  | CompileRustBrowserOutput
+  | CompileSwiftBrowserOutput
+  | CompileWastBrowserOutput
+
+export type ConvertBrowserInput =
+  | ConvertArchiveBrowserInput
+  | ConvertDataBrowserInput
+  | ConvertDocumentWithCalibreBrowserInput
+  | ConvertDocumentWithEnscriptBrowserInput
+  | ConvertDocumentWithJupyterBrowserInput
+  | ConvertDocumentWithLibreOfficeBrowserInput
+  | ConvertDocumentWithPandocBrowserInput
+  | ConvertFontWithFontForgeBrowserInput
+  | ConvertHtmlWithPuppeteerBrowserInput
+  | ConvertImageWithImageMagickBrowserInput
+  | ConvertImageWithInkscapeBrowserInput
+  | ConvertLatexToPngBrowserInput
+  | ConvertLatexWithPdfLatexBrowserInput
+  | ConvertMarkdownWithPuppeteerBrowserInput
+  | ConvertParquetBrowserInput
+  | ConvertTxtWithPuppeteerBrowserInput
+  | ConvertVideoWithFfmpegBrowserInput
+export type ConvertBrowserOutput =
+  | ConvertArchiveBrowserOutput
+  | ConvertDataBrowserOutput
+  | ConvertDocumentWithCalibreBrowserOutput
+  | ConvertDocumentWithEnscriptBrowserOutput
+  | ConvertDocumentWithJupyterBrowserOutput
+  | ConvertDocumentWithLibreOfficeBrowserOutput
+  | ConvertDocumentWithPandocBrowserOutput
+  | ConvertFontWithFontForgeBrowserOutput
+  | ConvertHtmlWithPuppeteerBrowserOutput
+  | ConvertImageWithImageMagickBrowserOutput
+  | ConvertImageWithInkscapeBrowserOutput
+  | ConvertLatexToPngBrowserOutput
+  | ConvertLatexWithPdfLatexBrowserOutput
+  | ConvertMarkdownWithPuppeteerBrowserOutput
+  | ConvertParquetBrowserOutput
+  | ConvertTxtWithPuppeteerBrowserOutput
+  | ConvertVideoWithFfmpegBrowserOutput
+
+export type FormatBrowserInput =
+  | FormatAssemblyBrowserInput
+  | FormatCodeWithClangFormatBrowserInput
+  | FormatKotlinBrowserInput
+  | FormatPythonBrowserInput
+  | FormatRustBrowserInput
+  | FormatSwiftBrowserInput
+export type FormatBrowserOutput =
+  | FormatAssemblyBrowserOutput
+  | FormatCodeWithClangFormatBrowserOutput
+  | FormatKotlinBrowserOutput
+  | FormatPythonBrowserOutput
+  | FormatRustBrowserOutput
+  | FormatSwiftBrowserOutput
+
+export type SanitizeBrowserInput =
+  | SanitizeHtmlBrowserInput
+export type SanitizeBrowserOutput =
+  | SanitizeHtmlBrowserOutput

@@ -191,6 +191,33 @@ every concrete sub-thing of that action.
 
 ## Principles
 
+- **All functions take a single object input.** Every function in
+  this package — routers, handlers, helpers, utilities — accepts
+  exactly one argument: a plain object with named properties. No
+  positional params, no splat arguments. Even when a function needs
+  only one logical value, wrap it (`{ source }`, `{ input, context }`,
+  etc.). Makes call sites readable, extension cheap, and matches the
+  mesh-wide convention.
+
+  ```ts
+  // Yes
+  export async function convertNode({
+    source,
+    context,
+  }: {
+    source: ConvertInput
+    context: ConvertCallContext
+  }): Promise<unknown> { /* ... */ }
+
+  // No
+  export async function convertNode(source, context) { /* ... */ }
+  ```
+
+  Legacy handlers in `code/call/<action>/<thing>/<tool>/node.ts` that
+  still take `(source, native)` are being migrated; new code should
+  follow the object-input convention and wrapper adapters should
+  bridge to the legacy shape.
+
 - **Schemas are declarative, types are generated.** Never hand-write
   zod parsers or TypeScript types for CLI / Node / Browser input
   shapes. Declare the schema in `code/call/<action>/<thing>/base.ts`
@@ -331,31 +358,64 @@ overload set is finite. TypeScript narrowing picks the right one from
 the literal `format` strings — no conditional types, no inference
 gymnastics at compile time.
 
-### Runtime dispatch
+### Runtime dispatch (two-level lazy load)
 
 A flat `Record<"in:out", loader>` does not scale — ffmpeg alone
 declares hundreds of input × hundreds of output formats. Codegen
-instead emits **one entry per tool**, each holding the tool's
-`*_input_format` and `*_output_format` lists as `Set`s plus a lazy
-`load()`:
+instead emits **one entry per tool**, with **two** lazy loaders each:
+
+1. **`loadBase()`** — imports `code/form/object/<tool>/base.ts`, a
+   small value-only module exporting the tool's format arrays. Used
+   to *probe* whether the tool handles the requested `(in, out)` pair.
+2. **`loadCall()`** — imports `code/call/<action>/<thing>/<tool>/node.ts`,
+   the actual handler that pulls in `child_process`, native-tool
+   wrappers, WASM, etc. Only loaded after the base probe matches.
 
 ```ts
-// code/form/task/dispatch.node.ts (AUTO-GENERATED)
-export const convertDispatchNode: ConvertEntry[] = [
-  { tool: 'imagemagick', input: new Set(IMAGEMAGICK_IN), output: new Set(IMAGEMAGICK_OUT), load: () => import('~/code/call/convert/image/imagemagick/node') },
-  { tool: 'ffmpeg',      input: new Set(FFMPEG_IN),      output: new Set(FFMPEG_OUT),      load: () => import('~/code/call/convert/video/ffmpeg/node') },
+// code/form/task/route/node.ts (AUTO-GENERATED)
+export const convertRouteNode: ConvertRoute[] = [
+  {
+    tool: 'imagemagick',
+    loadBase: () => import('~/code/form/object/imagemagick/base'),
+    loadCall: () => import('~/code/call/convert/image/imagemagick/node'),
+  },
+  {
+    tool: 'ffmpeg',
+    loadBase: () => import('~/code/form/object/ffmpeg/base'),
+    loadCall: () => import('~/code/call/convert/video/ffmpeg/node'),
+  },
   // ...
 ]
 ```
 
-Lookup walks the table and picks the first entry whose `input` and
-`output` sets both contain the requested formats. `O(tools)` — usually
-under 20 — not `O(in × out)`. The generated dispatch table and the
-generated `Task` overloads come from the same pass and stay in sync
-automatically.
+Lookup walks the table, awaits each tool's `loadBase()` until the
+format arrays contain the pair, then awaits `loadCall()` on the
+winner. `O(tools)` probes — usually under 20 — each hitting only the
+tool's tiny format-list module. The heavy handler is only loaded
+after it's been picked. Module-system caching makes repeated calls
+free.
 
-This replaces every `testConvertDocumentWithLibreOffice`-style runtime
-chain of `if` branches in `code/call/<action>/<thing>/node.ts`.
+### Eager vs lazy rule
+
+In `code/node.ts`, `code/browser.ts`, and the generated
+`code/form/task/route/*.ts`, the only permitted eager imports are
+`import type` statements (pure type declarations from
+`code/form/.../index.ts` and `TaskSurface`). Every value — format
+arrays, handler `run` functions, anything from `code/form/object/<tool>/base.ts`
+or `code/call/<action>/<thing>/<tool>/node.ts` — must only be
+reachable through a `() => import(...)`. This keeps `new Task()` boot
+cost to the type-stripped entrypoint plus the route tables.
+
+This also replaces every `testConvertDocumentWithLibreOffice`-style
+runtime chain of `if` branches in `code/call/<action>/<thing>/node.ts`.
+
+### Keeping `form/object/<tool>/base.ts` lean
+
+`loadBase` is on the hot path for every dispatched call. Keep these
+modules tiny: pure value exports (string arrays, hash tables), no
+runtime code, no dependencies. If a given `base.ts` grows to drag in
+non-trivial siblings, split out a dedicated `format.ts` next to it
+and point `loadBase` at that instead.
 
 ### Conflicts
 

@@ -143,3 +143,78 @@ export interface TaskSurface {
 
   sanitize(input: SanitizeHtmlNodeInput): Promise<SanitizeHtmlNodeOutput>
 }
+
+export type CompileNodeInput =
+  | CompileCNodeInput
+  | CompileCppNodeInput
+  | CompileRustNodeInput
+  | CompileSwiftNodeInput
+  | CompileWastNodeInput
+export type CompileNodeOutput =
+  | CompileCNodeOutput
+  | CompileCppNodeOutput
+  | CompileRustNodeOutput
+  | CompileSwiftNodeOutput
+  | CompileWastNodeOutput
+
+export type ConvertNodeInput =
+  | ConvertArchiveNodeInput
+  | ConvertDataNodeInput
+  | ConvertDocumentWithCalibreNodeInput
+  | ConvertDocumentWithEnscriptNodeInput
+  | ConvertDocumentWithJupyterNodeInput
+  | ConvertDocumentWithLibreOfficeNodeInput
+  | ConvertDocumentWithPandocNodeInput
+  | ConvertFontWithFontForgeNodeInput
+  | ConvertHtmlWithPuppeteerNodeInput
+  | ConvertImageWithImageMagickNodeInput
+  | ConvertImageWithInkscapeNodeInput
+  | ConvertLatexToPngNodeInput
+  | ConvertLatexWithPdfLatexNodeInput
+  | ConvertMarkdownWithPuppeteerNodeInput
+  | ConvertParquetNodeInput
+  | ConvertTxtWithPuppeteerNodeInput
+  | ConvertVideoWithFfmpegNodeInput
+export type ConvertNodeOutput =
+  | ConvertArchiveNodeOutput
+  | ConvertDataNodeOutput
+  | ConvertDocumentWithCalibreNodeOutput
+  | ConvertDocumentWithEnscriptNodeOutput
+  | ConvertDocumentWithJupyterNodeOutput
+  | ConvertDocumentWithLibreOfficeNodeOutput
+  | ConvertDocumentWithPandocNodeOutput
+  | ConvertFontWithFontForgeNodeOutput
+  | ConvertHtmlWithPuppeteerNodeOutput
+  | ConvertImageWithImageMagickNodeOutput
+  | ConvertImageWithInkscapeNodeOutput
+  | ConvertLatexToPngNodeOutput
+  | ConvertLatexWithPdfLatexNodeOutput
+  | ConvertMarkdownWithPuppeteerNodeOutput
+  | ConvertParquetNodeOutput
+  | ConvertTxtWithPuppeteerNodeOutput
+  | ConvertVideoWithFfmpegNodeOutput
+
+export type DownloadNodeInput =
+  | DownloadHuggingFaceNodeInput
+export type DownloadNodeOutput =
+  | DownloadHuggingFaceNodeOutput
+
+export type FormatNodeInput =
+  | FormatAssemblyNodeInput
+  | FormatCodeWithClangFormatNodeInput
+  | FormatKotlinNodeInput
+  | FormatPythonNodeInput
+  | FormatRustNodeInput
+  | FormatSwiftNodeInput
+export type FormatNodeOutput =
+  | FormatAssemblyNodeOutput
+  | FormatCodeWithClangFormatNodeOutput
+  | FormatKotlinNodeOutput
+  | FormatPythonNodeOutput
+  | FormatRustNodeOutput
+  | FormatSwiftNodeOutput
+
+export type SanitizeNodeInput =
+  | SanitizeHtmlNodeInput
+export type SanitizeNodeOutput =
+  | SanitizeHtmlNodeOutput
