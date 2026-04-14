@@ -1,4 +1,4 @@
-import { ArchiveFormat } from '~/code/form/shared/index'
+import { ArchiveFormat } from '~/code/form/object/archive'
 import { testConvertFileInputOutput } from '../shared'
 import { getConfig } from '~/code/tool/shared/config'
 

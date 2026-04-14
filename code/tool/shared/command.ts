@@ -48,6 +48,7 @@ export const COMMAND: Record<CommandName, Array<string> | undefined> = {
   pdfcrop: ['pdfcrop'],
   ps2pdf: ['ps2pdf'],
   enscript: ['enscript'],
+  duckdb: ['duckdb'],
 }
 
 export function getCommand(name: CommandName): Command {

@@ -41,6 +41,7 @@ export const COMMAND_KEY: ReadonlyArray<CommandKey> = [
   'pdfcrop',
   'enscript',
   'ps2pdf',
+  'duckdb',
 ]
 export const COMMAND_NAME: ReadonlyArray<CommandName> = [
   'ffmpeg',
@@ -83,4 +84,5 @@ export const COMMAND_NAME: ReadonlyArray<CommandName> = [
   'pdfcrop',
   'enscript',
   'ps2pdf',
+  'duckdb',
 ]

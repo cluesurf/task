@@ -1,38 +1,28 @@
 /**
  * Execute data-conversion actions by shelling out to the
- * `duckdb` CLI. Uses SQL strings assembled in `./command.ts`.
+ * `duckdb` CLI via the shared `runCommandSequence` runner.
+ * The command sequences themselves are assembled in
+ * `./command.ts`.
  */
 
-import { execSync } from 'node:child_process'
+import { runCommandSequence } from '~/code/tool/node/command'
 import {
-  buildSqlToConvertJsonlToParquet,
-  buildSqlToConvertParquetToJsonl,
+  buildCommandToConvertJsonlToParquet,
+  buildCommandToConvertParquetToJsonl,
+  type BuildJsonlToParquetInput,
+  type BuildParquetToJsonlInput,
 } from './command'
 
-/** Run arbitrary SQL through the duckdb CLI. */
-function runDuckdbSql(sql: string, timeout?: number): string {
-  const escaped = sql.replace(/"/g, '\\"')
-  return execSync(`duckdb -c "${escaped}"`, {
-    encoding: 'utf-8',
-    timeout,
-    stdio: ['ignore', 'pipe', 'pipe'],
-  })
-}
-
 /** Convert a parquet file (or glob) to a JSONL file. */
-export function convertParquetFileToJsonl(input: {
-  input: string
-  output: string
-}): void {
-  runDuckdbSql(buildSqlToConvertParquetToJsonl(input))
+export async function convertParquetFileToJsonl(
+  input: BuildParquetToJsonlInput,
+): Promise<void> {
+  await runCommandSequence(buildCommandToConvertParquetToJsonl(input))
 }
 
 /** Convert a JSONL file to parquet with optional explicit columns. */
-export function convertJsonlFileToParquet(input: {
-  input: string
-  output: string
-  columns?: string
-  compression?: 'ZSTD' | 'SNAPPY' | 'GZIP' | 'NONE'
-}): void {
-  runDuckdbSql(buildSqlToConvertJsonlToParquet(input))
+export async function convertJsonlFileToParquet(
+  input: BuildJsonlToParquetInput,
+): Promise<void> {
+  await runCommandSequence(buildCommandToConvertJsonlToParquet(input))
 }

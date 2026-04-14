@@ -51,6 +51,7 @@ export const COMMAND_HANDLER: Record<string, (cmd: Command) => any> = {
   fontforge: runFontforgeCommand,
   unar: runGenericCommand,
   zip: runGenericCommand,
+  duckdb: runGenericCommand,
   identify: handleIdentifyCommand,
   'clang-format': handleClangFormatCommand,
   black: handleBlackCommand,

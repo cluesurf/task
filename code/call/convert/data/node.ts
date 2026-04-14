@@ -80,17 +80,17 @@ export async function convertDataNode(
         const dir = path.dirname(files[0]!)
         const baseName = path.basename(groupKey)
         const glob = path.join(dir, `${baseName}.*${srcExt}`)
-        convertParquetFileToJsonl({ input: glob, output: outAbs })
+        await convertParquetFileToJsonl({ input: glob, output: outAbs })
       } else if (
         input.input.format === 'parquet' &&
         input.output.format === 'jsonl'
       ) {
-        convertParquetFileToJsonl({ input: files[0]!, output: outAbs })
+        await convertParquetFileToJsonl({ input: files[0]!, output: outAbs })
       } else if (
         input.input.format === 'jsonl' &&
         input.output.format === 'parquet'
       ) {
-        convertJsonlFileToParquet({ input: files[0]!, output: outAbs })
+        await convertJsonlFileToParquet({ input: files[0]!, output: outAbs })
       } else {
         result.skipped++
         continue

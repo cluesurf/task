@@ -13,33 +13,15 @@ import {
   convertParquetFileToJsonl,
   convertJsonlFileToParquet,
 } from '../duckdb/node'
-import type { ConvertParquetNodeLocalInput } from '~/code/form/action/convert/parquet/node'
-
-// TODO: the generated `code/base/data/base.ts` schema currently
-// describes a single-file input (`input.file`) and a `{ file }`
-// output, while this handler walks an input directory tree and
-// returns per-file stats. Extend `buildConvertFormsWithOutputDirectory`
-// (or add a folder-walk variant) so both sides match, then drop
-// this cast and the hand-written stats type.
-export type ConvertParquetNodeStats = {
-  converted: number
-  skipped: number
-  failed: number
-}
-
-type ConvertParquetNodeLocalDirectoryInput = Omit<
-  ConvertParquetNodeLocalInput,
-  'input' | 'output'
-> & {
-  input: { format: string; directory: { path: string } }
-  output: { format: string; directory: { path: string } }
-  merge?: boolean
-}
+import type {
+  ConvertParquetNodeLocalInternalInput,
+  ConvertParquetNodeOutput,
+} from '~/code/form/action/convert/parquet/node'
 
 export async function convertParquetNode(
-  input: ConvertParquetNodeLocalDirectoryInput,
-): Promise<ConvertParquetNodeStats> {
-  const result: ConvertParquetNodeStats = {
+  input: ConvertParquetNodeLocalInternalInput,
+): Promise<ConvertParquetNodeOutput> {
+  const result: ConvertParquetNodeOutput = {
     converted: 0,
     skipped: 0,
     failed: 0,
@@ -84,17 +66,17 @@ export async function convertParquetNode(
         const dir = path.dirname(files[0]!)
         const baseName = path.basename(groupKey)
         const glob = path.join(dir, `${baseName}.*${srcExt}`)
-        convertParquetFileToJsonl({ input: glob, output: outAbs })
+        await convertParquetFileToJsonl({ input: glob, output: outAbs })
       } else if (
         input.input.format === 'parquet' &&
         input.output.format === 'jsonl'
       ) {
-        convertParquetFileToJsonl({ input: files[0]!, output: outAbs })
+        await convertParquetFileToJsonl({ input: files[0]!, output: outAbs })
       } else if (
         input.input.format === 'jsonl' &&
         input.output.format === 'parquet'
       ) {
-        convertJsonlFileToParquet({ input: files[0]!, output: outAbs })
+        await convertJsonlFileToParquet({ input: files[0]!, output: outAbs })
       } else {
         result.skipped++
         continue

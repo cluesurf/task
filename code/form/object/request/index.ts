@@ -45,6 +45,7 @@ export type CommandKey =
   | 'pdfcrop'
   | 'enscript'
   | 'ps2pdf'
+  | 'duckdb'
 
 export type CommandName =
   | 'ffmpeg'
@@ -87,6 +88,7 @@ export type CommandName =
   | 'pdfcrop'
   | 'enscript'
   | 'ps2pdf'
+  | 'duckdb'
 export type CommandSequence = {
   call: Array<Command>
 }

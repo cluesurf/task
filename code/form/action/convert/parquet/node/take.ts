@@ -97,17 +97,14 @@ export type ConvertParquetNodeLocalInputRecord = z.infer<
 export const ConvertParquetNodeLocalInternalInputParser = z.object({
   handle: z.optional(z.literal('internal')),
   input: z.object({
-    format: z.string(),
-    file: z.union([
-      z.lazy(() => FilePathParser),
-      z.lazy(() => FileContentParser),
-    ]),
+    format: z.lazy(() => DataFormatParser),
+    directory: z.lazy(() => LocalPathParser),
   }),
   output: z.object({
-    format: z.string(),
-    directory: z.optional(z.lazy(() => LocalOutputPathParser)),
-    file: z.optional(z.lazy(() => LocalPathParser)),
+    format: z.lazy(() => DataFormatParser),
+    directory: z.lazy(() => LocalPathParser),
   }),
+  merge: z.optional(z.boolean()),
   pathScope: z.optional(z.string()),
 })
 
@@ -116,7 +113,9 @@ export type ConvertParquetNodeLocalInternalInputRecord = z.infer<
 >
 
 export const ConvertParquetNodeOutputParser = z.object({
-  file: z.lazy(() => FilePathParser),
+  converted: z.number().int().gte(0),
+  skipped: z.number().int().gte(0),
+  failed: z.number().int().gte(0),
 })
 
 export type ConvertParquetNodeOutputRecord = z.infer<

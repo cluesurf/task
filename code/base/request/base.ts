@@ -44,6 +44,7 @@ export const command_name: List = {
     'pdfcrop',
     'enscript',
     'ps2pdf',
+    'duckdb',
   ],
 }
 

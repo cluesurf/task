@@ -145,7 +145,7 @@ async function writeTaskInterface(runtime: Runtime): Promise<void> {
     '',
   ].join('\n')
 
-  const outPath = path.join('.', 'code', 'form', 'task', `${runtime}.ts`)
+  const outPath = path.join('.', 'code', 'form', 'export', `${runtime}.ts`)
   await fsp.mkdir(path.dirname(outPath), { recursive: true })
   await fsp.writeFile(outPath, body)
 }

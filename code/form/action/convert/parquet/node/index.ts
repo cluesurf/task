@@ -60,18 +60,20 @@ export type ConvertParquetNodeLocalInput = {
 export type ConvertParquetNodeLocalInternalInput = {
   handle?: 'internal'
   input: {
-    format: string
-    file: FilePath | FileContent
+    format: DataFormat
+    directory: LocalPath
   }
   output: {
-    format: string
-    directory?: LocalOutputPath
-    file?: LocalPath
+    format: DataFormat
+    directory: LocalPath
   }
+  merge?: boolean
   pathScope?: string
 }
 export type ConvertParquetNodeOutput = {
-  file: FilePath
+  converted: number
+  skipped: number
+  failed: number
 }
 export type ConvertParquetNodeRemoteInput = {
   handle: 'remote'

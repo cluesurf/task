@@ -372,7 +372,7 @@ instead emits **one entry per tool**, with **two** lazy loaders each:
    wrappers, WASM, etc. Only loaded after the base probe matches.
 
 ```ts
-// code/form/task/route/node.ts (AUTO-GENERATED)
+// code/form/export/action/node.ts (AUTO-GENERATED)
 export const convertRouteNode: ConvertRoute[] = [
   {
     tool: 'imagemagick',
@@ -398,7 +398,7 @@ free.
 ### Eager vs lazy rule
 
 In `code/node.ts`, `code/browser.ts`, and the generated
-`code/form/task/route/*.ts`, the only permitted eager imports are
+`code/form/export/action/*.ts`, the only permitted eager imports are
 `import type` statements (pure type declarations from
 `code/form/.../index.ts` and `TaskSurface`). Every value — format
 arrays, handler `run` functions, anything from `code/form/object/<tool>/base.ts`
