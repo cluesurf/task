@@ -33,12 +33,19 @@ export async function compressFontNode(
 
   const defaultOut = inputPath.replace(/\.(ttf|otf)$/i, '') + '.woff2'
   const requestedOut = source.output?.file?.path
+  // When the positional `<file>` shorthand fills BOTH input and
+  // output, requestedOut equals inputPath — treat that as "no
+  // explicit output" and let the sibling `.woff2` win.
+  const effectiveOut =
+    requestedOut && path.resolve(requestedOut) !== path.resolve(inputPath)
+      ? requestedOut
+      : undefined
   let finalOut = defaultOut
 
-  if (requestedOut && path.resolve(requestedOut) !== path.resolve(defaultOut)) {
-    await fs.mkdir(path.dirname(requestedOut), { recursive: true })
-    await fs.rename(defaultOut, requestedOut)
-    finalOut = requestedOut
+  if (effectiveOut && path.resolve(effectiveOut) !== path.resolve(defaultOut)) {
+    await fs.mkdir(path.dirname(effectiveOut), { recursive: true })
+    await fs.rename(defaultOut, effectiveOut)
+    finalOut = effectiveOut
   }
 
   const { size: sizeAfter } = await fs.stat(finalOut)

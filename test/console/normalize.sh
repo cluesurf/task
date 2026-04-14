@@ -1,23 +1,18 @@
 #!/usr/bin/env bash
-#
 # normalize audio via ffmpeg loudnorm.
-
-set -euo pipefail
-cd "$(dirname "$0")/../.."
+cd "$(dirname "$0")/../.." || exit 1
 . test/lib.sh
 
-FIXTURES=../seed-base/base
+F=../seed-base/base
 OUT=tmp/normalize
 mkdir -p "$OUT"
-
-cp -n "$FIXTURES/audio/piano.mp3" "$OUT/piano.mp3" 2>/dev/null || true
+cp "$F/audio/piano.mp3" "$OUT/song.mp3"
 
 suite "Normalize"
 
-step "normalize audio — default target"
-OUT_FILE="$OUT/piano.norm.mp3"
-rm -f "$OUT_FILE"
-task normalize "$OUT/piano.mp3" -o "$OUT_FILE" -f text >/dev/null
-expect_file "$OUT_FILE"
+step "audio"
+rm -f "$OUT/song.norm.mp3"
+task normalize "$OUT/song.mp3" -o "$OUT/song.norm.mp3" -f text >/dev/null 2>&1
+expect_file "$OUT/song.norm.mp3"
 
 summary

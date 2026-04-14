@@ -1,36 +1,29 @@
 #!/usr/bin/env bash
-#
 # rotate image / video + flip image.
-
-set -euo pipefail
-cd "$(dirname "$0")/../.."
+cd "$(dirname "$0")/../.." || exit 1
 . test/lib.sh
 
-FIXTURES=../seed-base/base
+F=../seed-base/base
 OUT=tmp/rotate-flip
 mkdir -p "$OUT"
-
-cp -n "$FIXTURES/image/fire.gif" "$OUT/fire.gif" 2>/dev/null || true
-cp -n "$FIXTURES/video/cell.mp4" "$OUT/cell.mp4" 2>/dev/null || true
+cp "$F/image/fire.gif" "$OUT/pic.gif"
+cp "$F/video/cell.mp4" "$OUT/clip.mp4"
 
 suite "Rotate / Flip"
 
 step "rotate image 90°"
-OUT_IMG="$OUT/fire.rot.gif"
-rm -f "$OUT_IMG"
-task rotate "$OUT/fire.gif" -o "$OUT_IMG" -d 90 -f text >/dev/null
-expect_file "$OUT_IMG"
+rm -f "$OUT/pic.rot.gif"
+task rotate "$OUT/pic.gif" -o "$OUT/pic.rot.gif" -d 90 -f text >/dev/null 2>&1
+expect_file "$OUT/pic.rot.gif"
 
 step "rotate video 90°"
-OUT_VID="$OUT/cell.rot.mp4"
-rm -f "$OUT_VID"
-task rotate "$OUT/cell.mp4" -o "$OUT_VID" -d 90 -f text >/dev/null
-expect_file "$OUT_VID"
+rm -f "$OUT/clip.rot.mp4"
+task rotate "$OUT/clip.mp4" -o "$OUT/clip.rot.mp4" -d 90 -f text >/dev/null 2>&1
+expect_file "$OUT/clip.rot.mp4"
 
 step "flip image horizontally"
-OUT_FLIP="$OUT/fire.flip.gif"
-rm -f "$OUT_FLIP"
-task flip "$OUT/fire.gif" -o "$OUT_FLIP" --horizontal -f text >/dev/null
-expect_file "$OUT_FLIP"
+rm -f "$OUT/pic.flip.gif"
+task flip "$OUT/pic.gif" -o "$OUT/pic.flip.gif" --horizontal -f text >/dev/null 2>&1
+expect_file "$OUT/pic.flip.gif"
 
 summary

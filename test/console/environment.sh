@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
-#
-# `task set environment` / `task get environment`, hand-wired to a
-# temp .env file so no real shell state is touched.
-
-set -euo pipefail
-cd "$(dirname "$0")/../.."
+# set / get environment against a throwaway .env file.
+cd "$(dirname "$0")/../.." || exit 1
 . test/lib.sh
 
 OUT=tmp/env
@@ -14,26 +10,26 @@ rm -f "$ENV_FILE"
 
 suite "Environment"
 
-step "set environment — two positionals"
-task set environment API_KEY sk-abc123 --file "$ENV_FILE" -f text >/dev/null
+step "set with two positionals"
+task set environment API_KEY sk-abc --file "$ENV_FILE" -f text >/dev/null 2>&1
 expect_file "$ENV_FILE"
-expect "file contains KEY=VALUE" test -n "$(grep '^API_KEY=sk-abc123$' "$ENV_FILE" || true)"
+expect_contains "KEY=VALUE present" "cat $ENV_FILE" "^API_KEY=sk-abc$"
 
-step "set environment — update existing key"
-task set environment API_KEY sk-xyz789 --file "$ENV_FILE" -f text >/dev/null
-expect "value updated" test -n "$(grep '^API_KEY=sk-xyz789$' "$ENV_FILE" || true)"
-expect "only one line for the key" test "$(grep -c '^API_KEY=' "$ENV_FILE")" -eq 1
+step "update key in place"
+task set environment API_KEY sk-xyz --file "$ENV_FILE" -f text >/dev/null 2>&1
+expect_contains "updated" "cat $ENV_FILE" "^API_KEY=sk-xyz$"
+expect "one line for key" test "$(grep -c '^API_KEY=' "$ENV_FILE")" -eq 1
 
-step "set environment — second key appended"
-task set environment LOG_LEVEL info --file "$ENV_FILE" -f text >/dev/null
-expect "second key present" test -n "$(grep '^LOG_LEVEL=info$' "$ENV_FILE" || true)"
+step "second key appends"
+task set environment LOG_LEVEL info --file "$ENV_FILE" -f text >/dev/null 2>&1
+expect_contains "second key" "cat $ENV_FILE" "^LOG_LEVEL=info$"
 
-step "get environment — from file"
+step "get from file"
 GOT=$(task get environment API_KEY --file "$ENV_FILE" -f text 2>&1)
-expect "got latest value" test "$GOT" = 'sk-xyz789'
+expect "got latest" test "$GOT" = 'sk-xyz'
 
-step "get environment — from process"
-LIVE=$(HOME_ALIAS="$HOME" task get environment HOME -f text 2>&1)
+step "get from process env"
+LIVE=$(task get environment HOME -f text 2>&1)
 expect "matches \$HOME" test "$LIVE" = "$HOME"
 
 summary

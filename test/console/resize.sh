@@ -1,30 +1,23 @@
 #!/usr/bin/env bash
-#
-# resize image / video.
-
-set -euo pipefail
-cd "$(dirname "$0")/../.."
+# resize video.
+cd "$(dirname "$0")/../.." || exit 1
 . test/lib.sh
 
-FIXTURES=../seed-base/base
+F=../seed-base/base
 OUT=tmp/resize
 mkdir -p "$OUT"
-
-cp -n "$FIXTURES/image/fire.gif" "$OUT/fire.gif" 2>/dev/null || true
-cp -n "$FIXTURES/video/cell.mp4" "$OUT/cell.mp4" 2>/dev/null || true
+cp "$F/video/cell.mp4" "$OUT/clip.mp4"
 
 suite "Resize"
 
-step "resize video — width 320 with short flag"
-OUT_VID="$OUT/cell.320.mp4"
-rm -f "$OUT_VID"
-task resize "$OUT/cell.mp4" -o "$OUT_VID" -w 320 -f text >/dev/null
-expect_file "$OUT_VID"
+step "video width 320 (-w)"
+rm -f "$OUT/clip.320.mp4"
+task resize "$OUT/clip.mp4" -o "$OUT/clip.320.mp4" -w 320 -f text >/dev/null 2>&1
+expect_file "$OUT/clip.320.mp4"
 
-step "resize video — 320x180 with -w / -h"
-OUT_VID2="$OUT/cell.thumb.mp4"
-rm -f "$OUT_VID2"
-task resize "$OUT/cell.mp4" -o "$OUT_VID2" -w 320 -h 180 -f text >/dev/null
-expect_file "$OUT_VID2"
+step "video 320x180 (-w -h)"
+rm -f "$OUT/clip.thumb.mp4"
+task resize "$OUT/clip.mp4" -o "$OUT/clip.thumb.mp4" -w 320 -h 180 -f text >/dev/null 2>&1
+expect_file "$OUT/clip.thumb.mp4"
 
 summary

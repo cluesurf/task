@@ -16,7 +16,12 @@
 # summary but don't exit so subsequent steps still run. `summary`
 # exits non-zero when any step failed.
 
-set -euo pipefail
+# Keep `-u` / `-o pipefail` off so individual test assertions can
+# fail cleanly without killing the whole suite. `set -e` would
+# also abort on the first missed expectation, which defeats the
+# point of `summary`'s tally.
+set +e +u
+set +o pipefail 2>/dev/null || true
 
 # ---- ANSI helpers --------------------------------------------------
 
@@ -103,6 +108,22 @@ expect_near() {
     return 0
   fi
   _fail "$label = $actual (target $target ± $tolerance)"
+}
+
+# Assert a command's stdout/stderr contains a regex pattern.
+# Uses `eval` so `task` (defined as a function above) and any
+# local vars in the test are visible to the command.
+#
+#   expect_contains "has family" "task inspect $f" "family"
+expect_contains() {
+  local label="$1"
+  local cmd="$2"
+  local pattern="$3"
+  if eval "$cmd" 2>&1 | grep -qiE "$pattern"; then
+    printf "    %s✓%s %s\n" "$__GREEN" "$__RESET" "$label"
+    return 0
+  fi
+  _fail "$label — missing /$pattern/"
 }
 
 # Generic boolean assertion. Pass with a short failure message.

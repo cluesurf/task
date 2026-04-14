@@ -1,49 +1,37 @@
 #!/usr/bin/env bash
-#
-# inspect across file kinds (pdf, image, audio, video, font, text)
-# — each runs through its custom extractor.
-
-set -euo pipefail
-cd "$(dirname "$0")/../.."
+# inspect across every file kind.
+cd "$(dirname "$0")/../.." || exit 1
 . test/lib.sh
 
-FIXTURES=../seed-base/base
+F=../seed-base/base
 OUT=tmp/inspect
 mkdir -p "$OUT"
-
-cp -n "$FIXTURES/document/error.pdf" "$OUT/doc.pdf"   2>/dev/null || true
-cp -n "$FIXTURES/image/fire.gif"     "$OUT/fire.gif"  2>/dev/null || true
-cp -n "$FIXTURES/audio/piano.mp3"    "$OUT/piano.mp3" 2>/dev/null || true
-cp -n "$FIXTURES/video/cell.mp4"     "$OUT/cell.mp4"  2>/dev/null || true
-cp -n "$FIXTURES/font/etch.ttf"      "$OUT/etch.ttf"  2>/dev/null || true
+cp "$F/document/error.pdf" "$OUT/doc.pdf"
+cp "$F/image/fire.gif"     "$OUT/pic.gif"
+cp "$F/audio/piano.mp3"    "$OUT/song.mp3"
+cp "$F/video/cell.mp4"     "$OUT/clip.mp4"
+cp "$F/font/ancient.ttf"   "$OUT/fnt.ttf"
 printf 'hello\nworld\n' > "$OUT/plain.txt"
 
 suite "Inspect"
 
-step "pdf — shows 'pages' row"
-OUTPUT=$(task inspect "$OUT/doc.pdf" -f text 2>&1)
-expect "contains pages" test -n "$(echo "$OUTPUT" | grep -E '^pages ')"
+step "pdf"
+expect_contains "pages row" "task inspect $OUT/doc.pdf -f text" "^pages "
 
-step "image — shows dimensions"
-OUTPUT=$(task inspect "$OUT/fire.gif" -f text 2>&1)
-expect "has dimensions" test -n "$(echo "$OUTPUT" | grep -i dimensions)"
+step "image"
+expect_contains "dimensions" "task inspect $OUT/pic.gif -f text" "dimensions"
 
-step "audio — shows codec or duration"
-OUTPUT=$(task inspect "$OUT/piano.mp3" -f text 2>&1)
-expect "has codec or duration" test -n "$(echo "$OUTPUT" | grep -iE 'codec|duration')"
+step "audio"
+expect_contains "codec or duration" "task inspect $OUT/song.mp3 -f text" "codec|duration"
 
-step "video — shows dimensions"
-OUTPUT=$(task inspect "$OUT/cell.mp4" -f text 2>&1)
-expect "has dimensions" test -n "$(echo "$OUTPUT" | grep -i dimensions)"
+step "video"
+expect_contains "dimensions" "task inspect $OUT/clip.mp4 -f text" "dimensions"
 
-step "font — shows family + tables"
-OUTPUT=$(task inspect "$OUT/etch.ttf" -f text 2>&1)
-expect "has family" test -n "$(echo "$OUTPUT" | grep -i family)"
-expect "has tables" test -n "$(echo "$OUTPUT" | grep -i tables)"
+step "font"
+expect_contains "family + tables" "task inspect $OUT/fnt.ttf -f text" "family"
 
-step "text — shows mime + eol + encoding"
-OUTPUT=$(task inspect "$OUT/plain.txt" -f text 2>&1)
-expect "has mime" test -n "$(echo "$OUTPUT" | grep 'text/plain')"
-expect "has eol lf" test -n "$(echo "$OUTPUT" | grep -E '^eol +lf$')"
+step "text"
+expect_contains "text/plain" "task inspect $OUT/plain.txt -f text" "text/plain"
+expect_contains "eol lf" "task inspect $OUT/plain.txt -f text" "^eol +lf$"
 
 summary

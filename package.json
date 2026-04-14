@@ -296,7 +296,7 @@
     "fast-content-type-parse": "3.0.0",
     "fast-glob": "3.3.3",
     "fflate": "0.8.2",
-    "file-type": "21.3.0",
+    "file-type": "^21.3.2",
     "flat": "^6.0.1",
     "ftp": "^0.3.10",
     "fuse.js": "^7.3.0",
@@ -357,7 +357,7 @@
     "unrar": "^0.2.0",
     "util": "^0.12.5",
     "web-tree-sitter": "0.26.5",
-    "yaml": "2.8.2",
+    "yaml": "^2.8.3",
     "yargs": "^18.0.0",
     "zen-observable": "^0.10.0",
     "zod": "4.3.6"
