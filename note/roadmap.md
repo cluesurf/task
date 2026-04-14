@@ -57,11 +57,9 @@ Pull requests welcome.
 - Subtitle ↔ format (`srt` ↔ `vtt` ↔ `ass`).
 
 **text / data**
-- Text encodings: utf-8 ↔ utf-16 ↔ latin-1 ↔ shift-jis; BOM on/off;
-  line-ending normalisation (via `dos2unix`/`unix2dos` or inline).
-- Structured data: `csv` ↔ `tsv` ↔ `json` ↔ `jsonl` ↔ `yaml` ↔
-  `toml` ↔ `xml` ↔ `parquet` ↔ `arrow` ↔ `avro` ↔ `orc`
-  (DuckDB handles most, `arrow` + `avrojs` for the rest).
+- Done: encodings (`set encoding`), eol (`set eol`),
+  `parquet ↔ jsonl` via DuckDB.
+- Add: `csv ↔ tsv ↔ json ↔ yaml ↔ toml ↔ xml ↔ arrow ↔ avro ↔ orc`.
 - SQL dialect translate (`sqlglot`).
 
 **code**
@@ -103,12 +101,13 @@ Pull requests welcome.
 - Coverage report collection + format conversion
   (`lcov` ↔ `cobertura` ↔ `json`).
 
-### extract
+### unpack
 
-- Already: archive/tar/zip.
-- Add: metadata (`exiftool`), frames (`ffmpeg`), audio from video
-  (`ffmpeg -vn`), subtitles (`ffmpeg -c:s copy`), text from pdf
-  (`pdftotext`), OCR from image/pdf (`tesseract`, `ocrmypdf`).
+- Done: archives (tar/zip/7z/rar via atool/patool/unar), pdf pages,
+  font tables (ttx/fea).
+- Add: frames from video (`ffmpeg`), audio from video (`ffmpeg -vn`),
+  subtitles (`ffmpeg -c:s copy`), text from pdf (`pdftotext`),
+  OCR from image/pdf (`tesseract`, `ocrmypdf`).
 
 ### edit (new verb — media manipulation)
 
@@ -123,7 +122,7 @@ Pull requests welcome.
 
 ### generate
 
-- Already: hash, qrcode, string.
+- Done: hash, qrcode, string.
 - Add: `uuid` (v4/v7), `nanoid`, `ulid`, `barcode` (`jsbarcode`),
   `placeholder-image`, `passphrase` (diceware), `lorem ipsum` /
   synthetic text, `faker` records (csv/json fixtures),
@@ -134,21 +133,19 @@ Pull requests welcome.
 
 ### inspect
 
-- Already: color, metadata.
-- Add: file-type detection (`file-type`), MIME sniffing,
-  entropy / randomness score, codec + container probe
-  (`ffprobe`, `mediainfo`), image dimensions & color profile,
-  PDF outline / page count, font metrics, binary headers (`readelf`,
-  `otool`, `dumpbin`), WASM module imports/exports (`wabt`),
-  archive manifest without extracting.
+- Done: color, metadata, file (mime/encoding/codec), process, network,
+  system, port, unicode, http, tls, parquet, webpage.
+- Add: entropy / randomness score, image color profile, PDF outline /
+  page count, font metrics, binary headers (`readelf`, `otool`,
+  `dumpbin`), WASM module imports/exports (`wabt`), archive manifest
+  without extracting.
 
-### diff / compare (new verb)
+### compare
 
-- Text: GNU `diff`, `dwdiff` (word-level), `diff2html`.
-- JSON: structural diff (`jsondiffpatch`).
-- PDF: `diff-pdf`, `pdf-diff`.
-- Image: perceptual diff (`pixelmatch`, `odiff`).
-- Directory tree: count + hash walk.
+- Done: JSON / YAML / TOML structural diff (`jsondiffpatch`), text LCS
+  line diff with muted bg.
+- Add: word-level text (`dwdiff`), PDF (`diff-pdf`), perceptual image
+  (`pixelmatch`, `odiff`), directory tree (count + hash walk).
 
 ### optimize
 
@@ -194,17 +191,18 @@ Pull requests welcome.
 
 ### remove
 
-- Already: metadata.
-- Add: audio tracks from video, subtitles, password from pdf,
-  color profile, transparency, specific exif fields (`exiftool`
-  per-tag).
+- Done: metadata (image/audio/video), audio track from video,
+  invisible characters, ssh-key.
+- Add: subtitles, pdf password, color profile, transparency,
+  specific exif fields (`exiftool` per-tag).
 
-### merge / split (new verb)
+### merge / split
 
-- Merge: pdfs (`qpdf`), videos (ffmpeg concat demuxer), audios,
-  images → pdf / contact-sheet, folders.
-- Split: pdf at page ranges, video at timestamps, audio at silence,
-  csv / jsonl by row count or by column value.
+- Done: pdf merge (`combine`), pdf split (`split --pages`),
+  audio split on silence or by chunk length.
+- Add: video concat (ffmpeg concat demuxer), image → pdf /
+  contact-sheet, folder merge, csv / jsonl split by row count or
+  column value.
 
 ### download / upload
 
@@ -286,12 +284,12 @@ Pull requests welcome.
 - Schema diff: `migra` (pg), `dbmate diff`, `prisma migrate diff`.
 - Data sample / anonymize.
 
-### network / host-inspect (new verb)
+### network / host-inspect
 
-- `dig` / `doggo`, `whois`, `traceroute`, `mtr`, `nmap` (local net
-  only), `openssl s_client` for TLS inspect, ping with packet-loss
-  summary, port scan of localhost only. Gated behind a safety flag
-  so the library isn't accidentally turned into a scanner.
+- Done: `ping`, `measure` (http timing), `trace route`, `inspect
+  network` (dns/whois), `inspect tls` (openssl s_client), `list port`,
+  `list network` (interface/connection/route).
+- Add: `mtr`, `nmap` / port scan (local only, safety-gated).
 
 ### ocr (new verb)
 

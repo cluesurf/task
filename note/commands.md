@@ -506,8 +506,6 @@ task watch process node
 task watch process --top memory --interval 2000
 ```
 
----
-
 ## End-to-end workflows
 
 ### SSH setup
@@ -590,8 +588,6 @@ task list process --top memory
 task list process --layout tree
 task watch process node
 ```
-
----
 
 ## Standard short flags
 
