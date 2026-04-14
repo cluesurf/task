@@ -120,14 +120,21 @@ artifact upload step. Future pushes to `main` republish in ~30s.
 
 ### Local checkout for publishing
 
-Every export below lives in `deck/task/.env` (gitignored). Source
-that file once per shell — `set -a` auto-exports any `KEY=value`
-line, so the .env stays as plain assignments without `export`
-prefixes:
+Every export below lives in `deck/task/.env` (gitignored). Two
+ways to load it:
 
 ```sh
-set -a; source .env; set +a    # or: source-env / dotenv-cli
+# A) load into the current shell — `pnpm dotenv` prints `export` lines
+eval "$(pnpm dotenv)"
+
+# B) wrap a single command — runs ./publish.sh with .env loaded
+pnpm with-env -- ./publish.sh
 ```
+
+Both go through `make/deck/with-env.sh`, so the .env stays as
+plain `KEY=value` lines (no `export` prefix needed). Every
+`pnpm host:pkg*` script already wraps itself with `with-env.sh`,
+so day-to-day publishing doesn't need either pattern.
 
 The `.env` should contain at minimum:
 
@@ -137,13 +144,8 @@ RPM_REPO_DIR=deck
 ALPINE_REPO_DIR=deck
 ```
 
-A few helpers that do the same thing automatically:
-
-- **direnv** — drop a `.envrc` containing `dotenv` next to `.env`
-  and direnv loads on `cd`. Recommended for local dev.
-- **pnpm scripts** — `pnpm host:pkg` and `pnpm host:site` already
-  load `.env` via `dotenv-cli` (see `package.json`), so you don't
-  need to source manually when running through pnpm.
+For an always-on per-directory loader, drop a `.envrc` containing
+`dotenv` next to `.env`, then `direnv allow` once.
 
 After `pnpm host:pkg` writes the repo trees, `pnpm host:site`
 commits and pushes — Pages republishes automatically.
@@ -154,7 +156,7 @@ The Arch User Repository is an SSH-accessed git server.
 
 1. Register at <https://aur.archlinux.org/register>.
 
-2. *My Account → SSH Public Key* — paste your `~/.ssh/id_ed25519.pub`.
+2. *My Account → SSH Public Key* — paste your `pbcopy < ~/.ssh/id_ed25519.pub`.
 
 3. *Submit* a placeholder (the AUR refuses pushes to a name that
    doesn't exist yet). Click *Submit*, paste the rendered

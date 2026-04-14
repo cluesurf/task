@@ -13,5 +13,13 @@
     "other": "on",
     "comments": "off",
     "strings": "on"
+  },
+  "[ssh_config]": {
+    "editor.formatOnSave": false,
+    "editor.defaultFormatter": null
+  },
+  "files.associations": {
+    "**/.ssh/config": "ssh_config",
+    "**/.ssh/config.d/*": "ssh_config"
   }
 }

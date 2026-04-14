@@ -6,32 +6,42 @@
 #   ./publish.sh deb               # one
 #   ./publish.sh deb rpm scoop     # several
 #   ./publish.sh                   # all
+#
+# Written for plain bash (macOS ships 3.2 — no associative arrays).
 
 set -euo pipefail
 
 folder="$(cd "$(dirname "$0")" && pwd)"
 
-declare -A path=(
-  [deb]="linux/deb"
-  [rpm]="linux/rpm"
-  [arch]="linux/arch"
-  [alpine]="linux/alpine"
-  [gentoo]="linux/gentoo"
-  [opensuse]="linux/opensuse"
-  [scoop]="windows/scoop"
-  [winget]="windows/winget"
-  [choco]="windows/choco"
-  [nix]="nix"
-)
+# Each ecosystem maps to a subdir under make/deck/. Keep the two
+# lists in lockstep — `key_to_path` does the lookup the associative
+# array would have done on bash 4+.
+ALL_KEYS="deb rpm arch alpine gentoo opensuse scoop winget choco nix"
+
+key_to_path() {
+  case "$1" in
+    deb)      echo "linux/deb" ;;
+    rpm)      echo "linux/rpm" ;;
+    arch)     echo "linux/arch" ;;
+    alpine)   echo "linux/alpine" ;;
+    gentoo)   echo "linux/gentoo" ;;
+    opensuse) echo "linux/opensuse" ;;
+    scoop)    echo "windows/scoop" ;;
+    winget)   echo "windows/winget" ;;
+    choco)    echo "windows/choco" ;;
+    nix)      echo "nix" ;;
+    *)        return 1 ;;
+  esac
+}
 
 if [ "$#" -gt 0 ]; then
-  keys=("$@")
+  keys="$*"
 else
-  keys=(deb rpm arch alpine gentoo opensuse scoop winget choco nix)
+  keys="$ALL_KEYS"
 fi
 
-for key in "${keys[@]}"; do
-  [[ -v path[$key] ]] || { echo "unknown target: $key" >&2; exit 1; }
+for key in $keys; do
+  path="$(key_to_path "$key")" || { echo "unknown target: $key" >&2; exit 1; }
   echo "===> publish $key"
-  ( cd "$folder/${path[$key]}" && ./publish.sh )
+  ( cd "$folder/$path" && ./publish.sh )
 done

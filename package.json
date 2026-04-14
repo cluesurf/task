@@ -1,7 +1,7 @@
 {
   "name": "@cluesurf/task",
-  "version": "0.5.0",
-  "chocoVersion": "0.5.0",
+  "version": "0.5.2",
+  "chocoVersion": "0.5.2",
   "bin": {
     "task": "./host/code/console.js"
   },
@@ -212,6 +212,8 @@
     "test:node": "pnpm test:clean && pnpm tsx ./test/node",
     "test:browser": "open http://localhost:3000",
     "bump:choco": "pnpm tsx bump.choco",
+    "dotenv": "sed -nE 's/^([A-Za-z_][A-Za-z0-9_]*)=(.*)$/export \\1=\\2/p' .env",
+    "with-env": "./make/deck/with-env.sh",
     "docker:login": "source .env && echo $GITHUB_TOKEN | docker login ghcr.io -u $GITHUB_USERNAME --password-stdin",
     "docker:build": "source .env && docker build --progress plain --platform linux/amd64 . -t cluesurf/task && pnpm docker:tag",
     "docker:tag": "source .env && docker tag cluesurf/task:latest ghcr.io/cluesurf/task:latest",
@@ -248,6 +250,9 @@
     "host:pkg:rpm": "./make/deck/with-env.sh ./make/deck/publish.sh rpm",
     "host:pkg:arch": "./make/deck/with-env.sh ./make/deck/publish.sh arch",
     "host:pkg:alpine": "./make/deck/with-env.sh ./make/deck/publish.sh alpine",
+    "alpine": "./make/deck/linux/alpine/run.sh",
+    "alpine:make": "./make/deck/linux/alpine/run.sh ./make.sh",
+    "alpine:publish": "./make/deck/linux/alpine/run.sh ./publish.sh",
     "host:pkg:opensuse": "./make/deck/with-env.sh ./make/deck/publish.sh opensuse",
     "host:pkg:gentoo": "./make/deck/with-env.sh ./make/deck/publish.sh gentoo",
     "host:pkg:scoop": "./make/deck/with-env.sh ./make/deck/publish.sh scoop",

@@ -25,21 +25,21 @@ async function make(): Promise<void> {
     const link = name.replace('~', '.')
     const base = path.dirname(link)
     await fsp.mkdir(base, { recursive: true })
-    await fsp.writeFile(`${link}.ts`, tree.form[name] as string)
+    await fsp.writeFile(`${link}.ts`, tree.form[name]!)
   }
 
   for (const name in tree.take) {
     const link = name.replace('~', '.')
     const base = path.dirname(link)
     await fsp.mkdir(base, { recursive: true })
-    await fsp.writeFile(`${link}.ts`, tree.take[name] as string)
+    await fsp.writeFile(`${link}.ts`, tree.take[name]!)
   }
 
   for (const name in tree.base) {
     const link = name.replace('~', '.')
     const base = path.dirname(link)
     await fsp.mkdir(base, { recursive: true })
-    await fsp.writeFile(`${link}.ts`, tree.base[name] as string)
+    await fsp.writeFile(`${link}.ts`, tree.base[name]!)
   }
 
   await writeTaskInterface('node')
@@ -145,7 +145,13 @@ async function writeTaskInterface(runtime: Runtime): Promise<void> {
     '',
   ].join('\n')
 
-  const outPath = path.join('.', 'code', 'form', 'export', `${runtime}.ts`)
+  const outPath = path.join(
+    '.',
+    'code',
+    'form',
+    'export',
+    `${runtime}.ts`,
+  )
   await fsp.mkdir(path.dirname(outPath), { recursive: true })
   await fsp.writeFile(outPath, body)
 }
@@ -170,4 +176,3 @@ function addImport(
   bucket.add(name)
   imports.set(path, bucket)
 }
-

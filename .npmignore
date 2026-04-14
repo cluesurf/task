@@ -25,3 +25,5 @@ Dockerfile*
 /load
 /deck
 /view
+/make/deck
+/note
