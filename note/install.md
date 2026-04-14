@@ -43,9 +43,9 @@ Missing tools tracked in [roadmap.md](./roadmap.md).
 Pull the native toolchain via apt:
 
 ```sh
-curl -fsSL https://cluesurf.github.io/apt/pubkey.asc \
+curl -fsSL https://cluesurf.github.io/task/apt/pubkey.asc \
   | sudo gpg --dearmor -o /usr/share/keyrings/cluesurf.gpg
-echo "deb [signed-by=/usr/share/keyrings/cluesurf.gpg] https://cluesurf.github.io/apt stable main" \
+echo "deb [signed-by=/usr/share/keyrings/cluesurf.gpg] https://cluesurf.github.io/task/apt stable main" \
   | sudo tee /etc/apt/sources.list.d/cluesurf.list
 sudo apt update
 sudo apt install cluesurf-task

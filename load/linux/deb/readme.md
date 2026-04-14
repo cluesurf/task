@@ -64,7 +64,7 @@ export APT_REPO_DIR=~/cluesurf-apt
 
 After publishing you `cd "$APT_REPO_DIR" && git add . && git commit
 -am 'release' && git push` — Pages serves it at
-`https://cluesurf.github.io/apt-code` (or whatever you renamed the
+`https://cluesurf.github.io/task/apt-code` (or whatever you renamed the
 repo to).
 
 ## Publish
@@ -88,11 +88,11 @@ tree and you're done.
 
 ```sh
 # one-time trust of the repo signing key
-curl -fsSL https://cluesurf.github.io/apt/pubkey.asc \
+curl -fsSL https://cluesurf.github.io/task/apt/pubkey.asc \
   | sudo gpg --dearmor -o /usr/share/keyrings/cluesurf.gpg
 
 # register the repo
-echo "deb [signed-by=/usr/share/keyrings/cluesurf.gpg] https://cluesurf.github.io/apt stable main" \
+echo "deb [signed-by=/usr/share/keyrings/cluesurf.gpg] https://cluesurf.github.io/task/apt stable main" \
   | sudo tee /etc/apt/sources.list.d/cluesurf.list
 
 sudo apt update

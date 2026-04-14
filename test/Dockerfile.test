@@ -1,0 +1,65 @@
+# Smoke-test the published @cluesurf/task on top of the
+# native-toolchain image. Inherits from the main Dockerfile (or any
+# image that satisfies the cluesurf-task dependency set), installs
+# the published npm CLI, and runs a few real conversions.
+#
+# Build the test image:
+#   docker build --platform linux/amd64 -f test/Dockerfile.test \
+#     --build-arg BASE_IMAGE=ghcr.io/cluesurf/task:latest \
+#     -t cluesurf-task-smoke .
+#
+# Or against your locally-built dep image:
+#   docker build --platform linux/amd64 . -t cluesurf/task:local
+#   docker build --platform linux/amd64 -f test/Dockerfile.test \
+#     --build-arg BASE_IMAGE=cluesurf/task:local \
+#     -t cluesurf-task-smoke .
+#
+# Run the smoke checks:
+#   docker run --rm cluesurf-task-smoke
+#
+# Exit 0 = pass.
+
+ARG BASE_IMAGE=ghcr.io/cluesurf/task:latest
+FROM ${BASE_IMAGE}
+
+ARG TASK_VERSION=latest
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Pull the published Node CLI from npm. `BASE_IMAGE` already provides
+# every native binary the CLI shells out to.
+RUN npm install -g pnpm \
+  && pnpm add -g "@cluesurf/task@${TASK_VERSION}"
+
+# Stage tiny fixtures the smoke checks operate on.
+WORKDIR /smoke
+RUN mkdir -p in out \
+  && convert -size 16x16 xc:white in/sample.png \
+  && printf '# hello\nworld\n' > in/sample.md
+
+# Each line is a real action the CLI dispatches through a
+# different backend. If the npm package, native deps, and dispatch
+# tables all line up, every command exits 0.
+RUN cat <<'EOF' > /smoke/run.sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "== task --version"
+task --version
+
+echo "== convert png -> jpg (imagemagick)"
+task convert in/sample.png out/sample.jpg
+test -s out/sample.jpg
+
+echo "== convert md -> pdf (pandoc)"
+task convert in/sample.md out/sample.pdf
+test -s out/sample.pdf
+
+echo "== inspect pdf"
+task inspect out/sample.pdf > /dev/null
+
+echo
+echo "smoke OK"
+EOF
+RUN chmod +x /smoke/run.sh
+
+CMD ["/smoke/run.sh"]

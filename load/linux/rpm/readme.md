@@ -47,19 +47,19 @@ APT_SIGNING_KEY=<gpg-key-id> \
 ```
 
 After publishing, commit + push the repo dir so GitHub Pages serves
-it at `https://cluesurf.github.io/rpm-code`.
+it at `https://cluesurf.github.io/task/rpm-code`.
 
 ## Install (end user)
 
 ```sh
-sudo rpm --import https://cluesurf.github.io/rpm/pubkey.asc
+sudo rpm --import https://cluesurf.github.io/task/rpm/pubkey.asc
 sudo tee /etc/yum.repos.d/cluesurf.repo <<'EOF'
 [cluesurf]
 name=ClueSurf
-baseurl=https://cluesurf.github.io/rpm
+baseurl=https://cluesurf.github.io/task/rpm
 enabled=1
 gpgcheck=1
-gpgkey=https://cluesurf.github.io/rpm/pubkey.asc
+gpgkey=https://cluesurf.github.io/task/rpm/pubkey.asc
 EOF
 sudo dnf install cluesurf-task      # or: sudo zypper install
 ```

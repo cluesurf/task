@@ -59,8 +59,8 @@ Generates `APKINDEX.tar.gz`, signs it, and copies the matching
 ## Install (end user)
 
 ```sh
-echo https://cluesurf.github.io/apk | doas tee -a /etc/apk/repositories
-doas wget -O /etc/apk/keys/cluesurf.rsa.pub https://cluesurf.github.io/apk/cluesurf.rsa.pub
+echo https://cluesurf.github.io/task/apk | doas tee -a /etc/apk/repositories
+doas wget -O /etc/apk/keys/cluesurf.rsa.pub https://cluesurf.github.io/task/apk/cluesurf.rsa.pub
 doas apk update && doas apk add cluesurf-task
 ```
 

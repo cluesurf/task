@@ -59,36 +59,140 @@ export function renderHelpFor({
   fallback: string
   color: boolean
 }): string {
-  const entry = findHelp(commandPath)
-  if (!entry) return color ? prettifyYargsHelp(fallback) : fallback
+  const entry =
+    findHelp(commandPath) ?? synthesizeEntryFromYargs(commandPath, fallback)
+  if (!entry) return fallback
   return renderEntry(entry, color)
 }
 
 /**
- * Light tint pass on yargs's stock help — only used when the
- * active command isn't in the custom-help registry (top-level
- * `task --help`, `task convert --help`).
+ * Backwards-compatible shim. The custom renderer now handles every
+ * help path — when no `registerHelp` entry exists we synthesize one
+ * from yargs's stock text via `synthesizeEntryFromYargs`. This
+ * function stays exported so existing callers compile, but it just
+ * runs the same path as `renderHelpFor`.
+ *
+ * @deprecated import `renderHelpFor` instead.
  */
 export function prettifyYargsHelp(text: string): string {
-  return '\n' + text
-    .split('\n')
-    .map(raw => {
-      if (/^task\b/.test(raw)) return tint(raw, HEADLINE)
-      const t = raw.trim()
-      if (/^[A-Z][A-Za-z]+:$/.test(t)) return tint(raw, SECTION)
-      let out = raw
-      out = out.replace(/(\[required\])/g, m => tint(m, REQUIRED))
-      out = out.replace(
-        /(\[string\]|\[boolean\]|\[number\]|\[array\]|\[count\]|\[default:[^\]]*\]|\[choices:[^\]]*\])/g,
-        m => tint(m, COMMENT),
-      )
-      out = out.replace(
-        /(^\s+)(-[A-Za-z](?:,\s+--[A-Za-z][A-Za-z0-9-]*)?|--[A-Za-z][A-Za-z0-9-]*)/,
-        (_, lead, flag) => `${lead}${tint(flag, FLAG)}`,
-      )
-      return out
-    })
-    .join('\n')
+  return renderHelpFor({ commandPath: [], fallback: text, color: true })
+}
+
+/**
+ * Parse yargs's stock help output into a `HelpEntry` so the new
+ * tinted renderer can handle commands that didn't call
+ * `registerHelp`. The format is stable enough for a line-oriented
+ * parse — section headers (`Commands:`, `Options:`, `Positionals:`,
+ * `Examples:`) bracket each block.
+ */
+function synthesizeEntryFromYargs(
+  commandPath: string[],
+  text: string,
+): HelpEntry | undefined {
+  if (!text.trim()) return undefined
+
+  const lines = text.split('\n')
+  const command = ['task', ...commandPath].join(' ').trim() || 'task'
+
+  // Body before the first section header is the describe blurb.
+  let describe = ''
+  const options: HelpEntryOption[] = []
+  const commands: { name: string; describe: string }[] = []
+  const examples: { command: string; comment?: string }[] = []
+
+  let section: 'preamble' | 'commands' | 'options' | 'positionals' | 'examples' =
+    'preamble'
+
+  for (const raw of lines) {
+    const trimmed = raw.trim()
+
+    // Section headers (yargs always uses `Foo:` form).
+    if (/^Commands:\s*$/i.test(trimmed))    { section = 'commands';    continue }
+    if (/^Options:\s*$/i.test(trimmed))     { section = 'options';     continue }
+    if (/^Positionals:\s*$/i.test(trimmed)) { section = 'positionals'; continue }
+    if (/^Examples:\s*$/i.test(trimmed))    { section = 'examples';    continue }
+
+    if (section === 'preamble') {
+      // First non-empty line that isn't the script name is the
+      // command's describe blurb.
+      if (trimmed && !trimmed.startsWith('task ') && !describe) {
+        describe = trimmed
+      }
+      continue
+    }
+
+    if (!trimmed) continue
+
+    if (section === 'commands' || section === 'positionals') {
+      // Pattern: `<name>  <describe>  [tag]...`
+      const m = trimmed.match(/^(\S+)\s+(.+?)(?:\s+\[[^\]]+\])*$/)
+      if (m) commands.push({ name: m[1]!, describe: m[2]!.trim() })
+      continue
+    }
+
+    if (section === 'options') {
+      const opt = parseYargsOptionLine(trimmed)
+      if (opt) options.push(opt)
+      continue
+    }
+
+    if (section === 'examples') {
+      // yargs separates the command from its description with
+      // 2+ spaces. Treat anything after as the comment.
+      const m = trimmed.match(/^(\S.*?)(?:\s{2,}(.+))?$/)
+      if (m) examples.push({ command: m[1]!, comment: m[2] })
+      continue
+    }
+  }
+
+  return {
+    command,
+    describe: describe || 'No description provided.',
+    options,
+    commands: commands.length ? commands : undefined,
+    examples: examples.length ? examples : undefined,
+  }
+}
+
+function parseYargsOptionLine(line: string): HelpEntryOption | undefined {
+  // yargs flag chunk: `--long`, `-x`, or `-x, --long`.
+  // Tags trail in `[brackets]` and may be combined: `[boolean]`,
+  // `[required]`, `[default: foo]`, `[choices: "a", "b", "c"]`.
+  const tags = [...line.matchAll(/\[([^\]]+)\]/g)].map(m => m[1]!)
+  const headHalf = line.replace(/\s+\[[^\]]+\].*$/, '')
+
+  const flagMatch = headHalf.match(
+    /^(?:(-[A-Za-z]),\s*)?(--[A-Za-z][A-Za-z0-9-]*)\s*(.*)$/,
+  ) || headHalf.match(/^(-[A-Za-z])\s*(.*)$/)
+  if (!flagMatch) return undefined
+
+  let short: string | undefined
+  let long: string | undefined
+  let describe = ''
+  if (flagMatch.length === 4) {
+    short = flagMatch[1]?.replace(/^-/, '')
+    long = flagMatch[2]!.replace(/^--/, '')
+    describe = flagMatch[3]!.trim()
+  } else {
+    short = flagMatch[1]!.replace(/^-/, '')
+    describe = flagMatch[2]!.trim()
+  }
+  if (!long) return undefined
+
+  let required = false
+  let type: string | undefined
+  let defaultValue: unknown
+  let choices: string[] | undefined
+  for (const tag of tags) {
+    if (tag === 'required')                            required = true
+    else if (/^(string|boolean|number|array|count)$/.test(tag)) type = tag
+    else if (tag.startsWith('default:'))               defaultValue = tag.slice(8).trim()
+    else if (tag.startsWith('choices:')) {
+      choices = tag.slice(8).split(',').map(s => s.trim().replace(/^"|"$/g, ''))
+    }
+  }
+
+  return { long, short, required, describe, type, default: defaultValue, choices }
 }
 
 function renderEntry(entry: HelpEntry, color: boolean): string {
