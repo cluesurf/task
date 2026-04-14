@@ -31,7 +31,7 @@ One library, three surfaces:
 
 Every action takes a single object and returns a `Promise`.
 Dispatch on input / output format picks the right backend
-automatically — ImageMagick for `png:jpg`, ffmpeg for video,
+automatically: ImageMagick for `png:jpg`, ffmpeg for video,
 pandoc for documents, fontTools for fonts, qpdf for PDFs, and so
 on.
 
@@ -46,7 +46,7 @@ pnpm add @cluesurf/task
 ```
 
 Task shells out to native tools (ffmpeg, ImageMagick, pandoc,
-fontTools, qpdf, HarfBuzz, ...). Install them per your OS — see
+fontTools, qpdf, HarfBuzz, ...). Install them per your OS: see
 [note/install.md](./note/install.md).
 
 Prebuilt container with everything baked in:
@@ -89,7 +89,7 @@ const output = await task.resolve(work)
 Every verb understands the same three invocation shapes:
 
 ```sh
-# shorthand — extension routes to the subcommand, 2-positional convert
+# shorthand: extension routes to the subcommand, 2-positional convert
 task convert a.png a.jpg
 task compress song.wav -o song.mp3
 task trim clip.mp4 -o cut.mp4 -s 10 -e 30
@@ -156,15 +156,15 @@ descendants along too.
 
 ## Docs
 
-- [Commands reference](./note/commands.md) — one example per verb.
-- [API design](./note/api.md) — `Task` class, dispatch, overloads,
+- [Commands](./note/commands.md): one example per verb.
+- [API design](./note/api.md): `Task` class, dispatch, overloads,
   remote / local / explain modes.
-- [Install](./note/install.md) — native tools per OS, Docker,
+- [Install](./note/install.md): native tools per OS, Docker,
   Homebrew, Chocolatey.
-- [Examples](./note/examples.md) — full workflows.
-- [Contributing](./note/contributing.md) — repo layout, codegen,
+- [Examples](./note/examples.md): full workflows.
+- [Contributing](./note/contributing.md): repo layout, codegen,
   adding a new action.
-- [Roadmap](./note/roadmap.md) — what's missing.
+- [Roadmap](./note/roadmap.md): what's missing.
 
 ## Tests
 
