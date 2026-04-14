@@ -1,9 +1,11 @@
 import {
   ConvertImageWithImageMagickBrowserInput,
-  ConvertImageWithImageMagickBrowserInputParser,
   ConvertImageWithImageMagickBrowserLocalInput,
   ConvertImageWithImageMagickBrowserRemoteInput,
-} from '~/code/form/browser/take'
+} from '~/code/form/action/convert/imagemagick/browser'
+import {
+  ConvertImageWithImageMagickBrowserInputParser,
+} from '~/code/form/action/convert/imagemagick/browser/take'
 import { buildFormDataRequestToConvert } from '../../shared'
 import kink from '~/code/tool/shared/kink'
 import { testConvertImageWithImageMagick } from './shared'
@@ -16,7 +18,7 @@ export async function convertImageWithImageMagickBrowser(
   native?: NativeOptions,
 ) {
   const input =
-    ConvertImageWithImageMagickBrowserInputParser().parse(source)
+    ConvertImageWithImageMagickBrowserInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':

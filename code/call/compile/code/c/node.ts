@@ -25,7 +25,7 @@ export async function compileCNode(
   source: CompileCNodeInput,
   native?: NativeOptions,
 ) {
-  const input = CompileCNodeInputParser().parse(source)
+  const input = CompileCNodeInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -58,7 +58,7 @@ export async function compileCNodeRemote(
   native,
 ) {
   const input = await resolveInputForCompileRemoteNode(source)
-  const clientInput = CompileCNodeClientInputParser().parse(
+  const clientInput = CompileCNodeClientInputParser.parse(
     extend(input, { handle: 'client' }),
   )
 
@@ -73,7 +73,7 @@ export async function compileCNodeRemote(
 }
 
 export async function compileCNodeLocal(input, native?: NativeOptions) {
-  const localInput = CompileCNodeLocalInputParser().parse(input)
+  const localInput = CompileCNodeLocalInputParser.parse(input)
 
   const sequence = await buildCommandToCompileC(localInput)
 

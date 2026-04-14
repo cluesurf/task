@@ -1,10 +1,12 @@
 import { buildFormDataRequestToFormat } from '../shared'
 import {
   FormatAssemblyBrowserInput,
-  FormatAssemblyBrowserInputParser,
   FormatAssemblyBrowserLocalInput,
   FormatAssemblyBrowserRemoteInput,
-} from '~/code/form/browser/take'
+} from '~/code/form/action/format/code/browser'
+import {
+  FormatAssemblyBrowserInputParser,
+} from '~/code/form/action/format/code/browser/take'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
 import { NativeOptions } from '~/code/tool/shared/request'
@@ -14,7 +16,7 @@ export async function formatAssemblyBrowser(
   source: FormatAssemblyBrowserInput,
   native?: NativeOptions,
 ) {
-  const input = FormatAssemblyBrowserInputParser().parse(source)
+  const input = FormatAssemblyBrowserInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':

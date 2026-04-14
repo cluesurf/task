@@ -1,4 +1,6 @@
-import { ConvertApi } from '~/code/form/shared/index'
+import {
+  ConvertApi,
+} from '~/code/form/action/convert/shared'
 import { buildRemoteRequest } from '~/code/tool/shared/request'
 import { omitNested } from '~/code/tool/shared/object'
 import { serializeToFormData } from '~/code/tool/shared/form'

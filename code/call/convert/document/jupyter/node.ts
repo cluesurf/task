@@ -1,13 +1,15 @@
 import {
   ConvertDocumentWithJupyterNodeInput,
-  ConvertDocumentWithJupyterNodeInputParser,
-  ConvertDocumentWithJupyterNodeOutputParser,
-  ConvertDocumentWithJupyterNodeLocalInternalInput,
   ConvertDocumentWithJupyterNodeLocalExternalInput,
-  ConvertDocumentWithJupyterNodeLocalInputParser,
+  ConvertDocumentWithJupyterNodeLocalInternalInput,
   ConvertDocumentWithJupyterNodeRemoteInput,
+} from '~/code/form/action/convert/jupyter/node'
+import {
   ConvertDocumentWithJupyterNodeClientInputParser,
-} from '~/code/form/node/take'
+  ConvertDocumentWithJupyterNodeInputParser,
+  ConvertDocumentWithJupyterNodeLocalInputParser,
+  ConvertDocumentWithJupyterNodeOutputParser,
+} from '~/code/form/action/convert/jupyter/node/take'
 import { buildCommandToConvertDocumentWithJupyter } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {
@@ -25,7 +27,7 @@ export async function convertDocumentWithJupyterNode(
   native?: NativeOptions,
 ) {
   const input =
-    ConvertDocumentWithJupyterNodeInputParser().parse(source)
+    ConvertDocumentWithJupyterNodeInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -65,14 +67,14 @@ export async function convertDocumentWithJupyterNodeRemote(
 ) {
   const input = await resolveInputForConvertRemoteNode(source)
   const clientInput =
-    ConvertDocumentWithJupyterNodeClientInputParser().parse(
+    ConvertDocumentWithJupyterNodeClientInputParser.parse(
       extend(input, { handle: 'client' }),
     )
 
   const request = buildRequestToConvert(clientInput)
   await resolveWorkFileNode(request, input.output.file.path)
 
-  return ConvertDocumentWithJupyterNodeOutputParser().parse({
+  return ConvertDocumentWithJupyterNodeOutputParser.parse({
     file: {
       path: input.output.file.path,
     },
@@ -84,14 +86,14 @@ export async function convertDocumentWithJupyterNodeLocal(
   native?: NativeOptions,
 ) {
   const localInput =
-    ConvertDocumentWithJupyterNodeLocalInputParser().parse(input)
+    ConvertDocumentWithJupyterNodeLocalInputParser.parse(input)
 
   const sequence =
     await buildCommandToConvertDocumentWithJupyter(localInput)
 
   await runCommandSequence(sequence)
 
-  return ConvertDocumentWithJupyterNodeOutputParser().parse({
+  return ConvertDocumentWithJupyterNodeOutputParser.parse({
     file: {
       path: localInput.output.file.path,
     },

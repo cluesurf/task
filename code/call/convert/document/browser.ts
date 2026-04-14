@@ -1,11 +1,19 @@
 import {
   ConvertDocumentWithCalibreBrowserInput,
-  ConvertDocumentWithLibreOfficeBrowserInput,
-  ConvertDocumentWithPandocBrowserInput,
+} from '~/code/form/action/convert/calibre/browser'
+import {
   ConvertLatexToPngBrowserInput,
+} from '~/code/form/action/convert/latex-to-png/browser'
+import {
+  ConvertDocumentWithLibreOfficeBrowserInput,
+} from '~/code/form/action/convert/libre-office/browser'
+import {
+  ConvertDocumentWithPandocBrowserInput,
+} from '~/code/form/action/convert/pandoc/browser'
+import {
   ConvertMarkdownWithPuppeteerBrowserInput,
   ConvertTxtWithPuppeteerBrowserInput,
-} from '~/code/form/browser/take'
+} from '~/code/form/action/convert/puppeteer/browser'
 import {
   testConvertDocumentWithCalibre,
   testConvertDocumentWithLibreOffice,

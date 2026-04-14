@@ -1,10 +1,12 @@
 import { buildFormDataRequestToFormat } from '../shared'
 import {
   FormatPythonBrowserInput,
-  FormatPythonBrowserInputParser,
   FormatPythonBrowserLocalInput,
   FormatPythonBrowserRemoteInput,
-} from '~/code/form/browser/take'
+} from '~/code/form/action/format/code/browser'
+import {
+  FormatPythonBrowserInputParser,
+} from '~/code/form/action/format/code/browser/take'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
 import { NativeOptions } from '~/code/tool/shared/request'
@@ -14,7 +16,7 @@ export async function formatPythonBrowser(
   source: FormatPythonBrowserInput,
   native?: NativeOptions,
 ) {
-  const input = FormatPythonBrowserInputParser().parse(source)
+  const input = FormatPythonBrowserInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':

@@ -1,12 +1,14 @@
 import {
   CompileRustNodeInput,
-  CompileRustNodeInputParser,
-  CompileRustNodeLocalInternalInput,
   CompileRustNodeLocalExternalInput,
-  CompileRustNodeLocalInputParser,
+  CompileRustNodeLocalInternalInput,
   CompileRustNodeRemoteInput,
+} from '~/code/form/action/compile/code/rust/node'
+import {
   CompileRustNodeClientInputParser,
-} from '~/code/form/node/take'
+  CompileRustNodeInputParser,
+  CompileRustNodeLocalInputParser,
+} from '~/code/form/action/compile/code/rust/node/take'
 import { buildCommandToCompileRust } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {
@@ -23,7 +25,7 @@ export async function compileRustNode(
   source: CompileRustNodeInput,
   native?: NativeOptions,
 ) {
-  const input = CompileRustNodeInputParser().parse(source)
+  const input = CompileRustNodeInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -56,7 +58,7 @@ export async function compileRustNodeRemote(
   native,
 ) {
   const input = await resolveInputForCompileRemoteNode(source)
-  const clientInput = CompileRustNodeClientInputParser().parse(
+  const clientInput = CompileRustNodeClientInputParser.parse(
     extend(input, { handle: 'client' }),
   )
 
@@ -74,7 +76,7 @@ export async function compileRustNodeLocal(
   input,
   native?: NativeOptions,
 ) {
-  const localInput = CompileRustNodeLocalInputParser().parse(input)
+  const localInput = CompileRustNodeLocalInputParser.parse(input)
 
   const sequence = await buildCommandToCompileRust(localInput)
 

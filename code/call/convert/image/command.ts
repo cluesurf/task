@@ -1,7 +1,9 @@
 import {
   ConvertImageWithImageMagickCommandInput,
+} from '~/code/form/action/convert/imagemagick/cli'
+import {
   ConvertImageWithInkscapeCommandInput,
-} from '~/code/form/shared/index'
+} from '~/code/form/action/convert/inkscape/cli'
 import {
   getCommand,
   buildCommandSequence,
@@ -132,7 +134,7 @@ export function buildCommandToConvertImageWithImageMagick(
 
 // export async function ResizeImageWithImageMagick(source) {
 //   const { inputPath, outputPath, width, height, stretch, gravity } =
-//     ResizeImageWithImageMagickParser().parse(source)
+//     ResizeImageWithImageMagickParser.parse(source)
 
 //   let scale: string = ''
 //   if (width) {

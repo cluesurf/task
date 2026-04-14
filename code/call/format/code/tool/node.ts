@@ -18,9 +18,7 @@ import {
   ResolveInputForFormatLocalExternal,
   ResolveInputForFormatLocalInternal,
   ResolveInputForFormatRemote,
-} from '~/code/form/shared/index'
-
-/**
+} from '~/code/form/action/format/code/shared'/**
  * 1. Format local files into streams.
  * 2. Leave remote file links.
  * 3. Leave content.

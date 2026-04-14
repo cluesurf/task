@@ -1,9 +1,11 @@
 import {
   CompileRustBrowserInput,
-  CompileRustBrowserInputParser,
   CompileRustBrowserLocalInput,
   CompileRustBrowserRemoteInput,
-} from '~/code/form/browser/take'
+} from '~/code/form/action/compile/code/rust/browser'
+import {
+  CompileRustBrowserInputParser,
+} from '~/code/form/action/compile/code/rust/browser/take'
 import { buildFormDataRequestToCompile } from '~/code/call/compile/code/shared'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
@@ -14,7 +16,7 @@ export async function compileRustBrowser(
   source: CompileRustBrowserInput,
   native?: NativeOptions,
 ) {
-  const input = CompileRustBrowserInputParser().parse(source)
+  const input = CompileRustBrowserInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':

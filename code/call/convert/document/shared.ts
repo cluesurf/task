@@ -1,14 +1,22 @@
 import {
-  CalibreInputFormat,
-  CalibreOutputFormat,
-  LibreOfficeInputFormat,
-  LibreOfficeOutputFormat,
-  PandocInputFormat,
-  PandocOutputFormat,
   ConvertLatexToPngInputFormat,
   ConvertLatexToPngOutputFormat,
+} from '~/code/form/action/convert/latex-to-png/shared'
+import {
+  CalibreInputFormat,
+  CalibreOutputFormat,
+} from '~/code/form/object/calibre'
+import {
+  LibreOfficeInputFormat,
+  LibreOfficeOutputFormat,
+} from '~/code/form/object/libre-office'
+import {
+  PandocInputFormat,
+  PandocOutputFormat,
+} from '~/code/form/object/pandoc'
+import {
   PuppeteerOutputFormat,
-} from '~/code/form/shared/index'
+} from '~/code/form/object/puppeteer'
 import { testConvertFileInputOutput } from '../shared'
 import { getConfig } from '~/code/tool/shared/config'
 

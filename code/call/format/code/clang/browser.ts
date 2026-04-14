@@ -1,10 +1,12 @@
 import { buildFormDataRequestToFormat } from '../shared'
 import {
   FormatCodeWithClangFormatBrowserInput,
-  FormatCodeWithClangFormatBrowserInputParser,
   FormatCodeWithClangFormatBrowserLocalInput,
   FormatCodeWithClangFormatBrowserRemoteInput,
-} from '~/code/form/browser/take'
+} from '~/code/form/action/format/code/browser'
+import {
+  FormatCodeWithClangFormatBrowserInputParser,
+} from '~/code/form/action/format/code/browser/take'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
 import { NativeOptions } from '~/code/tool/shared/request'
@@ -15,7 +17,7 @@ export async function formatCodeWithClangFormatBrowser(
   native?: NativeOptions,
 ) {
   const input =
-    FormatCodeWithClangFormatBrowserInputParser().parse(source)
+    FormatCodeWithClangFormatBrowserInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':

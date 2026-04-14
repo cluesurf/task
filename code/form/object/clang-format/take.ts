@@ -381,7 +381,7 @@ export const ClangStyleAllParser = z.object({
 export type ClangStyleAllRecord = z.infer<typeof ClangStyleAllParser>
 
 export const ClangStyleCppParser = (
-  ClangStyleAllParser() as any
+  ClangStyleAllParser as any
 ).extend({
   cpp11BracedListStyle: z.optional(z.boolean()),
   spaceBeforeCpp11BracedList: z.optional(z.boolean()),
@@ -390,7 +390,7 @@ export const ClangStyleCppParser = (
 export type ClangStyleCppRecord = z.infer<typeof ClangStyleCppParser>
 
 export const ClangStyleJavaParser = (
-  ClangStyleAllParser() as any
+  ClangStyleAllParser as any
 ).extend({
   breakAfterJavaFieldAnnotations: z.optional(z.boolean()),
   javaImportGroups: z.optional(z.array(z.string())),
@@ -400,7 +400,7 @@ export const ClangStyleJavaParser = (
 export type ClangStyleJavaRecord = z.infer<typeof ClangStyleJavaParser>
 
 export const ClangStyleJavascriptParser = (
-  ClangStyleAllParser() as any
+  ClangStyleAllParser as any
 ).extend({
   javaScriptQuotes: z.optional(z.enum(['leave', 'single', 'double'])),
   javaScriptWrapImports: z.optional(z.boolean()),
@@ -411,7 +411,7 @@ export type ClangStyleJavascriptRecord = z.infer<
 >
 
 export const ClangStyleObjcParser = (
-  ClangStyleAllParser() as any
+  ClangStyleAllParser as any
 ).extend({
   objCBinPackProtocolList: z.optional(
     z.enum(['auto', 'always', 'never']),

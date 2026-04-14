@@ -1,16 +1,22 @@
 import archiver from 'archiver'
 import fs from 'fs'
 import {
+  ArchiveParser,
+} from '~/code/form/action/archive/take'
+import {
   ConvertArchiveNodeInput,
+  ConvertArchiveNodeLocalExternalInput,
+  ConvertArchiveNodeLocalInternalInput,
+  ConvertArchiveNodeRemoteInput,
+} from '~/code/form/action/convert/archive/node'
+import {
+  ConvertArchiveNodeClientInputParser,
   ConvertArchiveNodeInputParser,
   ConvertArchiveNodeOutputParser,
-  ConvertArchiveNodeLocalInternalInput,
-  ConvertArchiveNodeLocalExternalInput,
-  ConvertArchiveNodeRemoteInput,
-  ConvertArchiveNodeClientInputParser,
+} from '~/code/form/action/convert/archive/node/take'
+import {
   ExtractWithUnarchiverParser,
-  ArchiveParser,
-} from '~/code/form/node/take'
+} from '~/code/form/action/extract/archive/shared/take'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {
   resolveInputForConvertLocalExternalNode,
@@ -35,7 +41,7 @@ export async function convertArchiveNode(
   source: ConvertArchiveNodeInput,
   native?: NativeOptions,
 ) {
-  const input = ConvertArchiveNodeInputParser().parse(source)
+  const input = ConvertArchiveNodeInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -68,14 +74,14 @@ export async function convertArchiveNodeRemote(
   native?: NativeOptions,
 ) {
   const input = await resolveInputForConvertRemoteNode(source)
-  const clientInput = ConvertArchiveNodeClientInputParser().parse(
+  const clientInput = ConvertArchiveNodeClientInputParser.parse(
     extend(input, { handle: 'client' }),
   )
 
   const request = buildRequestToConvert(clientInput)
   await resolveWorkFileNode(request, input.output.file.path)
 
-  return ConvertArchiveNodeOutputParser().parse({
+  return ConvertArchiveNodeOutputParser.parse({
     file: {
       path: input.output.file.path,
     },
@@ -89,7 +95,7 @@ export async function convertArchiveNodeLocal(
   const onUpdate = native?.onUpdate
 
   const directory = await generateTemporaryDirectoryPath()
-  const unarchiveInput = ExtractWithUnarchiverParser().parse(
+  const unarchiveInput = ExtractWithUnarchiverParser.parse(
     merge(input, {
       output: {
         directory: {
@@ -103,7 +109,7 @@ export async function convertArchiveNodeLocal(
     await buildCommandToExtractWithUnarchiver(unarchiveInput)
   await runCommandSequence(unarchiveSequence)
 
-  const archiveInput = ArchiveParser().parse(
+  const archiveInput = ArchiveParser.parse(
     merge(input, {
       input: {
         path: directory,

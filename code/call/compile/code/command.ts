@@ -10,13 +10,19 @@ import {
 import { getConfig } from '~/code/tool/shared/config'
 import {
   CompileCCommandInput,
+} from '~/code/form/action/compile/code/c/cli'
+import {
   CompileCppCommandInput,
+} from '~/code/form/action/compile/code/cpp/cli'
+import {
   CompileLlvmIrToAssembly,
+} from '~/code/form/action/compile/code/llvm-ir'
+import {
   CompileRustCommandInput,
+} from '~/code/form/action/compile/code/rust/cli'
+import {
   CompileSwiftCommandInput,
-} from '~/code/form/shared/index'
-
-// @.str = private unnamed_addr constant [14 x i8] c"Hello, World!\00", align 1
+} from '~/code/form/action/compile/code/swift/cli'// @.str = private unnamed_addr constant [14 x i8] c"Hello, World!\00", align 1
 export async function buildCommandToCompileC(
   input: CompileCCommandInput,
 ) {

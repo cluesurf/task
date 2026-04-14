@@ -4,14 +4,22 @@ import {
 } from '~/code/tool/shared/command'
 import {
   ConvertDocumentWithCalibreCommandInput,
+} from '~/code/form/action/convert/calibre/cli'
+import {
   ConvertDocumentWithEnscriptCommandInput,
+} from '~/code/form/action/convert/enscript/cli'
+import {
   ConvertDocumentWithJupyterCommandInput,
+} from '~/code/form/action/convert/jupyter/cli'
+import {
   ConvertDocumentWithLibreOfficeCommandInput,
+} from '~/code/form/action/convert/libre-office/cli'
+import {
   ConvertDocumentWithPandocCommandInput,
+} from '~/code/form/action/convert/pandoc/cli'
+import {
   ConvertLatexWithPdfLatexCommandInput,
-} from '~/code/form/shared/index'
-
-export function buildCommandToConvertDocumentWithLibreOffice(
+} from '~/code/form/action/convert/pdf-latex/cli'export function buildCommandToConvertDocumentWithLibreOffice(
   input: ConvertDocumentWithLibreOfficeCommandInput,
 ) {
   const cmd = getCommand('soffice')

@@ -2,9 +2,9 @@ import {
   buildCommandSequence,
   getCommand,
 } from '~/code/tool/shared/command'
-import { VerifyImageWithImageMagick } from '~/code/form/node/take'
-
-export function buildCommandToVerifyImageWithImageMagick(
+import {
+  VerifyImageWithImageMagick,
+} from '~/code/form/action/verify/image/shared'export function buildCommandToVerifyImageWithImageMagick(
   input: VerifyImageWithImageMagick,
 ) {
   const cmd = getCommand(`identify`)

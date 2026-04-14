@@ -1,10 +1,12 @@
 import { buildFormDataRequestToFormat } from '../shared'
 import {
   FormatKotlinBrowserInput,
-  FormatKotlinBrowserInputParser,
   FormatKotlinBrowserLocalInput,
   FormatKotlinBrowserRemoteInput,
-} from '~/code/form/browser/take'
+} from '~/code/form/action/format/code/browser'
+import {
+  FormatKotlinBrowserInputParser,
+} from '~/code/form/action/format/code/browser/take'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
 import { NativeOptions } from '~/code/tool/shared/request'
@@ -14,7 +16,7 @@ export async function formatKotlinBrowser(
   source: FormatKotlinBrowserInput,
   native?: NativeOptions,
 ) {
-  const input = FormatKotlinBrowserInputParser().parse(source)
+  const input = FormatKotlinBrowserInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':

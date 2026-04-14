@@ -1,4 +1,6 @@
-import { FfmpegFormat } from '~/code/form/shared/index'
+import {
+  FfmpegFormat,
+} from '~/code/form/object/ffmpeg'
 import { testConvertFileInputOutput } from '../../shared'
 import { getConfig } from '~/code/tool/shared/config'
 

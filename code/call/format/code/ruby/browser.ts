@@ -1,10 +1,12 @@
 import { buildFormDataRequestToFormat } from '../shared'
 import {
   FormatRustBrowserInput,
-  FormatRustBrowserInputParser,
   FormatRustBrowserLocalInput,
   FormatRustBrowserRemoteInput,
-} from '~/code/form/browser/take'
+} from '~/code/form/action/format/code/browser'
+import {
+  FormatRustBrowserInputParser,
+} from '~/code/form/action/format/code/browser/take'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
 import { NativeOptions } from '~/code/tool/shared/request'
@@ -14,7 +16,7 @@ export async function formatRustBrowser(
   source: FormatRustBrowserInput,
   native?: NativeOptions,
 ) {
-  const input = FormatRustBrowserInputParser().parse(source)
+  const input = FormatRustBrowserInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':

@@ -1,13 +1,15 @@
 import {
   ConvertDocumentWithLibreOfficeNodeInput,
-  ConvertDocumentWithLibreOfficeNodeInputParser,
-  ConvertDocumentWithLibreOfficeNodeOutputParser,
-  ConvertDocumentWithLibreOfficeNodeLocalInternalInput,
   ConvertDocumentWithLibreOfficeNodeLocalExternalInput,
-  ConvertDocumentWithLibreOfficeNodeLocalInputParser,
+  ConvertDocumentWithLibreOfficeNodeLocalInternalInput,
   ConvertDocumentWithLibreOfficeNodeRemoteInput,
+} from '~/code/form/action/convert/libre-office/node'
+import {
   ConvertDocumentWithLibreOfficeNodeClientInputParser,
-} from '~/code/form/node/take'
+  ConvertDocumentWithLibreOfficeNodeInputParser,
+  ConvertDocumentWithLibreOfficeNodeLocalInputParser,
+  ConvertDocumentWithLibreOfficeNodeOutputParser,
+} from '~/code/form/action/convert/libre-office/node/take'
 import { buildCommandToConvertDocumentWithLibreOffice } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {
@@ -27,7 +29,7 @@ export async function convertDocumentWithLibreOfficeNode(
   native?: NativeOptions,
 ) {
   const input =
-    ConvertDocumentWithLibreOfficeNodeInputParser().parse(source)
+    ConvertDocumentWithLibreOfficeNodeInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -70,14 +72,14 @@ export async function convertDocumentWithLibreOfficeNodeRemote(
 ) {
   const input = await resolveInputForConvertRemoteNode(source)
   const clientInput =
-    ConvertDocumentWithLibreOfficeNodeClientInputParser().parse(
+    ConvertDocumentWithLibreOfficeNodeClientInputParser.parse(
       extend(input, { handle: 'client' }),
     )
 
   const request = buildRequestToConvert(clientInput)
   await resolveWorkFileNode(request, input.output.file.path)
 
-  return ConvertDocumentWithLibreOfficeNodeOutputParser().parse({
+  return ConvertDocumentWithLibreOfficeNodeOutputParser.parse({
     file: {
       path: input.output.file.path,
     },
@@ -89,7 +91,7 @@ export async function convertDocumentWithLibreOfficeNodeLocal(
   native?: NativeOptions,
 ) {
   const localInput =
-    ConvertDocumentWithLibreOfficeNodeLocalInputParser().parse(input)
+    ConvertDocumentWithLibreOfficeNodeLocalInputParser.parse(input)
 
   const name = replaceFileExtension(
     localInput.input.file.path,
@@ -102,7 +104,7 @@ export async function convertDocumentWithLibreOfficeNodeLocal(
 
   await runCommandSequence(sequence)
 
-  return ConvertDocumentWithLibreOfficeNodeOutputParser().parse({
+  return ConvertDocumentWithLibreOfficeNodeOutputParser.parse({
     file: {
       path: outputPath,
     },

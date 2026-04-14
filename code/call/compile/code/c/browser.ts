@@ -14,7 +14,7 @@ export async function compileCBrowser(
   source: CompileCBrowserInput,
   native?: NativeOptions,
 ) {
-  const input = CompileCBrowserInputParser().parse(source)
+  const input = CompileCBrowserInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':

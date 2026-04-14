@@ -1,7 +1,9 @@
 import {
-  ImageMagickFormat,
   VerifyImageWithImageMagick,
-} from '~/code/form/node/take'
+} from '~/code/form/action/verify/image/shared'
+import {
+  ImageMagickFormat,
+} from '~/code/form/object/imagemagick'
 import { buildCommandToVerifyImageWithImageMagick } from './command'
 import { testVerifyImageWithImageMagick } from './shared'
 import { runCommandSequence } from '~/code/tool/node/command'

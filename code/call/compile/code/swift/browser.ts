@@ -1,10 +1,12 @@
 import {
   CompileSwiftBrowserInput,
-  CompileSwiftBrowserInputParser,
   CompileSwiftBrowserLocalInput,
-  CompileSwiftBrowserOutputParser,
   CompileSwiftBrowserRemoteInput,
-} from '~/code/form/browser/take'
+} from '~/code/form/action/compile/code/swift/browser'
+import {
+  CompileSwiftBrowserInputParser,
+  CompileSwiftBrowserOutputParser,
+} from '~/code/form/action/compile/code/swift/browser/take'
 import { buildFormDataRequestToCompile } from '~/code/call/compile/code/shared'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
@@ -15,7 +17,7 @@ export async function compileSwiftBrowser(
   source: CompileSwiftBrowserInput,
   native?: NativeOptions,
 ) {
-  const input = CompileSwiftBrowserInputParser().parse(source)
+  const input = CompileSwiftBrowserInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':

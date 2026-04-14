@@ -1,7 +1,7 @@
 import { exec } from '~/code/tool/node/process'
-import { Command } from '~/code/form/shared/index'
-
-export async function handleZipCommand(cmd: Command) {
+import {
+  Command,
+} from '~/code/form/object/request'export async function handleZipCommand(cmd: Command) {
   return await exec(cmd.link)
 }
 

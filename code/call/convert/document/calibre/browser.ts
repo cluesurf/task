@@ -1,10 +1,12 @@
 import {
   ConvertDocumentWithCalibreBrowserInput,
-  ConvertDocumentWithCalibreBrowserInputParser,
   ConvertDocumentWithCalibreBrowserLocalInput,
-  ConvertDocumentWithCalibreBrowserOutputParser,
   ConvertDocumentWithCalibreBrowserRemoteInput,
-} from '~/code/form/browser/take'
+} from '~/code/form/action/convert/calibre/browser'
+import {
+  ConvertDocumentWithCalibreBrowserInputParser,
+  ConvertDocumentWithCalibreBrowserOutputParser,
+} from '~/code/form/action/convert/calibre/browser/take'
 import { buildFormDataRequestToConvert } from '../../shared'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
@@ -15,7 +17,7 @@ export async function convertDocumentWithCalibreBrowser(
   native?: NativeOptions,
 ) {
   const input =
-    ConvertDocumentWithCalibreBrowserInputParser().parse(source)
+    ConvertDocumentWithCalibreBrowserInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -35,7 +37,7 @@ export async function convertDocumentWithCalibreBrowserRemote(
   const request = buildFormDataRequestToConvert(input)
   const content = await resolveWorkFileAsBlob(request, native)
 
-  return ConvertDocumentWithCalibreBrowserOutputParser().parse({
+  return ConvertDocumentWithCalibreBrowserOutputParser.parse({
     file: {
       content,
     },

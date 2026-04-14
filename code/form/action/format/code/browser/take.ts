@@ -60,7 +60,7 @@ export type FormatCodeWithClangFormatBrowserInputRecord = z.infer<
 >
 
 export const FormatCodeWithClangFormatBrowserLocalInputParser = (
-  ClangStyleAllParser() as any
+  ClangStyleAllParser as any
 ).extend({
   handle: z.optional(z.literal('local')),
   format: z.lazy(() => ClangFormatParser),
@@ -76,7 +76,7 @@ export type FormatCodeWithClangFormatBrowserLocalInputRecord = z.infer<
 >
 
 export const FormatCodeWithClangFormatBrowserOutputParser = (
-  ClangStyleAllParser() as any
+  ClangStyleAllParser as any
 ).extend({
   file: z.lazy(() => FileContentParser),
 })
@@ -86,7 +86,7 @@ export type FormatCodeWithClangFormatBrowserOutputRecord = z.infer<
 >
 
 export const FormatCodeWithClangFormatBrowserRemoteInputParser = (
-  ClangStyleAllParser() as any
+  ClangStyleAllParser as any
 ).extend({
   handle: z.literal('remote'),
   format: z.lazy(() => ClangFormatParser),

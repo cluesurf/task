@@ -3,14 +3,16 @@ import { JSDOM } from 'jsdom'
 import fsp from 'fs/promises'
 import {
   SanitizeHtmlNodeInput,
-  SanitizeHtmlNodeInputParser,
-  SanitizeHtmlNodeOutputParser,
-  SanitizeHtmlNodeLocalInternalInput,
   SanitizeHtmlNodeLocalExternalInput,
-  SanitizeHtmlNodeLocalInputParser,
+  SanitizeHtmlNodeLocalInternalInput,
   SanitizeHtmlNodeRemoteInput,
+} from '~/code/form/action/sanitize/code/node'
+import {
   SanitizeHtmlNodeClientInputParser,
-} from '~/code/form/node/take'
+  SanitizeHtmlNodeInputParser,
+  SanitizeHtmlNodeLocalInputParser,
+  SanitizeHtmlNodeOutputParser,
+} from '~/code/form/action/sanitize/code/node/take'
 import {
   resolveInputForSanitizeLocalExternalNode,
   resolveInputForSanitizeLocalInternalNode,
@@ -36,7 +38,7 @@ export async function sanitizeHtmlNode(
   source: SanitizeHtmlNodeInput,
   native?: NativeOptions,
 ) {
-  const input = SanitizeHtmlNodeInputParser().parse(source)
+  const input = SanitizeHtmlNodeInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -73,14 +75,14 @@ export async function sanitizeHtmlNodeRemote(
   native?: NativeOptions,
 ) {
   const input = await resolveInputForSanitizeRemoteNode(source as any)
-  const clientInput = SanitizeHtmlNodeClientInputParser().parse(
+  const clientInput = SanitizeHtmlNodeClientInputParser.parse(
     extend(input, { handle: 'client' }),
   )
 
   const request = buildRequestToSanitize(clientInput)
   await resolveWorkFileNode(request, input.output.file.path)
 
-  return SanitizeHtmlNodeOutputParser().parse({
+  return SanitizeHtmlNodeOutputParser.parse({
     file: {
       path: input.output.file.path,
     },
@@ -91,7 +93,7 @@ export async function sanitizeHtmlNodeLocal(
   input,
   native?: NativeOptions,
 ) {
-  const localInput = SanitizeHtmlNodeLocalInputParser().parse(input)
+  const localInput = SanitizeHtmlNodeLocalInputParser.parse(input)
   const content = await fsp.readFile(
     localInput.input.file.path,
     'utf-8',

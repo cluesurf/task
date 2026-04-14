@@ -2,11 +2,11 @@ import * as forge from 'node-forge'
 import {
   ForgeMessageDigest,
   GenerateHash,
+} from '~/code/form/action/generate/hash/shared'
+import {
   GenerateHashParser,
-} from '~/code/form/shared/take'
-
-export function generateHash(source: GenerateHash) {
-  const input = GenerateHashParser().parse(source)
+} from '~/code/form/action/generate/hash/shared/take'export function generateHash(source: GenerateHash) {
+  const input = GenerateHashParser.parse(source)
   const digest = createMessageDigest({ class: input.class })
   updateMessageDigest(digest, { content: input.content })
   return stringifyMessageDigest(digest)

@@ -1,11 +1,19 @@
 import {
   ConvertDocumentWithCalibreNodeInput,
-  ConvertDocumentWithLibreOfficeNodeInput,
-  ConvertDocumentWithPandocNodeInput,
+} from '~/code/form/action/convert/calibre/node'
+import {
   ConvertLatexToPngNodeInput,
+} from '~/code/form/action/convert/latex-to-png/node'
+import {
+  ConvertDocumentWithLibreOfficeNodeInput,
+} from '~/code/form/action/convert/libre-office/node'
+import {
+  ConvertDocumentWithPandocNodeInput,
+} from '~/code/form/action/convert/pandoc/node'
+import {
   ConvertMarkdownWithPuppeteerNodeInput,
   ConvertTxtWithPuppeteerNodeInput,
-} from '~/code/form/node/take'
+} from '~/code/form/action/convert/puppeteer/node'
 import {
   testConvertDocumentWithCalibre,
   testConvertDocumentWithLibreOffice,
@@ -54,7 +62,7 @@ export function testConvertDocumentWithLibreOfficeNode(
 // export async function convertLatexToPng(
 //   source: ConvertLatexToPngNodeInput,
 // ) {
-//   const input = ConvertLatexToPngNodeInputParser().parse(source)
+//   const input = ConvertLatexToPngNodeInputParser.parse(source)
 
 //   if (input.handle === 'remote') {
 //     // const remoteInput = await resolveInputForConvertRemoteNode(input)

@@ -134,7 +134,7 @@ export type FormatAssemblyNodeRemoteInputRecord = z.infer<
 >
 
 export const FormatCodeWithClangFormatNodeClientInputParser = (
-  ClangStyleAllParser() as any
+  ClangStyleAllParser as any
 ).extend({
   handle: z.literal('client'),
   format: z.lazy(() => ClangFormatParser),
@@ -152,7 +152,7 @@ export type FormatCodeWithClangFormatNodeClientInputRecord = z.infer<
 >
 
 export const FormatCodeWithClangFormatNodeExternalInputParser = (
-  ClangStyleAllParser() as any
+  ClangStyleAllParser as any
 ).extend({
   handle: z.literal('external'),
   format: z.lazy(() => ClangFormatParser),
@@ -180,7 +180,7 @@ export type FormatCodeWithClangFormatNodeInputRecord = z.infer<
 >
 
 export const FormatCodeWithClangFormatNodeLocalExternalInputParser = (
-  ClangStyleAllParser() as any
+  ClangStyleAllParser as any
 ).extend({
   handle: z.literal('external'),
   format: z.lazy(() => ClangFormatParser),
@@ -200,7 +200,7 @@ export type FormatCodeWithClangFormatNodeLocalExternalInputRecord =
   z.infer<typeof FormatCodeWithClangFormatNodeLocalExternalInputParser>
 
 export const FormatCodeWithClangFormatNodeLocalInputParser = (
-  ClangStyleAllParser() as any
+  ClangStyleAllParser as any
 ).extend({
   format: z.lazy(() => ClangFormatParser),
   input: z.object({
@@ -217,7 +217,7 @@ export type FormatCodeWithClangFormatNodeLocalInputRecord = z.infer<
 >
 
 export const FormatCodeWithClangFormatNodeLocalInternalInputParser = (
-  ClangStyleAllParser() as any
+  ClangStyleAllParser as any
 ).extend({
   handle: z.optional(z.literal('internal')),
   format: z.lazy(() => ClangFormatParser),
@@ -237,7 +237,7 @@ export type FormatCodeWithClangFormatNodeLocalInternalInputRecord =
   z.infer<typeof FormatCodeWithClangFormatNodeLocalInternalInputParser>
 
 export const FormatCodeWithClangFormatNodeOutputParser = (
-  ClangStyleAllParser() as any
+  ClangStyleAllParser as any
 ).extend({
   file: z.lazy(() => FilePathParser),
 })
@@ -247,7 +247,7 @@ export type FormatCodeWithClangFormatNodeOutputRecord = z.infer<
 >
 
 export const FormatCodeWithClangFormatNodeRemoteInputParser = (
-  ClangStyleAllParser() as any
+  ClangStyleAllParser as any
 ).extend({
   handle: z.literal('remote'),
   format: z.lazy(() => ClangFormatParser),

@@ -1,10 +1,12 @@
 import {
   ConvertDocumentWithPandocBrowserInput,
-  ConvertDocumentWithPandocBrowserInputParser,
   ConvertDocumentWithPandocBrowserLocalInput,
-  ConvertDocumentWithPandocBrowserOutputParser,
   ConvertDocumentWithPandocBrowserRemoteInput,
-} from '~/code/form/browser/take'
+} from '~/code/form/action/convert/pandoc/browser'
+import {
+  ConvertDocumentWithPandocBrowserInputParser,
+  ConvertDocumentWithPandocBrowserOutputParser,
+} from '~/code/form/action/convert/pandoc/browser/take'
 import { buildFormDataRequestToConvert } from '../../shared'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
@@ -15,7 +17,7 @@ export async function convertDocumentWithPandocBrowser(
   native?: NativeOptions,
 ) {
   const input =
-    ConvertDocumentWithPandocBrowserInputParser().parse(source)
+    ConvertDocumentWithPandocBrowserInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -32,7 +34,7 @@ export async function convertDocumentWithPandocBrowserRemote(
   const request = buildFormDataRequestToConvert(input)
   const content = await resolveWorkFileAsBlob(request)
 
-  return ConvertDocumentWithPandocBrowserOutputParser().parse({
+  return ConvertDocumentWithPandocBrowserOutputParser.parse({
     file: {
       content,
     },

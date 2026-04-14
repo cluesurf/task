@@ -1,9 +1,9 @@
 import { serialize as serializeToFormData } from 'object-to-formdata'
 import { omitNested } from '~/code/tool/shared/object'
 import { buildRemoteRequest } from '~/code/tool/shared/request'
-import { CompileApi } from '~/code/form/shared/index'
-
-export type CompileFileTest = {
+import {
+  CompileApi,
+} from '~/code/form/action/compile/code'export type CompileFileTest = {
   input: {
     format: string
   }

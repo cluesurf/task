@@ -18,8 +18,7 @@ import {
   ResolveInputForConvertLocalExternal,
   ResolveInputForConvertLocalInternal,
   ResolveInputForConvertRemote,
-} from '~/code/form/node/take'
-// import debug from '~/code/tool/shared/debug'
+} from '~/code/form/action/convert/shared'// import debug from '~/code/tool/shared/debug'
 
 // https://www.npmjs.com/package/ftp
 

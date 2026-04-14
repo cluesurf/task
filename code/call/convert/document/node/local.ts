@@ -97,7 +97,7 @@
 //   input: ConvertDocumentWithPandocNodeInput,
 // ) {
 //   const commandInput =
-//     ConvertDocumentWithPandocNodeCommandInputParser().parse(input)
+//     ConvertDocumentWithPandocNodeCommandInputParser.parse(input)
 //   const sequence = buildCommandToConvertDocumentWithPandoc(commandInput)
 //   await runCommandSequence(sequence)
 //   return input.output.file.path
@@ -107,7 +107,7 @@
 //   input: ConvertDocumentWithLibreOfficeNodeInput,
 // ) {
 //   const commandInput =
-//     ConvertDocumentWithLibreOfficeNodeCommandInputParser().parse(input)
+//     ConvertDocumentWithLibreOfficeNodeCommandInputParser.parse(input)
 //   const sequence =
 //     buildCommandToConvertDocumentWithLibreOffice(commandInput)
 //   const name =
@@ -134,7 +134,7 @@
 //   input: ConvertDocumentWithCalibreNodeInput,
 // ) {
 //   const commandInput =
-//     ConvertDocumentWithCalibreNodeCommandInputParser().parse(input)
+//     ConvertDocumentWithCalibreNodeCommandInputParser.parse(input)
 //   const sequence =
 //     buildCommandToConvertDocumentWithCalibre(commandInput)
 //   await runCommandSequence(sequence)
@@ -151,7 +151,7 @@
 //   input: ConvertLatexWithPdfLatexNodeInput,
 // ) {
 //   const commandInput =
-//     ConvertLatexWithPdfLatexNodeCommandInputParser().parse(input)
+//     ConvertLatexWithPdfLatexNodeCommandInputParser.parse(input)
 //   const sequence = buildCommandToConvertLatexWithPdfLatex(commandInput)
 //   await runCommandSequence(sequence)
 //   const outputPath = path.join(
@@ -174,7 +174,7 @@
 // export async function convertDocumentWithPuppeteer(
 //   source: ConvertDocumentWithPuppeteerNodeInput,
 // ) {
-//   const input = ConvertDocumentWithPuppeteerNodeInputParser().parse(source)
+//   const input = ConvertDocumentWithPuppeteerNodeInputParser.parse(source)
 //   switch (input.output.format) {
 //     case 'png':
 //       return await convertHtmlToPngWithPuppeteer(input)

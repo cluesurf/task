@@ -4,12 +4,14 @@ import {
 } from '~/code/tool/shared/command'
 import { IOPath } from '~/code/form/index'
 import {
-  ConvertMp4ToGifWithFfmpegParser,
   ConvertVideoWithFfmpegCommandInput,
+} from '~/code/form/action/convert/ffmpeg/cli'
+import {
+  ConvertMp4ToGifWithFfmpegParser,
+} from '~/code/form/action/convert/ffmpeg/take'
+import {
   FfmpegCodecAudio,
-} from '~/code/form/shared/take'
-
-// ffmpeg -filters
+} from '~/code/form/object/ffmpeg'// ffmpeg -filters
 // https://ffmpeg.org/ffmpeg-filters.html
 // https://opensource.com/article/17/6/ffmpeg-convert-media-file-formats
 // -ss 00:01:00 (HOURS:MM:SS.MILLISECONDS)
@@ -166,7 +168,7 @@ export async function buildCommandToConvertVideoWithFfmpeg(
 export async function buildCommandToCompressVideoWithFfmpeg() {}
 
 export async function buildCommandToConvertMP4ToGifWithFfmpeg(source) {
-  const input = ConvertMp4ToGifWithFfmpegParser().parse(source)
+  const input = ConvertMp4ToGifWithFfmpegParser.parse(source)
 
   const { fps, width, startTime, endTime, duration } = input
 
@@ -244,5 +246,5 @@ export async function removeAudioFromVideoWithFfmpeg({
 }
 
 // export async function compressMP4WithFfmpeg(source) {
-//   return CompressMp4WithFfmpegParser().parse(source)
+//   return CompressMp4WithFfmpegParser.parse(source)
 // }

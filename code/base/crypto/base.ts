@@ -69,7 +69,7 @@ export const generate_murmur_hash: Form = {
 }
 
 // export function generateMurmurHash(source: GenerateMurmurHash) {
-//   const { input, seed, version } = GenerateMurmurHashParser().parse(source)
+//   const { input, seed, version } = GenerateMurmurHashParser.parse(source)
 //   if (version === '2') {
 //     return murmurhash.v2(input, seed)
 //   }

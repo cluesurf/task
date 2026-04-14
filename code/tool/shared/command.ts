@@ -1,8 +1,10 @@
 import {
   Command,
   CommandName,
+} from '~/code/form/object/request'
+import {
   CommandSequenceParser,
-} from '~/code/form/shared/take'
+} from '~/code/form/object/request/take'
 import kink from './kink'
 
 export const COMMAND: Record<CommandName, Array<string> | undefined> = {
@@ -70,9 +72,9 @@ export function command(
 
 export function buildCommandSequence(call: Command | Array<Command>) {
   if (Array.isArray(call)) {
-    return CommandSequenceParser().parse({ call })
+    return CommandSequenceParser.parse({ call })
   }
-  return CommandSequenceParser().parse({ call: [call] })
+  return CommandSequenceParser.parse({ call: [call] })
 }
 
 export function escapeCommandInput(s: string) {

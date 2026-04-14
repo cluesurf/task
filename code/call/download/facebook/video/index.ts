@@ -94,7 +94,7 @@ export class Downloader {
     if (!str) return ''
 
     // Create a temporary element to handle HTML entities
-    const doc = new DOMParser().parseFromString(str, 'text/html')
+    const doc = new DOMParser.parseFromString(str, 'text/html')
     return doc.body.textContent || ''
   }
 

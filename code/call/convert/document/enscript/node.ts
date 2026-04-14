@@ -1,13 +1,15 @@
 import {
   ConvertDocumentWithEnscriptNodeInput,
-  ConvertDocumentWithEnscriptNodeInputParser,
-  ConvertDocumentWithEnscriptNodeOutputParser,
-  ConvertDocumentWithEnscriptNodeLocalInternalInput,
   ConvertDocumentWithEnscriptNodeLocalExternalInput,
-  ConvertDocumentWithEnscriptNodeLocalInputParser,
+  ConvertDocumentWithEnscriptNodeLocalInternalInput,
   ConvertDocumentWithEnscriptNodeRemoteInput,
+} from '~/code/form/action/convert/enscript/node'
+import {
   ConvertDocumentWithEnscriptNodeClientInputParser,
-} from '~/code/form/node/take'
+  ConvertDocumentWithEnscriptNodeInputParser,
+  ConvertDocumentWithEnscriptNodeLocalInputParser,
+  ConvertDocumentWithEnscriptNodeOutputParser,
+} from '~/code/form/action/convert/enscript/node/take'
 import { buildCommandToConvertDocumentWithEnscript } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {
@@ -25,7 +27,7 @@ export async function convertDocumentWithEnscriptNode(
   native?: NativeOptions,
 ) {
   const input =
-    ConvertDocumentWithEnscriptNodeInputParser().parse(source)
+    ConvertDocumentWithEnscriptNodeInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -65,14 +67,14 @@ export async function convertDocumentWithEnscriptNodeRemote(
 ) {
   const input = await resolveInputForConvertRemoteNode(source)
   const clientInput =
-    ConvertDocumentWithEnscriptNodeClientInputParser().parse(
+    ConvertDocumentWithEnscriptNodeClientInputParser.parse(
       extend(input, { handle: 'client' }),
     )
 
   const request = buildRequestToConvert(clientInput)
   await resolveWorkFileNode(request, input.output.file.path)
 
-  return ConvertDocumentWithEnscriptNodeOutputParser().parse({
+  return ConvertDocumentWithEnscriptNodeOutputParser.parse({
     file: {
       path: input.output.file.path,
     },
@@ -84,14 +86,14 @@ export async function convertDocumentWithEnscriptNodeLocal(
   native?: NativeOptions,
 ) {
   const localInput =
-    ConvertDocumentWithEnscriptNodeLocalInputParser().parse(input)
+    ConvertDocumentWithEnscriptNodeLocalInputParser.parse(input)
 
   const sequence =
     await buildCommandToConvertDocumentWithEnscript(localInput)
 
   await runCommandSequence(sequence)
 
-  return ConvertDocumentWithEnscriptNodeOutputParser().parse({
+  return ConvertDocumentWithEnscriptNodeOutputParser.parse({
     file: {
       path: localInput.output.file.path,
     },

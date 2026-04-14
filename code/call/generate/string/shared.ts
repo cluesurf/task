@@ -8,18 +8,18 @@ import {
 import {
   AnonymousWordSet,
   GenerateHaikuPhrase,
-  GenerateHaikuPhraseParser,
   GenerateRandomPhrase,
-  GenerateRandomPhraseParser,
   GenerateRandomSymbols,
-  GenerateRandomSymbolsParser,
   NamedWordSet,
   WeightedSymbolSet,
   WeightedWordSet,
-} from '~/code/form/shared/take'
-
-export function generateRandomSymbols(source: GenerateRandomSymbols) {
-  const input = GenerateRandomSymbolsParser().parse(source)
+} from '~/code/form/action/generate/string/shared'
+import {
+  GenerateHaikuPhraseParser,
+  GenerateRandomPhraseParser,
+  GenerateRandomSymbolsParser,
+} from '~/code/form/action/generate/string/shared/take'export function generateRandomSymbols(source: GenerateRandomSymbols) {
+  const input = GenerateRandomSymbolsParser.parse(source)
 
   const size = getRandomIntegerBetween({
     min: input.minSize as number,
@@ -67,7 +67,7 @@ export function generateRandomSymbols(source: GenerateRandomSymbols) {
 }
 
 export function generateRandomPhrase(source: GenerateRandomPhrase) {
-  const input = GenerateRandomPhraseParser().parse(source)
+  const input = GenerateRandomPhraseParser.parse(source)
 
   const size = getRandomIntegerBetween({
     min: input.minSize as number,
@@ -118,7 +118,7 @@ export function generateRandomPhrase(source: GenerateRandomPhrase) {
 }
 
 export function generateHaikuPhrase(source: GenerateHaikuPhrase) {
-  const input = GenerateHaikuPhraseParser().parse(source)
+  const input = GenerateHaikuPhraseParser.parse(source)
 
   const adjectives = getWordSets(input.adjectives)
   const nouns = getWordSets(input.nouns)

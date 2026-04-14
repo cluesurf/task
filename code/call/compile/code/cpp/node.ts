@@ -1,13 +1,15 @@
 import {
   CompileCppNodeInput,
-  CompileCppNodeInputParser,
-  CompileCppNodeOutputParser,
-  CompileCppNodeLocalInternalInput,
   CompileCppNodeLocalExternalInput,
-  CompileCppNodeLocalInputParser,
+  CompileCppNodeLocalInternalInput,
   CompileCppNodeRemoteInput,
+} from '~/code/form/action/compile/code/cpp/node'
+import {
   CompileCppNodeClientInputParser,
-} from '~/code/form/node/take'
+  CompileCppNodeInputParser,
+  CompileCppNodeLocalInputParser,
+  CompileCppNodeOutputParser,
+} from '~/code/form/action/compile/code/cpp/node/take'
 import { buildCommandToCompileCpp } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {
@@ -24,7 +26,7 @@ export async function compileCppNode(
   source: CompileCppNodeInput,
   native?: NativeOptions,
 ) {
-  const input = CompileCppNodeInputParser().parse(source)
+  const input = CompileCppNodeInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -57,7 +59,7 @@ export async function compileCppNodeRemote(
   native,
 ) {
   const input = await resolveInputForCompileRemoteNode(source)
-  const clientInput = CompileCppNodeClientInputParser().parse(
+  const clientInput = CompileCppNodeClientInputParser.parse(
     extend(input, { handle: 'client' }),
   )
 
@@ -75,7 +77,7 @@ export async function compileCppNodeLocal(
   input,
   native?: NativeOptions,
 ) {
-  const localInput = CompileCppNodeLocalInputParser().parse(input)
+  const localInput = CompileCppNodeLocalInputParser.parse(input)
 
   const sequence = await buildCommandToCompileCpp(localInput)
 

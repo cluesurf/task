@@ -1,7 +1,9 @@
 import {
   ConvertFontWithFontForgeCommandInput,
+} from '~/code/form/action/convert/font-forge/cli'
+import {
   FontFormat,
-} from '~/code/form/shared/index'
+} from '~/code/form/object/font'
 import {
   buildCommandSequence,
   getCommand,

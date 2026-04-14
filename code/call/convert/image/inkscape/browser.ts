@@ -1,10 +1,12 @@
 import {
   ConvertImageWithInkscapeBrowserInput,
-  ConvertImageWithInkscapeBrowserInputParser,
   ConvertImageWithInkscapeBrowserLocalInput,
-  ConvertImageWithInkscapeBrowserOutputParser,
   ConvertImageWithInkscapeBrowserRemoteInput,
-} from '~/code/form/browser/take'
+} from '~/code/form/action/convert/inkscape/browser'
+import {
+  ConvertImageWithInkscapeBrowserInputParser,
+  ConvertImageWithInkscapeBrowserOutputParser,
+} from '~/code/form/action/convert/inkscape/browser/take'
 import { buildFormDataRequestToConvert } from '../../shared'
 import kink from '~/code/tool/shared/kink'
 import { testConvertImageWithInkscape } from './shared'
@@ -16,7 +18,7 @@ export async function convertImageWithInkscapeBrowser(
   native?: NativeOptions,
 ) {
   const input =
-    ConvertImageWithInkscapeBrowserInputParser().parse(source)
+    ConvertImageWithInkscapeBrowserInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':

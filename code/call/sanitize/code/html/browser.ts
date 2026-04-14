@@ -1,10 +1,12 @@
 import * as DOMPurify from 'dompurify'
 import {
   SanitizeHtmlBrowserInput,
-  SanitizeHtmlBrowserInputParser,
   SanitizeHtmlBrowserLocalInput,
   SanitizeHtmlBrowserRemoteInput,
-} from '~/code/form/browser/take'
+} from '~/code/form/action/sanitize/code/browser'
+import {
+  SanitizeHtmlBrowserInputParser,
+} from '~/code/form/action/sanitize/code/browser/take'
 import { testSanitize, buildFormDataRequestToSanitize } from '../shared'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
 import { NativeOptions } from '~/code/tool/shared/request'
@@ -15,7 +17,7 @@ export async function sanitizeHtmlBrowser(
   source: SanitizeHtmlBrowserInput,
   native?: NativeOptions,
 ) {
-  const input = SanitizeHtmlBrowserInputParser().parse(source)
+  const input = SanitizeHtmlBrowserInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':

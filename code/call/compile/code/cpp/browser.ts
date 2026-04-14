@@ -1,10 +1,12 @@
 import {
   CompileCppBrowserInput,
-  CompileCppBrowserInputParser,
   CompileCppBrowserLocalInput,
-  CompileCppBrowserOutputParser,
   CompileCppBrowserRemoteInput,
-} from '~/code/form/browser/take'
+} from '~/code/form/action/compile/code/cpp/browser'
+import {
+  CompileCppBrowserInputParser,
+  CompileCppBrowserOutputParser,
+} from '~/code/form/action/compile/code/cpp/browser/take'
 import { buildFormDataRequestToCompile } from '~/code/call/compile/code/shared'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
@@ -15,7 +17,7 @@ export async function compileCppBrowser(
   source: CompileCppBrowserInput,
   native?: NativeOptions,
 ) {
-  const input = CompileCppBrowserInputParser().parse(source)
+  const input = CompileCppBrowserInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':

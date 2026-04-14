@@ -14,11 +14,15 @@ import { stripAnsiFromText } from '~/code/hook/logging'
 // https://www.npmjs.com/package/file-type
 // https://github.com/apache/tika
 import {
-  Command,
   ConvertVideoWithFfmpegNodeInput,
   ConvertVideoWithFfmpegNodeLocalInput,
+} from '~/code/form/action/convert/ffmpeg/node'
+import {
   ConvertVideoWithFfmpegNodeLocalInputParser,
-} from '~/code/form/node/take'
+} from '~/code/form/action/convert/ffmpeg/node/take'
+import {
+  Command,
+} from '~/code/form/object/request'
 import { buildCommandToConvertVideoWithFfmpeg } from '../command'
 
 export async function handleFfmpegCommand(

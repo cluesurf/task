@@ -1,7 +1,7 @@
 import {
   ImageMagickInputFormat,
   ImageMagickOutputFormat,
-} from '~/code/form/shared/index'
+} from '~/code/form/object/imagemagick'
 import { testConvertFileInputOutput } from '../../shared'
 import { getConfig } from '~/code/tool/shared/config'
 

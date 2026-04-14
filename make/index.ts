@@ -44,7 +44,6 @@ async function make(): Promise<void> {
 
   await writeTaskInterface('node')
   await writeTaskInterface('browser')
-  await writeLegacyBarrels()
 }
 
 // Legacy aggregator barrels at `code/form/{shared,node,browser}/`.

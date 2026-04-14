@@ -1,5 +1,7 @@
 import { getConfig } from '~/code/tool/shared/config'
-import { ImageMagickFormat } from '~/code/form/shared/index'
+import {
+  ImageMagickFormat,
+} from '~/code/form/object/imagemagick'
 import { testVerify } from '../shared'
 
 export function testVerifyImageWithImageMagick(source) {

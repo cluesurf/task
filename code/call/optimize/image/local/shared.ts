@@ -2,9 +2,9 @@ import {
   buildCommandSequence,
   getCommand,
 } from '~/code/tool/shared/command'
-import { BuildCommandToOptimizeGifWithGifsicle } from '~/code/form/shared/index'
-
-export function buildCommandToOptimizeGifWithGifsicle(
+import {
+  BuildCommandToOptimizeGifWithGifsicle,
+} from '~/code/form/action/optimize/image/shared'export function buildCommandToOptimizeGifWithGifsicle(
   input: BuildCommandToOptimizeGifWithGifsicle,
 ) {
   const cmd = getCommand('gifsicle')

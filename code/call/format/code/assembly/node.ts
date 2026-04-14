@@ -1,12 +1,14 @@
 import {
   FormatAssemblyNodeInput,
-  FormatAssemblyNodeInputParser,
   FormatAssemblyNodeLocalExternalInput,
   FormatAssemblyNodeLocalInternalInput,
   FormatAssemblyNodeRemoteInput,
+} from '~/code/form/action/format/code/node'
+import {
   FormatAssemblyNodeClientInputParser,
+  FormatAssemblyNodeInputParser,
   FormatAssemblyNodeLocalInputParser,
-} from '~/code/form/node/take'
+} from '~/code/form/action/format/code/node/take'
 import { buildCommandToFormatAssembly } from '../command'
 import { buildRequestToFormat } from '../shared'
 import { runCommandSequence } from '~/code/tool/node/command'
@@ -23,7 +25,7 @@ export async function formatAssemblyNode(
   source: FormatAssemblyNodeInput,
   native?: NativeOptions,
 ) {
-  const input = FormatAssemblyNodeInputParser().parse(source)
+  const input = FormatAssemblyNodeInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -56,7 +58,7 @@ export async function formatAssemblyNodeRemote(
   native?: NativeOptions,
 ) {
   const input = await resolveInputForFormatRemoteNode(source)
-  const clientInput = FormatAssemblyNodeClientInputParser().parse(
+  const clientInput = FormatAssemblyNodeClientInputParser.parse(
     extend(input, { handle: 'client' }),
   )
 
@@ -74,7 +76,7 @@ export async function formatAssemblyNodeLocal(
   source,
   native?: NativeOptions,
 ) {
-  const input = FormatAssemblyNodeLocalInputParser().parse(source)
+  const input = FormatAssemblyNodeLocalInputParser.parse(source)
 
   const sequence = buildCommandToFormatAssembly(input)
   await runCommandSequence(sequence)

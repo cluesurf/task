@@ -4,27 +4,29 @@ import prettier from 'prettier/standalone'
 import {
   FormatApi,
   FormatCodeWithPrettier,
-  FormatCodeWithPrettierParser,
   FormatGraphqlWithPrettier,
-  FormatGraphqlWithPrettierParser,
   FormatHtmlWithPrettier,
-  FormatHtmlWithPrettierParser,
   FormatJavaWithPrettier,
-  FormatJavaWithPrettierParser,
   FormatMarkdownWithPrettier,
-  FormatMarkdownWithPrettierParser,
   FormatRustWithPrettier,
-  FormatRustWithPrettierParser,
   FormatShWithPrettier,
-  FormatShWithPrettierParser,
   FormatTypescriptWithPrettier,
-  FormatTypescriptWithPrettierParser,
   FormatXmlWithPrettier,
-  FormatXmlWithPrettierParser,
   FormatYamlWithPrettier,
-  FormatYamlWithPrettierParser,
   PrettierPlugin,
-} from '~/code/form/shared/take'
+} from '~/code/form/action/format/code/shared'
+import {
+  FormatCodeWithPrettierParser,
+  FormatGraphqlWithPrettierParser,
+  FormatHtmlWithPrettierParser,
+  FormatJavaWithPrettierParser,
+  FormatMarkdownWithPrettierParser,
+  FormatRustWithPrettierParser,
+  FormatShWithPrettierParser,
+  FormatTypescriptWithPrettierParser,
+  FormatXmlWithPrettierParser,
+  FormatYamlWithPrettierParser,
+} from '~/code/form/action/format/code/shared/take'
 import * as prettierPluginEstree from 'prettier/plugins/estree'
 import { buildRemoteRequest } from '~/code/tool/shared/request'
 import { omitNested } from '~/code/tool/shared/object'
@@ -154,7 +156,7 @@ export async function formatCodeWithPrettierPlugin<T extends Format>(
 // export async function formatAngularWithPrettier(
 //   source: FormatAngularWithPrettier,
 // ) {
-//   const input = FormatAngularWithPrettierParser().parse(source)
+//   const input = FormatAngularWithPrettierParser.parse(source)
 //   return await formatCodeWithPrettier({
 //     ...input,
 //     format: 'angular',
@@ -164,7 +166,7 @@ export async function formatCodeWithPrettierPlugin<T extends Format>(
 // export async function formatFlowWithPrettier(
 //   source: FormatFlowWithPrettier,
 // ) {
-//   const input = FormatFlowWithPrettierParser().parse(source)
+//   const input = FormatFlowWithPrettierParser.parse(source)
 //   return await formatCodeWithPrettier({
 //     ...input,
 //     format: 'flow',
@@ -174,7 +176,7 @@ export async function formatCodeWithPrettierPlugin<T extends Format>(
 // export async function formatGlimmerWithPrettier(
 //   source: FormatGlimmerWithPrettier,
 // ) {
-//   const input = FormatGlimmerWithPrettierParser().parse(source)
+//   const input = FormatGlimmerWithPrettierParser.parse(source)
 //   return await formatCodeWithPrettier({
 //     ...input,
 //     format: 'glimmer',
@@ -184,7 +186,7 @@ export async function formatCodeWithPrettierPlugin<T extends Format>(
 export async function formatGraphqlWithPrettier(
   source: FormatGraphqlWithPrettier,
 ) {
-  const input = FormatGraphqlWithPrettierParser().parse(source)
+  const input = FormatGraphqlWithPrettierParser.parse(source)
   return await formatCodeWithPrettier({
     ...input,
     format: 'graphql',
@@ -194,7 +196,7 @@ export async function formatGraphqlWithPrettier(
 export async function formatHtmlWithPrettier(
   source: FormatHtmlWithPrettier,
 ) {
-  const input = FormatHtmlWithPrettierParser().parse(source)
+  const input = FormatHtmlWithPrettierParser.parse(source)
   return await formatCodeWithPrettier({
     ...input,
     format: 'html',
@@ -204,7 +206,7 @@ export async function formatHtmlWithPrettier(
 export async function formatMarkdownWithPrettier(
   source: FormatMarkdownWithPrettier,
 ) {
-  const input = FormatMarkdownWithPrettierParser().parse(source)
+  const input = FormatMarkdownWithPrettierParser.parse(source)
   return await formatCodeWithPrettier({
     ...input,
     format: 'markdown',
@@ -214,7 +216,7 @@ export async function formatMarkdownWithPrettier(
 // export async function formatMeriyahWithPrettier(
 //   source: FormatMeriyahWithPrettier,
 // ) {
-//   const input = FormatMeriyahWithPrettierParser().parse(source)
+//   const input = FormatMeriyahWithPrettierParser.parse(source)
 //   return await formatCodeWithPrettier({
 //     ...input,
 //     format: 'meriyah',
@@ -224,7 +226,7 @@ export async function formatMarkdownWithPrettier(
 // export async function formatPostcssWithPrettier(
 //   source: FormatPostcssWithPrettier,
 // ) {
-//   const input = FormatPostcssWithPrettierParser().parse(source)
+//   const input = FormatPostcssWithPrettierParser.parse(source)
 //   return await formatCodeWithPrettier({
 //     ...input,
 //     format: 'postcss',
@@ -234,7 +236,7 @@ export async function formatMarkdownWithPrettier(
 export async function formatTypescriptWithPrettier(
   source: FormatTypescriptWithPrettier,
 ) {
-  const input = FormatTypescriptWithPrettierParser().parse(source)
+  const input = FormatTypescriptWithPrettierParser.parse(source)
   const config = {
     ...omit(input, ['maxLineLength', 'semiColon', 'indentationSize']),
     printWidth: input.maxLineLength,
@@ -250,7 +252,7 @@ export async function formatTypescriptWithPrettier(
 export async function formatYamlWithPrettier(
   source: FormatYamlWithPrettier,
 ) {
-  const input = FormatYamlWithPrettierParser().parse(source)
+  const input = FormatYamlWithPrettierParser.parse(source)
   return await formatCodeWithPrettier({
     ...input,
     format: 'yaml',
@@ -260,7 +262,7 @@ export async function formatYamlWithPrettier(
 // export async function formatPhpWithPrettier(
 //   source: FormatPhpWithPrettier,
 // ) {
-//   const input = FormatPhpWithPrettierParser().parse(source)
+//   const input = FormatPhpWithPrettierParser.parse(source)
 //   return await formatCodeWithPrettier({
 //     ...input,
 //     format: 'php',
@@ -270,7 +272,7 @@ export async function formatYamlWithPrettier(
 // export async function formatXmlWithPrettier(
 //   source: FormatXmlWithPrettier,
 // ) {
-//   const input = FormatXmlWithPrettierParser().parse(source)
+//   const input = FormatXmlWithPrettierParser.parse(source)
 //   return await formatCodeWithPrettier({
 //     ...input,
 //     format: 'xml',
@@ -280,7 +282,7 @@ export async function formatYamlWithPrettier(
 // export async function formatRubyWithPrettier(
 //   source: FormatRubyWithPrettier,
 // ) {
-//   const input = FormatRubyWithPrettierParser().parse(source)
+//   const input = FormatRubyWithPrettierParser.parse(source)
 //   return await formatCodeWithPrettier({
 //     ...input,
 //     format: 'ruby',
@@ -290,7 +292,7 @@ export async function formatYamlWithPrettier(
 // export async function formatPugWithPrettier(
 //   source: FormatPugWithPrettier,
 // ) {
-//   const input = FormatPugWithPrettierParser().parse(source)
+//   const input = FormatPugWithPrettierParser.parse(source)
 //   return await formatCodeWithPrettier({
 //     ...input,
 //     format: 'pug',
@@ -300,7 +302,7 @@ export async function formatYamlWithPrettier(
 // export async function formatGherkinWithPrettier(
 //   source: FormatGherkinWithPrettier,
 // ) {
-//   const input = FormatGherkinWithPrettierParser().parse(source)
+//   const input = FormatGherkinWithPrettierParser.parse(source)
 //   return await formatCodeWithPrettier({
 //     ...input,
 //     format: 'gherkin',
@@ -310,7 +312,7 @@ export async function formatYamlWithPrettier(
 // export async function formatGlslWithPrettier(
 //   source: FormatGlslWithPrettier,
 // ) {
-//   const input = FormatGlslWithPrettierParser().parse(source)
+//   const input = FormatGlslWithPrettierParser.parse(source)
 //   return await formatCodeWithPrettier({
 //     ...input,
 //     format: 'glsl',
@@ -320,7 +322,7 @@ export async function formatYamlWithPrettier(
 // export async function formatRustWithPrettier(
 //   source: FormatRustWithPrettier,
 // ) {
-//   const input = FormatRustWithPrettierParser().parse(source)
+//   const input = FormatRustWithPrettierParser.parse(source)
 
 //   const config = {
 //     ...omit(input, ['maxLineLength', 'indentationSize']),
@@ -336,7 +338,7 @@ export async function formatYamlWithPrettier(
 // export async function formatJavaWithPrettier(
 //   source: FormatJavaWithPrettier,
 // ) {
-//   const input = FormatJavaWithPrettierParser().parse(source)
+//   const input = FormatJavaWithPrettierParser.parse(source)
 //   return await formatCodeWithPrettier({
 //     ...input,
 //     format: 'java',
@@ -346,7 +348,7 @@ export async function formatYamlWithPrettier(
 // export async function formatShellWithPrettier(
 //   source: FormatShWithPrettier,
 // ) {
-//   const input = FormatShWithPrettierParser().parse(source)
+//   const input = FormatShWithPrettierParser.parse(source)
 //   return await formatCodeWithPrettier({
 //     ...input,
 //     format: 'shell',
@@ -356,7 +358,7 @@ export async function formatYamlWithPrettier(
 // export async function formatKotlinWithPrettier(
 //   source: FormatKotlinWithPrettier,
 // ) {
-//   const input = FormatKotlinWithPrettierParser().parse(source)
+//   const input = FormatKotlinWithPrettierParser.parse(source)
 //   return await formatCodeWithPrettier({
 //     ...input,
 //     format: 'kotlin',
@@ -366,7 +368,7 @@ export async function formatYamlWithPrettier(
 // export async function formatNginxWithPrettier(
 //   source: FormatNginxWithPrettier,
 // ) {
-//   const input = FormatNginxWithPrettierParser().parse(source)
+//   const input = FormatNginxWithPrettierParser.parse(source)
 //   return await formatCodeWithPrettier({
 //     ...input,
 //     format: 'nginx',
@@ -376,7 +378,7 @@ export async function formatYamlWithPrettier(
 // export async function formatTomlWithPrettier(
 //   source: FormatTomlWithPrettier,
 // ) {
-//   const input = FormatTomlWithPrettierParser().parse(source)
+//   const input = FormatTomlWithPrettierParser.parse(source)
 //   return await formatCodeWithPrettier({
 //     ...input,
 //     format: 'toml',

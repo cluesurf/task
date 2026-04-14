@@ -5,9 +5,7 @@ import {
 import {
   ExtractWith7Z,
   ExtractWithUnarchiver,
-} from '~/code/form/shared/index'
-
-// check if corrupted
+} from '~/code/form/action/extract/archive/shared'// check if corrupted
 // zip -T filename.zip
 // 7z t file.zip
 

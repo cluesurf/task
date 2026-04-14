@@ -1,12 +1,14 @@
 import {
   CompileSwiftNodeInput,
-  CompileSwiftNodeInputParser,
-  CompileSwiftNodeLocalInternalInput,
   CompileSwiftNodeLocalExternalInput,
-  CompileSwiftNodeLocalInputParser,
+  CompileSwiftNodeLocalInternalInput,
   CompileSwiftNodeRemoteInput,
+} from '~/code/form/action/compile/code/swift/node'
+import {
   CompileSwiftNodeClientInputParser,
-} from '~/code/form/node/take'
+  CompileSwiftNodeInputParser,
+  CompileSwiftNodeLocalInputParser,
+} from '~/code/form/action/compile/code/swift/node/take'
 import { buildCommandToCompileSwift } from '../command'
 import { runCommandSequence } from '~/code/tool/node/command'
 import {
@@ -23,7 +25,7 @@ export async function compileSwiftNode(
   source: CompileSwiftNodeInput,
   native?: NativeOptions,
 ) {
-  const input = CompileSwiftNodeInputParser().parse(source)
+  const input = CompileSwiftNodeInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -56,7 +58,7 @@ export async function compileSwiftNodeRemote(
   native,
 ) {
   const input = await resolveInputForCompileRemoteNode(source)
-  const clientInput = CompileSwiftNodeClientInputParser().parse(
+  const clientInput = CompileSwiftNodeClientInputParser.parse(
     extend(input, { handle: 'client' }),
   )
 
@@ -74,7 +76,7 @@ export async function compileSwiftNodeLocal(
   input,
   native?: NativeOptions,
 ) {
-  const localInput = CompileSwiftNodeLocalInputParser().parse(input)
+  const localInput = CompileSwiftNodeLocalInputParser.parse(input)
 
   const sequence = await buildCommandToCompileSwift(localInput)
 

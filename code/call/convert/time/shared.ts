@@ -1,7 +1,9 @@
 import {
   ConvertTimeZone,
+} from '~/code/form/action/convert/time-zone'
+import {
   ConvertTimeZoneParser,
-} from '~/code/form/shared/take'
+} from '~/code/form/action/convert/time-zone/take'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
@@ -12,7 +14,7 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 export function convertTimeZone(source: ConvertTimeZone) {
-  const input = ConvertTimeZoneParser().parse(source)
+  const input = ConvertTimeZoneParser.parse(source)
   return dayjs(input.input.date)
     .tz(input.output.timezone)
     .format(input.output.format)
