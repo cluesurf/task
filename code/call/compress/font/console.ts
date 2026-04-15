@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/compress/font/console/options'
 
 export const compressFontConsole = buildActionCommand({
   command: 'font',
   describe: 'Compress a TTF/OTF font to WOFF2',
+  options,
   path: ['compress', 'font'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'compress_font',
   loadHandler: () => import('./node'),
   examples: [
     {

@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/load/environment/console/options'
 
 export const loadEnvironmentConsole = buildActionCommand({
   command: 'environment',
   describe: 'Upsert a KEY=VALUE entry in a .env-style file',
+  options,
   path: ['load', 'environment'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'load_environment',
   loadHandler: () => import('./node'),
   examples: [
     {

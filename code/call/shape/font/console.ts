@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/shape/font/console/options'
 
 export const shapeFontConsole = buildActionCommand({
   command: 'font',
   describe: 'Shape text through a font and print the glyph sequence',
+  options,
   path: ['shape', 'font'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'shape_font',
   loadHandler: () => import('./node'),
   examples: [
     {

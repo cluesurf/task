@@ -1,10 +1,9 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
 
 export const verifyImageConsole = buildActionCommand({
   command: 'image',
   describe: 'Verify an image matches expected content',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'verify_image_command_input',
+  // TODO: form verify_image_command_input missing from MESH — re-link schema
+  options: [],
   loadHandler: () => import('./node'),
 })

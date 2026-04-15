@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/subset/font/console/options'
 
 export const subsetFontConsole = buildActionCommand({
   command: 'font',
   describe: 'Subset a font to a given set of glyphs or codepoints',
+  options,
   path: ['subset', 'font'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'subset_font',
   loadHandler: () => import('./node'),
   examples: [
     {

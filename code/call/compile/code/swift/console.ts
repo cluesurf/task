@@ -1,11 +1,10 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/compile/code/swift/console/options'
 
 export const compileSwiftConsole = buildActionCommand({
   command: 'swift',
   describe: 'Compile Swift source to a binary artifact',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'compile_swift_command_input',
+  options,
   loadHandler: () => import('./node'),
   examples: [
     {

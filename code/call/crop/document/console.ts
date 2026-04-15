@@ -1,11 +1,10 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
 
 export const cropDocumentConsole = buildActionCommand({
   command: 'document',
   describe: 'Crop pages of a document',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'crop_document_command_input',
+  // TODO: form crop_document_command_input missing from MESH — re-link schema
+  options: [],
   loadHandler: () => import('./node'),
   examples: [
     {

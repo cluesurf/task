@@ -1,10 +1,9 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
 
 export const sanitizeCodeConsole = buildActionCommand({
   command: 'code',
   describe: 'Sanitize source code (remove secrets, pii, etc.)',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'sanitize_code_command_input',
+  // TODO: form sanitize_code_command_input missing from MESH — re-link schema
+  options: [],
 
 })

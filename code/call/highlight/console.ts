@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/highlight/console/options'
 
 export const highlightConsole = buildActionCommand({
   command: 'highlight',
   describe: 'Stamp a basic highlight + note on the first page of a PDF',
+  options,
   path: ['highlight'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'highlight',
   loadHandler: () => import('./node'),
   examples: [
     { comment: 'positional form', command: 'task highlight paper.pdf -o paper.marked.pdf --text "important"' },

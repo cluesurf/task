@@ -135,6 +135,144 @@ export function buildZigFmtCommand(o: FormatOptions): FormatCommand {
   return { bin: 'zig', args, install: INSTALL.zig }
 }
 
+// ---- Batch 2: Lua, BEAM, Nix, Terraform, Scala, Clojure, PHP,
+// Perl, Elm, PureScript, Nim, Crystal, D, V, TOML. Priority:
+// active ecosystems with a de facto formatter. Historical
+// languages (Fortran/Ada/R/Julia/CMake/Dafny/Racket/emacs-lisp/
+// Groovy/Proto3) live in a later batch.
+
+export function buildStyluaCommand(o: FormatOptions): FormatCommand {
+  // stylua rewrites in place by default. --check runs dry;
+  // non-zero exit when diffs would be produced.
+  const args: string[] = []
+  if (o.write === false) args.push('--check')
+  if (o.configFile) args.push('--config-path', o.configFile)
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'stylua', args, install: 'brew install stylua / cargo install stylua' }
+}
+
+export function buildMixFormatCommand(o: FormatOptions): FormatCommand {
+  const args = ['format']
+  if (o.write === false) args.push('--check-formatted')
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'mix', args, install: 'brew install elixir / apt install elixir' }
+}
+
+export function buildErlfmtCommand(o: FormatOptions): FormatCommand {
+  const args: string[] = []
+  if (o.write !== false) args.push('--write')
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'erlfmt', args, install: 'rebar3 escriptize github.com/WhatsApp/erlfmt' }
+}
+
+export function buildGleamFormatCommand(o: FormatOptions): FormatCommand {
+  const args = ['format']
+  if (o.write === false) args.push('--check')
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'gleam', args, install: 'brew install gleam' }
+}
+
+export function buildNixFmtCommand(o: FormatOptions): FormatCommand {
+  const args: string[] = []
+  if (o.write === false) args.push('--check')
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'nixpkgs-fmt', args, install: 'nix-env -iA nixpkgs.nixpkgs-fmt' }
+}
+
+export function buildTerraformFmtCommand(o: FormatOptions): FormatCommand {
+  // `terraform fmt` rewrites in place by default. `-check` = dry run.
+  const args = ['fmt']
+  if (o.write === false) args.push('-check')
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'terraform', args, install: 'brew install terraform (or tfenv)' }
+}
+
+export function buildScalafmtCommand(o: FormatOptions): FormatCommand {
+  const args: string[] = []
+  if (o.write === false) args.push('--test')
+  if (o.configFile) args.push('--config', o.configFile)
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'scalafmt', args, install: 'brew install scalafmt / coursier install scalafmt' }
+}
+
+export function buildCljfmtCommand(o: FormatOptions): FormatCommand {
+  // cljfmt has `fix` (write) and `check` (dry-run) subcommands.
+  const args = [o.write === false ? 'check' : 'fix']
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'cljfmt', args, install: 'brew install cljfmt or lein plugin' }
+}
+
+export function buildPhpCsFixerCommand(o: FormatOptions): FormatCommand {
+  const args = ['fix']
+  if (o.write === false) args.push('--dry-run')
+  if (o.configFile) args.push('--config', o.configFile)
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'php-cs-fixer', args, install: 'brew install php-cs-fixer (already in Dockerfile + Cask)' }
+}
+
+export function buildPerltidyCommand(o: FormatOptions): FormatCommand {
+  // perltidy -b rewrites in place (keeping a .bak sibling). Without
+  // -b it emits to stdout (or a .tdy sibling per profile).
+  const args: string[] = []
+  if (o.write !== false) args.push('-b')
+  if (o.configFile) args.push('-pro', o.configFile)
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'perltidy', args, install: 'brew install perltidy (already in Dockerfile)' }
+}
+
+export function buildElmFormatCommand(o: FormatOptions): FormatCommand {
+  const args: string[] = []
+  if (o.write === false) args.push('--validate')
+  else args.push('--yes')
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'elm-format', args, install: 'brew install elm-format / npm install -g elm-format' }
+}
+
+export function buildPursTidyCommand(o: FormatOptions): FormatCommand {
+  const args = [o.write === false ? 'format' : 'format-in-place']
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'purs-tidy', args, install: 'npm install -g purs-tidy' }
+}
+
+export function buildNimprettyCommand(o: FormatOptions): FormatCommand {
+  // nimpretty is always in place. For dry-run we redirect to
+  // stdout via `-o:/dev/stdout`.
+  const args: string[] = []
+  if (o.write === false) args.push('-o:/dev/stdout')
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'nimpretty', args, install: 'ships with nim' }
+}
+
+export function buildCrystalFormatCommand(o: FormatOptions): FormatCommand {
+  const args = ['tool', 'format']
+  if (o.write === false) args.push('--check')
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'crystal', args, install: 'brew install crystal' }
+}
+
+export function buildDfmtCommand(o: FormatOptions): FormatCommand {
+  const args: string[] = []
+  if (o.write !== false) args.push('--inplace')
+  if (o.configFile) args.push('--config', o.configFile)
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'dfmt', args, install: 'brew install dmd (dfmt ships with it)' }
+}
+
+export function buildVFmtCommand(o: FormatOptions): FormatCommand {
+  const args = ['fmt']
+  if (o.write !== false) args.push('-w')
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'v', args, install: 'https://github.com/vlang/v' }
+}
+
+export function buildTaploCommand(o: FormatOptions): FormatCommand {
+  const args = ['format']
+  if (o.write === false) args.push('--check')
+  if (o.configFile) args.push('--config', o.configFile)
+  args.push(...(o.extra ?? []), o.input)
+  return { bin: 'taplo', args, install: 'brew install taplo / cargo install taplo-cli' }
+}
+
 export function buildClangTidyCommand(o: FormatOptions): FormatCommand {
   // clang-tidy is a linter that can apply suggested fixes with --fix.
   // Treated here as a "format-ish pass" — reorders includes,

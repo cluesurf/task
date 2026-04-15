@@ -1,11 +1,10 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/pad/console/options'
 
 export const padConsole = buildActionCommand({
   command: 'pad',
   describe: 'Pad an audio file with trailing silence to a target duration',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'pad',
+  options,
   loadHandler: () => import('./node'),
   examples: [
     {

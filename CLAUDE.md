@@ -191,6 +191,10 @@ every concrete sub-thing of that action.
 
 ## Principles
 
+- **Never use self-executing functions (IIFEs).** Don't write
+  `const x = (() => { ... })()`. Pull the logic into a named
+  helper function declared elsewhere in the file. IIFEs are
+  noisy at the call site and harder to test or re-use.
 - **All functions take a single object input.** Every function in
   this package — routers, handlers, helpers, utilities — accepts
   exactly one argument: a plain object with named properties. No

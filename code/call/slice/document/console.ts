@@ -1,10 +1,9 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
 
 export const sliceDocumentConsole = buildActionCommand({
   command: 'document',
   describe: 'Slice pages out of a document',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'slice_document_command_input',
+  // TODO: form slice_document_command_input missing from MESH — re-link schema
+  options: [],
   loadHandler: () => import('./node'),
 })

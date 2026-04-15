@@ -8,17 +8,11 @@
  */
 
 import type { CommandModule } from 'yargs'
-import * as MESH from '~/code/base'
 import {
-  collectCliOptions,
   applyFormOptions,
   unpackFormArgv,
-} from '~/code/tool/shared/cli'
-
-const options = collectCliOptions(
-  MESH as any,
-  (MESH as any).convert_data_command_input,
-)
+} from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/convert/data/console/options'
 
 export const convertDataConsole: CommandModule = {
   command: 'data',

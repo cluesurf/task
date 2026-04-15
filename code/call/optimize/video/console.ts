@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/optimize/video/console/options'
 
 export const optimizeVideoConsole = buildActionCommand({
   command: 'video',
   describe: 'Re-encode a video for web delivery (h264 + faststart by default)',
+  options,
   path: ['optimize', 'video'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'optimize_video',
   loadHandler: () => import('./node'),
   examples: [
     {

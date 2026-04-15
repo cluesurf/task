@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/compress/image/console/options'
 
 export const compressImageConsole = buildActionCommand({
   command: 'image',
   describe: 'Compress an image with ImageMagick at a given quality',
+  options,
   path: ['compress', 'image'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'compress_image',
   loadHandler: () => import('./node'),
   examples: [
     { comment: 'compress to 80% quality in place', command: 'task compress image -i photo.jpg --quality 80' },

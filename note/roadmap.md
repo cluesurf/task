@@ -10,6 +10,103 @@ Pull requests welcome.
 
 ---
 
+## 10x Bang-for-Buck Priority
+
+**If you can only ship ten things over the next month, these
+are the ten that pay back the most daily.** Everything below
+exists somewhere in the larger roadmap; this section is
+priority ordering, not new scope.
+
+See `note/idea/zero-config-build-runner-roadmap.md` in the
+parent note tree for the full rationale and the per-tool
+"what you learn" framing.
+
+### Top 10, ordered
+
+1. **`task query sql` via DuckDB** — analytical SQL on CSV /
+   Parquet / JSON becomes a one-liner. Biggest single-tool
+   data-skill multiplier.
+2. **`task find ast` via ast-grep** — syntactic search beats
+   text grep once you taste it. Also unlocks
+   `task refactor rename` (see below).
+3. **`task log follow` + `task log grep`** via `lnav` / `rg` /
+   `jq`. Ends "where did my log go" for good. Composes
+   with `task highlight log` already shipped.
+4. **`task inspect process` + `task inspect port`** via
+   `ps` / `lsof` / `ss`. Ends "why is this port busy."
+5. **`task trace process` via strace / dtruss / procmon**.
+   Levels debugging from "guess" to "answer." Per-OS
+   backend subdir: `trace/process/{strace,dtruss,procmon}/`.
+6. **`task profile cpu` via `samply` / `0x` / `clinic`**.
+   Replaces print-timing with real flamegraphs.
+7. **`task fetch http` + `task inspect dns` + `task inspect
+   tls`** via curl / dig / `openssl s_client`. Network
+   literacy in one afternoon.
+8. **`task git bisect auto`** — regression finder that feels
+   like cheating. Ten lines over `git bisect run <cmd>`.
+9. **`task watch file` via `fswatch` / `entr`**. Re-run on
+   change is the core dev loop. Composes with every other
+   command.
+10. **`task scan env` via `gitleaks` / `trufflehog`**. Catches
+    the one leak that would otherwise ruin your week.
+
+### Gaps this section surfaces
+
+These are not yet in the existing sections below, or only
+exist under a different name:
+
+- **`task query sql` (CLI, duckdb)** — the browser roadmap
+  mentions DuckDB-WASM but the CLI verb does not exist yet.
+  Matters more for the CLI: `task query sql --from *.jsonl`
+  replaces a lot of ad-hoc Python.
+- **`task query jq` / `task query yq`** — thin wrappers that
+  pre-load the project's data conventions (field renames,
+  date parsing). Not just `jq`-with-a-different-name.
+- **`task find ast`** — per-language ast-grep wrapper.
+  Currently `detect` has `dead-code` and similar, but a
+  general "syntactic grep" verb is missing.
+- **`task refactor rename <old> <new>`** — ast-grep-backed,
+  lands on top of `task find ast`. Project-wide type-safe
+  rename in one command.
+- **`task inspect binary`** — `nm` / `objdump` / `otool -L` /
+  `readelf`. Covered partially under lint / disassemble.
+  Worth a first-class home under `inspect/binary/<tool>/`.
+- **`task compare bench`** — A/B two `hyperfine --export-json`
+  runs and print the percentile deltas. Benchmarking is
+  in the roadmap but the diff verb is not.
+- **`task measure startup`** — hyperfine wrap specifically
+  for cold-start time, one of the rarely-tracked metrics.
+
+### Wrap-before-memorize loop
+
+Adding to `task` is also the fastest way to internalize a
+tool you don't know yet:
+
+1. Find a tool you need but don't fully understand
+   (`strace`, `dig`, `jq`, `duckdb`, `gh`, `ast-grep`).
+2. Wrap its most-used invocation as
+   `code/call/<verb>/<thing>/` with a typed `console.ts`.
+3. Use the wrapper daily for two weeks.
+4. Unwrap if you want — the skill is yours.
+
+This is the **opposite** of aliasing. The wrapper forces
+you to name the verbs, type the flags, and write docs.
+After a year of this you'll have covered the tool hit-list
+of a much more senior engineer without ever sitting down
+to "learn" them.
+
+### Placement discipline
+
+Every verb above follows the repo convention:
+`code/call/<verb>/<thing>/` with per-backend subdirs
+(`trace/process/{strace,dtruss,procmon}`, `find/ast/<tool>`,
+`query/sql/{duckdb,sqlite}`) when multiple tools implement
+the same verb. `console.ts` (not `cli`). Four-branch
+dispatch in `node.ts`. See `CLAUDE.md` for the full
+checklist.
+
+---
+
 ## Existing actions — what's still open
 
 Done items are folded into the action table at the top of

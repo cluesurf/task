@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/check/file/console/options'
 
 export const checkFileConsole = buildActionCommand({
   command: 'file',
   describe: 'Check properties of a file (existence, integrity, etc.)',
-  mesh: MESH as unknown as Record<string, unknown>,
+  options,
   path: ['check', 'file'],
-  formName: 'check_file_type_using_magic_bytes',
   loadHandler: () => import('./node'),
   examples: [
     {

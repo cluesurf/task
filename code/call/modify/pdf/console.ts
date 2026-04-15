@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
 
 export const modifyPdfConsole = buildActionCommand({
   command: 'pdf',
   describe: 'Reorder or remove pages from a PDF',
+  // TODO: form modify_pdf missing from MESH — re-link schema
+  options: [],
   path: ['modify', 'pdf'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'modify_pdf',
   loadHandler: () => import('./node'),
   examples: [
     {

@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/set/metadata/console/options'
 
 export const setMetadataConsole = buildActionCommand({
   command: 'metadata',
   describe: 'Embed ID3 / container metadata into an audio file',
+  options,
   path: ['set', 'metadata'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'set_metadata',
   loadHandler: () => import('./node'),
   examples: [
     {

@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/render/font/console/options'
 
 export const renderFontConsole = buildActionCommand({
   command: 'font',
   describe: 'Render a text sample through a font to an image',
+  options,
   path: ['render', 'font'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'render_font',
   loadHandler: () => import('./node'),
   examples: [
     {

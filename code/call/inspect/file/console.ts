@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/inspect/file/console/options'
 
 export const inspectFileConsole = buildActionCommand({
   command: 'file',
   describe: 'Inspect a file and print a key/value table of its metadata',
+  options,
   path: ['inspect', 'file'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'inspect_file',
   loadHandler: () => import('./node'),
   examples: [
     {

@@ -1,4 +1,4 @@
-import { buildProjectVerbConsole } from '~/code/call/project/shared'
+import { buildProjectVerbConsole } from '~/code/tool/node/project-verb'
 export const installCodeConsole = buildProjectVerbConsole({
   verb: 'install',
   describe: 'Install project dependencies (pnpm install / cargo / pip / bundle / ...)',

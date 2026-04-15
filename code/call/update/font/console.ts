@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/update/font/console/options'
 
 export const updateFontConsole = buildActionCommand({
   command: 'font',
   describe: 'Compile a .fea file into a font\'s GSUB/GPOS tables',
+  options,
   path: ['update', 'font'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'update_font',
   loadHandler: () => import('./node'),
   examples: [
     {

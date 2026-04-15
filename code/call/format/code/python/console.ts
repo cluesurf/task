@@ -1,10 +1,9 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/format/code/console/options'
 
 export const formatPythonConsole = buildActionCommand({
   command: 'python',
   describe: 'Format Python source',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'format_python_command_input',
+  options,
   loadHandler: () => import('./node'),
 })

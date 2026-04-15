@@ -1,11 +1,10 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/convert/shared/console/options'
 
 export const convertFontConsole = buildActionCommand({
   command: 'font',
   describe: 'Convert between font formats',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'convert_command_input',
+  options,
   loadHandler: () => import('~/code/call/convert/node'),
   path: ['convert', 'font'],
   examples: [

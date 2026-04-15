@@ -1,4 +1,4 @@
-import { buildProjectVerbConsole } from '~/code/call/project/shared'
+import { buildProjectVerbConsole } from '~/code/tool/node/project-verb'
 export const lintCodeConsole = buildProjectVerbConsole({
   verb: 'lint',
   describe: 'Lint the project (eslint / clippy / golangci-lint / ruff / ...)',

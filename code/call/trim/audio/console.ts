@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/trim/audio/console/options'
 
 export const trimAudioConsole = buildActionCommand({
   command: 'audio',
   describe: 'Cut a range out of an audio file',
+  options,
   path: ['trim', 'audio'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'trim_audio',
   loadHandler: () => import('./node'),
   examples: [
     { comment: '10s–30s slice', command: 'task trim audio -i in.mp3 -o out.mp3 --start 10 --end 30' },

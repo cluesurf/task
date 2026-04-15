@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/update/image/console/options'
 
 export const updateImageConsole = buildActionCommand({
   command: 'image',
   describe: 'Apply quick color / tonal tweaks to an image (grayscale, brightness, ...)',
+  options,
   path: ['update', 'image'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'update_image',
   loadHandler: () => import('./node'),
   examples: [
     { comment: 'in-place grayscale', command: 'task update image photo.png --grayscale' },

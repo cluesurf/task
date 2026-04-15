@@ -1,11 +1,10 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
 
 export const splitConsole = buildActionCommand({
   command: 'split',
   describe: 'Extract a subset of a PDF\'s pages into a new file',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'split',
+  // TODO: form split missing from MESH — re-link schema
+  options: [],
   loadHandler: () => import('./node'),
   examples: [
     {

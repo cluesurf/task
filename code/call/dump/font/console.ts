@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/dump/font/console/options'
 
 export const dumpFontConsole = buildActionCommand({
   command: 'font',
   describe: 'Round-trip a font between binary and TTX (XML)',
+  options,
   path: ['dump', 'font'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'dump_font',
   loadHandler: () => import('./node'),
   examples: [
     {

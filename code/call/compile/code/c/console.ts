@@ -1,11 +1,10 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/compile/code/c/console/options'
 
 export const compileCConsole = buildActionCommand({
   command: 'c',
   describe: 'Compile C source to a binary artifact',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'compile_c_command_input',
+  options,
   loadHandler: () => import('./node'),
   examples: [
     {

@@ -1,11 +1,10 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/compile/code/wast/console/options'
 
 export const compileWastConsole = buildActionCommand({
   command: 'wast',
   describe: 'Compile WebAssembly text (wast) to wasm',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'compile_wast_command_input',
+  options,
   examples: [
     {
       comment: 'compile WebAssembly text to a wasm binary',

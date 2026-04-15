@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
 
 export const getDurationConsole = buildActionCommand({
   command: 'duration',
   describe: 'Read the duration of an audio or video file via ffprobe',
+  // TODO: form get_duration missing from MESH — re-link schema
+  options: [],
   path: ['get', 'duration'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'get_duration',
   loadHandler: () => import('./node'),
   examples: [
     {

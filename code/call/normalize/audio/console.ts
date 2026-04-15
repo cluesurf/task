@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/normalize/audio/console/options'
 
 export const normalizeAudioConsole = buildActionCommand({
   command: 'audio',
   describe: 'Loudness-normalize an audio file (EBU R128)',
+  options,
   path: ['normalize', 'audio'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'normalize_audio',
   loadHandler: () => import('./node'),
   examples: [
     { comment: 'bring a track to standard broadcast loudness', command: 'task normalize audio -i raw.mp3 -o normalized.mp3' },

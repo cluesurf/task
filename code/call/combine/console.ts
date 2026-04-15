@@ -1,11 +1,10 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/combine/console/options'
 
 export const combineConsole = buildActionCommand({
   command: 'combine',
   describe: 'Combine a still image and audio track into a video',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'combine',
+  options,
   loadHandler: () => import('./node'),
   examples: [
     {

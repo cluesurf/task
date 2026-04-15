@@ -8,17 +8,11 @@
  */
 
 import type { CommandModule } from 'yargs'
-import * as MESH from '~/code/base'
 import {
-  collectCliOptions,
   applyFormOptions,
   unpackFormArgv,
-} from '~/code/tool/shared/cli'
-
-const options = collectCliOptions(
-  MESH as any,
-  (MESH as any).download_hugging_face_command_input,
-)
+} from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/download/hugging-face/console/options'
 
 export const downloadHuggingFaceConsole: CommandModule = {
   command: 'hugging-face',

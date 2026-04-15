@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/convert/archive/console/options'
 
 export const convertArchiveConsole = buildActionCommand({
   command: 'archive',
   describe: 'Convert between archive formats (zip, tar, 7z, ...)',
+  options,
   path: ['convert', 'archive'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'convert_archive_command_input',
   loadHandler: () => import('./node'),
   examples: [
     {

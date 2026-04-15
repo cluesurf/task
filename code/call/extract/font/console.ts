@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/extract/font/console/options'
 
 export const extractFontConsole = buildActionCommand({
   command: 'font',
   describe: 'Extract TTX (full) or GSUB/GPOS-only source from a font',
+  options,
   path: ['extract', 'font'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'extract_font',
   loadHandler: () => import('./node'),
   examples: [
     {

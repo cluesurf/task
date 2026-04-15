@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/remove/metadata/console/options'
 
 export const removeMetadataConsole = buildActionCommand({
   command: 'metadata',
   describe: 'Strip metadata (EXIF / XMP / ID3) from a file',
+  options,
   path: ['remove', 'metadata'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'remove_metadata',
   loadHandler: () => import('./node'),
   examples: [
     { comment: 'in-place strip', command: 'task remove metadata photo.jpg' },

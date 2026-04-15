@@ -1,6 +1,6 @@
 import type { CommandModule } from 'yargs'
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
+import { options } from '~/code/form/action/archive/console/options'
 
 /**
  * Single-level action: `task archive <input>` bundles paths
@@ -10,8 +10,7 @@ import { buildActionCommand } from '~/code/tool/shared/cli'
 export const archiveConsole: CommandModule = buildActionCommand({
   command: 'archive',
   describe: 'Create an archive from one or more inputs',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'archive',
+  options,
   loadHandler: () => import('./node'),
   examples: [
     {

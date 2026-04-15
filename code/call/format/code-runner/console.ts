@@ -1,4 +1,4 @@
-import { buildProjectVerbConsole } from '~/code/call/project/shared'
+import { buildProjectVerbConsole } from '~/code/tool/node/project-verb'
 // `task format code` — project-wide formatter (rustfmt / prettier
 // / gofmt -w . / etc). The existing per-language `task format
 // python|rust|...` commands stay; this is the zero-config sibling

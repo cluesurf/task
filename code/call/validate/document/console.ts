@@ -1,10 +1,9 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
 
 export const validateDocumentConsole = buildActionCommand({
   command: 'document',
   describe: 'Validate a document against a schema or standard',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'validate_document_command_input',
+  // TODO: form validate_document_command_input missing from MESH — re-link schema
+  options: [],
 
 })

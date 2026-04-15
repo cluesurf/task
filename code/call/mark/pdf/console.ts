@@ -1,12 +1,11 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
 
 export const markPdfConsole = buildActionCommand({
   command: 'pdf',
   describe: 'Add a basic highlight stamp to a PDF',
+  // TODO: form mark_pdf missing from MESH — re-link schema
+  options: [],
   path: ['mark', 'pdf'],
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'mark_pdf',
   loadHandler: () => import('./node'),
   examples: [
     {

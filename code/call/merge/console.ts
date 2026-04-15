@@ -1,11 +1,10 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
 
 export const mergeConsole = buildActionCommand({
   command: 'merge',
   describe: 'Concatenate multiple PDFs into one',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'merge',
+  // TODO: form merge missing from MESH — re-link schema
+  options: [],
   loadHandler: () => import('./node'),
   examples: [
     {

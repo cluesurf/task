@@ -1,10 +1,9 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
 
 export const resizeImageConsole = buildActionCommand({
   command: 'image',
   describe: 'Resize an image',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'resize_image_command_input',
+  // TODO: form resize_image_command_input missing from MESH — re-link schema
+  options: [],
 
 })

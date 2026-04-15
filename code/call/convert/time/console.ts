@@ -1,11 +1,10 @@
-import * as MESH from '~/code/base'
-import { buildActionCommand } from '~/code/tool/shared/cli'
+import { buildActionCommand } from '~/code/tool/shared/console'
 
 export const convertTimeConsole = buildActionCommand({
   command: 'time',
   describe: 'Convert between time zones and date formats',
-  mesh: MESH as unknown as Record<string, unknown>,
-  formName: 'convert_time_command_input',
+  // TODO: form convert_time_command_input missing from MESH — re-link schema
+  options: [],
   examples: [
     {
       comment: 'convert a UTC timestamp to a local zone',
