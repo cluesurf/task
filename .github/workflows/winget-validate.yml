@@ -1,0 +1,103 @@
+# Validates the winget manifests on a Windows runner, so the
+# microsoft/winget-pkgs PR checklist can be truthfully ticked:
+#
+#   - winget validate --manifest <path>
+#   - winget install  --manifest <path>   (opt-in, via workflow_dispatch)
+#
+# Only runs when the winget manifest source changes — the
+# `paths` filter below keeps this off the hot path for the
+# rest of the cluesurf/task repo.
+
+name: Winget Validate
+
+on:
+  push:
+    paths:
+      - 'make/deck/windows/winget/**'
+      - 'make/deck/with-env.sh'
+      - 'package.json'
+      - '.github/workflows/winget-validate.yml'
+  pull_request:
+    paths:
+      - 'make/deck/windows/winget/**'
+      - 'make/deck/with-env.sh'
+      - 'package.json'
+      - '.github/workflows/winget-validate.yml'
+  workflow_dispatch:
+    inputs:
+      run_install:
+        description: 'Also run `winget install --manifest` (mutates runner state)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+jobs:
+  validate:
+    # Windows Server 2022 ships winget preinstalled on the hosted
+    # runner (see https://github.com/actions/runner-images).
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.10.x
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        shell: bash
+        run: pnpm install --frozen-lockfile
+
+      # Regenerate `dist/manifests/` from the current templates
+      # and package.json version so we validate what would
+      # actually ship, not a possibly-stale committed copy.
+      - name: Render manifests
+        shell: bash
+        run: pnpm make:pkg:windows
+
+      # `check.sh` on a Windows runner runs all three tiers:
+      #   1. files present for current version
+      #   2. ManifestVersion matches schema (1.12.0 by default)
+      #   3. `winget validate --manifest <path>`
+      - name: Validate (schema + winget CLI)
+        shell: bash
+        run: pnpm check:pkg:winget
+
+      # Opt-in via workflow_dispatch. `winget install` mutates
+      # the runner's machine state — safe because each GH runner
+      # is ephemeral, but gated so regular push builds stay fast.
+      - name: Test install
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_install == 'true' }}
+        shell: bash
+        env:
+          CHECK_WINGET_INSTALL: '1'
+        run: pnpm check:pkg:winget
+
+      # Surface the validated manifest path + version in the
+      # workflow summary so the PR author can paste it into the
+      # upstream winget-pkgs PR body.
+      - name: Summary
+        if: always()
+        shell: bash
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          {
+            echo "### Winget manifest validation"
+            echo ""
+            echo "- **Version:** \`$version\`"
+            echo "- **Path:** \`make/deck/windows/winget/dist/manifests/c/ClueSurf/Task/$version\`"
+            echo "- **Schema:** \`${WINGET_SCHEMA_VERSION:-1.12.0}\`"
+            echo "- **Runner:** \`${{ runner.os }}\`"
+            echo ""
+            echo "PR-checklist line: \`winget validate --manifest <path>\` passed on CI."
+          } >> "$GITHUB_STEP_SUMMARY"
