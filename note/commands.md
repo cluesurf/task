@@ -69,6 +69,29 @@ task compile mod.wat     -o mod.wasm
 
 # or explicit language
 task compile c     -i hello.c -o hello
+
+# every other compile target (full list: `task compile --help`)
+task compile go            main.go        -o app
+task compile kotlin-jvm    Main.kt        -o app.jar
+task compile kotlin-native Main.kt        -o app
+task compile zig           main.zig       -o app
+task compile haskell       Main.hs        -o app
+task compile ocaml         main.ml        -o app
+task compile dart          bin/main.dart  -o app
+task compile nim           main.nim       -o app
+task compile crystal       main.cr        -o app
+task compile v             main.v         -o app
+task compile tsc           src/index.ts                       # type-check only
+
+# wasm targets
+task compile wasm-emcc     main.c         -o main.wasm        # emscripten
+task compile wasm-wasi     main.c         -o main.wasm        # clang + WASI
+task compile wasm-pack     ./crate                            # rust → wasm-pack
+
+# llvm pipeline (c / cpp / rust / swift accept --emit ir|asm|object|exe)
+task compile c             main.c         --emit ir           # → main.ll
+task compile llvm-opt      main.ll        -O 3                # optimized IR
+task compile llvm-llc      main.ll        -o main.s           # lowered to asm
 ```
 
 ## Compress
@@ -78,6 +101,35 @@ task compress etch.ttf                  # → font, writes sibling .woff2
 task compress photo.jpg -o small.jpg -q 50
 task compress song.wav  -o song.mp3  -b 128k
 task compress clip.mov  -o clip.mp4  --crf 28
+```
+
+## Container
+
+```sh
+# build — auto picks docker build (Dockerfile present) or buildpacks
+task container build -t myapp:latest
+task container build -t myapp:1.0 --buildpacks --builder paketobuildpacks/builder-jammy-base
+task container build -t myapp:1.0 --platform linux/amd64,linux/arm64 --push
+
+# scan — trivy by default, grype available
+task container scan myapp:latest
+task container scan myapp:latest --severity critical
+task container scan myapp:1.0 --format sarif -o trivy.sarif
+task container scan myapp:latest --tool grype
+
+# size — layer-by-layer breakdown via dive
+task container size myapp:latest                          # interactive TUI
+task container size myapp:1.0 --ci --highest-wasted 5     # CI gate
+
+# shell — throwaway container
+task container shell alpine:latest                        # auto bash → sh
+task container shell node:24 --mount-cwd /work -w /work
+task container shell debian:stable --shell bash --user root
+
+# clean — prune with disk-reclaim report
+task container clean                                      # gentle
+task container clean --all                                # also tagged unused
+task container clean --all --volumes                      # nuclear
 ```
 
 ## Convert
@@ -206,11 +258,35 @@ task flip photo.png -o flipped.png  --vertical
 ## Format
 
 ```sh
+# extension-inferred (any language listed below works as a positional too)
 task format main.s
 task format main.c
 task format main.py
 task format main.rs
 task format Main.swift
+
+# explicit language (full list: `task format --help`)
+task format go        main.go                                # gofmt -s -w
+task format java      Main.java                              # google-java-format
+task format shell     deploy.sh                              # shfmt
+task format sql       query.sql                              # sql-formatter
+task format dart      bin/main.dart                          # dart format
+task format haskell   Main.hs                                # ormolu
+task format ocaml     main.ml                                # ocamlformat
+task format zig       main.zig                               # zig fmt
+task format clang-tidy main.cpp                              # apply clang-tidy fixes
+
+# markup formatters (prettier-fronted)
+task format html      index.html
+task format css       styles.css
+task format js        src/index.js
+task format ts        src/index.ts
+task format yaml      ci.yml
+task format json      package.json
+task format markdown  README.md
+
+# stdout / check mode (don't write back; non-zero exit on diff)
+task format ts src/index.ts --check
 ```
 
 ## Generate
@@ -273,6 +349,14 @@ task inspect unicode  text.txt                    # codepoint table
 task inspect process 1234
 task inspect process 1234 -s children,port,file
 task inspect network                              # summary
+task inspect network --connections                # every open socket + owning process
+task inspect network --listening                  # only LISTEN sockets (servers on this box)
+task inspect network --established                # only ESTABLISHED sockets (live traffic)
+task inspect network --remote                     # remote endpoints only
+task inspect network --remote --group ip          # grouped by remote IP
+task inspect network --remote --group domain      # reverse-DNS grouped by domain
+task inspect network --connections --filter "*chrome*"  # glob match on process name
+task inspect network --remote --group domain --watch    # live view, refreshes every 2s
 task inspect network example.com -s dns:A,MX,TXT
 task inspect system
 task inspect system -s memory,disk
@@ -366,6 +450,16 @@ task pad tone.wav  -o tone.padded.wav  --to 12.5
 task parse code -i snippet.ts -o snippet.ast.json
 task parse log  nginx.log -f json
 task parse log  app.log   -f yaml
+
+# HTML — tables / links / images / text from a URL or file
+task parse html https://en.wikipedia.org/wiki/List_of_largest_companies
+task parse html ./page.html --table 0                          # pick by index
+task parse html ./page.html --table "#pricing"                  # by selector
+task parse html ./page.html --match price                       # filter
+task parse html ./page.html -f csv -o tables.csv
+task parse html https://example.com --links --images
+task parse html https://app.example.com --render                # JS-rendered (puppeteer)
+task parse html https://app.example.com --render --engine playwright --wait-for "table.results"
 ```
 
 ## Ping
@@ -432,11 +526,133 @@ task rotate clip.mp4  -o rotated.mp4 -d 270
 task sanitize code -i notebook.py -o notebook.clean.py
 ```
 
+## Record
+
+```sh
+task record screen   -o demo.mp4                       # mp4 until Ctrl-C
+task record screen   -o demo.gif -t 15 -r 15           # 15s gif
+task record terminal -o demo.cast                      # asciinema rec
+task record terminal -o build.cast -c "pnpm make"      # capture one cmd
+```
+
+## Replay
+
+```sh
+task replay demo.cast                                  # play in terminal
+task replay demo.cast -s 2                             # 2x speed
+task replay demo.cast -o demo.gif                      # render gif
+task replay demo.cast -o demo.mp4                      # render mp4
+```
+
+## Configure
+
+```sh
+task configure machine                                 # dev preset (default)
+task configure machine --preset min                    # minimal
+task configure machine --from ./my-machine.yml         # custom manifest
+task configure machine --dry-run                       # preview only
+task configure machine --skip vscode --skip git        # skip stages
+```
+
 ## Scan
 
 ```sh
-task scan ssh github.com              # ssh-keyscan
+# CVE / SBOM / secrets / network — all behind one verb
+task scan image      myapp:latest --severity critical
+task scan filesystem .                                  # source + lockfiles
+task scan host                                          # local OS packages
+task scan secrets    .                                  # gitleaks
+task scan sbom       myapp:latest --format cyclonedx -o sbom.json
+task scan network    192.168.1.0/24                     # home LAN
+task scan network    192.168.1.10 -p 22,80,443
+task scan network    10.0.0.5 --scan-type vuln          # NSE vuln scripts
+
+# SSH host-key fingerprint
+task scan ssh github.com
 task scan ssh github.com -t ed25519
+```
+
+## Project (zero-config runner)
+
+Two shapes — both call the same backend.
+
+**Canonical: `task <verb> code`** (preferred):
+
+```sh
+task build code                             # pnpm build / cargo build / go build / ...
+task test code                              # pnpm test  / cargo test  / go test  / ...
+task run code                               # pnpm dev   / cargo run   / go run . / ...
+task lint code
+task format code
+task install code
+task clean code
+```
+
+**Single-file mode: `task build <file>`** (extension → compiler):
+
+```sh
+task build foo.c            # → clang  → foo
+task build foo.rs           # → rustc  → foo
+task build foo.go           # → go build → foo
+task build foo.hs           # → ghc    → foo
+task build foo.v            # → coqc   → foo (Coq vernacular)
+task build main.bend        # → bend gen-cu
+task build foo.txt -l c     # force a language when the extension is wrong
+task build foo.c -o out     # custom output path
+```
+
+**Legacy alias: `task project <verb>`** (still works, identical to `task <verb> code`):
+
+```sh
+task project build
+task project test
+task project call "cargo bench --release"   # escape hatch — arbitrary cmd
+```
+
+**Common knobs** (work on either shape):
+
+```sh
+task build code --dry-run                   # show resolved command, don't run
+task build code --explain                   # print before running
+task build code -e cargo                    # force an ecosystem (polyglot repo)
+```
+
+Override per-repo via `.taskrc`:
+
+```yaml
+# .taskrc
+build: cargo build --release
+test:  cargo test --all-features
+```
+
+Detected ecosystems (71 total): pnpm / bun / npm / cargo / go /
+uv / poetry / pdm / hatch / pipenv / conda / pip / maven / gradle /
+sbt / mill / scala-cli / clojure / leiningen / dotnet / stack /
+cabal / dune / elm / spago / swift-pm / flutter / dart / rails /
+bundler / laravel / composer / mix / phoenix / gleam / rebar3 /
+zig / nim / dub / v / bazel / buck2 / pants / cmake / meson /
+autotools / ninja / hugo / jekyll / mdbook / mkdocs / docker / make …
+
+## Scout
+
+```sh
+# domain availability (existing)
+task scout domain "my-app"
+
+# username availability across ~30 platforms (new)
+task scout username foobar                                      # every platform
+task scout username foobar -p github,gitlab,npm                 # comma list
+task scout username foobar -p github -p twitter                 # repeated flag
+task scout username foobar -p pypi,dockerhub,crates,rubygems
+task scout username foobar -p twitter,instagram,facebook,linkedin
+task scout username foobar -p reddit,youtube,tiktok,twitch,kick
+task scout username foobar -p medium,substack,devto,hashnode
+task scout username foobar -p discord,telegram
+task scout username foobar -p behance,dribbble,figma,notion
+
+# machine-readable
+task scout username foobar -f json
+task scout username foobar -f json | jq '.results[] | select(.status=="available")'
 ```
 
 ## Search

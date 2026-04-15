@@ -9,9 +9,18 @@
  *   - `pretty` (default): ora spinner + ANSI-colored status lines.
  *   - `text`: plain ASCII — no ANSI, no animation.
  *   - `json` / `json:pretty`: one JSON object per action on stdout.
+ *   - `html` / `markdown`: structured document output. Honored by
+ *     verbs that opt in (currently: `scout username`); others fall
+ *     through to `pretty`.
  */
 
-export type LoggingStyle = 'pretty' | 'text' | 'json' | 'json:pretty'
+export type LoggingStyle =
+  | 'pretty'
+  | 'text'
+  | 'json'
+  | 'json:pretty'
+  | 'html'
+  | 'markdown'
 
 let STYLE: LoggingStyle = 'pretty'
 
@@ -33,6 +42,11 @@ export function resolveLoggingStyle(value: unknown): LoggingStyle {
       return 'json'
     case 'json:pretty':
       return 'json:pretty'
+    case 'html':
+      return 'html'
+    case 'markdown':
+    case 'md':
+      return 'markdown'
     default:
       return 'pretty'
   }

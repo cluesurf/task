@@ -401,7 +401,7 @@ Then point `.env` at the clone:
 
 ```sh
 # deck/task/.env
-WINGET_PKGS_DIR=/Users/you/base/crew/cluesurf/fork-winget-pkgs
+WINGET_PKGS_DIR=fork-winget-pkgs
 ```
 
 If you ever need the full history (`git log` on old commits,

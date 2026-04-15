@@ -28,6 +28,8 @@ export * from '~/code/base/unarchiver/base'
 // Action form schemas (code/call/<action>/<thing>/base.ts)
 export * from '~/code/call/archive/base'
 export * from '~/code/call/check/file/base'
+export * from '~/code/call/check/domain/base'
+export * from '~/code/call/scout/domain/base'
 export * from '~/code/call/combine/base'
 export * from '~/code/call/compile/code/base'
 export * from '~/code/call/compile/code/tool/base'

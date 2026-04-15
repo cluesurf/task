@@ -27,28 +27,41 @@ import {
 import { registerGroupHelp } from '~/code/tool/node/log/registry'
 import { addConsole } from '~/code/call/add/console'
 import { archiveConsole } from '~/code/call/archive/console'
+import { backupConsole } from '~/code/call/backup/console'
+import { buildConsole } from '~/code/call/build/console'
 import { checkConsole } from '~/code/call/check/console'
+import { cleanConsole } from '~/code/call/clean/console'
 import { combineConsole } from '~/code/call/combine/console'
 import { compareConsole } from '~/code/call/compare/console'
 import { compileConsole } from '~/code/call/compile/console'
 import { compressConsole } from '~/code/call/compress/console'
+import { configureConsole } from '~/code/call/configure/console'
+import { containerConsole } from '~/code/call/container/console'
 import { convertConsole } from '~/code/call/convert/console'
 import { copyConsole } from '~/code/call/copy/console'
 import { cropConsole } from '~/code/call/crop/console'
+import { decryptConsole } from '~/code/call/decrypt/console'
+import { diffConsole } from '~/code/call/diff/console'
 import { disassembleConsole } from '~/code/call/disassemble/console'
 import { downloadConsole } from '~/code/call/download/console'
 import { dumpConsole } from '~/code/call/dump/console'
 import { editConsole } from '~/code/call/edit/console'
+import { encryptConsole } from '~/code/call/encrypt/console'
+import { exportConsole } from '~/code/call/export/console'
 import { fetchConsole } from '~/code/call/fetch/console'
 import { flipConsole } from '~/code/call/flip/console'
 import { formatConsole } from '~/code/call/format/console'
+import { forwardConsole } from '~/code/call/forward/console'
 import { generateConsole } from '~/code/call/generate/console'
 import { getConsole } from '~/code/call/get/console'
 import { haltConsole } from '~/code/call/halt/console'
 import { highlightConsole } from '~/code/call/highlight/console'
 import { inspectConsole } from '~/code/call/inspect/console'
+import { installConsole } from '~/code/call/install/console'
+import { lintConsole } from '~/code/call/lint/console'
 import { listConsole } from '~/code/call/list/console'
 import { loadConsole } from '~/code/call/load/console'
+import { logConsole } from '~/code/call/log/console'
 import { makeConsole } from '~/code/call/make/console'
 import { measureConsole } from '~/code/call/measure/console'
 import { normalizeConsole } from '~/code/call/normalize/console'
@@ -57,21 +70,30 @@ import { optimizeConsole } from '~/code/call/optimize/console'
 import { padConsole } from '~/code/call/pad/console'
 import { parseConsole } from '~/code/call/parse/console'
 import { pingConsole } from '~/code/call/ping/console'
+import { projectConsole } from '~/code/call/project/console'
 import { pushConsole } from '~/code/call/push/console'
+import { queryConsole } from '~/code/call/query/console'
+import { recordConsole } from '~/code/call/record/console'
 import { removeConsole } from '~/code/call/remove/console'
 import { renderConsole } from '~/code/call/render/console'
+import { replayConsole } from '~/code/call/replay/console'
 import { resizeConsole } from '~/code/call/resize/console'
+import { restartConsole } from '~/code/call/restart/console'
 import { restoreConsole } from '~/code/call/restore/console'
 import { rmConsole } from '~/code/call/rm/console'
 import { rotateConsole } from '~/code/call/rotate/console'
+import { runConsole } from '~/code/call/run/console'
 import { sanitizeConsole } from '~/code/call/sanitize/console'
+import { scaleConsole } from '~/code/call/scale/console'
 import { scanConsole } from '~/code/call/scan/console'
+import { scoutConsole } from '~/code/call/scout/console'
 import { searchConsole } from '~/code/call/search/console'
 import { setConsole } from '~/code/call/set/console'
 import { shapeConsole } from '~/code/call/shape/console'
 import { showConsole } from '~/code/call/show/console'
 import { sliceConsole } from '~/code/call/slice/console'
 import { splitConsole } from '~/code/call/split/console'
+import { stopConsole } from '~/code/call/stop/console'
 import { subsetConsole } from '~/code/call/subset/console'
 import { syncConsole } from '~/code/call/sync/console'
 import { testConsole } from '~/code/call/test/console'
@@ -82,6 +104,7 @@ import { uploadConsole } from '~/code/call/upload/console'
 import { updateConsole } from '~/code/call/update/console'
 import { validateConsole } from '~/code/call/validate/console'
 import { verifyConsole } from '~/code/call/verify/console'
+import { useConsole } from '~/code/call/use/console'
 import { watchConsole } from '~/code/call/watch/console'
 
 // Top-level help entry. Registered here (not inside any verb
@@ -95,10 +118,14 @@ registerGroupHelp({
   commands: [
     { name: 'add',         describe: 'Create a new entry in long-lived state (SSH, ...)' },
     { name: 'archive',     describe: 'Create an archive from one or more inputs' },
+    { name: 'build',       describe: 'Build a project (zero-config) or compile a single file' },
     { name: 'check',       describe: 'Check that a file exists and is readable' },
+    { name: 'clean',       describe: 'Remove build outputs / caches (zero-config)' },
     { name: 'combine',     describe: 'Combine a still image and audio track into a video' },
     { name: 'compile',     describe: 'Compile source code to a binary or bytecode' },
     { name: 'compress',    describe: 'Compress for web delivery or smaller size' },
+    { name: 'configure',   describe: 'Bootstrap a fresh dev machine from a manifest / preset' },
+    { name: 'container',   describe: 'Container lifecycle: build / scan / size / shell / clean' },
     { name: 'convert',     describe: 'Convert between formats' },
     { name: 'copy',        describe: 'Copy an artifact to the clipboard' },
     { name: 'crop',        describe: 'Crop a document or image' },
@@ -115,6 +142,8 @@ registerGroupHelp({
     { name: 'halt',        describe: 'Terminate processes or free a port' },
     { name: 'highlight',   describe: 'Stamp a highlight + note on a PDF' },
     { name: 'inspect',     describe: 'Inspect a file, process, network, or system' },
+    { name: 'install',     describe: 'Install project dependencies (zero-config)' },
+    { name: 'lint',        describe: 'Lint the project (zero-config — clippy / golangci-lint / ruff / ...)' },
     { name: 'list',        describe: 'List running resources or stored entries' },
     { name: 'make',        describe: 'Create a new artifact (SSH key, ...)' },
     { name: 'measure',     describe: 'Measure HTTP latency to a URL' },
@@ -125,9 +154,12 @@ registerGroupHelp({
     { name: 'pad',         describe: 'Pad an audio file with trailing silence' },
     { name: 'parse',       describe: 'Parse source or data into a structured form' },
     { name: 'ping',        describe: 'ICMP ping a host and report latency / loss' },
+    { name: 'project',     describe: 'Zero-config build runner (build / test / run / lint / install / ...)' },
     { name: 'push',        describe: 'Push an artifact to a remote (SSH key → host)' },
+    { name: 'record',      describe: 'Record screen / terminal sessions' },
     { name: 'remove',      describe: 'Remove content or a stored artifact' },
     { name: 'render',      describe: 'Render a visual artifact (font sample, ...)' },
+    { name: 'replay',      describe: 'Replay an asciinema .cast (terminal or render to gif/mp4)' },
     { name: 'resize',      describe: 'Resize an image or video' },
     { name: 'restore',     describe: 'Restore a database from a dump' },
     { name: 'rm',          describe: 'Remove a named entry from long-lived state' },
@@ -200,9 +232,10 @@ async function main() {
       describe:
         'Output style. `pretty` (default) uses colors + ora spinner; ' +
         '`text` strips ANSI; `json` / `json:pretty` emit one JSON ' +
-        'object per action on stdout.',
+        'object per action on stdout; `html` emits a styled table ' +
+        '(verb-specific; currently: `scout username`).',
       type: 'string',
-      choices: ['pretty', 'text', 'plain', 'json', 'json:pretty'],
+      choices: ['pretty', 'text', 'plain', 'json', 'json:pretty', 'html', 'markdown', 'md'],
       default: 'pretty',
       global: true,
     })
@@ -262,28 +295,41 @@ async function main() {
     })
     .command(addConsole)
     .command(archiveConsole)
+    .command(backupConsole)
+    .command(buildConsole)
     .command(checkConsole)
+    .command(cleanConsole)
     .command(combineConsole)
     .command(compareConsole)
     .command(compileConsole)
     .command(compressConsole)
+    .command(configureConsole)
+    .command(containerConsole)
     .command(convertConsole)
     .command(copyConsole)
     .command(cropConsole)
+    .command(decryptConsole)
+    .command(diffConsole)
     .command(disassembleConsole)
     .command(downloadConsole)
     .command(dumpConsole)
     .command(editConsole)
+    .command(encryptConsole)
+    .command(exportConsole)
     .command(fetchConsole)
     .command(flipConsole)
     .command(formatConsole)
+    .command(forwardConsole)
     .command(generateConsole)
     .command(getConsole)
     .command(haltConsole)
     .command(highlightConsole)
     .command(inspectConsole)
+    .command(installConsole)
+    .command(lintConsole)
     .command(listConsole)
     .command(loadConsole)
+    .command(logConsole)
     .command(makeConsole)
     .command(measureConsole)
     .command(normalizeConsole)
@@ -292,21 +338,30 @@ async function main() {
     .command(padConsole)
     .command(parseConsole)
     .command(pingConsole)
+    .command(projectConsole)
     .command(pushConsole)
+    .command(queryConsole)
+    .command(recordConsole)
     .command(removeConsole)
     .command(renderConsole)
+    .command(replayConsole)
     .command(resizeConsole)
+    .command(restartConsole)
     .command(restoreConsole)
     .command(rmConsole)
     .command(rotateConsole)
+    .command(runConsole)
     .command(sanitizeConsole)
+    .command(scaleConsole)
     .command(scanConsole)
+    .command(scoutConsole)
     .command(searchConsole)
     .command(setConsole)
     .command(shapeConsole)
     .command(showConsole)
     .command(sliceConsole)
     .command(splitConsole)
+    .command(stopConsole)
     .command(subsetConsole)
     .command(syncConsole)
     .command(testConsole)
@@ -317,6 +372,7 @@ async function main() {
     .command(uploadConsole)
     .command(validateConsole)
     .command(verifyConsole)
+    .command(useConsole)
     .command(watchConsole)
     .demandCommand(1, 'Specify an action')
     .strict()
@@ -392,7 +448,7 @@ type ImplicitConfig = {
 }
 
 const IMPLICIT_DEFAULTS: Record<string, ImplicitConfig> = {
-  inspect:   { subs: ['ast', 'color', 'file', 'metadata', 'network', 'port', 'process', 'system', 'webpage'], default: 'file' },
+  inspect:   { subs: ['analytics', 'ast', 'bot', 'bucket', 'cache', 'cluster', 'color', 'db', 'dns', 'file', 'firewall', 'machine', 'metadata', 'network', 'pod', 'port', 'process', 'request', 'security', 'service', 'system', 'table', 'traffic', 'usage', 'waf', 'webpage', 'worker', 'zone'], default: 'file' },
   check:     { subs: ['file'], default: 'file' },
   compile:   { subs: ['c', 'cpp', 'rust', 'swift', 'wast'] },
   compress:  { subs: ['audio', 'font', 'image', 'video'] },

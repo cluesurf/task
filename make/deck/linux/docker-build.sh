@@ -75,9 +75,17 @@ run_one() {
     script="set -e; cd /src/make/deck/linux/$fmt && ./make.sh"
   else
     # arch/alpine's makepkg/abuild refuse to run as root, so su to `build`.
-    # Only chown the build's own dist dir — recursively chowning /src
-    # blows up on macOS osxfs mounts (e.g. .git permissions).
-    script="set -e; mkdir -p /src/make/deck/linux/$fmt/dist && chown -R $user:$user /src/make/deck/linux/$fmt/dist && su - $user -c 'cd /src/make/deck/linux/$fmt && ./make.sh'"
+    # The chown only needs to succeed on the dist dir itself (so the
+    # build user can write new files into it). Existing files inside
+    # — typically from a prior `pnpm host:pkg:*` clone like dist/aur/
+    # — refuse chown via osxfs on macOS, which is fine: the build
+    # doesn't modify them, only adds siblings. So `|| true` past the
+    # recurse failures and check that the parent is writable.
+    script="set -e; \
+      mkdir -p /src/make/deck/linux/$fmt/dist && \
+      chown $user:$user /src/make/deck/linux/$fmt/dist && \
+      chown -R $user:$user /src/make/deck/linux/$fmt/dist 2>/dev/null || true; \
+      su - $user -c 'cd /src/make/deck/linux/$fmt && ./make.sh'"
   fi
 
   extra=$(fmt_extra_flags "$fmt")

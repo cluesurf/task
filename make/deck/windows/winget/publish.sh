@@ -27,35 +27,53 @@ if [ -z "$version" ]; then
 fi
 branch="cluesurf-task-$version"
 
-cp -R "$src_root/." "$fork/manifests/"
 (
   cd "$fork"
   # Start from the fork's upstream-tracking branch, not whatever
-  # branch was left behind by a previous run.
+  # branch was left behind by a previous run. Force-switch so
+  # dirty working copies from prior failed attempts don't block.
   git fetch upstream master 2>/dev/null || true
-  git checkout master 2>/dev/null || git checkout -b master
-  # If the branch already exists from a prior attempt, reset it
-  # rather than error out on `checkout -b`.
+  if git show-ref --verify --quiet refs/heads/master; then
+    git checkout --force master
+  else
+    git checkout -b master
+  fi
+  # If the release branch already exists from a prior attempt,
+  # reset it rather than error out on `checkout -b`.
   git branch -D "$branch" 2>/dev/null || true
   git checkout -b "$branch"
+
+  # Copy the rendered manifests ONTO the release branch. The
+  # previous layout copied before the branch existed, so a
+  # `--force` checkout would wipe them. Copying after pins them
+  # to the right branch.
+  cp -R "$src_root/." "manifests/"
+
   git add "manifests/c/ClueSurf/Task/$version"
   if git diff --cached --quiet; then
     echo "publish winget: no changes for $version, skipping commit"
     exit 0
   fi
   git commit -m "New version: ClueSurf.Task version $version"
-  git push -u origin "$branch"
+  # Plain `--force` — the release branch is per-version and
+  # fully owned by this publish flow (generated from templates
+  # every run, never hand-edited). A prior failed run may have
+  # pushed a commit with different history; overwriting it is
+  # correct. `--force-with-lease` doesn't work here because the
+  # local branch was just freshly recreated with no fetch of
+  # the remote tip, so the lease baseline is always stale.
+  git push -u --force origin "$branch"
 )
 
-if command -v gh >/dev/null 2>&1; then
-  (
-    cd "$fork" && gh pr create \
-      --repo microsoft/winget-pkgs \
-      --base master \
-      --head "cluesurf:$branch" \
-      --fill
-  )
-else
-  echo "branch $branch pushed. Open the PR via:"
-  echo "  https://github.com/microsoft/winget-pkgs/compare/master...cluesurf:$branch"
-fi
+# if command -v gh >/dev/null 2>&1; then
+#   (
+#     cd "$fork" && gh pr create \
+#       --repo microsoft/winget-pkgs \
+#       --base master \
+#       --head "cluesurf:$branch" \
+#       --fill
+#   )
+# else
+echo "branch $branch pushed. Open the PR via:"
+echo "  https://github.com/microsoft/winget-pkgs/compare/master...cluesurf:$branch"
+# fi

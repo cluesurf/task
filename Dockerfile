@@ -42,7 +42,10 @@ RUN apt-get -y install fonttools
 RUN apt-get -y install woff2
 RUN apt-get -y install libharfbuzz-bin
 RUN apt-get -y install pandoc
-RUN apt-get -y install texlive texlive-xetex texlive-luatex texlive-extra-utils
+RUN apt-get -y install texlive
+RUN apt-get -y install texlive-xetex
+RUN apt-get -y install texlive-luatex
+RUN apt-get -y install texlive-extra-utils
 # `make4ht` ships inside texlive-extra-utils on Ubuntu noble — no
 # separate apt package. The binary lands at /usr/bin/make4ht.
 RUN apt-get -y install ffmpeg
@@ -56,11 +59,99 @@ RUN apt-get -y install git
 RUN apt-get -y install libreoffice
 RUN apt-get -y install gnupg
 RUN apt-get -y install gifsicle
+
+# ── Extended image conversion ─────────────────────────────────────
+# Raster ↔ vector
+RUN apt-get -y install potrace
+RUN apt-get -y install autotrace
+RUN apt-get -y install librsvg2-bin
+# RAW pipelines (dcraw + darktable-cli). rawtherapee-cli lands as
+# `rawtherapee` on noble; the binary name is `rawtherapee-cli`.
+RUN apt-get -y install dcraw
+RUN apt-get -y install darktable
+RUN apt-get -y install rawtherapee
+# HDR (Radiance tools + OpenEXR + pfstools for .hdr ↔ .exr)
+RUN apt-get -y install radiance
+RUN apt-get -y install openexr
+RUN apt-get -y install pfstools
+# Animated image formats
+RUN apt-get -y install apngasm
+RUN apt-get -y install webp
+# (libwebp ships `img2webp`, `cwebp`, `dwebp`.)
+
+# ── PDF / PostScript tooling ──────────────────────────────────────
+# task inspect pdf / convert document chains use pdftotext, pdfimages,
+# pdfinfo (poppler-utils), mutool (mupdf-tools), and gs / ps2pdf
+# (ghostscript). qpdf is a sibling PDF tool.
+RUN apt-get -y install poppler-utils
+RUN apt-get -y install mupdf-tools
+RUN apt-get -y install ghostscript
+RUN apt-get -y install qpdf
+
+# ── Binary analysis ───────────────────────────────────────────────
+# task disassemble / inspect binary route through radare2 + rizin.
+RUN apt-get -y install radare2
+RUN apt-get -y install rizin
+
+# ── Postgres client tools ─────────────────────────────────────────
+# psql + pg_dump for task {inspect,query,measure,backup,export} db.
+RUN apt-get -y install postgresql-client
+
+# ── Desktop notifications ─────────────────────────────────────────
+# libnotify ships `notify-send` for `task run notify` on Linux.
+RUN apt-get -y install libnotify-bin
+
+# ── Kubernetes (task k8s ...) ─────────────────────────────────────
+# kubectl from the official apt repo, plus stern for multi-pod logs.
+RUN curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key \
+      | gpg --dearmor -o /usr/share/keyrings/kubernetes-apt-keyring.gpg \
+  && echo "deb [signed-by=/usr/share/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /" \
+      | tee /etc/apt/sources.list.d/kubernetes.list \
+  && apt-get update \
+  && apt-get -y install kubectl
+RUN curl -fsSL https://github.com/stern/stern/releases/download/v1.30.0/stern_1.30.0_linux_amd64.tar.gz \
+      | tar -xz -C /usr/local/bin stern
+
+# ── DigitalOcean (task do ...) ────────────────────────────────────
+RUN curl -fsSL https://github.com/digitalocean/doctl/releases/download/v1.115.0/doctl-1.115.0-linux-amd64.tar.gz \
+      | tar -xz -C /usr/local/bin doctl
+
+# ── Slides: marp-cli ──────────────────────────────────────────────
+# marp isn't in apt; install via npm globally. (Requires nodejs +
+# npm from earlier in the file.) Used by convert/document/marp.
+# Note: marp-cli pulls puppeteer for PDF/PPTX export, which wants
+# Chromium — we already install google-chrome-stable further down.
+# Run this npm install after Node lands; see "Install Node.js" block.
+
 RUN apt-get -y install python3
 RUN apt-get -y install golang
+# Additional compile-target languages. Each is in noble's main repo
+# so a single apt line is enough. Tools that aren't packaged for
+# Ubuntu (zig, crystal, v, emscripten, wasm-pack) carry their own
+# install-hint string in the CLI — users install them on demand.
+RUN apt-get -y install kotlin
+RUN apt-get -y install ghc
+RUN apt-get -y install ocaml
+RUN apt-get -y install nim
+# Coq (proof assistant). `coq` pulls in `coqide` and friends —
+# pick `coq-prover` if you want the headless variant only.
+RUN apt-get -y install coq
 # RUN apt-get -y install python3-full
 RUN apt-get -y install rustc
 RUN apt-get -y install rustfmt
+# Extra formatters for `task format <lang>`. shfmt + asmfmt are
+# installed via `go install` further down; ocamlformat sometimes
+# packages with the ocaml meta-package, so the install is
+# best-effort. zig fmt ships inside the zig binary — install hint
+# covers it for hosts that don't bundle zig.
+RUN apt-get -y install google-java-format
+RUN apt-get -y install ormolu
+RUN apt-get -y install ocamlformat || true
+# clang-tidy ships with llvm; symlink the versioned binary so the
+# unversioned name resolves.
+RUN ln -sf /usr/bin/clang-tidy-17 /usr/bin/clang-tidy 2>/dev/null || true
+# Prettier + sql-formatter ship via npm — light JS deps.
+RUN npm install -g prettier sql-formatter
 RUN apt-get -y install wget
 RUN apt-get -y install gnupg
 RUN apt-get -y install unoconv
@@ -96,6 +187,12 @@ RUN apt-get -y install curl
 RUN curl -sL https://deb.nodesource.com/setup_24.x | bash
 RUN apt-get -y install nodejs
 RUN npm install -g pnpm
+# `tsc` for `task compile tsc` (type-check only mode).
+RUN npm install -g typescript
+# marp-cli for slide conversion (md → html/pdf/pptx).
+RUN npm install -g @marp-team/marp-cli
+# wrangler for Cloudflare R2 + Workers ops (task {inspect,list} worker / bucket).
+RUN npm install -g wrangler
 
 # Install swift dependencies
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && apt-get -q -y install binutils
@@ -190,6 +287,10 @@ RUN /home/python/venv/bin/pip install jill
 
 # Install go packages
 RUN go install github.com/klauspost/asmfmt/cmd/asmfmt@ef134b9cec704e2b7b336fb02153b7d1a58247da
+
+# Install Bend (HVM-backed language). Builds via cargo from
+# crates.io. The CUDA backend isn't required for `bend run`.
+RUN cargo install bend-lang || echo "bend install failed — install manually with cargo install bend-lang"
 
 # Install Julia via jill. The old `-c` short flag for "auto-confirm"
 # was removed — use `--confirm` instead. We don't pin --preferred-arch

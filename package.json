@@ -60,6 +60,49 @@
       "browser": "./host/code/call/convert/document/browser.js",
       "default": "./host/code/call/convert/document/node.js"
     },
+    "./convert/document/calibre": {
+      "node": "./host/code/call/convert/document/calibre/node.js",
+      "browser": "./host/code/call/convert/document/calibre/browser.js",
+      "default": "./host/code/call/convert/document/calibre/node.js"
+    },
+    "./convert/document/enscript": {
+      "node": "./host/code/call/convert/document/enscript/node.js",
+      "browser": "./host/code/call/convert/document/enscript/browser.js",
+      "default": "./host/code/call/convert/document/enscript/node.js"
+    },
+    "./convert/document/jupyter": {
+      "node": "./host/code/call/convert/document/jupyter/node.js",
+      "browser": "./host/code/call/convert/document/jupyter/browser.js",
+      "default": "./host/code/call/convert/document/jupyter/node.js"
+    },
+    "./convert/document/libre-office": {
+      "node": "./host/code/call/convert/document/libre-office/node.js",
+      "browser": "./host/code/call/convert/document/libre-office/browser.js",
+      "default": "./host/code/call/convert/document/libre-office/node.js"
+    },
+    "./convert/document/marp": {
+      "node": "./host/code/call/convert/document/marp/node.js",
+      "default": "./host/code/call/convert/document/marp/node.js"
+    },
+    "./convert/document/pandoc": {
+      "node": "./host/code/call/convert/document/pandoc/node.js",
+      "browser": "./host/code/call/convert/document/pandoc/browser.js",
+      "default": "./host/code/call/convert/document/pandoc/node.js"
+    },
+    "./convert/document/pdflatex": {
+      "node": "./host/code/call/convert/document/pdflatex/node.js",
+      "browser": "./host/code/call/convert/document/pdflatex/browser.js",
+      "default": "./host/code/call/convert/document/pdflatex/node.js"
+    },
+    "./convert/document/puppeteer": {
+      "node": "./host/code/call/convert/document/puppeteer/node.js",
+      "browser": "./host/code/call/convert/document/puppeteer/browser.js",
+      "default": "./host/code/call/convert/document/puppeteer/node.js"
+    },
+    "./convert/document/revealjs": {
+      "node": "./host/code/call/convert/document/revealjs/node.js",
+      "default": "./host/code/call/convert/document/revealjs/node.js"
+    },
     "./convert/font": {
       "node": "./host/code/call/convert/font/node.js",
       "browser": "./host/code/call/convert/font/browser.js",
@@ -69,6 +112,54 @@
       "node": "./host/code/call/convert/image/imagemagick/node.js",
       "browser": "./host/code/call/convert/image/imagemagick/browser.js",
       "default": "./host/code/call/convert/image/imagemagick/node.js"
+    },
+    "./convert/image/potrace": {
+      "node": "./host/code/call/convert/image/potrace/node.js",
+      "default": "./host/code/call/convert/image/potrace/node.js"
+    },
+    "./convert/image/autotrace": {
+      "node": "./host/code/call/convert/image/autotrace/node.js",
+      "default": "./host/code/call/convert/image/autotrace/node.js"
+    },
+    "./convert/image/rsvg": {
+      "node": "./host/code/call/convert/image/rsvg/node.js",
+      "default": "./host/code/call/convert/image/rsvg/node.js"
+    },
+    "./convert/image/dcraw": {
+      "node": "./host/code/call/convert/image/dcraw/node.js",
+      "default": "./host/code/call/convert/image/dcraw/node.js"
+    },
+    "./convert/image/darktable": {
+      "node": "./host/code/call/convert/image/darktable/node.js",
+      "default": "./host/code/call/convert/image/darktable/node.js"
+    },
+    "./convert/image/rawtherapee": {
+      "node": "./host/code/call/convert/image/rawtherapee/node.js",
+      "default": "./host/code/call/convert/image/rawtherapee/node.js"
+    },
+    "./convert/image/radiance": {
+      "node": "./host/code/call/convert/image/radiance/node.js",
+      "default": "./host/code/call/convert/image/radiance/node.js"
+    },
+    "./convert/image/pfstools": {
+      "node": "./host/code/call/convert/image/pfstools/node.js",
+      "default": "./host/code/call/convert/image/pfstools/node.js"
+    },
+    "./convert/image/gifsicle": {
+      "node": "./host/code/call/convert/image/gifsicle/node.js",
+      "default": "./host/code/call/convert/image/gifsicle/node.js"
+    },
+    "./convert/image/apngasm": {
+      "node": "./host/code/call/convert/image/apngasm/node.js",
+      "default": "./host/code/call/convert/image/apngasm/node.js"
+    },
+    "./convert/image/img2webp": {
+      "node": "./host/code/call/convert/image/img2webp/node.js",
+      "default": "./host/code/call/convert/image/img2webp/node.js"
+    },
+    "./convert/image/ffmpeg": {
+      "node": "./host/code/call/convert/image/ffmpeg/node.js",
+      "default": "./host/code/call/convert/image/ffmpeg/node.js"
     },
     "./convert/time": {
       "node": "./host/code/call/convert/time/node.js",
@@ -90,10 +181,18 @@
       "browser": "./host/code/call/crop/document/browser.js",
       "default": "./host/code/call/crop/document/node.js"
     },
+    "./decrypt/file": {
+      "node": "./host/code/call/decrypt/file/node.js",
+      "default": "./host/code/call/decrypt/file/node.js"
+    },
     "./disassemble/binary": {
       "node": "./host/code/call/disassemble/binary/node.js",
       "browser": "./host/code/call/disassemble/binary/browser.js",
       "default": "./host/code/call/disassemble/binary/node.js"
+    },
+    "./encrypt/file": {
+      "node": "./host/code/call/encrypt/file/node.js",
+      "default": "./host/code/call/encrypt/file/node.js"
     },
     "./download/hugging-face": {
       "node": "./host/code/call/download/hugging-face/node.js",
@@ -257,7 +356,8 @@
     "host:pkg:opensuse": "./make/deck/with-env.sh ./make/deck/publish.sh opensuse",
     "host:pkg:gentoo": "./make/deck/with-env.sh ./make/deck/publish.sh gentoo",
     "host:pkg:scoop": "./make/deck/with-env.sh ./make/deck/publish.sh scoop",
-    "host:pkg:winget": "./make/deck/with-env.sh ./make/deck/publish.sh winget",
+    "check:pkg:winget": "./make/deck/windows/winget/check.sh",
+    "host:pkg:winget": "pnpm check:pkg:winget && ./make/deck/with-env.sh ./make/deck/publish.sh winget",
     "host:pkg:choco": "./make/deck/with-env.sh ./make/deck/publish.sh choco",
     "host:pkg:nix": "./make/deck/with-env.sh ./make/deck/publish.sh nix",
     "host:gh": "gh release create v$npm_package_version --generate-notes make/deck/windows/winget/dist/cluesurf-task.zip",
@@ -273,6 +373,8 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1030.0",
+    "blessed": "^0.1.81",
+    "blessed-contrib": "^4.11.0",
     "@cluesurf/form": "0.8.20",
     "@epic-web/invariant": "^1.0.0",
     "@lancejpollard/color-splat.js": "^0.0.14",
@@ -306,6 +408,8 @@
     "archiver": "7.0.1",
     "assert": "^2.1.0",
     "basic-ftp": "5.2.2",
+    "blessed": "^0.1.81",
+    "blessed-contrib": "^4.11.0",
     "braces": "^3.0.3",
     "bytes": "^3.1.2",
     "chalk": "5.6.2",
@@ -398,6 +502,7 @@
   "prettier": "@cluesurf/wash/flow.json",
   "devDependencies": {
     "@cluesurf/wash": "0.8.0",
+    "@types/blessed": "^0.1.25",
     "@types/lodash": "4.17.23",
     "@types/tape": "5.8.1",
     "autoprefixer": "10.4.24",
