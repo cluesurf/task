@@ -1,3 +1,4 @@
+import { DecryptFileTool } from '~/code/form/action/decrypt/file/shared'
 import {
   FileContent,
   FileContentWithSha256,
@@ -13,7 +14,7 @@ export type DecryptFileBrowserLocalInput = {
       content: FileContent
     }
   }
-  tool?: string
+  tool?: DecryptFileTool
   passphrase?: string
   identity?: string
   cipher?: string
@@ -26,7 +27,7 @@ export type DecryptFileBrowserRemoteInput = {
   input: {
     file: FileContentWithSha256
   }
-  tool?: string
+  tool?: DecryptFileTool
   passphrase?: string
   identity?: string
   cipher?: string

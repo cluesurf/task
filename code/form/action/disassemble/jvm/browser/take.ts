@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+import { DisassembleJvmLevelParser } from '~/code/form/action/disassemble/jvm/shared/take'
 import {
   FileContentParser,
   FileContentWithSha256Parser,
@@ -21,7 +22,7 @@ export const DisassembleJvmBrowserLocalInputParser = z.object({
       content: z.lazy(() => FileContentParser),
     }),
   }),
-  level: z.optional(z.string()),
+  level: z.optional(z.lazy(() => DisassembleJvmLevelParser)),
   verbose: z.optional(z.boolean()),
   constants: z.optional(z.boolean()),
   lineNumbers: z.optional(z.boolean()),
@@ -46,7 +47,7 @@ export const DisassembleJvmBrowserRemoteInputParser = z.object({
   input: z.object({
     file: z.lazy(() => FileContentWithSha256Parser),
   }),
-  level: z.optional(z.string()),
+  level: z.optional(z.lazy(() => DisassembleJvmLevelParser)),
   verbose: z.optional(z.boolean()),
   constants: z.optional(z.boolean()),
   lineNumbers: z.optional(z.boolean()),

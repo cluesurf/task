@@ -1,3 +1,5 @@
+import { EncryptFileTool } from '~/code/form/action/encrypt/file/shared'
+
 export type EncryptFileCommandInput = {
   input: {
     file: {
@@ -9,7 +11,7 @@ export type EncryptFileCommandInput = {
       path: string
     }
   }
-  tool?: string
+  tool?: EncryptFileTool
   passphrase?: string
   recipients?: Array<string>
   cipher?: string

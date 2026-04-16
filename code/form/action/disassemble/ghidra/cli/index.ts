@@ -1,3 +1,5 @@
+import { DisassembleGhidraProfile } from '~/code/form/action/disassemble/ghidra/shared'
+
 export type DisassembleGhidraCommandInput = {
   input: {
     file: {
@@ -9,7 +11,7 @@ export type DisassembleGhidraCommandInput = {
       path?: string
     }
   }
-  profile?: string
+  profile?: DisassembleGhidraProfile
   script?: string
   ghidraHome?: string
   projectDir?: string

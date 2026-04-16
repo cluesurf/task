@@ -1,4 +1,8 @@
 import {
+  DisassembleRadareProfile,
+  DisassembleRadareTool,
+} from '~/code/form/action/disassemble/radare/shared'
+import {
   FileContentWithSha256,
   FileInputPath,
   FilePath,
@@ -12,9 +16,9 @@ export type DisassembleRadareNodeClientInput = {
   input: {
     file: FileInputPath | FileContentWithSha256
   }
-  tool?: string
+  tool?: DisassembleRadareTool
   script?: string
-  profile?: string
+  profile?: DisassembleRadareProfile
   commands?: Array<string>
 }
 export type DisassembleRadareNodeExternalInput = {
@@ -22,9 +26,9 @@ export type DisassembleRadareNodeExternalInput = {
   input: {
     file: RemoteInputPath | FileContentWithSha256
   }
-  tool?: string
+  tool?: DisassembleRadareTool
   script?: string
-  profile?: string
+  profile?: DisassembleRadareProfile
   commands?: Array<string>
 }
 export type DisassembleRadareNodeInput =
@@ -39,9 +43,9 @@ export type DisassembleRadareNodeLocalExternalInput = {
   output: {
     file?: LocalOutputPath
   }
-  tool?: string
+  tool?: DisassembleRadareTool
   script?: string
-  profile?: string
+  profile?: DisassembleRadareProfile
   commands?: Array<string>
 }
 export type DisassembleRadareNodeLocalInput = {
@@ -51,9 +55,9 @@ export type DisassembleRadareNodeLocalInput = {
   output?: {
     file?: LocalPath
   }
-  tool?: string
+  tool?: DisassembleRadareTool
   script?: string
-  profile?: string
+  profile?: DisassembleRadareProfile
   commands?: Array<string>
 }
 export type DisassembleRadareNodeLocalInternalInput = {
@@ -64,9 +68,9 @@ export type DisassembleRadareNodeLocalInternalInput = {
   output?: {
     file?: LocalOutputPath
   }
-  tool?: string
+  tool?: DisassembleRadareTool
   script?: string
-  profile?: string
+  profile?: DisassembleRadareProfile
   commands?: Array<string>
 }
 export type DisassembleRadareNodeOutput = {
@@ -80,8 +84,8 @@ export type DisassembleRadareNodeRemoteInput = {
   output: {
     file?: LocalOutputPath
   }
-  tool?: string
+  tool?: DisassembleRadareTool
   script?: string
-  profile?: string
+  profile?: DisassembleRadareProfile
   commands?: Array<string>
 }

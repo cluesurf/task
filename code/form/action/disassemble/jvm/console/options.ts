@@ -32,7 +32,7 @@ export const options: CliOption[] = [
       "level"
     ],
     "long": "level",
-    "like": "string",
+    "like": "disassemble_jvm_level",
     "list": false,
     "need": false
   },

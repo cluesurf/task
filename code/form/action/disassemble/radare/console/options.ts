@@ -32,7 +32,7 @@ export const options: CliOption[] = [
       "tool"
     ],
     "long": "tool",
-    "like": "string",
+    "like": "disassemble_radare_tool",
     "list": false,
     "need": false
   },
@@ -50,7 +50,7 @@ export const options: CliOption[] = [
       "profile"
     ],
     "long": "profile",
-    "like": "string",
+    "like": "disassemble_radare_profile",
     "list": false,
     "need": false
   },

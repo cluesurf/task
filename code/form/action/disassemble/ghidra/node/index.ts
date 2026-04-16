@@ -1,3 +1,4 @@
+import { DisassembleGhidraProfile } from '~/code/form/action/disassemble/ghidra/shared'
 import {
   FileContentWithSha256,
   FileInputPath,
@@ -12,7 +13,7 @@ export type DisassembleGhidraNodeClientInput = {
   input: {
     file: FileInputPath | FileContentWithSha256
   }
-  profile?: string
+  profile?: DisassembleGhidraProfile
   script?: string
   ghidraHome?: string
   projectDir?: string
@@ -26,7 +27,7 @@ export type DisassembleGhidraNodeExternalInput = {
   input: {
     file: RemoteInputPath | FileContentWithSha256
   }
-  profile?: string
+  profile?: DisassembleGhidraProfile
   script?: string
   ghidraHome?: string
   projectDir?: string
@@ -47,7 +48,7 @@ export type DisassembleGhidraNodeLocalExternalInput = {
   output: {
     file?: LocalOutputPath
   }
-  profile?: string
+  profile?: DisassembleGhidraProfile
   script?: string
   ghidraHome?: string
   projectDir?: string
@@ -63,7 +64,7 @@ export type DisassembleGhidraNodeLocalInput = {
   output?: {
     file?: LocalPath
   }
-  profile?: string
+  profile?: DisassembleGhidraProfile
   script?: string
   ghidraHome?: string
   projectDir?: string
@@ -80,7 +81,7 @@ export type DisassembleGhidraNodeLocalInternalInput = {
   output?: {
     file?: LocalOutputPath
   }
-  profile?: string
+  profile?: DisassembleGhidraProfile
   script?: string
   ghidraHome?: string
   projectDir?: string
@@ -100,7 +101,7 @@ export type DisassembleGhidraNodeRemoteInput = {
   output: {
     file?: LocalOutputPath
   }
-  profile?: string
+  profile?: DisassembleGhidraProfile
   script?: string
   ghidraHome?: string
   projectDir?: string

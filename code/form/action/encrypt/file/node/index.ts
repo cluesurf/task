@@ -1,3 +1,4 @@
+import { EncryptFileTool } from '~/code/form/action/encrypt/file/shared'
 import {
   FileContentWithSha256,
   FileInputPath,
@@ -12,7 +13,7 @@ export type EncryptFileNodeClientInput = {
   input: {
     file: FileInputPath | FileContentWithSha256
   }
-  tool?: string
+  tool?: EncryptFileTool
   passphrase?: string
   recipients?: Array<string>
   cipher?: string
@@ -23,7 +24,7 @@ export type EncryptFileNodeExternalInput = {
   input: {
     file: RemoteInputPath | FileContentWithSha256
   }
-  tool?: string
+  tool?: EncryptFileTool
   passphrase?: string
   recipients?: Array<string>
   cipher?: string
@@ -41,7 +42,7 @@ export type EncryptFileNodeLocalExternalInput = {
   output: {
     file?: LocalOutputPath
   }
-  tool?: string
+  tool?: EncryptFileTool
   passphrase?: string
   recipients?: Array<string>
   cipher?: string
@@ -54,7 +55,7 @@ export type EncryptFileNodeLocalInput = {
   output: {
     file: LocalPath
   }
-  tool?: string
+  tool?: EncryptFileTool
   passphrase?: string
   recipients?: Array<string>
   cipher?: string
@@ -68,7 +69,7 @@ export type EncryptFileNodeLocalInternalInput = {
   output: {
     file: LocalOutputPath
   }
-  tool?: string
+  tool?: EncryptFileTool
   passphrase?: string
   recipients?: Array<string>
   cipher?: string
@@ -85,7 +86,7 @@ export type EncryptFileNodeRemoteInput = {
   output: {
     file?: LocalOutputPath
   }
-  tool?: string
+  tool?: EncryptFileTool
   passphrase?: string
   recipients?: Array<string>
   cipher?: string

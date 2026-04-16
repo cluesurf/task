@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+import { DecryptFileToolParser } from '~/code/form/action/decrypt/file/shared/take'
 import {
   FileContentParser,
   FileContentWithSha256Parser,
@@ -21,7 +22,7 @@ export const DecryptFileBrowserLocalInputParser = z.object({
       content: z.lazy(() => FileContentParser),
     }),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => DecryptFileToolParser)),
   passphrase: z.optional(z.string()),
   identity: z.optional(z.string()),
   cipher: z.optional(z.string()),
@@ -44,7 +45,7 @@ export const DecryptFileBrowserRemoteInputParser = z.object({
   input: z.object({
     file: z.lazy(() => FileContentWithSha256Parser),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => DecryptFileToolParser)),
   passphrase: z.optional(z.string()),
   identity: z.optional(z.string()),
   cipher: z.optional(z.string()),

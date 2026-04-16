@@ -1,6 +1,10 @@
 import { z } from 'zod'
 
 import {
+  DisassembleRadareProfileParser,
+  DisassembleRadareToolParser,
+} from '~/code/form/action/disassemble/radare/shared/take'
+import {
   FileContentWithSha256Parser,
   FileInputPathParser,
   FilePathParser,
@@ -17,9 +21,9 @@ export const DisassembleRadareNodeClientInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => DisassembleRadareToolParser)),
   script: z.optional(z.string()),
-  profile: z.optional(z.string()),
+  profile: z.optional(z.lazy(() => DisassembleRadareProfileParser)),
   commands: z.optional(z.array(z.string())),
 })
 
@@ -35,9 +39,9 @@ export const DisassembleRadareNodeExternalInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => DisassembleRadareToolParser)),
   script: z.optional(z.string()),
-  profile: z.optional(z.string()),
+  profile: z.optional(z.lazy(() => DisassembleRadareProfileParser)),
   commands: z.optional(z.array(z.string())),
 })
 
@@ -66,9 +70,9 @@ export const DisassembleRadareNodeLocalExternalInputParser = z.object({
   output: z.object({
     file: z.optional(z.lazy(() => LocalOutputPathParser)),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => DisassembleRadareToolParser)),
   script: z.optional(z.string()),
-  profile: z.optional(z.string()),
+  profile: z.optional(z.lazy(() => DisassembleRadareProfileParser)),
   commands: z.optional(z.array(z.string())),
 })
 
@@ -85,9 +89,9 @@ export const DisassembleRadareNodeLocalInputParser = z.object({
       file: z.optional(z.lazy(() => LocalPathParser)),
     }),
   ),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => DisassembleRadareToolParser)),
   script: z.optional(z.string()),
-  profile: z.optional(z.string()),
+  profile: z.optional(z.lazy(() => DisassembleRadareProfileParser)),
   commands: z.optional(z.array(z.string())),
 })
 
@@ -108,9 +112,9 @@ export const DisassembleRadareNodeLocalInternalInputParser = z.object({
       file: z.optional(z.lazy(() => LocalOutputPathParser)),
     }),
   ),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => DisassembleRadareToolParser)),
   script: z.optional(z.string()),
-  profile: z.optional(z.string()),
+  profile: z.optional(z.lazy(() => DisassembleRadareProfileParser)),
   commands: z.optional(z.array(z.string())),
 })
 
@@ -137,9 +141,9 @@ export const DisassembleRadareNodeRemoteInputParser = z.object({
   output: z.object({
     file: z.optional(z.lazy(() => LocalOutputPathParser)),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => DisassembleRadareToolParser)),
   script: z.optional(z.string()),
-  profile: z.optional(z.string()),
+  profile: z.optional(z.lazy(() => DisassembleRadareProfileParser)),
   commands: z.optional(z.array(z.string())),
 })
 

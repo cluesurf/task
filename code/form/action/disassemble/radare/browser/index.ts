@@ -1,4 +1,8 @@
 import {
+  DisassembleRadareProfile,
+  DisassembleRadareTool,
+} from '~/code/form/action/disassemble/radare/shared'
+import {
   FileContent,
   FileContentWithSha256,
 } from '~/code/form/object/file'
@@ -13,9 +17,9 @@ export type DisassembleRadareBrowserLocalInput = {
       content: FileContent
     }
   }
-  tool?: string
+  tool?: DisassembleRadareTool
   script?: string
-  profile?: string
+  profile?: DisassembleRadareProfile
   commands?: Array<string>
 }
 export type DisassembleRadareBrowserOutput = {
@@ -26,8 +30,8 @@ export type DisassembleRadareBrowserRemoteInput = {
   input: {
     file: FileContentWithSha256
   }
-  tool?: string
+  tool?: DisassembleRadareTool
   script?: string
-  profile?: string
+  profile?: DisassembleRadareProfile
   commands?: Array<string>
 }

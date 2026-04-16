@@ -1,3 +1,4 @@
+import { DisassembleJvmLevel } from '~/code/form/action/disassemble/jvm/shared'
 import {
   FileContentWithSha256,
   FileInputPath,
@@ -12,7 +13,7 @@ export type DisassembleJvmNodeClientInput = {
   input: {
     file: FileInputPath | FileContentWithSha256
   }
-  level?: string
+  level?: DisassembleJvmLevel
   verbose?: boolean
   constants?: boolean
   lineNumbers?: boolean
@@ -24,7 +25,7 @@ export type DisassembleJvmNodeExternalInput = {
   input: {
     file: RemoteInputPath | FileContentWithSha256
   }
-  level?: string
+  level?: DisassembleJvmLevel
   verbose?: boolean
   constants?: boolean
   lineNumbers?: boolean
@@ -43,7 +44,7 @@ export type DisassembleJvmNodeLocalExternalInput = {
   output: {
     file?: LocalOutputPath
   }
-  level?: string
+  level?: DisassembleJvmLevel
   verbose?: boolean
   constants?: boolean
   lineNumbers?: boolean
@@ -57,7 +58,7 @@ export type DisassembleJvmNodeLocalInput = {
   output?: {
     file?: LocalPath
   }
-  level?: string
+  level?: DisassembleJvmLevel
   verbose?: boolean
   constants?: boolean
   lineNumbers?: boolean
@@ -72,7 +73,7 @@ export type DisassembleJvmNodeLocalInternalInput = {
   output?: {
     file?: LocalOutputPath
   }
-  level?: string
+  level?: DisassembleJvmLevel
   verbose?: boolean
   constants?: boolean
   lineNumbers?: boolean
@@ -90,7 +91,7 @@ export type DisassembleJvmNodeRemoteInput = {
   output: {
     file?: LocalOutputPath
   }
-  level?: string
+  level?: DisassembleJvmLevel
   verbose?: boolean
   constants?: boolean
   lineNumbers?: boolean

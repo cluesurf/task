@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+import { DisassembleGhidraProfileParser } from '~/code/form/action/disassemble/ghidra/shared/take'
 import {
   FileContentWithSha256Parser,
   FileInputPathParser,
@@ -17,7 +18,7 @@ export const DisassembleGhidraNodeClientInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  profile: z.optional(z.string()),
+  profile: z.optional(z.lazy(() => DisassembleGhidraProfileParser)),
   script: z.optional(z.string()),
   ghidraHome: z.optional(z.string()),
   projectDir: z.optional(z.string()),
@@ -39,7 +40,7 @@ export const DisassembleGhidraNodeExternalInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  profile: z.optional(z.string()),
+  profile: z.optional(z.lazy(() => DisassembleGhidraProfileParser)),
   script: z.optional(z.string()),
   ghidraHome: z.optional(z.string()),
   projectDir: z.optional(z.string()),
@@ -74,7 +75,7 @@ export const DisassembleGhidraNodeLocalExternalInputParser = z.object({
   output: z.object({
     file: z.optional(z.lazy(() => LocalOutputPathParser)),
   }),
-  profile: z.optional(z.string()),
+  profile: z.optional(z.lazy(() => DisassembleGhidraProfileParser)),
   script: z.optional(z.string()),
   ghidraHome: z.optional(z.string()),
   projectDir: z.optional(z.string()),
@@ -97,7 +98,7 @@ export const DisassembleGhidraNodeLocalInputParser = z.object({
       file: z.optional(z.lazy(() => LocalPathParser)),
     }),
   ),
-  profile: z.optional(z.string()),
+  profile: z.optional(z.lazy(() => DisassembleGhidraProfileParser)),
   script: z.optional(z.string()),
   ghidraHome: z.optional(z.string()),
   projectDir: z.optional(z.string()),
@@ -124,7 +125,7 @@ export const DisassembleGhidraNodeLocalInternalInputParser = z.object({
       file: z.optional(z.lazy(() => LocalOutputPathParser)),
     }),
   ),
-  profile: z.optional(z.string()),
+  profile: z.optional(z.lazy(() => DisassembleGhidraProfileParser)),
   script: z.optional(z.string()),
   ghidraHome: z.optional(z.string()),
   projectDir: z.optional(z.string()),
@@ -157,7 +158,7 @@ export const DisassembleGhidraNodeRemoteInputParser = z.object({
   output: z.object({
     file: z.optional(z.lazy(() => LocalOutputPathParser)),
   }),
-  profile: z.optional(z.string()),
+  profile: z.optional(z.lazy(() => DisassembleGhidraProfileParser)),
   script: z.optional(z.string()),
   ghidraHome: z.optional(z.string()),
   projectDir: z.optional(z.string()),

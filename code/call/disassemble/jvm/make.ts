@@ -1,15 +1,18 @@
+import type { List } from '@cluesurf/form'
 import { buildSingleFileForms } from '~/code/tool/shared/make'
+
+export const disassemble_jvm_level: List = {
+  form: 'list',
+  save: '~/code/form/action/disassemble/jvm/shared',
+  list: ['public', 'protected', 'package', 'private'],
+}
 
 const disassemble_jvm_forms = buildSingleFileForms({
   name: 'disassemble_jvm',
   save: '~/code/form/action/disassemble/jvm',
   outputRequired: false,
   common: {
-    level: {
-      like: 'string',
-      need: false,
-      take: ['public', 'protected', 'package', 'private'],
-    },
+    level: { like: 'disassemble_jvm_level', need: false },
     verbose: { like: 'boolean', need: false },
     constants: { like: 'boolean', need: false },
     lineNumbers: { like: 'boolean', need: false },

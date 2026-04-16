@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+import { DecryptFileToolParser } from '~/code/form/action/decrypt/file/shared/take'
 import {
   FileContentWithSha256Parser,
   FileInputPathParser,
@@ -17,7 +18,7 @@ export const DecryptFileNodeClientInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => DecryptFileToolParser)),
   passphrase: z.optional(z.string()),
   identity: z.optional(z.string()),
   cipher: z.optional(z.string()),
@@ -35,7 +36,7 @@ export const DecryptFileNodeExternalInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => DecryptFileToolParser)),
   passphrase: z.optional(z.string()),
   identity: z.optional(z.string()),
   cipher: z.optional(z.string()),
@@ -66,7 +67,7 @@ export const DecryptFileNodeLocalExternalInputParser = z.object({
   output: z.object({
     file: z.optional(z.lazy(() => LocalOutputPathParser)),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => DecryptFileToolParser)),
   passphrase: z.optional(z.string()),
   identity: z.optional(z.string()),
   cipher: z.optional(z.string()),
@@ -83,7 +84,7 @@ export const DecryptFileNodeLocalInputParser = z.object({
   output: z.object({
     file: z.lazy(() => LocalPathParser),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => DecryptFileToolParser)),
   passphrase: z.optional(z.string()),
   identity: z.optional(z.string()),
   cipher: z.optional(z.string()),
@@ -104,7 +105,7 @@ export const DecryptFileNodeLocalInternalInputParser = z.object({
   output: z.object({
     file: z.lazy(() => LocalOutputPathParser),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => DecryptFileToolParser)),
   passphrase: z.optional(z.string()),
   identity: z.optional(z.string()),
   cipher: z.optional(z.string()),
@@ -133,7 +134,7 @@ export const DecryptFileNodeRemoteInputParser = z.object({
   output: z.object({
     file: z.optional(z.lazy(() => LocalOutputPathParser)),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => DecryptFileToolParser)),
   passphrase: z.optional(z.string()),
   identity: z.optional(z.string()),
   cipher: z.optional(z.string()),

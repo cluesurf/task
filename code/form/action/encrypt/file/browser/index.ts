@@ -1,3 +1,4 @@
+import { EncryptFileTool } from '~/code/form/action/encrypt/file/shared'
 import {
   FileContent,
   FileContentWithSha256,
@@ -13,7 +14,7 @@ export type EncryptFileBrowserLocalInput = {
       content: FileContent
     }
   }
-  tool?: string
+  tool?: EncryptFileTool
   passphrase?: string
   recipients?: Array<string>
   cipher?: string
@@ -27,7 +28,7 @@ export type EncryptFileBrowserRemoteInput = {
   input: {
     file: FileContentWithSha256
   }
-  tool?: string
+  tool?: EncryptFileTool
   passphrase?: string
   recipients?: Array<string>
   cipher?: string

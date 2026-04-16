@@ -4,21 +4,11 @@
 // target triple = "arm64-apple-macosx14.0.0"
 
 import { getConfig } from '~/code/tool/shared/config'
-import {
-  CompileCCommandInput,
-} from '~/code/form/action/compile/code/c/cli'
-import {
-  CompileCppCommandInput,
-} from '~/code/form/action/compile/code/cpp/cli'
-import {
-  CompileLlvmIrToAssembly,
-} from '~/code/form/action/compile/code/llvm-ir'
-import {
-  CompileRustCommandInput,
-} from '~/code/form/action/compile/code/rust/cli'
-import {
-  CompileSwiftCommandInput,
-} from '~/code/form/action/compile/code/swift/cli'// @.str = private unnamed_addr constant [14 x i8] c"Hello, World!\00", align 1
+import { CompileCCommandInput } from '~/code/form/action/compile/code/c/cli'
+import { CompileCppCommandInput } from '~/code/form/action/compile/code/cpp/cli'
+import { CompileLlvmIrToAssembly } from '~/code/form/action/compile/code/llvm-ir'
+import { CompileRustCommandInput } from '~/code/form/action/compile/code/rust/cli'
+import { CompileSwiftCommandInput } from '~/code/form/action/compile/code/swift/cli' // @.str = private unnamed_addr constant [14 x i8] c"Hello, World!\00", align 1
 export async function buildCommandToCompileC(
   input: CompileCCommandInput,
 ): Promise<{ bin: string; args: string[] }> {
@@ -45,11 +35,7 @@ export async function buildCommandToCompileC(
     args.push(`-ffast-math`)
   }
 
-  args.push(
-    `-o`,
-    input.output.file!.path,
-    input.input.file.path,
-  )
+  args.push(`-o`, input.output.file.path, input.input.file.path)
 
   return { bin, args }
 }
@@ -80,11 +66,7 @@ export async function buildCommandToCompileCpp(
     args.push(`-ffast-math`)
   }
 
-  args.push(
-    `-o`,
-    input.output.file!.path,
-    input.input.file.path,
-  )
+  args.push(`-o`, input.output.file.path, input.input.file.path)
 
   return { bin, args }
 }
@@ -101,11 +83,7 @@ export function buildCommandToCompileSwift(
     args.push(`-emit-ir`)
   }
 
-  args.push(
-    input.input.file.path,
-    '-o',
-    input.output.file!.path,
-  )
+  args.push(input.input.file.path, '-o', input.output.file.path)
 
   return { bin, args }
 }
@@ -142,11 +120,7 @@ export function buildCommandToCompileRust(
   args.push(`--color`, `always`)
   args.push(`--diagnostic-width`, String(92))
 
-  args.push(
-    input.input.file.path,
-    '-o',
-    input.output.file!.path,
-  )
+  args.push(input.input.file.path, '-o', input.output.file.path)
 
   return { bin, args }
 }
@@ -166,7 +140,7 @@ export function buildCommandToCompileLlvmIrToAssembly(
     `--x86-asm-syntax=${input.output.syntax}`,
     `-march=${architectureKey}`,
     `-o`,
-    input.output.file!.path,
+    input.output.file.path,
     input.input.file.path,
   ]
 

@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+import { EncryptFileToolParser } from '~/code/form/action/encrypt/file/shared/take'
 import {
   FileContentWithSha256Parser,
   FileInputPathParser,
@@ -17,7 +18,7 @@ export const EncryptFileNodeClientInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => EncryptFileToolParser)),
   passphrase: z.optional(z.string()),
   recipients: z.optional(z.array(z.string())),
   cipher: z.optional(z.string()),
@@ -36,7 +37,7 @@ export const EncryptFileNodeExternalInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => EncryptFileToolParser)),
   passphrase: z.optional(z.string()),
   recipients: z.optional(z.array(z.string())),
   cipher: z.optional(z.string()),
@@ -68,7 +69,7 @@ export const EncryptFileNodeLocalExternalInputParser = z.object({
   output: z.object({
     file: z.optional(z.lazy(() => LocalOutputPathParser)),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => EncryptFileToolParser)),
   passphrase: z.optional(z.string()),
   recipients: z.optional(z.array(z.string())),
   cipher: z.optional(z.string()),
@@ -86,7 +87,7 @@ export const EncryptFileNodeLocalInputParser = z.object({
   output: z.object({
     file: z.lazy(() => LocalPathParser),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => EncryptFileToolParser)),
   passphrase: z.optional(z.string()),
   recipients: z.optional(z.array(z.string())),
   cipher: z.optional(z.string()),
@@ -108,7 +109,7 @@ export const EncryptFileNodeLocalInternalInputParser = z.object({
   output: z.object({
     file: z.lazy(() => LocalOutputPathParser),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => EncryptFileToolParser)),
   passphrase: z.optional(z.string()),
   recipients: z.optional(z.array(z.string())),
   cipher: z.optional(z.string()),
@@ -138,7 +139,7 @@ export const EncryptFileNodeRemoteInputParser = z.object({
   output: z.object({
     file: z.optional(z.lazy(() => LocalOutputPathParser)),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => EncryptFileToolParser)),
   passphrase: z.optional(z.string()),
   recipients: z.optional(z.array(z.string())),
   cipher: z.optional(z.string()),

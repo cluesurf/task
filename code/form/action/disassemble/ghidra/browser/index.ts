@@ -1,3 +1,4 @@
+import { DisassembleGhidraProfile } from '~/code/form/action/disassemble/ghidra/shared'
 import {
   FileContent,
   FileContentWithSha256,
@@ -13,7 +14,7 @@ export type DisassembleGhidraBrowserLocalInput = {
       content: FileContent
     }
   }
-  profile?: string
+  profile?: DisassembleGhidraProfile
   script?: string
   ghidraHome?: string
   projectDir?: string
@@ -30,7 +31,7 @@ export type DisassembleGhidraBrowserRemoteInput = {
   input: {
     file: FileContentWithSha256
   }
-  profile?: string
+  profile?: DisassembleGhidraProfile
   script?: string
   ghidraHome?: string
   projectDir?: string

@@ -1,3 +1,4 @@
+import { DecryptFileTool } from '~/code/form/action/decrypt/file/shared'
 import {
   FileContentWithSha256,
   FileInputPath,
@@ -12,7 +13,7 @@ export type DecryptFileNodeClientInput = {
   input: {
     file: FileInputPath | FileContentWithSha256
   }
-  tool?: string
+  tool?: DecryptFileTool
   passphrase?: string
   identity?: string
   cipher?: string
@@ -22,7 +23,7 @@ export type DecryptFileNodeExternalInput = {
   input: {
     file: RemoteInputPath | FileContentWithSha256
   }
-  tool?: string
+  tool?: DecryptFileTool
   passphrase?: string
   identity?: string
   cipher?: string
@@ -39,7 +40,7 @@ export type DecryptFileNodeLocalExternalInput = {
   output: {
     file?: LocalOutputPath
   }
-  tool?: string
+  tool?: DecryptFileTool
   passphrase?: string
   identity?: string
   cipher?: string
@@ -51,7 +52,7 @@ export type DecryptFileNodeLocalInput = {
   output: {
     file: LocalPath
   }
-  tool?: string
+  tool?: DecryptFileTool
   passphrase?: string
   identity?: string
   cipher?: string
@@ -64,7 +65,7 @@ export type DecryptFileNodeLocalInternalInput = {
   output: {
     file: LocalOutputPath
   }
-  tool?: string
+  tool?: DecryptFileTool
   passphrase?: string
   identity?: string
   cipher?: string
@@ -80,7 +81,7 @@ export type DecryptFileNodeRemoteInput = {
   output: {
     file?: LocalOutputPath
   }
-  tool?: string
+  tool?: DecryptFileTool
   passphrase?: string
   identity?: string
   cipher?: string

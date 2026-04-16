@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+import { DisassembleGhidraProfileParser } from '~/code/form/action/disassemble/ghidra/shared/take'
 import {
   FileContentParser,
   FileContentWithSha256Parser,
@@ -21,7 +22,7 @@ export const DisassembleGhidraBrowserLocalInputParser = z.object({
       content: z.lazy(() => FileContentParser),
     }),
   }),
-  profile: z.optional(z.string()),
+  profile: z.optional(z.lazy(() => DisassembleGhidraProfileParser)),
   script: z.optional(z.string()),
   ghidraHome: z.optional(z.string()),
   projectDir: z.optional(z.string()),
@@ -48,7 +49,7 @@ export const DisassembleGhidraBrowserRemoteInputParser = z.object({
   input: z.object({
     file: z.lazy(() => FileContentWithSha256Parser),
   }),
-  profile: z.optional(z.string()),
+  profile: z.optional(z.lazy(() => DisassembleGhidraProfileParser)),
   script: z.optional(z.string()),
   ghidraHome: z.optional(z.string()),
   projectDir: z.optional(z.string()),

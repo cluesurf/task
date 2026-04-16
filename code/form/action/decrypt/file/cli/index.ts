@@ -1,3 +1,5 @@
+import { DecryptFileTool } from '~/code/form/action/decrypt/file/shared'
+
 export type DecryptFileCommandInput = {
   input: {
     file: {
@@ -9,7 +11,7 @@ export type DecryptFileCommandInput = {
       path: string
     }
   }
-  tool?: string
+  tool?: DecryptFileTool
   passphrase?: string
   identity?: string
   cipher?: string

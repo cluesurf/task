@@ -1,3 +1,4 @@
+import { DisassembleJvmLevel } from '~/code/form/action/disassemble/jvm/shared'
 import {
   FileContent,
   FileContentWithSha256,
@@ -13,7 +14,7 @@ export type DisassembleJvmBrowserLocalInput = {
       content: FileContent
     }
   }
-  level?: string
+  level?: DisassembleJvmLevel
   verbose?: boolean
   constants?: boolean
   lineNumbers?: boolean
@@ -28,7 +29,7 @@ export type DisassembleJvmBrowserRemoteInput = {
   input: {
     file: FileContentWithSha256
   }
-  level?: string
+  level?: DisassembleJvmLevel
   verbose?: boolean
   constants?: boolean
   lineNumbers?: boolean

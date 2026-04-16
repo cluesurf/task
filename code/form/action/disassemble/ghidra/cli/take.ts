@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { DisassembleGhidraProfileParser } from '~/code/form/action/disassemble/ghidra/shared/take'
+
 export const DisassembleGhidraCommandInputParser = z.object({
   input: z.object({
     file: z.object({
@@ -15,7 +17,7 @@ export const DisassembleGhidraCommandInputParser = z.object({
       ),
     }),
   ),
-  profile: z.optional(z.string()),
+  profile: z.optional(z.lazy(() => DisassembleGhidraProfileParser)),
   script: z.optional(z.string()),
   ghidraHome: z.optional(z.string()),
   projectDir: z.optional(z.string()),

@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { EncryptFileToolParser } from '~/code/form/action/encrypt/file/shared/take'
+
 export const EncryptFileCommandInputParser = z.object({
   input: z.object({
     file: z.object({
@@ -11,7 +13,7 @@ export const EncryptFileCommandInputParser = z.object({
       path: z.string(),
     }),
   }),
-  tool: z.optional(z.string()),
+  tool: z.optional(z.lazy(() => EncryptFileToolParser)),
   passphrase: z.optional(z.string()),
   recipients: z.optional(z.array(z.string())),
   cipher: z.optional(z.string()),

@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+import { DisassembleJvmLevelParser } from '~/code/form/action/disassemble/jvm/shared/take'
 import {
   FileContentWithSha256Parser,
   FileInputPathParser,
@@ -17,7 +18,7 @@ export const DisassembleJvmNodeClientInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  level: z.optional(z.string()),
+  level: z.optional(z.lazy(() => DisassembleJvmLevelParser)),
   verbose: z.optional(z.boolean()),
   constants: z.optional(z.boolean()),
   lineNumbers: z.optional(z.boolean()),
@@ -37,7 +38,7 @@ export const DisassembleJvmNodeExternalInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  level: z.optional(z.string()),
+  level: z.optional(z.lazy(() => DisassembleJvmLevelParser)),
   verbose: z.optional(z.boolean()),
   constants: z.optional(z.boolean()),
   lineNumbers: z.optional(z.boolean()),
@@ -70,7 +71,7 @@ export const DisassembleJvmNodeLocalExternalInputParser = z.object({
   output: z.object({
     file: z.optional(z.lazy(() => LocalOutputPathParser)),
   }),
-  level: z.optional(z.string()),
+  level: z.optional(z.lazy(() => DisassembleJvmLevelParser)),
   verbose: z.optional(z.boolean()),
   constants: z.optional(z.boolean()),
   lineNumbers: z.optional(z.boolean()),
@@ -91,7 +92,7 @@ export const DisassembleJvmNodeLocalInputParser = z.object({
       file: z.optional(z.lazy(() => LocalPathParser)),
     }),
   ),
-  level: z.optional(z.string()),
+  level: z.optional(z.lazy(() => DisassembleJvmLevelParser)),
   verbose: z.optional(z.boolean()),
   constants: z.optional(z.boolean()),
   lineNumbers: z.optional(z.boolean()),
@@ -116,7 +117,7 @@ export const DisassembleJvmNodeLocalInternalInputParser = z.object({
       file: z.optional(z.lazy(() => LocalOutputPathParser)),
     }),
   ),
-  level: z.optional(z.string()),
+  level: z.optional(z.lazy(() => DisassembleJvmLevelParser)),
   verbose: z.optional(z.boolean()),
   constants: z.optional(z.boolean()),
   lineNumbers: z.optional(z.boolean()),
@@ -147,7 +148,7 @@ export const DisassembleJvmNodeRemoteInputParser = z.object({
   output: z.object({
     file: z.optional(z.lazy(() => LocalOutputPathParser)),
   }),
-  level: z.optional(z.string()),
+  level: z.optional(z.lazy(() => DisassembleJvmLevelParser)),
   verbose: z.optional(z.boolean()),
   constants: z.optional(z.boolean()),
   lineNumbers: z.optional(z.boolean()),

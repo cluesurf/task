@@ -1,3 +1,5 @@
+import { DisassembleJvmLevel } from '~/code/form/action/disassemble/jvm/shared'
+
 export type DisassembleJvmCommandInput = {
   input: {
     file: {
@@ -9,7 +11,7 @@ export type DisassembleJvmCommandInput = {
       path?: string
     }
   }
-  level?: string
+  level?: DisassembleJvmLevel
   verbose?: boolean
   constants?: boolean
   lineNumbers?: boolean

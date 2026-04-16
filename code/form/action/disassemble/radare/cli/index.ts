@@ -1,3 +1,8 @@
+import {
+  DisassembleRadareProfile,
+  DisassembleRadareTool,
+} from '~/code/form/action/disassemble/radare/shared'
+
 export type DisassembleRadareCommandInput = {
   input: {
     file: {
@@ -9,8 +14,8 @@ export type DisassembleRadareCommandInput = {
       path?: string
     }
   }
-  tool?: string
+  tool?: DisassembleRadareTool
   script?: string
-  profile?: string
+  profile?: DisassembleRadareProfile
   commands?: Array<string>
 }

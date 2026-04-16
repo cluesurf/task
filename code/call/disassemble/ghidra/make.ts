@@ -1,15 +1,18 @@
+import type { List } from '@cluesurf/form'
 import { buildSingleFileForms } from '~/code/tool/shared/make'
+
+export const disassemble_ghidra_profile: List = {
+  form: 'list',
+  save: '~/code/form/action/disassemble/ghidra/shared',
+  list: ['functions', 'calls', 'imports', 'exports', 'strings'],
+}
 
 const disassemble_ghidra_forms = buildSingleFileForms({
   name: 'disassemble_ghidra',
   save: '~/code/form/action/disassemble/ghidra',
   outputRequired: false,
   common: {
-    profile: {
-      like: 'string',
-      need: false,
-      take: ['functions', 'calls', 'imports', 'exports', 'strings'],
-    },
+    profile: { like: 'disassemble_ghidra_profile', need: false },
     script: { like: 'string', need: false },
     ghidraHome: { like: 'string', need: false },
     projectDir: { like: 'string', need: false },

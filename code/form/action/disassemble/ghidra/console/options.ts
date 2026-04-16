@@ -32,7 +32,7 @@ export const options: CliOption[] = [
       "profile"
     ],
     "long": "profile",
-    "like": "string",
+    "like": "disassemble_ghidra_profile",
     "list": false,
     "need": false
   },

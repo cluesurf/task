@@ -32,7 +32,7 @@ export const options: CliOption[] = [
       "tool"
     ],
     "long": "tool",
-    "like": "string",
+    "like": "decrypt_file_tool",
     "list": false,
     "need": false,
     "note": "Backend (default: inferred from input extension)"
