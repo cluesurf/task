@@ -1,11 +1,10 @@
 /**
  * Execute data-conversion actions by shelling out to the
- * `duckdb` CLI via the shared `runCommandSequence` runner.
- * The command sequences themselves are assembled in
+ * `duckdb` CLI via `spawnAndWait`. The command builders are in
  * `./command.ts`.
  */
 
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import {
   buildCommandToConvertJsonlToParquet,
   buildCommandToConvertParquetToJsonl,
@@ -17,12 +16,24 @@ import {
 export async function convertParquetFileToJsonl(
   input: BuildParquetToJsonlInput,
 ): Promise<void> {
-  await runCommandSequence(buildCommandToConvertParquetToJsonl(input))
+  const command = buildCommandToConvertParquetToJsonl(input)
+  await spawnAndWait({
+    verb: 'convert parquet to jsonl',
+    bin: command.bin,
+    args: command.args,
+  })
 }
 
 /** Convert a JSONL file to parquet with optional explicit columns. */
 export async function convertJsonlFileToParquet(
   input: BuildJsonlToParquetInput,
 ): Promise<void> {
-  await runCommandSequence(buildCommandToConvertJsonlToParquet(input))
+  const command = buildCommandToConvertJsonlToParquet(input)
+  await spawnAndWait({
+    verb: 'convert jsonl to parquet',
+    bin: command.bin,
+    args: command.args,
+  })
 }
+
+export default convertParquetFileToJsonl

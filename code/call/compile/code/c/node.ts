@@ -21,7 +21,7 @@ import { buildRequestToCompile } from '~/code/call/compile/code/shared'
 import { resolveWorkFileNode } from '~/code/tool/node/request'
 import { NativeOptions } from '~/code/tool/shared/request'
 
-export async function compileCNode(
+async function compileCNode(
   source: CompileCNodeInput,
   native?: NativeOptions,
 ) {
@@ -53,7 +53,7 @@ async function compileCNodeLocalInternal(
   return await compileCNodeLocal(input, native)
 }
 
-export async function compileCNodeRemote(
+async function compileCNodeRemote(
   source: CompileCNodeRemoteInput,
   native,
 ) {
@@ -72,7 +72,7 @@ export async function compileCNodeRemote(
   }
 }
 
-export async function compileCNodeLocal(input, native?: NativeOptions) {
+async function compileCNodeLocal(input, native?: NativeOptions) {
   const localInput = CompileCNodeLocalInputParser.parse(input)
 
   const sequence = await buildCommandToCompileC(localInput)
@@ -85,3 +85,6 @@ export async function compileCNodeLocal(input, native?: NativeOptions) {
     },
   }
 }
+
+export default compileCNode
+export { compileCNode }

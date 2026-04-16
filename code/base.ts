@@ -121,5 +121,7 @@ export * from '~/code/call/get/duration/base'
 export * from '~/code/call/modify/pdf/base'
 export * from '~/code/call/resize/video/base'
 export * from '~/code/call/split/audio/base'
+export * from '~/code/call/split/base'
+export * from '~/code/call/merge/base'
 
 export * from '~/code/form/code'

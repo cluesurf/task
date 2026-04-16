@@ -7,7 +7,7 @@
  *   3. eyeD3 writes UTF-16 lyrics for Apple Music compatibility.
  *
  * Steps 2 + 3 only run when `lyrics` is provided. ffmpeg always
- * runs (even if every metadata field is absent — the user got
+ * runs (even if every metadata field is absent. The user got
  * us here intentionally; let them pass through with cover-only).
  *
  * Same path can be used for input + output: the function writes
@@ -17,12 +17,12 @@
 import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
-import { runCommandSequence } from '~/code/tool/node/command'
 import { ensureParentDir } from '~/code/tool/node/file'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import {
-  buildEyeD3LyricsCommand,
-  buildFfmpegMetadataCommand,
-  buildId3v2RemoveLyricsCommand,
+  buildCommandToAddLyricsWithEyeD3,
+  buildCommandToRemoveLyricsWithId3v2,
+  buildCommandToSetMetadataWithFfmpeg,
 } from './command'
 
 export type SetMetadataNodeInput = {
@@ -65,25 +65,28 @@ export async function setMetadataNode(
 
   await ensureParentDir(tmpOut)
 
-  await runCommandSequence(
-    buildFfmpegMetadataCommand({
-      input: inputPath,
-      output: tmpOut,
-      cover: source.cover?.file.path,
-      title: source.title,
-      artist: source.artist,
-      album: source.album,
-      albumArtist: source.albumArtist,
-      composer: source.composer,
-      track: source.track,
-      disc: source.disc,
-      genre: source.genre,
-      year: source.year,
-      publisher: source.publisher,
-      website: source.website,
-      comment: source.comment,
-    }),
-  )
+  const ffmpegCmd = buildCommandToSetMetadataWithFfmpeg({
+    input: inputPath,
+    output: tmpOut,
+    cover: source.cover?.file.path,
+    title: source.title,
+    artist: source.artist,
+    album: source.album,
+    albumArtist: source.albumArtist,
+    composer: source.composer,
+    track: source.track,
+    disc: source.disc,
+    genre: source.genre,
+    year: source.year,
+    publisher: source.publisher,
+    website: source.website,
+    comment: source.comment,
+  })
+  await spawnAndWait({
+    verb: 'set metadata',
+    bin: ffmpegCmd.bin,
+    args: ffmpegCmd.args,
+  })
 
   if (samePath) {
     await fs.rename(tmpOut, outputPath)
@@ -92,18 +95,26 @@ export async function setMetadataNode(
   let clearedLyrics = false
   let addedLyrics = false
   if (source.lyrics?.file?.path) {
-    await runCommandSequence(
-      buildId3v2RemoveLyricsCommand({ input: outputPath }),
-    )
+    const clearCmd = buildCommandToRemoveLyricsWithId3v2({
+      inputPath: outputPath,
+    })
+    await spawnAndWait({
+      verb: 'set metadata (clear lyrics)',
+      bin: clearCmd.bin,
+      args: clearCmd.args,
+    })
     clearedLyrics = true
 
-    await runCommandSequence(
-      buildEyeD3LyricsCommand({
-        input: outputPath,
-        lyricsFile: source.lyrics.file.path,
-        language: source.lyrics.language ?? 'eng',
-      }),
-    )
+    const lyricsCmd = buildCommandToAddLyricsWithEyeD3({
+      inputPath: outputPath,
+      lyricsFile: source.lyrics.file.path,
+      language: source.lyrics.language ?? 'eng',
+    })
+    await spawnAndWait({
+      verb: 'set metadata (add lyrics)',
+      bin: lyricsCmd.bin,
+      args: lyricsCmd.args,
+    })
     addedLyrics = true
   }
 
@@ -116,3 +127,5 @@ export async function setMetadataNode(
     },
   }
 }
+
+export default setMetadataNode

@@ -6,9 +6,12 @@ export type DiffManifestNodeInput = {
   context?: string
 }
 
-export async function diffManifestNode(source: DiffManifestNodeInput): Promise<number> {
+async function diffManifestNode(source: DiffManifestNodeInput): Promise<number> {
   return diffManifest(source.path, {
     namespace: source.namespace,
     context: source.context,
   })
 }
+
+export default diffManifestNode
+export { diffManifestNode }

@@ -1,17 +1,12 @@
 /**
- * `task resize video` — ffmpeg `scale` filter. Using `-2` for an
+ * `task resize video` -- ffmpeg `scale` filter. Using `-2` for an
  * omitted dimension preserves aspect ratio while keeping the
  * kept dimension divisible by 2 (required by H.264).
  */
 
-import fs from 'node:fs/promises'
-import path from 'node:path'
 import { ensureParentDir } from '~/code/tool/node/file'
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { buildCommandToResizeVideo } from './command'
 
 export type ResizeVideoNodeInput = {
   input: { file: { path: string } }
@@ -27,12 +22,18 @@ export async function resizeVideoNode(source: ResizeVideoNodeInput) {
   const outputPath = source.output.file.path
   await ensureParentDir(outputPath)
 
-  const w = source.width ?? -2
-  const h = source.height ?? -2
-  const filter = `scale=${w}:${h}`
-
-  const cmd = getCommand('ffmpeg')
-  cmd.link.push('-y', '-i', source.input.file.path, '-vf', filter, outputPath)
-  await runCommandSequence(buildCommandSequence(cmd))
+  const command = buildCommandToResizeVideo({
+    inputPath: source.input.file.path,
+    outputPath,
+    width: source.width,
+    height: source.height,
+  })
+  await spawnAndWait({
+    verb: 'resize video',
+    bin: command.bin,
+    args: command.args,
+  })
   return { file: { path: outputPath } }
 }
+
+export default resizeVideoNode

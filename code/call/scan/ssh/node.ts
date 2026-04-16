@@ -1,13 +1,19 @@
-import { exec } from '~/code/tool/node/process'
+import { spawnAndCapture } from '~/code/tool/node/spawn'
 import { getLoggingStyle } from '~/code/tool/node/log'
+import { buildCommandToScanSsh } from './command'
 
 export type ScanSshNodeInput = { host: string; type?: string }
 
-export async function scanSshNode(input: ScanSshNodeInput) {
-  const args = ['ssh-keyscan']
-  if (input.type) args.push('-t', input.type)
-  args.push(input.host)
-  const { stdout } = await exec(args)
+async function scanSshNode(input: ScanSshNodeInput) {
+  const command = buildCommandToScanSsh({
+    host: input.host,
+    type: input.type,
+  })
+  const stdout = await spawnAndCapture({
+    verb: 'scan ssh',
+    bin: command.bin,
+    args: command.args,
+  })
 
   const style = getLoggingStyle()
   if (style === 'pretty' || style === 'text') {
@@ -15,3 +21,6 @@ export async function scanSshNode(input: ScanSshNodeInput) {
   }
   return { host: input.host, keys: stdout.trim().split('\n').filter(Boolean) }
 }
+
+export default scanSshNode
+export { scanSshNode }

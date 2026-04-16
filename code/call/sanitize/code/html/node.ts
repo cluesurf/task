@@ -34,7 +34,7 @@ function getSanitizer() {
   return purify
 }
 
-export async function sanitizeHtmlNode(
+async function sanitizeHtmlNode(
   source: SanitizeHtmlNodeInput,
   native?: NativeOptions,
 ) {
@@ -70,7 +70,7 @@ async function sanitizeHtmlNodeLocalInternal(
   return await sanitizeHtmlNodeLocal(input)
 }
 
-export async function sanitizeHtmlNodeRemote(
+async function sanitizeHtmlNodeRemote(
   source: SanitizeHtmlNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -89,7 +89,7 @@ export async function sanitizeHtmlNodeRemote(
   })
 }
 
-export async function sanitizeHtmlNodeLocal(
+async function sanitizeHtmlNodeLocal(
   input,
   native?: NativeOptions,
 ) {
@@ -115,3 +115,6 @@ export function testSanitizeHtmlNode(
 ): input is SanitizeHtmlNodeInput {
   return testSanitize(input)
 }
+
+export default sanitizeHtmlNode
+export { sanitizeHtmlNode }

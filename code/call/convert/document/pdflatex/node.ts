@@ -23,7 +23,7 @@ import { resolveWorkFileNode } from '~/code/tool/node/request'
 import path from 'path'
 import { NativeOptions } from '~/code/tool/shared/request'
 
-export async function convertLatexWithPdfLatexNode(
+async function convertLatexWithPdfLatexNode(
   source: ConvertLatexWithPdfLatexNodeInput,
   native?: NativeOptions,
 ) {
@@ -61,7 +61,7 @@ async function convertLatexWithPdfLatexNodeLocalInternal(
   return await convertLatexWithPdfLatexNodeLocal(input, native)
 }
 
-export async function convertLatexWithPdfLatexNodeRemote(
+async function convertLatexWithPdfLatexNodeRemote(
   source: ConvertLatexWithPdfLatexNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -81,7 +81,7 @@ export async function convertLatexWithPdfLatexNodeRemote(
   })
 }
 
-export async function convertLatexWithPdfLatexNodeLocal(
+async function convertLatexWithPdfLatexNodeLocal(
   input,
   native?: NativeOptions,
 ) {
@@ -104,3 +104,6 @@ export async function convertLatexWithPdfLatexNodeLocal(
     },
   })
 }
+
+export default convertLatexWithPdfLatexNode
+export { convertLatexWithPdfLatexNode }

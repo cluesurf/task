@@ -10,7 +10,7 @@ export type CheckFileNodeOutput = {
   size: number
 }
 
-export async function checkFileNode(
+async function checkFileNode(
   source: CheckFileNodeInput,
 ): Promise<CheckFileNodeOutput> {
   const inputPath = source.input.file.path
@@ -25,3 +25,6 @@ export async function checkFileNode(
     throw new Error(`check file: "${inputPath}" does not exist or is not readable`)
   }
 }
+
+export default checkFileNode
+export { checkFileNode }

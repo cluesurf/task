@@ -18,7 +18,7 @@ import type {
   ConvertParquetNodeOutput,
 } from '~/code/form/action/convert/parquet/node'
 
-export async function convertParquetNode(
+async function convertParquetNode(
   input: ConvertParquetNodeLocalInternalInput,
 ): Promise<ConvertParquetNodeOutput> {
   const result: ConvertParquetNodeOutput = {
@@ -103,3 +103,6 @@ function walk(dir: string, onFile: (abs: string) => void): void {
     }
   }
 }
+
+export default convertParquetNode
+export { convertParquetNode }

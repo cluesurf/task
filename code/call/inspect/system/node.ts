@@ -3,7 +3,7 @@ import omit from 'lodash/omit'
 
 export type InspectSystemNodeInput = { show?: string }
 
-export async function inspectSystemNode(_input: InspectSystemNodeInput = {}) {
+async function inspectSystemNode(_input: InspectSystemNodeInput = {}) {
   return await inspectBasicSystem()
 }
 
@@ -38,3 +38,6 @@ export async function inspectBasicSystem() {
   ])
   return { os, system, cpu }
 }
+
+export default inspectSystemNode
+export { inspectSystemNode }

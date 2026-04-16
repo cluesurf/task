@@ -10,7 +10,7 @@ const DIM: Tint = { tone: 'white' }
 
 export type DetectBidiNodeInput = { file: string }
 
-export async function detectBidiNode(input: DetectBidiNodeInput) {
+async function detectBidiNode(input: DetectBidiNodeInput) {
   const text = await fs.readFile(input.file, 'utf8')
   const hits = detectBidi(text)
 
@@ -38,3 +38,6 @@ export async function detectBidiNode(input: DetectBidiNodeInput) {
   }
   return { hits, clean: hits.length === 0 }
 }
+
+export default detectBidiNode
+export { detectBidiNode }

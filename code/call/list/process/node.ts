@@ -41,7 +41,7 @@ export type ListProcessNodeInput = {
   page: number
 }
 
-export async function listProcessNode(input: ListProcessNodeInput) {
+async function listProcessNode(input: ListProcessNodeInput) {
   const all = await listProcesses()
 
   // --port short-circuits everything else — caller wants "who owns
@@ -349,3 +349,6 @@ function pickColumns(
   const cols = tokens.filter(isProcessColumn)
   return cols.length > 0 ? cols : fallback
 }
+
+export default listProcessNode
+export { listProcessNode }

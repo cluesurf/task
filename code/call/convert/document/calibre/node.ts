@@ -22,7 +22,7 @@ import { buildRequestToConvert } from '../../shared'
 import { resolveWorkFileNode } from '~/code/tool/node/request'
 import { NativeOptions } from '~/code/tool/shared/request'
 
-export async function convertDocumentWithCalibreNode(
+async function convertDocumentWithCalibreNode(
   source: ConvertDocumentWithCalibreNodeInput,
   native?: NativeOptions,
 ) {
@@ -61,7 +61,7 @@ async function convertDocumentWithCalibreNodeLocalInternal(
   return await convertDocumentWithCalibreNodeLocal(input, native)
 }
 
-export async function convertDocumentWithCalibreNodeRemote(
+async function convertDocumentWithCalibreNodeRemote(
   source: ConvertDocumentWithCalibreNodeRemoteInput,
   native,
 ) {
@@ -81,7 +81,7 @@ export async function convertDocumentWithCalibreNodeRemote(
   })
 }
 
-export async function convertDocumentWithCalibreNodeLocal(
+async function convertDocumentWithCalibreNodeLocal(
   input,
   native?: NativeOptions,
 ) {
@@ -99,3 +99,6 @@ export async function convertDocumentWithCalibreNodeLocal(
     },
   })
 }
+
+export default convertDocumentWithCalibreNode
+export { convertDocumentWithCalibreNode }

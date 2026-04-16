@@ -24,7 +24,7 @@ import {
 export type { FetchNodeInput, FetchNodeOutput }
 export { testFetchNode }
 
-export async function fetchNode(
+async function fetchNode(
   source: FetchNodeInput,
 ): Promise<FetchNodeOutput> {
   const input = parseFetchNode(source)
@@ -74,3 +74,6 @@ function resolveLikelyPath(
     (path.basename(new URL(url).pathname) || 'index.html')
   return path.resolve(input.into ?? '.', name)
 }
+
+export default fetchNode
+export { fetchNode }

@@ -9,7 +9,7 @@ const DIM: Tint = { tone: 'white' }
 
 export type TraceRouteNodeInput = { host: string; maxHops: number }
 
-export async function traceRouteNode(input: TraceRouteNodeInput) {
+async function traceRouteNode(input: TraceRouteNodeInput) {
   const hops = await tracerouteHost(input.host, input.maxHops)
 
   const style = getLoggingStyle()
@@ -39,3 +39,6 @@ export async function traceRouteNode(input: TraceRouteNodeInput) {
 
   return { host: input.host, hops }
 }
+
+export default traceRouteNode
+export { traceRouteNode }

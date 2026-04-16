@@ -22,7 +22,7 @@ import { buildRequestToConvert } from '../../shared'
 import { resolveWorkFileNode } from '~/code/tool/node/request'
 import { NativeOptions } from '~/code/tool/shared/request'
 
-export async function convertDocumentWithPandocNode(
+async function convertDocumentWithPandocNode(
   source: ConvertDocumentWithPandocNodeInput,
   native?: NativeOptions,
 ) {
@@ -60,7 +60,7 @@ async function convertDocumentWithPandocNodeLocalInternal(
   return await convertDocumentWithPandocNodeLocal(input, native)
 }
 
-export async function convertDocumentWithPandocNodeRemote(
+async function convertDocumentWithPandocNodeRemote(
   source: ConvertDocumentWithPandocNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -80,7 +80,7 @@ export async function convertDocumentWithPandocNodeRemote(
   })
 }
 
-export async function convertDocumentWithPandocNodeLocal(
+async function convertDocumentWithPandocNodeLocal(
   input,
   native?: NativeOptions,
 ) {
@@ -98,3 +98,6 @@ export async function convertDocumentWithPandocNodeLocal(
     },
   })
 }
+
+export default convertDocumentWithPandocNode
+export { convertDocumentWithPandocNode }

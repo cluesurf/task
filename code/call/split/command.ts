@@ -6,21 +6,18 @@
  *   qpdf --empty --pages input.pdf 1-3,5,7-9 -- out.pdf
  */
 
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-
-export function buildQpdfExtractCommand({
-  input,
-  output,
-  pages,
-}: {
-  input: string
-  output: string
+export function buildCommandToSplit(input: {
+  inputPath: string
+  outputPath: string
   pages: string
-}) {
-  const cmd = getCommand('qpdf')
-  cmd.link.push('--empty', '--pages', input, pages, '--', output)
-  return buildCommandSequence(cmd)
+}): { bin: 'qpdf'; args: string[] } {
+  const args = [
+    '--empty',
+    '--pages',
+    input.inputPath,
+    input.pages,
+    '--',
+    input.outputPath,
+  ]
+  return { bin: 'qpdf', args }
 }

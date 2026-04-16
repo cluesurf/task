@@ -39,7 +39,7 @@ import { arrayBufferToString } from '~/code/tool/shared/string'
 import merge from 'lodash/merge'
 import { NativeOptions } from '~/code/tool/shared/request'
 
-export async function convertTxtWithPuppeteerNode(
+async function convertTxtWithPuppeteerNode(
   source: ConvertTxtWithPuppeteerNodeInput,
   native?: NativeOptions,
 ) {
@@ -79,7 +79,7 @@ async function convertTxtWithPuppeteerNodeLocalInternal(
   return await convertTxtWithPuppeteerNodeLocal(input, native)
 }
 
-export async function convertTxtWithPuppeteerNodeRemote(
+async function convertTxtWithPuppeteerNodeRemote(
   source: ConvertTxtWithPuppeteerNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -211,7 +211,7 @@ function marginStyleToCSS(margin) {
   return css
 }
 
-export async function convertTxtWithPuppeteerNodeLocal(
+async function convertTxtWithPuppeteerNodeLocal(
   source,
   native?: NativeOptions,
 ) {
@@ -585,3 +585,6 @@ export async function convertHtmlToPdfWithPuppeteer(
   // await p.pdf(opts)
   // inactivateBrowser(b)
 }
+
+export default convertTxtWithPuppeteerNode
+export { convertTxtWithPuppeteerNode }

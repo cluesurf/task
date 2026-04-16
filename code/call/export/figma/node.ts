@@ -22,7 +22,7 @@ export type ExportFigmaNodeInput = {
   scale?: number
 }
 
-export async function exportFigmaNode(source: ExportFigmaNodeInput): Promise<void> {
+async function exportFigmaNode(source: ExportFigmaNodeInput): Promise<void> {
   const format = source.format ?? 'svg'
   const scale = source.scale
 
@@ -75,3 +75,6 @@ function walk(node: FigmaNode, visit: (n: FigmaNode) => void): void {
 function sanitize(name: string): string {
   return name.replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^-+|-+$/g, '')
 }
+
+export default exportFigmaNode
+export { exportFigmaNode }

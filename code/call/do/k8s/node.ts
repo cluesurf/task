@@ -4,7 +4,7 @@
 
 import { exec } from '~/code/tool/node/process'
 
-export async function listClusters(): Promise<string> {
+async function listClusters(): Promise<string> {
   const { stdout } = await exec([
     'doctl',
     'kubernetes',
@@ -42,3 +42,6 @@ export async function inspectCluster(name: string): Promise<string> {
   ])
   return stdout
 }
+
+export default listClusters
+export { listClusters }

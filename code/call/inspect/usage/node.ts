@@ -31,7 +31,7 @@ export type UsageResult = {
   data: UsagePoint
 }
 
-export async function inspectUsageNode(source: InspectUsageNodeInput): Promise<void> {
+async function inspectUsageNode(source: InspectUsageNodeInput): Promise<void> {
   const p = normalizePlatform(source.platform)
   if (p !== 'do') throw new Error(`unsupported platform: ${source.platform}`)
 
@@ -202,3 +202,6 @@ async function getAllDroplets(): Promise<Array<{ id: string; name: string }>> {
   const arr = JSON.parse(raw) as Array<{ id: number | string; name: string }>
   return arr.map(d => ({ id: String(d.id), name: d.name }))
 }
+
+export default inspectUsageNode
+export { inspectUsageNode }

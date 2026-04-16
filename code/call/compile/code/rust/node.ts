@@ -21,7 +21,7 @@ import { buildRequestToCompile } from '~/code/call/compile/code/shared'
 import { resolveWorkFileNode } from '~/code/tool/node/request'
 import { NativeOptions } from '~/code/tool/shared/request'
 
-export async function compileRustNode(
+async function compileRustNode(
   source: CompileRustNodeInput,
   native?: NativeOptions,
 ) {
@@ -53,7 +53,7 @@ async function compileRustNodeLocalInternal(
   return await compileRustNodeLocal(input, native)
 }
 
-export async function compileRustNodeRemote(
+async function compileRustNodeRemote(
   source: CompileRustNodeRemoteInput,
   native,
 ) {
@@ -72,7 +72,7 @@ export async function compileRustNodeRemote(
   }
 }
 
-export async function compileRustNodeLocal(
+async function compileRustNodeLocal(
   input,
   native?: NativeOptions,
 ) {
@@ -88,3 +88,6 @@ export async function compileRustNodeLocal(
     },
   }
 }
+
+export default compileRustNode
+export { compileRustNode }

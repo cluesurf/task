@@ -13,7 +13,7 @@ export type MakeSshKeyNodeInput = {
   port?: number
 }
 
-export async function makeSshKeyNode(input: MakeSshKeyNodeInput) {
+async function makeSshKeyNode(input: MakeSshKeyNodeInput) {
   const { priv, pub } = await generateKey({
     name: input.name,
     type: input.type,
@@ -37,3 +37,6 @@ export async function makeSshKeyNode(input: MakeSshKeyNodeInput) {
 
   return { name: input.name, priv, pub, wired: !!input.host }
 }
+
+export default makeSshKeyNode
+export { makeSshKeyNode }

@@ -14,7 +14,7 @@ const IMAGEMAGICK_FORMAT_VARIANT_NAME: Record<string, Array<string>> = {
   jpg: ['jpeg'],
 }
 
-export async function verifyImageWithImageMagickNode(
+async function verifyImageWithImageMagickNode(
   input: VerifyImageWithImageMagick,
 ) {
   const sequence = buildCommandToVerifyImageWithImageMagick(input)
@@ -55,3 +55,6 @@ export function testVerifyImageWithImageMagickNode(
 
   return true
 }
+
+export default verifyImageWithImageMagickNode
+export { verifyImageWithImageMagickNode }

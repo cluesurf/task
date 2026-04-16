@@ -10,7 +10,7 @@ export type InspectFigmaNodeInput = {
   show?: 'overview' | 'components' | 'pages'
 }
 
-export async function inspectFigmaNode(
+async function inspectFigmaNode(
   source: InspectFigmaNodeInput,
 ): Promise<void> {
   const show = source.show ?? 'overview'
@@ -69,3 +69,6 @@ function countFrames(page: FigmaNode): number {
     n => n.type === 'FRAME' || n.type === 'COMPONENT' || n.type === 'COMPONENT_SET',
   ).length
 }
+
+export default inspectFigmaNode
+export { inspectFigmaNode }

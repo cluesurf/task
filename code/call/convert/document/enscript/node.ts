@@ -22,7 +22,7 @@ import { buildRequestToConvert } from '../../shared'
 import { resolveWorkFileNode } from '~/code/tool/node/request'
 import { NativeOptions } from '~/code/tool/shared/request'
 
-export async function convertDocumentWithEnscriptNode(
+async function convertDocumentWithEnscriptNode(
   source: ConvertDocumentWithEnscriptNodeInput,
   native?: NativeOptions,
 ) {
@@ -61,7 +61,7 @@ async function convertDocumentWithEnscriptNodeLocalInternal(
   return await convertDocumentWithEnscriptNodeLocal(input, native)
 }
 
-export async function convertDocumentWithEnscriptNodeRemote(
+async function convertDocumentWithEnscriptNodeRemote(
   source: ConvertDocumentWithEnscriptNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -81,7 +81,7 @@ export async function convertDocumentWithEnscriptNodeRemote(
   })
 }
 
-export async function convertDocumentWithEnscriptNodeLocal(
+async function convertDocumentWithEnscriptNodeLocal(
   input,
   native?: NativeOptions,
 ) {
@@ -99,3 +99,6 @@ export async function convertDocumentWithEnscriptNodeLocal(
     },
   })
 }
+
+export default convertDocumentWithEnscriptNode
+export { convertDocumentWithEnscriptNode }

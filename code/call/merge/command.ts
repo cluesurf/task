@@ -1,22 +1,13 @@
 /**
- * Pure argv builder for `task merge` on Node — qpdf assembles
+ * Pure argv builder for `task merge` on Node -- qpdf assembles
  * the output. `qpdf --empty --pages a.pdf b.pdf -- out.pdf` is
  * the canonical recipe.
  */
 
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-
-export function buildQpdfMergeCommand({
-  inputs,
-  output,
-}: {
+export function buildCommandToMerge(input: {
   inputs: string[]
-  output: string
-}) {
-  const cmd = getCommand('qpdf')
-  cmd.link.push('--empty', '--pages', ...inputs, '--', output)
-  return buildCommandSequence(cmd)
+  outputPath: string
+}): { bin: 'qpdf'; args: string[] } {
+  const args = ['--empty', '--pages', ...input.inputs, '--', input.outputPath]
+  return { bin: 'qpdf', args }
 }

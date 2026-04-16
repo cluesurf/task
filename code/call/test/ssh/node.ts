@@ -9,7 +9,7 @@ const DIM: Tint = { tone: 'white' }
 
 export type TestSshNodeInput = { name: string }
 
-export async function testSshNode(input: TestSshNodeInput) {
+async function testSshNode(input: TestSshNodeInput) {
   const result = await testConnection(input.name)
 
   const style = getLoggingStyle()
@@ -26,3 +26,6 @@ export async function testSshNode(input: TestSshNodeInput) {
   if (!result.ok) throw new Error(result.message)
   return result
 }
+
+export default testSshNode
+export { testSshNode }

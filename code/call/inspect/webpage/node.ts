@@ -2,7 +2,7 @@ import { getBrowser } from '~/code/tool/node/browser'
 import fsp from 'fs/promises'
 import { wait } from '~/code/tool/shared/timer'
 
-export async function inspectWebpage(source) {
+async function inspectWebpage(source) {
   const b = await getBrowser(undefined)
   let data
   try {
@@ -62,3 +62,6 @@ export async function inspectWebpage(source) {
   }
   return data
 }
+
+export default inspectWebpage
+export { inspectWebpage }

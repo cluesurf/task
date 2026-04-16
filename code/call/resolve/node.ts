@@ -1,7 +1,7 @@
 import Observable from 'zen-observable'
 import { Output, WorkFileAsBlob } from '~/code/tool/shared/work'
 
-export async function resolve<T extends any>(
+async function resolve<T extends any>(
   observable: Observable<Output<T>>,
 ) {
   let last: Output<T> | undefined = undefined
@@ -12,3 +12,6 @@ export async function resolve<T extends any>(
   })
   return last
 }
+
+export default resolve
+export { resolve }

@@ -20,7 +20,7 @@ import type {
 
 const DEFAULT_PROVIDER: DomainProvider = 'namecheap'
 
-export async function checkDomainNode({
+async function checkDomainNode({
   source,
 }: {
   source: CheckDomainNodeInput
@@ -50,3 +50,6 @@ export async function checkDomainNode({
       )
   }
 }
+
+export default checkDomainNode
+export { checkDomainNode }

@@ -19,7 +19,7 @@ export type GetEnvironmentNodeOutput = {
   source: 'process' | 'file'
 }
 
-export async function getEnvironmentNode(
+async function getEnvironmentNode(
   input: GetEnvironmentNodeInput,
 ): Promise<GetEnvironmentNodeOutput> {
   let value: string | null = null
@@ -66,3 +66,6 @@ async function readFromEnvFile(
   }
   return null
 }
+
+export default getEnvironmentNode
+export { getEnvironmentNode }

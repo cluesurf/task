@@ -1,8 +1,3 @@
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-
 export type ExtractFontArgs = {
   input: string
   output: string
@@ -10,11 +5,13 @@ export type ExtractFontArgs = {
   tables?: string[]
 }
 
-export function buildExtractFontCommand(args: ExtractFontArgs) {
-  const cmd = getCommand('ttx')
+export function buildCommandToExtractFont(
+  args: ExtractFontArgs,
+): { bin: 'ttx'; args: string[] } {
+  const argv: string[] = []
   if (args.tables?.length) {
-    for (const t of args.tables) cmd.link.push('-t', t)
+    for (const t of args.tables) argv.push('-t', t)
   }
-  cmd.link.push('-o', args.output, args.input)
-  return buildCommandSequence(cmd)
+  argv.push('-o', args.output, args.input)
+  return { bin: 'ttx', args: argv }
 }

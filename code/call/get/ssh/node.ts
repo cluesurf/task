@@ -9,7 +9,7 @@ const KEY: Tint = { tone: 'white' }
 const VAL: Tint = { tone: 'whiteBright' }
 const HEAD: Tint = { tone: 'whiteBright', bold: true }
 
-export async function getSshNode(input: GetSshNodeInput) {
+async function getSshNode(input: GetSshNodeInput) {
   const entry = await readOne(input.name)
   if (!entry) {
     throw new Error(`get ssh: no entry \`${input.name}\` in ~/.ssh/config`)
@@ -46,3 +46,6 @@ function render(entry: SshEntry): void {
   out.push('')
   process.stdout.write(out.join('\n') + '\n')
 }
+
+export default getSshNode
+export { getSshNode }

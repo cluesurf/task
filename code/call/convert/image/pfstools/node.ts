@@ -8,7 +8,7 @@ export type ConvertImageWithPfstoolsNodeInput = {
   output: { path: string }
 }
 
-export async function convertImageWithPfstoolsNode(
+async function convertImageWithPfstoolsNode(
   source: ConvertImageWithPfstoolsNodeInput,
 ): Promise<void> {
   // pfsin | pfsout — a genuine pipe (not a shelling `&&` chain),
@@ -25,3 +25,6 @@ export async function convertImageWithPfstoolsNode(
     )
   })
 }
+
+export default convertImageWithPfstoolsNode
+export { convertImageWithPfstoolsNode }

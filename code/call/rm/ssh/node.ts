@@ -2,7 +2,7 @@ import { readOne, updateConfig } from '~/code/tool/node/ssh/base'
 
 export type RmSshNodeInput = { name: string }
 
-export async function rmSshNode(input: RmSshNodeInput) {
+async function rmSshNode(input: RmSshNodeInput) {
   const existing = await readOne(input.name)
   if (!existing) {
     throw new Error(
@@ -12,3 +12,6 @@ export async function rmSshNode(input: RmSshNodeInput) {
   await updateConfig(input.name, null)
   return { name: input.name, removed: true }
 }
+
+export default rmSshNode
+export { rmSshNode }

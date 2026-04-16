@@ -25,7 +25,7 @@ export type LoadEnvironmentNodeOutput = {
   action: 'created' | 'updated' | 'inserted'
 }
 
-export async function loadEnvironmentNode(
+async function loadEnvironmentNode(
   source: LoadEnvironmentNodeInput,
 ): Promise<LoadEnvironmentNodeOutput> {
   const file = path.resolve(source.file ?? '.env')
@@ -65,3 +65,6 @@ export async function loadEnvironmentNode(
 function escapeRegex(text: string): string {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
+
+export default loadEnvironmentNode
+export { loadEnvironmentNode }

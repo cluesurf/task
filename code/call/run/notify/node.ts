@@ -1,7 +1,11 @@
 // Desktop notification. macOS uses `osascript display notification`,
 // Linux uses `notify-send` (libnotify). Silent no-op on other OSes.
 
-import { exec } from '~/code/tool/node/process'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import {
+  buildCommandToNotifyDarwin,
+  buildCommandToNotifyLinux,
+} from './command'
 
 export type RunNotifyNodeInput = {
   message: string
@@ -12,24 +16,36 @@ export type RunNotifyNodeInput = {
   urgency?: 'low' | 'normal' | 'critical'
 }
 
-export async function runNotifyNode(source: RunNotifyNodeInput): Promise<void> {
+async function runNotifyNode(
+  source: RunNotifyNodeInput,
+): Promise<void> {
   if (process.platform === 'darwin') {
-    const title = source.title ?? 'task'
-    const soundPart = source.sound ? ' sound name "Glass"' : ''
-    const script = `display notification "${esc(source.message)}" with title "${esc(title)}"${soundPart}`
-    await exec(['osascript', '-e', script])
+    const command = buildCommandToNotifyDarwin({
+      message: source.message,
+      title: source.title,
+      sound: source.sound,
+    })
+    await spawnAndWait({
+      verb: 'run notify',
+      bin: command.bin,
+      args: command.args,
+    })
     return
   }
   if (process.platform === 'linux') {
-    const argv = ['notify-send']
-    if (source.urgency) argv.push('-u', source.urgency)
-    if (source.title) argv.push(source.title)
-    argv.push(source.message)
-    await exec(argv)
+    const command = buildCommandToNotifyLinux({
+      message: source.message,
+      title: source.title,
+      urgency: source.urgency,
+    })
+    await spawnAndWait({
+      verb: 'run notify',
+      bin: command.bin,
+      args: command.args,
+    })
     return
   }
 }
 
-function esc(s: string): string {
-  return s.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
-}
+export default runNotifyNode
+export { runNotifyNode }

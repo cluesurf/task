@@ -50,7 +50,7 @@ export type InspectNetworkNodeInput = {
   filter?: string
 }
 
-export async function inspectNetworkNode(input: InspectNetworkNodeInput) {
+async function inspectNetworkNode(input: InspectNetworkNodeInput) {
   if (input.watch) return await watchLoop(input)
   return await runOnce(input)
 }
@@ -242,3 +242,6 @@ function globToMatcher(pattern: string): (s: string) => boolean {
   const regex = new RegExp('^' + escaped.replace(/\*/g, '.*').replace(/\?/g, '.') + '$', 'i')
   return s => regex.test(s)
 }
+
+export default inspectNetworkNode
+export { inspectNetworkNode }

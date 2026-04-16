@@ -3,7 +3,7 @@ import { getLoggingStyle } from '~/code/tool/node/log'
 
 export type GetSshKeyNodeInput = { name: string }
 
-export async function getSshKeyNode(input: GetSshKeyNodeInput) {
+async function getSshKeyNode(input: GetSshKeyNodeInput) {
   const key = await readPublicKey(input.name)
   const style = getLoggingStyle()
   if (style === 'pretty' || style === 'text') {
@@ -11,3 +11,6 @@ export async function getSshKeyNode(input: GetSshKeyNodeInput) {
   }
   return { name: input.name, publicKey: key }
 }
+
+export default getSshKeyNode
+export { getSshKeyNode }

@@ -80,7 +80,7 @@ import { replayConsole } from '~/code/call/replay/console'
 import { resizeConsole } from '~/code/call/resize/console'
 import { restartConsole } from '~/code/call/restart/console'
 import { restoreConsole } from '~/code/call/restore/console'
-import { rmConsole } from '~/code/call/rm/console'
+// rm/ merged into remove/ssh-host — see code/call/remove/ssh-host/
 import { rotateConsole } from '~/code/call/rotate/console'
 import { runConsole } from '~/code/call/run/console'
 import { sanitizeConsole } from '~/code/call/sanitize/console'
@@ -157,12 +157,11 @@ registerGroupHelp({
     { name: 'project',     describe: 'Zero-config build runner (build / test / run / lint / install / ...)' },
     { name: 'push',        describe: 'Push an artifact to a remote (SSH key → host)' },
     { name: 'record',      describe: 'Record screen / terminal sessions' },
-    { name: 'remove',      describe: 'Remove content or a stored artifact' },
+    { name: 'remove',      describe: 'Remove content, metadata, or a stored entry' },
     { name: 'render',      describe: 'Render a visual artifact (font sample, ...)' },
     { name: 'replay',      describe: 'Replay an asciinema .cast (terminal or render to gif/mp4)' },
     { name: 'resize',      describe: 'Resize an image or video' },
     { name: 'restore',     describe: 'Restore a database from a dump' },
-    { name: 'rm',          describe: 'Remove a named entry from long-lived state' },
     { name: 'rotate',      describe: 'Rotate an image or video by a given angle' },
     { name: 'sanitize',    describe: 'Sanitize code or other content' },
     { name: 'scan',        describe: 'Probe a remote for fingerprints and keys' },
@@ -348,7 +347,7 @@ async function main() {
     .command(resizeConsole)
     .command(restartConsole)
     .command(restoreConsole)
-    .command(rmConsole)
+    // rm merged into remove/ssh-host
     .command(rotateConsole)
     .command(runConsole)
     .command(sanitizeConsole)

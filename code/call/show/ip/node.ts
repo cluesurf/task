@@ -38,7 +38,7 @@ export type ShowIpNodeInput = {
   all: boolean
 }
 
-export async function showIpNode(input: ShowIpNodeInput) {
+async function showIpNode(input: ShowIpNodeInput) {
   const style = getLoggingStyle()
   const color = style === 'pretty'
   const paint = (s: string, t: Tint) =>
@@ -118,3 +118,6 @@ async function fetchPublicIp(): Promise<string | null> {
   }
   return null
 }
+
+export default showIpNode
+export { showIpNode }

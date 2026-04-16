@@ -1,31 +1,25 @@
 /**
  * Build the DuckDB `COPY ... TO ... (FORMAT ...)` SQL strings and
- * wrap them in `CommandSequence`s consumable by
- * `runCommandSequence` / `runGenericCommand`.
+ * return them as `{ bin, args }` tuples for `spawnAndWait`.
  *
- * Pure functions — no execution. Execution happens in
- * `./node.ts` via the shared command runner.
+ * Pure functions -- no execution. Execution happens in
+ * `./node.ts` via `spawnAndWait`.
  *
- * Paths are escaped as DuckDB string literals (`'` → `''`) inside
+ * Paths are escaped as DuckDB string literals (`'` -> `''`) inside
  * the SQL. The SQL itself is passed to `duckdb -c <sql>` as a
  * separate argv entry, so shell quoting never enters the picture.
  */
-
-import {
-  getCommand,
-  buildCommandSequence,
-} from '~/code/tool/shared/command'
-import type { CommandSequence } from '~/code/form/object/request'
 
 /** DuckDB/SQL string-literal escape: wraps in `'...'` and doubles any `'`. */
 function quoteSqlString(value: string): string {
   return `'${value.replace(/'/g, "''")}'`
 }
 
-function buildDuckdbCommandSequence(sql: string): CommandSequence {
-  const cmd = getCommand('duckdb')
-  cmd.link.push('-c', sql)
-  return buildCommandSequence(cmd)
+function buildDuckdbCommand(sql: string): {
+  bin: 'duckdb'
+  args: string[]
+} {
+  return { bin: 'duckdb', args: ['-c', sql] }
 }
 
 export type BuildParquetToJsonlInput = {
@@ -33,12 +27,11 @@ export type BuildParquetToJsonlInput = {
   output: string
 }
 
-export function buildCommandToConvertParquetToJsonl({
-  input,
-  output,
-}: BuildParquetToJsonlInput): CommandSequence {
-  const sql = `COPY (SELECT * FROM ${quoteSqlString(input)}) TO ${quoteSqlString(output)} (FORMAT JSON)`
-  return buildDuckdbCommandSequence(sql)
+export function buildCommandToConvertParquetToJsonl(
+  input: BuildParquetToJsonlInput,
+): { bin: 'duckdb'; args: string[] } {
+  const sql = `COPY (SELECT * FROM ${quoteSqlString(input.input)}) TO ${quoteSqlString(input.output)} (FORMAT JSON)`
+  return buildDuckdbCommand(sql)
 }
 
 export type BuildJsonlToParquetInput = {
@@ -49,17 +42,15 @@ export type BuildJsonlToParquetInput = {
   compression?: 'ZSTD' | 'SNAPPY' | 'GZIP' | 'NONE'
 }
 
-export function buildCommandToConvertJsonlToParquet({
-  input,
-  output,
-  columns,
-  compression = 'ZSTD',
-}: BuildJsonlToParquetInput): CommandSequence {
-  const inputLiteral = quoteSqlString(input)
-  const readArgs = columns
-    ? `${inputLiteral}, format='newline_delimited', columns=${columns}`
+export function buildCommandToConvertJsonlToParquet(
+  input: BuildJsonlToParquetInput,
+): { bin: 'duckdb'; args: string[] } {
+  const inputLiteral = quoteSqlString(input.input)
+  const compression = input.compression ?? 'ZSTD'
+  const readArgs = input.columns
+    ? `${inputLiteral}, format='newline_delimited', columns=${input.columns}`
     : `${inputLiteral}, format='newline_delimited'`
-  const reader = columns ? 'read_json' : 'read_json_auto'
-  const sql = `COPY (SELECT * FROM ${reader}(${readArgs})) TO ${quoteSqlString(output)} (FORMAT PARQUET, COMPRESSION ${compression})`
-  return buildDuckdbCommandSequence(sql)
+  const reader = input.columns ? 'read_json' : 'read_json_auto'
+  const sql = `COPY (SELECT * FROM ${reader}(${readArgs})) TO ${quoteSqlString(input.output)} (FORMAT PARQUET, COMPRESSION ${compression})`
+  return buildDuckdbCommand(sql)
 }

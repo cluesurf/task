@@ -10,7 +10,7 @@ const DIM: Tint = { tone: 'white' }
 
 export type InspectUnicodeNodeInput = { file: string; limit: number }
 
-export async function inspectUnicodeNode(input: InspectUnicodeNodeInput) {
+async function inspectUnicodeNode(input: InspectUnicodeNodeInput) {
   const text = await fs.readFile(input.file, 'utf8')
   const chars = codepoints(text).slice(0, input.limit)
   const rows = chars.map(ch => ({
@@ -60,3 +60,6 @@ function visibleFor(ch: string): string {
   if (cp === 0x200b || cp === 0x200c || cp === 0x200d || cp === 0xfeff) return '·'
   return ch
 }
+
+export default inspectUnicodeNode
+export { inspectUnicodeNode }

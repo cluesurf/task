@@ -14,7 +14,7 @@ const HEAD: Tint = { tone: 'whiteBright', bold: true }
 
 export type InspectPortNodeInput = { port: number; show?: string }
 
-export async function inspectPortNode(input: InspectPortNodeInput) {
+async function inspectPortNode(input: InspectPortNodeInput) {
   const [ports, procs] = await Promise.all([listPorts(), listProcesses()])
   const owners = ports.filter(p => p.port === input.port)
   const uniquePids = Array.from(new Set(owners.map(o => o.pid)))
@@ -56,3 +56,6 @@ export async function inspectPortNode(input: InspectPortNodeInput) {
 
   return { port: input.port, owners, processes }
 }
+
+export default inspectPortNode
+export { inspectPortNode }

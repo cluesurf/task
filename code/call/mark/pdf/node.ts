@@ -24,7 +24,7 @@ export type MarkPdfNodeOutput = {
   label: string
 }
 
-export async function markPdfNode(
+async function markPdfNode(
   source: MarkPdfNodeInput,
 ): Promise<MarkPdfNodeOutput> {
   const { PDFDocument, rgb, StandardFonts } = await import('pdf-lib')
@@ -68,3 +68,6 @@ export async function markPdfNode(
 
   return { file: { path: outputPath }, label }
 }
+
+export default markPdfNode
+export { markPdfNode }

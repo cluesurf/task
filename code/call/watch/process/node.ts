@@ -19,7 +19,7 @@ export type WatchProcessNodeInput = {
   limit: number
 }
 
-export async function watchProcessNode(input: WatchProcessNodeInput) {
+async function watchProcessNode(input: WatchProcessNodeInput) {
   const color = process.stdout.isTTY ?? false
   let stopped = false
   process.on('SIGINT', () => {
@@ -47,3 +47,6 @@ export async function watchProcessNode(input: WatchProcessNodeInput) {
     if (!stopped) await tick()
   }
 }
+
+export default watchProcessNode
+export { watchProcessNode }

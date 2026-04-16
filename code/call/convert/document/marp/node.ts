@@ -1,8 +1,10 @@
-// Slides: markdown → html / pdf / pptx via marp-cli.
+// Slides: markdown -> html / pdf / pptx via marp-cli.
 // Reveal.js output is handled by convert/document/pandoc (`-t revealjs`);
 // use marp when you want Marp's stricter author syntax + theming.
 
-import { exec } from '~/code/tool/node/process'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { buildCommandToConvertDocumentWithMarp } from './command'
 
 export type ConvertDocumentWithMarpNodeInput = {
   input: { path: string }
@@ -13,12 +15,23 @@ export type ConvertDocumentWithMarpNodeInput = {
   allowLocalFiles?: boolean
 }
 
-export async function convertDocumentWithMarpNode(
+async function convertDocumentWithMarpNode(
   source: ConvertDocumentWithMarpNodeInput,
 ): Promise<void> {
-  const argv = ['marp', source.input.path, '-o', source.output.path]
-  if (source.output.format) argv.push(`--${source.output.format}`)
-  if (source.theme) argv.push('--theme', source.theme)
-  if (source.allowLocalFiles) argv.push('--allow-local-files')
-  await exec(argv)
+  await ensureParentDir(source.output.path)
+  const command = buildCommandToConvertDocumentWithMarp({
+    inputPath: source.input.path,
+    outputPath: source.output.path,
+    format: source.output.format,
+    theme: source.theme,
+    allowLocalFiles: source.allowLocalFiles,
+  })
+  await spawnAndWait({
+    verb: 'convert document',
+    bin: command.bin,
+    args: command.args,
+  })
 }
+
+export default convertDocumentWithMarpNode
+export { convertDocumentWithMarpNode }

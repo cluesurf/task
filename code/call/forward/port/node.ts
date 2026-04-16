@@ -7,7 +7,7 @@ export type ForwardPortNodeInput = {
   context?: string
 }
 
-export async function forwardPortNode(source: ForwardPortNodeInput): Promise<void> {
+async function forwardPortNode(source: ForwardPortNodeInput): Promise<void> {
   const parts = source.target.split(':')
   if (parts.length < 2) throw new Error('target must be `selector:port`')
   const [selector, localPort, remotePort] =
@@ -19,3 +19,6 @@ export async function forwardPortNode(source: ForwardPortNodeInput): Promise<voi
     context: source.context,
   })
 }
+
+export default forwardPortNode
+export { forwardPortNode }

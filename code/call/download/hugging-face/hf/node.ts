@@ -12,7 +12,7 @@ import {
   buildCommandToDownloadHf,
 } from './command'
 
-export function runHfDownload(input: BuildHfDownloadInput): void {
+function runHfDownload(input: BuildHfDownloadInput): void {
   const argv = buildCommandToDownloadHf(input)
   const [cmd, ...args] = argv
   if (!cmd) return
@@ -23,3 +23,6 @@ export function runHfDownload(input: BuildHfDownloadInput): void {
     )
   }
 }
+
+export default runHfDownload
+export { runHfDownload }

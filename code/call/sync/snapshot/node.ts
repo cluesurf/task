@@ -34,7 +34,7 @@ import { buildCommandToSyncSnapshotWithKopia } from './kopia/command'
 export type { SyncSnapshotNodeInput, SyncSnapshotNodeOutput }
 export { testSyncSnapshotNode }
 
-export async function syncSnapshotNode(
+async function syncSnapshotNode(
   input: SyncSnapshotNodeInput,
 ): Promise<SyncSnapshotNodeOutput> {
   const tool: SyncSnapshotTool = input.tool ?? 'restic'
@@ -77,3 +77,6 @@ function buildCommandForTool(
   }
 }
 
+
+export default syncSnapshotNode
+export { syncSnapshotNode }

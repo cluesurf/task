@@ -23,7 +23,7 @@ const KEY: Tint = { tone: 'white' }
 const VAL: Tint = { tone: 'whiteBright' }
 const HEAD: Tint = { tone: 'whiteBright', bold: true }
 
-export async function inspectProcessNode(input: InspectProcessNodeInput) {
+async function inspectProcessNode(input: InspectProcessNodeInput) {
   const all = await listProcesses()
   const proc = all.find(p => p.pid === input.pid)
   if (!proc) {
@@ -75,3 +75,6 @@ export async function inspectProcessNode(input: InspectProcessNodeInput) {
 
   return { process: proc, children, files, ports }
 }
+
+export default inspectProcessNode
+export { inspectProcessNode }

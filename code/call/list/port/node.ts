@@ -13,7 +13,7 @@ export type ListPortNodeInput = {
   direction?: Direction
 }
 
-export async function listPortNode(input: ListPortNodeInput) {
+async function listPortNode(input: ListPortNodeInput) {
   let list = await listPorts()
 
   if (input.status) {
@@ -54,3 +54,6 @@ function sortPorts(
     return sign * String(av).localeCompare(String(bv))
   })
 }
+
+export default listPortNode
+export { listPortNode }

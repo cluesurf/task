@@ -17,7 +17,7 @@ export type DownloadHuggingFaceNodeInput = {
   revision?: string
 }
 
-export async function downloadHuggingFaceNode(
+async function downloadHuggingFaceNode(
   input: DownloadHuggingFaceNodeInput,
 ): Promise<{ directory: string }> {
   fs.mkdirSync(input.directory.path, { recursive: true })
@@ -33,3 +33,6 @@ export async function downloadHuggingFaceNode(
 
   return { directory: input.directory.path }
 }
+
+export default downloadHuggingFaceNode
+export { downloadHuggingFaceNode }

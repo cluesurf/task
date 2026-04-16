@@ -7,7 +7,7 @@ export type K8sScaleNodeInput = {
   context?: string
 }
 
-export async function k8sScaleNode(source: K8sScaleNodeInput): Promise<void> {
+async function k8sScaleNode(source: K8sScaleNodeInput): Promise<void> {
   const argv = [
     'kubectl',
     'scale',
@@ -18,3 +18,6 @@ export async function k8sScaleNode(source: K8sScaleNodeInput): Promise<void> {
   if (source.context) argv.push('--context', source.context)
   await exec(argv)
 }
+
+export default k8sScaleNode
+export { k8sScaleNode }

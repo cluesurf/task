@@ -6,7 +6,10 @@ export type SetServiceNodeInput = {
   disable?: boolean
 }
 
-export async function setServiceNode(source: SetServiceNodeInput): Promise<void> {
+async function setServiceNode(source: SetServiceNodeInput): Promise<void> {
   if (source.enable) await controlService('enable', source.name)
   if (source.disable) await controlService('disable', source.name)
 }
+
+export default setServiceNode
+export { setServiceNode }

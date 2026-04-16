@@ -10,7 +10,7 @@ export type ListMachineNodeInput = {
   json?: boolean
 }
 
-export async function listMachineNode(source: ListMachineNodeInput): Promise<string> {
+async function listMachineNode(source: ListMachineNodeInput): Promise<string> {
   const p = normalizePlatform(source.platform)
   if (p === 'do') {
     return listDroplets({ json: source.json, ips: source.show === 'ip' })
@@ -22,3 +22,6 @@ export function normalizePlatform(p: string): 'do' | string {
   if (p === 'do' || p === 'digital-ocean' || p === 'digitalocean') return 'do'
   return p
 }
+
+export default listMachineNode
+export { listMachineNode }

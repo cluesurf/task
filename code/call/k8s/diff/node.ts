@@ -11,7 +11,7 @@ export type K8sDiffNodeInput = {
   context?: string
 }
 
-export async function k8sDiffNode(
+async function k8sDiffNode(
   source: K8sDiffNodeInput,
 ): Promise<number> {
   const args = ['diff', '-f', source.manifest]
@@ -26,3 +26,6 @@ export async function k8sDiffNode(
   })
   return code ?? 1
 }
+
+export default k8sDiffNode
+export { k8sDiffNode }

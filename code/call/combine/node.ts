@@ -1,5 +1,5 @@
 /**
- * `task combine` — fuse a still image and an audio track into a
+ * `task combine` -- fuse a still image and an audio track into a
  * single video file. Loops the image for the audio's duration
  * (`-loop 1` + `-shortest`), encoding to h264/aac by default.
  *
@@ -8,11 +8,9 @@
  * mirror `deck/etch/scripts/utilities/image-audio.sh`.
  */
 
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { runCommandSequence } from '~/code/tool/node/command'
-import { buildCombineCommand } from './command'
 import { ensureParentDir } from '~/code/tool/node/file'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { buildCommandToCombine } from './command'
 
 export type CombineNodeInput = {
   input: { file: { path: string } }
@@ -30,25 +28,31 @@ export type CombineNodeOutput = {
   file: { path: string }
 }
 
-export async function combineNode(
+async function combineNode(
   source: CombineNodeInput,
 ): Promise<CombineNodeOutput> {
   const outputPath = source.output.file.path
   await ensureParentDir(outputPath)
 
-  await runCommandSequence(
-    buildCombineCommand({
-      image: source.input.file.path,
-      audio: source.audio.file.path,
-      output: outputPath,
-      videoCodec: source.videoCodec,
-      audioCodec: source.audioCodec,
-      audioBitrate: source.audioBitrate,
-      sampleRate: source.sampleRate,
-      pixelFormat: source.pixelFormat,
-      tune: source.tune,
-    }),
-  )
+  const command = buildCommandToCombine({
+    image: source.input.file.path,
+    audio: source.audio.file.path,
+    output: outputPath,
+    videoCodec: source.videoCodec,
+    audioCodec: source.audioCodec,
+    audioBitrate: source.audioBitrate,
+    sampleRate: source.sampleRate,
+    pixelFormat: source.pixelFormat,
+    tune: source.tune,
+  })
+  await spawnAndWait({
+    verb: 'combine',
+    bin: command.bin,
+    args: command.args,
+  })
 
   return { file: { path: outputPath } }
 }
+
+export default combineNode
+export { combineNode }

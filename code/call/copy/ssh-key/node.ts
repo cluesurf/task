@@ -9,8 +9,11 @@ import { readPublicKey } from '~/code/tool/node/ssh/key'
 
 export type CopySshKeyNodeInput = { name: string }
 
-export async function copySshKeyNode(input: CopySshKeyNodeInput) {
+async function copySshKeyNode(input: CopySshKeyNodeInput) {
   const key = await readPublicKey(input.name)
   await copyToClipboard({ verb: 'copy ssh-key', value: key + '\n' })
   return { name: input.name, bytes: key.length }
 }
+
+export default copySshKeyNode
+export { copySshKeyNode }

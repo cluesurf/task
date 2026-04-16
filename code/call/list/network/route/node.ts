@@ -6,7 +6,7 @@ import { getLoggingStyle } from '~/code/tool/node/log'
 const HEAD: Tint = { tone: 'white' }
 const CELL: Tint = { tone: 'whiteBright' }
 
-export async function listNetworkRouteNode() {
+async function listNetworkRouteNode() {
   const routes = await listRoutes()
 
   const style = getLoggingStyle()
@@ -31,3 +31,6 @@ export async function listNetworkRouteNode() {
 
   return { routes }
 }
+
+export default listNetworkRouteNode
+export { listNetworkRouteNode }

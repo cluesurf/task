@@ -1,6 +1,6 @@
 import { exec } from '~/code/tool/node/process'
 
-export async function listDomains(): Promise<string> {
+async function listDomains(): Promise<string> {
   const { stdout } = await exec(['doctl', 'compute', 'domain', 'list', '-o', 'json'])
   return stdout
 }
@@ -18,3 +18,6 @@ export async function listDomainRecords(domain: string): Promise<string> {
   ])
   return stdout
 }
+
+export default listDomains
+export { listDomains }

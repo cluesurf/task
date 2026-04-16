@@ -1,26 +1,26 @@
 /**
- * Router for `task extract <archive> -o <dir>` — picks the right
+ * Router for `task extract <archive> -o <dir>` -- picks the right
  * backend for the input extension. Override with `--tool`.
  *
  * Per-extension default:
- *   .zip                → unzip
- *   .rar                → unar (The Unarchiver). On macOS the
- *                         canonical install is `brew install unar`;
- *                         on Linux/Docker we already ship it via
- *                         `apt install unar`. GNU `unrar` stays
- *                         available as `--tool unrar` for hosts that
- *                         happen to have it.
- *   .7z                 → 7z
- *   .tar(.gz/bz2/xz/...) → tar
- *   anything else       → atool (extension-dispatching fallback)
+ *   .zip                -> unzip
+ *   .rar                -> unar (The Unarchiver). On macOS the
+ *                          canonical install is `brew install unar`;
+ *                          on Linux/Docker we already ship it via
+ *                          `apt install unar`. GNU `unrar` stays
+ *                          available as `--tool unrar` for hosts that
+ *                          happen to have it.
+ *   .7z                 -> 7z
+ *   .tar(.gz/bz2/xz/...) -> tar
+ *   anything else       -> atool (extension-dispatching fallback)
  *
  * On macOS `brew install unar` is the canonical way to get .rar
- * support — `unrar` isn't in Homebrew. That's why we prefer `unar`
+ * support. `unrar` isn't in Homebrew. That's why we prefer `unar`
  * there.
  */
 
 import path from 'node:path'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import {
   buildCommandToExtractWith7z,
   buildCommandToExtractWithAtool,
@@ -49,8 +49,12 @@ export async function extractArchiveNode(
   source: ExtractArchiveNodeInput,
 ): Promise<void> {
   const tool = source.tool ?? pickTool(source.input.path)
-  const sequence = await buildSequence(tool, source)
-  await runCommandSequence(sequence)
+  const command = buildCommand(tool, source)
+  await spawnAndWait({
+    verb: 'extract archive',
+    bin: command.bin,
+    args: command.args,
+  })
 }
 
 function pickTool(filePath: string): ExtractArchiveTool {
@@ -66,10 +70,10 @@ function pickTool(filePath: string): ExtractArchiveTool {
   return 'atool'
 }
 
-async function buildSequence(
+function buildCommand(
   tool: ExtractArchiveTool,
   source: ExtractArchiveNodeInput,
-) {
+): { bin: string; args: string[] } {
   switch (tool) {
     case 'unzip':  return buildCommandToExtractWithUnzip(source)
     case 'unrar':  return buildCommandToExtractWithUnrar(source)
@@ -93,3 +97,5 @@ async function buildSequence(
     case 'patool': return buildCommandToExtractWithPatool(source)
   }
 }
+
+export default extractArchiveNode

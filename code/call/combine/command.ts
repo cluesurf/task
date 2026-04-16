@@ -2,14 +2,9 @@
  * Pure ffmpeg argv builder for `task combine`. The `scale`
  * filter rounds odd dimensions down to the nearest even pixel
  * because libx264's `yuv420p` profile requires both axes to be
- * `mod 2` — without it odd PNG / JPG sources fail with `width
+ * `mod 2` -- without it odd PNG / JPG sources fail with `width
  * not divisible by 2`.
  */
-
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
 
 export type BuildCombineCommandInput = {
   image: string
@@ -23,7 +18,7 @@ export type BuildCombineCommandInput = {
   tune?: string
 }
 
-export function buildCombineCommand({
+export function buildCommandToCombine({
   image,
   audio,
   output,
@@ -33,9 +28,8 @@ export function buildCombineCommand({
   sampleRate = 48000,
   pixelFormat = 'yuv420p',
   tune = 'stillimage',
-}: BuildCombineCommandInput) {
-  const cmd = getCommand('ffmpeg')
-  cmd.link.push(
+}: BuildCombineCommandInput): { bin: 'ffmpeg'; args: string[] } {
+  const args = [
     '-nostdin',
     '-y',
     '-loop',
@@ -60,6 +54,6 @@ export function buildCombineCommand({
     pixelFormat,
     '-shortest',
     output,
-  )
-  return buildCommandSequence(cmd)
+  ]
+  return { bin: 'ffmpeg', args }
 }

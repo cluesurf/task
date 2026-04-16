@@ -1,5 +1,5 @@
 /**
- * `task extract font` — pull the editable feature source out of a
+ * `task extract font` -- pull the editable feature source out of a
  * font. `--format ttx` does a full fontTools XML dump; `--format
  * fea` restricts that dump to GSUB + GPOS so reviewers can diff
  * just the features without page after page of glyph outlines.
@@ -9,11 +9,9 @@
  * translate it by hand or pipe it through `spot` separately.
  */
 
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { runCommandSequence } from '~/code/tool/node/command'
-import { buildExtractFontCommand } from './command'
 import { ensureParentDir } from '~/code/tool/node/file'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { buildCommandToExtractFont } from './command'
 
 export type ExtractFontNodeInput = {
   input: { file: { path: string } }
@@ -44,13 +42,18 @@ export async function extractFontNode(
   await ensureParentDir(outputPath)
 
   const tables = format === 'fea' ? ['GSUB', 'GPOS'] : undefined
-  await runCommandSequence(
-    buildExtractFontCommand({
-      input: inputPath,
-      output: outputPath,
-      tables,
-    }),
-  )
+  const command = buildCommandToExtractFont({
+    input: inputPath,
+    output: outputPath,
+    tables,
+  })
+  await spawnAndWait({
+    verb: 'extract font',
+    bin: command.bin,
+    args: command.args,
+  })
 
   return { file: { path: outputPath }, format }
 }
+
+export default extractFontNode

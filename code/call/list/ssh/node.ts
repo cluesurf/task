@@ -6,7 +6,7 @@ import { getLoggingStyle } from '~/code/tool/node/log'
 const HEAD: Tint = { tone: 'white' }
 const CELL: Tint = { tone: 'whiteBright' }
 
-export async function listSshNode() {
+async function listSshNode() {
   const entries = await readAll()
 
   const style = getLoggingStyle()
@@ -39,3 +39,6 @@ export async function listSshNode() {
 
   return { entries }
 }
+
+export default listSshNode
+export { listSshNode }

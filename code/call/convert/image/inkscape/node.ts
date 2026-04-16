@@ -23,7 +23,7 @@ import { resolveWorkFileNode } from '~/code/tool/node/request'
 import { testConvertImageWithInkscape } from './shared'
 import { NativeOptions } from '~/code/tool/shared/request'
 
-export async function convertImageWithInkscapeNode(
+async function convertImageWithInkscapeNode(
   source: ConvertImageWithInkscapeNodeInput,
   native?: NativeOptions,
 ) {
@@ -61,7 +61,7 @@ async function convertImageWithInkscapeNodeLocalInternal(
   return await convertImageWithInkscapeNodeLocal(input, native)
 }
 
-export async function convertImageWithInkscapeNodeRemote(
+async function convertImageWithInkscapeNodeRemote(
   source: ConvertImageWithInkscapeNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -81,7 +81,7 @@ export async function convertImageWithInkscapeNodeRemote(
   })
 }
 
-export async function convertImageWithInkscapeNodeLocal(
+async function convertImageWithInkscapeNodeLocal(
   input,
   native?: NativeOptions,
 ) {
@@ -105,3 +105,6 @@ export function testConvertImageWithInkscapeNode(
 ): input is ConvertImageWithInkscapeNodeInput {
   return testConvertImageWithInkscape(input)
 }
+
+export default convertImageWithInkscapeNode
+export { convertImageWithInkscapeNode }

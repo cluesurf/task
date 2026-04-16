@@ -10,7 +10,7 @@ export type SetSshNodeInput = {
   forward?: string[]
 }
 
-export async function setSshNode(input: SetSshNodeInput) {
+async function setSshNode(input: SetSshNodeInput) {
   const existing = await readOne(input.name)
   if (!existing) {
     throw new Error(
@@ -27,3 +27,6 @@ export async function setSshNode(input: SetSshNodeInput) {
   })
   return { name: input.name }
 }
+
+export default setSshNode
+export { setSshNode }

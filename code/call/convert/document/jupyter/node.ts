@@ -22,7 +22,7 @@ import { buildRequestToConvert } from '../../shared'
 import { resolveWorkFileNode } from '~/code/tool/node/request'
 import { NativeOptions } from '~/code/tool/shared/request'
 
-export async function convertDocumentWithJupyterNode(
+async function convertDocumentWithJupyterNode(
   source: ConvertDocumentWithJupyterNodeInput,
   native?: NativeOptions,
 ) {
@@ -61,7 +61,7 @@ async function convertDocumentWithJupyterNodeLocalInternal(
   return await convertDocumentWithJupyterNodeLocal(input, native)
 }
 
-export async function convertDocumentWithJupyterNodeRemote(
+async function convertDocumentWithJupyterNodeRemote(
   source: ConvertDocumentWithJupyterNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -81,7 +81,7 @@ export async function convertDocumentWithJupyterNodeRemote(
   })
 }
 
-export async function convertDocumentWithJupyterNodeLocal(
+async function convertDocumentWithJupyterNodeLocal(
   input,
   native?: NativeOptions,
 ) {
@@ -99,3 +99,6 @@ export async function convertDocumentWithJupyterNodeLocal(
     },
   })
 }
+
+export default convertDocumentWithJupyterNode
+export { convertDocumentWithJupyterNode }

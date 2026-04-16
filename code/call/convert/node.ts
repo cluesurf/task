@@ -17,7 +17,7 @@ type BaseSets = {
 const BASE_CACHE = new Map<string, BaseSets>()
 const ROUTE_CACHE = new Map<string, ConvertRoute>()
 
-export async function convertNode(
+async function convertNode(
   source: ConvertNodeInput,
 ): Promise<ConvertNodeOutput> {
   const src = source as {
@@ -83,3 +83,6 @@ async function loadBase(route: ConvertRoute): Promise<BaseSets> {
   BASE_CACHE.set(route.tool, sets)
   return sets
 }
+
+export default convertNode
+export { convertNode }

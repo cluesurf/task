@@ -3,7 +3,7 @@
 
 import { exec } from '~/code/tool/node/process'
 
-export async function listDroplets(format?: 'json' | 'text'): Promise<string> {
+async function listDroplets(format?: 'json' | 'text'): Promise<string> {
   const argv = ['doctl', 'compute', 'droplet', 'list']
   if (format === 'json') argv.push('-o', 'json')
   const { stdout } = await exec(argv)
@@ -63,3 +63,6 @@ export async function dropletMetrics(
   ])
   return stdout
 }
+
+export default listDroplets
+export { listDroplets }

@@ -246,7 +246,7 @@ function sortResults(
   return reverse ? out.reverse() : out
 }
 
-export async function scoutDomainNode({
+async function scoutDomainNode({
   source,
 }: {
   source: ScoutDomainNodeInput
@@ -355,3 +355,6 @@ export async function scoutDomainNode({
     results: merged,
   }
 }
+
+export default scoutDomainNode
+export { scoutDomainNode }

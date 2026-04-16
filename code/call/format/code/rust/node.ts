@@ -21,7 +21,7 @@ import {
 import { extend } from '~/code/tool/shared/object'
 import { resolveWorkFileNode } from '~/code/tool/node/request'
 
-export async function formatRustNode(
+async function formatRustNode(
   source: FormatRustNodeInput,
   native?: NativeOptions,
 ) {
@@ -53,7 +53,7 @@ async function formatRustNodeLocalInternal(
   return await formatRustNodeLocal(input, native)
 }
 
-export async function formatRustNodeRemote(
+async function formatRustNodeRemote(
   source: FormatRustNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -72,7 +72,7 @@ export async function formatRustNodeRemote(
   }
 }
 
-export async function formatRustNodeLocal(
+async function formatRustNodeLocal(
   source,
   native?: NativeOptions,
 ) {
@@ -87,3 +87,6 @@ export async function formatRustNodeLocal(
     },
   }
 }
+
+export default formatRustNode
+export { formatRustNode }

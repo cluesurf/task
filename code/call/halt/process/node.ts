@@ -7,7 +7,7 @@ export type HaltProcessNodeInput = {
   signal: NodeJS.Signals
 }
 
-export async function haltProcessNode(input: HaltProcessNodeInput) {
+async function haltProcessNode(input: HaltProcessNodeInput) {
   const killed: number[] = []
   if (input.pid !== undefined) {
     killPid(input.pid, input.signal)
@@ -26,3 +26,6 @@ export async function haltProcessNode(input: HaltProcessNodeInput) {
   }
   return { killed }
 }
+
+export default haltProcessNode
+export { haltProcessNode }

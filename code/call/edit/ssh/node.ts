@@ -9,7 +9,7 @@ import fs from 'node:fs/promises'
 import { spawnAndWait } from '~/code/tool/node/spawn'
 import { DEFAULT_CONFIG_PATH } from '~/code/tool/node/ssh/base'
 
-export async function editSshNode() {
+async function editSshNode() {
   // `fs.open` with 'a' creates the file if it doesn't exist so the
   // editor doesn't open on a non-existent path and complain.
   const handle = await fs.open(DEFAULT_CONFIG_PATH, 'a')
@@ -24,3 +24,6 @@ export async function editSshNode() {
     okExitCodes: [0, null],
   })
 }
+
+export default editSshNode
+export { editSshNode }

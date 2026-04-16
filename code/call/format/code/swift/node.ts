@@ -24,7 +24,7 @@ import { resolveWorkFileNode } from '~/code/tool/node/request'
 // https://github.com/realm/SwiftLint
 // https://github.com/realm/SwiftLint/blob/main/Dockerfile
 
-export async function formatSwiftNode(
+async function formatSwiftNode(
   source: FormatSwiftNodeInput,
   native?: NativeOptions,
 ) {
@@ -56,7 +56,7 @@ async function formatSwiftNodeLocalInternal(
   return await formatSwiftNodeLocal(input, native)
 }
 
-export async function formatSwiftNodeRemote(
+async function formatSwiftNodeRemote(
   source: FormatSwiftNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -75,7 +75,7 @@ export async function formatSwiftNodeRemote(
   }
 }
 
-export async function formatSwiftNodeLocal(
+async function formatSwiftNodeLocal(
   source,
   native?: NativeOptions,
 ) {
@@ -90,3 +90,6 @@ export async function formatSwiftNodeLocal(
     },
   }
 }
+
+export default formatSwiftNode
+export { formatSwiftNode }

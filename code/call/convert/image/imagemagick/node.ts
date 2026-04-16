@@ -23,7 +23,7 @@ import { buildRequestToConvert } from '../../shared'
 import { resolveWorkFileNode } from '~/code/tool/node/request'
 import { NativeOptions } from '~/code/tool/shared/request'
 
-export async function convertImageWithImageMagickNode(
+async function convertImageWithImageMagickNode(
   source: ConvertImageWithImageMagickNodeInput,
   native?: NativeOptions,
 ) {
@@ -61,7 +61,7 @@ async function convertImageWithImageMagickNodeLocalInternal(
   return await convertImageWithImageMagickNodeLocal(input, native)
 }
 
-export async function convertImageWithImageMagickNodeRemote(
+async function convertImageWithImageMagickNodeRemote(
   source: ConvertImageWithImageMagickNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -81,7 +81,7 @@ export async function convertImageWithImageMagickNodeRemote(
   })
 }
 
-export async function convertImageWithImageMagickNodeLocal(
+async function convertImageWithImageMagickNodeLocal(
   input,
   native?: NativeOptions,
 ) {
@@ -104,3 +104,6 @@ export function testConvertImageWithImageMagickNode(
 ): input is ConvertImageWithImageMagickNodeInput {
   return testConvertImageWithImageMagick(input)
 }
+
+export default convertImageWithImageMagickNode
+export { convertImageWithImageMagickNode }

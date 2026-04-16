@@ -1,4 +1,4 @@
-export function test(input) {}
+function test(input) {}
 
 // if (
 //   task.test({
@@ -9,3 +9,6 @@ export function test(input) {}
 //   })
 // ) {
 // }
+
+export default test
+export { test }

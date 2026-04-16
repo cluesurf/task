@@ -26,7 +26,7 @@ export type SearchNodeOutput = {
   matched: boolean
 }
 
-export async function searchNode(
+async function searchNode(
   source: SearchNodeInput,
 ): Promise<SearchNodeOutput> {
   if (source.name === true && !source.pattern && !source.path) {
@@ -61,3 +61,6 @@ export async function searchNode(
     matched: exitCode === 0,
   }
 }
+
+export default searchNode
+export { searchNode }

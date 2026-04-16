@@ -45,7 +45,7 @@ const DEFAULT_TOOL_BY_FORMAT: Record<string, ArchiveTool> = {
   zst: '7z',
 }
 
-export async function archiveNode(source: ArchiveInput): Promise<void> {
+async function archiveNode(source: ArchiveInput): Promise<void> {
   const tool = pickTool(source)
   const sequence = await buildSequence({ tool, source })
   await runCommandSequence(sequence)
@@ -101,3 +101,6 @@ async function buildSequence({
     }
   }
 }
+
+export default archiveNode
+export { archiveNode }

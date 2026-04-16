@@ -17,10 +17,13 @@ export type InspectServiceNodeInput = {
   logs?: boolean
 }
 
-export async function inspectServiceNode(
+async function inspectServiceNode(
   source: InspectServiceNodeInput,
 ): Promise<string> {
   if (!source.name) return listServices({ failed: source.failed })
   if (source.logs) return serviceLogs(source.name)
   return inspectService(source.name)
 }
+
+export default inspectServiceNode
+export { inspectServiceNode }

@@ -11,7 +11,7 @@ export type K8sPortForwardNodeInput = {
   context?: string
 }
 
-export async function k8sPortForwardNode(
+async function k8sPortForwardNode(
   source: K8sPortForwardNodeInput,
 ): Promise<void> {
   const parts = source.target.split(':')
@@ -100,3 +100,6 @@ async function runForward(input: {
 
 const sleep = (ms: number) =>
   new Promise<void>(r => setTimeout(r, ms))
+
+export default k8sPortForwardNode
+export { k8sPortForwardNode }

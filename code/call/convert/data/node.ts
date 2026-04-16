@@ -49,7 +49,7 @@ const DATA_CONVERT_ROUTES: ReadonlyArray<DataConvertRoute> = [
   },
 ]
 
-export async function convertDataNode(
+async function convertDataNode(
   input: ConvertDataNodeLocalInternalInput,
 ): Promise<ConvertDataNodeOutput> {
   const stats: ConvertDataNodeOutput = {
@@ -142,3 +142,6 @@ function walk(dir: string, onFile: (abs: string) => void): void {
     }
   }
 }
+
+export default convertDataNode
+export { convertDataNode }

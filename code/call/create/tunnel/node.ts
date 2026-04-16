@@ -1,6 +1,6 @@
 import ngrok from '@ngrok/ngrok'
 
-export async function createTunnelWithNGrok({
+async function createTunnelWithNGrok({
   port,
   token,
 }: {
@@ -10,3 +10,6 @@ export async function createTunnelWithNGrok({
   const listener = await ngrok.forward({ addr: port, authtoken: token })
   return { url: listener.url(), listener }
 }
+
+export default createTunnelWithNGrok
+export { createTunnelWithNGrok }

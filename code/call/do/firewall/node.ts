@@ -1,6 +1,6 @@
 import { exec } from '~/code/tool/node/process'
 
-export async function listFirewalls(): Promise<string> {
+async function listFirewalls(): Promise<string> {
   const { stdout } = await exec([
     'doctl',
     'compute',
@@ -11,3 +11,6 @@ export async function listFirewalls(): Promise<string> {
   ])
   return stdout
 }
+
+export default listFirewalls
+export { listFirewalls }

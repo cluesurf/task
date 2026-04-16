@@ -10,7 +10,7 @@ export type AddSshNodeInput = {
   forward?: string[]
 }
 
-export async function addSshNode(input: AddSshNodeInput) {
+async function addSshNode(input: AddSshNodeInput) {
   const existing = await readOne(input.name)
   if (existing) {
     throw new Error(
@@ -28,3 +28,6 @@ export async function addSshNode(input: AddSshNodeInput) {
   await updateConfig(input.name, entry)
   return { name: input.name }
 }
+
+export default addSshNode
+export { addSshNode }

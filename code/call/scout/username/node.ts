@@ -39,7 +39,7 @@ export type ScoutUsernameNodeOutput = {
   }>
 }
 
-export async function scoutUsernameNode(
+async function scoutUsernameNode(
   input: ScoutUsernameNodeInput,
 ): Promise<ScoutUsernameNodeOutput> {
   const usernames = input.usernames.filter(Boolean)
@@ -236,3 +236,6 @@ function pill(
   if (visible >= width) return b
   return b + ' '.repeat(width - visible)
 }
+
+export default scoutUsernameNode
+export { scoutUsernameNode }

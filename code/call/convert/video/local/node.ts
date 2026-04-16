@@ -27,7 +27,7 @@ import {
 } from '~/code/form/object/request'
 import { buildCommandToConvertVideoWithFfmpeg } from '../command'
 
-export async function handleFfmpegCommand(
+async function handleFfmpegCommand(
   cmd: Command,
   onUpdate?: (msg: any) => void,
 ): Promise<void> {
@@ -195,3 +195,6 @@ function parseFfmpegError(text: string) {
 //     )}"`,
 //   )
 // }
+
+export default handleFfmpegCommand
+export { handleFfmpegCommand }

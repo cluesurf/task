@@ -3,7 +3,7 @@ import path from 'path'
 
 // git checks logic is from https://github.com/sindresorhus/np/blob/master/source/git-tasks.js
 
-export async function checkIsGitRepo({ directory }): Promise<boolean> {
+async function checkIsGitRepo({ directory }): Promise<boolean> {
   const gitDirectory = path.join(directory, '.git')
 
   try {
@@ -58,3 +58,6 @@ export async function checkIsGitRemoteHistoryClean({
   }
   return true
 }
+
+export default checkIsGitRepo
+export { checkIsGitRepo }

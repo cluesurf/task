@@ -23,7 +23,7 @@ import { resolveWorkFileNode } from '~/code/tool/node/request'
 import { testConvertVideoWithFfmpeg } from './shared'
 import { NativeOptions } from '~/code/tool/shared/request'
 
-export async function convertVideoWithFfmpegNode(
+async function convertVideoWithFfmpegNode(
   source: ConvertVideoWithFfmpegNodeInput,
   native?: NativeOptions,
 ) {
@@ -61,7 +61,7 @@ async function convertVideoWithFfmpegNodeLocalInternal(
   return await convertVideoWithFfmpegNodeLocal(input, native)
 }
 
-export async function convertVideoWithFfmpegNodeRemote(
+async function convertVideoWithFfmpegNodeRemote(
   source: ConvertVideoWithFfmpegNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -81,7 +81,7 @@ export async function convertVideoWithFfmpegNodeRemote(
   })
 }
 
-export async function convertVideoWithFfmpegNodeLocal(
+async function convertVideoWithFfmpegNodeLocal(
   input,
   native?: NativeOptions,
 ) {
@@ -105,3 +105,6 @@ export function testConvertVideoWithFfmpegNode(
 ): input is ConvertVideoWithFfmpegNodeInput {
   return testConvertVideoWithFfmpeg(input)
 }
+
+export default convertVideoWithFfmpegNode
+export { convertVideoWithFfmpegNode }

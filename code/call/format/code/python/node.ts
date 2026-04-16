@@ -21,7 +21,7 @@ import {
 import { extend } from '~/code/tool/shared/object'
 import { resolveWorkFileNode } from '~/code/tool/node/request'
 
-export async function formatPythonNode(
+async function formatPythonNode(
   source: FormatPythonNodeInput,
   native?: NativeOptions,
 ) {
@@ -53,7 +53,7 @@ async function formatPythonNodeLocalInternal(
   return await formatPythonNodeLocal(input, native)
 }
 
-export async function formatPythonNodeRemote(
+async function formatPythonNodeRemote(
   source: FormatPythonNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -72,7 +72,7 @@ export async function formatPythonNodeRemote(
   }
 }
 
-export async function formatPythonNodeLocal(
+async function formatPythonNodeLocal(
   source,
   native?: NativeOptions,
 ) {
@@ -87,3 +87,6 @@ export async function formatPythonNodeLocal(
     },
   }
 }
+
+export default formatPythonNode
+export { formatPythonNode }

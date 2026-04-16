@@ -24,7 +24,7 @@ import path from 'path'
 import { replaceFileExtension } from '~/code/tool/shared/screen'
 import { NativeOptions } from '~/code/tool/shared/request'
 
-export async function convertDocumentWithLibreOfficeNode(
+async function convertDocumentWithLibreOfficeNode(
   source: ConvertDocumentWithLibreOfficeNodeInput,
   native?: NativeOptions,
 ) {
@@ -66,7 +66,7 @@ async function convertDocumentWithLibreOfficeNodeLocalInternal(
   return await convertDocumentWithLibreOfficeNodeLocal(input, native)
 }
 
-export async function convertDocumentWithLibreOfficeNodeRemote(
+async function convertDocumentWithLibreOfficeNodeRemote(
   source: ConvertDocumentWithLibreOfficeNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -86,7 +86,7 @@ export async function convertDocumentWithLibreOfficeNodeRemote(
   })
 }
 
-export async function convertDocumentWithLibreOfficeNodeLocal(
+async function convertDocumentWithLibreOfficeNodeLocal(
   input,
   native?: NativeOptions,
 ) {
@@ -110,3 +110,6 @@ export async function convertDocumentWithLibreOfficeNodeLocal(
     },
   })
 }
+
+export default convertDocumentWithLibreOfficeNode
+export { convertDocumentWithLibreOfficeNode }

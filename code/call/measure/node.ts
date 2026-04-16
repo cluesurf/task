@@ -9,7 +9,7 @@ const HEAD: Tint = { tone: 'whiteBright', bold: true }
 
 export type MeasureNodeInput = { url: string }
 
-export async function measureNode(input: MeasureNodeInput) {
+async function measureNode(input: MeasureNodeInput) {
   const r = await measureUrl(input.url)
 
   const style = getLoggingStyle()
@@ -35,3 +35,6 @@ export async function measureNode(input: MeasureNodeInput) {
   }
   return r
 }
+
+export default measureNode
+export { measureNode }

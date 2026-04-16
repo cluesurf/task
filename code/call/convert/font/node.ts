@@ -25,7 +25,7 @@ import { buildRequestToConvert } from '../shared'
 import { resolveWorkFileNode } from '~/code/tool/node/request'
 import { NativeOptions } from '~/code/tool/shared/request'
 
-export async function convertFontWithFontForgeNode(
+async function convertFontWithFontForgeNode(
   source: ConvertFontWithFontForgeNodeInput,
   native?: NativeOptions,
 ) {
@@ -63,7 +63,7 @@ async function convertFontWithFontForgeNodeLocalInternal(
   return await convertFontWithFontForgeNodeLocal(input)
 }
 
-export async function convertFontWithFontForgeNodeRemote(
+async function convertFontWithFontForgeNodeRemote(
   source: ConvertFontWithFontForgeNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -83,7 +83,7 @@ export async function convertFontWithFontForgeNodeRemote(
   })
 }
 
-export async function convertFontWithFontForgeNodeLocal(
+async function convertFontWithFontForgeNodeLocal(
   input,
   native?: NativeOptions,
 ) {
@@ -107,3 +107,6 @@ export function testConvertFontWithFontForgeNode(
 ): input is ConvertFontWithFontForgeNodeInput {
   return testConvertFontWithFontForge(input)
 }
+
+export default convertFontWithFontForgeNode
+export { convertFontWithFontForgeNode }

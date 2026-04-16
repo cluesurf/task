@@ -1,7 +1,7 @@
 import { execa } from 'execa'
 import path from 'path'
 
-export async function getGitBranch({
+async function getGitBranch({
   directory,
 }): Promise<string | null> {
   const gitDirectory = path.join(directory, '.git')
@@ -18,3 +18,6 @@ export async function getGitBranch({
     return null
   }
 }
+
+export default getGitBranch
+export { getGitBranch }

@@ -14,10 +14,13 @@ export type HighlightNodeInput = {
   text: string
 }
 
-export async function highlightNode(source: HighlightNodeInput) {
+async function highlightNode(source: HighlightNodeInput) {
   return await markPdfNode({
     input: source.input,
     output: source.output,
     highlight: source.text,
   } as Parameters<typeof markPdfNode>[0])
 }
+
+export default highlightNode
+export { highlightNode }

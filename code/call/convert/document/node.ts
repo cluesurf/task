@@ -23,7 +23,7 @@ import {
   testConvertTxtWithPuppeteer,
 } from './shared'
 
-export function testConvertLatexToPngNode(
+function testConvertLatexToPngNode(
   input: any,
 ): input is ConvertLatexToPngNodeInput {
   return testConvertLatexToPng(input)
@@ -98,3 +98,6 @@ export function testConvertDocumentWithLibreOfficeNode(
 
 //   return await cropPdfWithPdfCropNode(pdfCropInput)
 // }
+
+export default testConvertLatexToPngNode
+export { testConvertLatexToPngNode }

@@ -22,7 +22,7 @@ import { buildRequestToCompile } from '~/code/call/compile/code/shared'
 import { resolveWorkFileNode } from '~/code/tool/node/request'
 import { NativeOptions } from '~/code/tool/shared/request'
 
-export async function compileCppNode(
+async function compileCppNode(
   source: CompileCppNodeInput,
   native?: NativeOptions,
 ) {
@@ -54,7 +54,7 @@ async function compileCppNodeLocalInternal(
   return await compileCppNodeLocal(input, native)
 }
 
-export async function compileCppNodeRemote(
+async function compileCppNodeRemote(
   source: CompileCppNodeRemoteInput,
   native,
 ) {
@@ -73,7 +73,7 @@ export async function compileCppNodeRemote(
   }
 }
 
-export async function compileCppNodeLocal(
+async function compileCppNodeLocal(
   input,
   native?: NativeOptions,
 ) {
@@ -89,3 +89,6 @@ export async function compileCppNodeLocal(
     },
   }
 }
+
+export default compileCppNode
+export { compileCppNode }

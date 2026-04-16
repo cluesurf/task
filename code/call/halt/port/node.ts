@@ -6,7 +6,7 @@ export type HaltPortNodeInput = {
   signal: NodeJS.Signals
 }
 
-export async function haltPortNode(input: HaltPortNodeInput) {
+async function haltPortNode(input: HaltPortNodeInput) {
   const killed = await killByPort(input.port, input.signal)
 
   const style = getLoggingStyle()
@@ -19,3 +19,6 @@ export async function haltPortNode(input: HaltPortNodeInput) {
   }
   return { port: input.port, killed }
 }
+
+export default haltPortNode
+export { haltPortNode }

@@ -25,7 +25,7 @@ export type SetEnvironmentNodeOutput = {
   action: 'created' | 'updated' | 'inserted'
 }
 
-export async function setEnvironmentNode(
+async function setEnvironmentNode(
   source: SetEnvironmentNodeInput,
 ): Promise<SetEnvironmentNodeOutput> {
   const file = path.resolve(source.file ?? '.env')
@@ -65,3 +65,6 @@ export async function setEnvironmentNode(
 function escapeRegex(text: string): string {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
+
+export default setEnvironmentNode
+export { setEnvironmentNode }

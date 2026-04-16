@@ -44,7 +44,7 @@ const ADD_BG = '\x1b[48;5;22m' // dark green
 const FG_BRIGHT = '\x1b[97m'    // white-bright text on top
 const RESET = '\x1b[0m'
 
-export async function compareNode(input: CompareNodeInput) {
+async function compareNode(input: CompareNodeInput) {
   const format = (input.as ?? inferFormat(input.left, input.right) ?? 'json').toLowerCase()
 
   if (format === 'text') {
@@ -253,3 +253,6 @@ function truncate(s: string, width: number): string {
   if (s.length <= width) return s
   return s.slice(0, Math.max(0, width - 1)) + '…'
 }
+
+export default compareNode
+export { compareNode }

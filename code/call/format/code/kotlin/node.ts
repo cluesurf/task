@@ -21,7 +21,7 @@ import {
 import { extend } from '~/code/tool/shared/object'
 import { resolveWorkFileNode } from '~/code/tool/node/request'
 
-export async function formatKotlinNode(
+async function formatKotlinNode(
   source: FormatKotlinNodeInput,
   native?: NativeOptions,
 ) {
@@ -53,7 +53,7 @@ async function formatKotlinNodeLocalInternal(
   return await formatKotlinNodeLocal(input, native)
 }
 
-export async function formatKotlinNodeRemote(
+async function formatKotlinNodeRemote(
   source: FormatKotlinNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -72,7 +72,7 @@ export async function formatKotlinNodeRemote(
   }
 }
 
-export async function formatKotlinNodeLocal(
+async function formatKotlinNodeLocal(
   source,
   native?: NativeOptions,
 ) {
@@ -87,3 +87,6 @@ export async function formatKotlinNodeLocal(
     },
   }
 }
+
+export default formatKotlinNode
+export { formatKotlinNode }

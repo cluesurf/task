@@ -150,7 +150,7 @@ async function callNamecheap({
   })
 }
 
-export async function checkDomainNamecheapNode({
+async function checkDomainNamecheapNode({
   source,
 }: {
   source: CheckDomainNodeInput
@@ -185,3 +185,6 @@ export async function checkDomainNamecheapNode({
 
   return { results: out }
 }
+
+export default checkDomainNamecheapNode
+export { checkDomainNamecheapNode }

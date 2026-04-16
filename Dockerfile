@@ -81,6 +81,7 @@ RUN set -eux; \
       intltool gettext autopoint \
       libpng-dev libexif-dev libtiff-dev libjpeg-dev \
       libmagickcore-dev libmagickwand-dev \
+      pstoedit libpstoedit-dev \
       ca-certificates curl; \
     tmp="$(mktemp -d)"; \
     cd "$tmp"; \

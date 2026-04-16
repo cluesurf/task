@@ -21,7 +21,7 @@ import {
 import { extend } from '~/code/tool/shared/object'
 import { resolveWorkFileNode } from '~/code/tool/node/request'
 
-export async function formatAssemblyNode(
+async function formatAssemblyNode(
   source: FormatAssemblyNodeInput,
   native?: NativeOptions,
 ) {
@@ -53,7 +53,7 @@ async function formatAssemblyNodeLocalInternal(
   return await formatAssemblyNodeLocal(input, native)
 }
 
-export async function formatAssemblyNodeRemote(
+async function formatAssemblyNodeRemote(
   source: FormatAssemblyNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -72,7 +72,7 @@ export async function formatAssemblyNodeRemote(
   }
 }
 
-export async function formatAssemblyNodeLocal(
+async function formatAssemblyNodeLocal(
   source,
   native?: NativeOptions,
 ) {
@@ -87,3 +87,6 @@ export async function formatAssemblyNodeLocal(
     },
   }
 }
+
+export default formatAssemblyNode
+export { formatAssemblyNode }

@@ -2,7 +2,7 @@ import expandShorthandProperty from 'css-property-parser/src/expandShorthandProp
 import { parseFont } from 'css-font-parser'
 import { ColorTranslator } from 'colortranslator'
 
-export function getWebpageData() {
+function getWebpageData() {
   const theme = getTheme()
   const meta = getMeta()
   return { theme, meta }
@@ -273,3 +273,6 @@ function getTheme() {
 function KEY(obj) {
   return JSON.stringify(obj)
 }
+
+export default getWebpageData
+export { getWebpageData }

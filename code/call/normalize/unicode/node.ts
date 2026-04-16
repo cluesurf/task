@@ -9,7 +9,7 @@ export type NormalizeUnicodeNodeInput = {
   output?: string
 }
 
-export async function normalizeUnicodeNode(input: NormalizeUnicodeNodeInput) {
+async function normalizeUnicodeNode(input: NormalizeUnicodeNodeInput) {
   const text = await fs.readFile(input.file, 'utf8')
   const normalized = normalizeUnicode(text, input.form)
   const outputPath = input.output ?? input.file
@@ -17,3 +17,6 @@ export async function normalizeUnicodeNode(input: NormalizeUnicodeNodeInput) {
   await fs.writeFile(outputPath, normalized, 'utf8')
   return { file: { path: outputPath }, form: input.form }
 }
+
+export default normalizeUnicodeNode
+export { normalizeUnicodeNode }

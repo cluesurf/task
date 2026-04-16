@@ -35,7 +35,7 @@ import {
 export type { SyncNodeInput, SyncNodeOutput }
 export { testSyncNode }
 
-export async function syncNode(
+async function syncNode(
   source: SyncNodeInput,
 ): Promise<SyncNodeOutput> {
   const input = parseSyncNode(source)
@@ -161,3 +161,6 @@ function resolveSmbRsyncPath(
   return subpath ? path.join(mountPoint, subpath) : mountPoint
 }
 
+
+export default syncNode
+export { syncNode }

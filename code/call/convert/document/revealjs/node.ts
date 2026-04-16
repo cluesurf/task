@@ -1,9 +1,11 @@
-// Slides: markdown → reveal.js HTML via pandoc.
+// Slides: markdown -> reveal.js HTML via pandoc.
 // Standalone file so callers don't have to remember the pandoc flag
-// dance, and so dispatch in convert/document can route `md → html`
+// dance, and so dispatch in convert/document can route `md -> html`
 // with `--tool revealjs` cleanly.
 
-import { exec } from '~/code/tool/node/process'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { buildCommandToConvertDocumentWithRevealjs } from './command'
 
 export type ConvertDocumentWithRevealjsNodeInput = {
   input: { path: string }
@@ -15,19 +17,22 @@ export type ConvertDocumentWithRevealjsNodeInput = {
   selfContained?: boolean
 }
 
-export async function convertDocumentWithRevealjsNode(
+async function convertDocumentWithRevealjsNode(
   source: ConvertDocumentWithRevealjsNodeInput,
 ): Promise<void> {
-  const argv = [
-    'pandoc',
-    source.input.path,
-    '-t',
-    'revealjs',
-    '-s',
-    '-o',
-    source.output.path,
-  ]
-  if (source.theme) argv.push('-V', `theme=${source.theme}`)
-  if (source.selfContained) argv.push('--embed-resources')
-  await exec(argv)
+  await ensureParentDir(source.output.path)
+  const command = buildCommandToConvertDocumentWithRevealjs({
+    inputPath: source.input.path,
+    outputPath: source.output.path,
+    theme: source.theme,
+    selfContained: source.selfContained,
+  })
+  await spawnAndWait({
+    verb: 'convert document',
+    bin: command.bin,
+    args: command.args,
+  })
 }
+
+export default convertDocumentWithRevealjsNode
+export { convertDocumentWithRevealjsNode }

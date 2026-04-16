@@ -1,11 +1,12 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
+/**
+ * `task convert audio` -- re-encode between audio formats with
+ * ffmpeg. The output extension picks the codec; `--bitrate` is
+ * an optional knob for lossy targets.
+ */
+
 import { ensureParentDir } from '~/code/tool/node/file'
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { buildCommandToConvertAudio } from './command'
 
 export type ConvertAudioNodeInput = {
   input: { file: { path: string } }
@@ -17,11 +18,17 @@ export async function convertAudioNode(source: ConvertAudioNodeInput) {
   const outputPath = source.output.file.path
   await ensureParentDir(outputPath)
 
-  const cmd = getCommand('ffmpeg')
-  cmd.link.push('-y', '-i', source.input.file.path)
-  if (source.bitrate) cmd.link.push('-b:a', source.bitrate)
-  cmd.link.push(outputPath)
-
-  await runCommandSequence(buildCommandSequence(cmd))
+  const command = buildCommandToConvertAudio({
+    inputPath: source.input.file.path,
+    outputPath,
+    bitrate: source.bitrate,
+  })
+  await spawnAndWait({
+    verb: 'convert audio',
+    bin: command.bin,
+    args: command.args,
+  })
   return { file: { path: outputPath } }
 }
+
+export default convertAudioNode

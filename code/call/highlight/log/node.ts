@@ -52,7 +52,7 @@ export type HighlightLogNodeInput = {
   text?: string
 }
 
-export async function highlightLogNode(input: HighlightLogNodeInput) {
+async function highlightLogNode(input: HighlightLogNodeInput) {
   const text = await fs.readFile(input.file, 'utf8')
   const minRank = input.level ? LEVEL_RANK[input.level.toLowerCase()] ?? 0 : 0
   const needle = input.text?.toLowerCase()
@@ -82,3 +82,6 @@ export async function highlightLogNode(input: HighlightLogNodeInput) {
 
   return { shown, total }
 }
+
+export default highlightLogNode
+export { highlightLogNode }

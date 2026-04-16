@@ -21,7 +21,7 @@ import { buildRequestToCompile } from '~/code/call/compile/code/shared'
 import { resolveWorkFileNode } from '~/code/tool/node/request'
 import { NativeOptions } from '~/code/tool/shared/request'
 
-export async function compileSwiftNode(
+async function compileSwiftNode(
   source: CompileSwiftNodeInput,
   native?: NativeOptions,
 ) {
@@ -53,7 +53,7 @@ async function compileSwiftNodeLocalInternal(
   return await compileSwiftNodeLocal(input, native)
 }
 
-export async function compileSwiftNodeRemote(
+async function compileSwiftNodeRemote(
   source: CompileSwiftNodeRemoteInput,
   native,
 ) {
@@ -72,7 +72,7 @@ export async function compileSwiftNodeRemote(
   }
 }
 
-export async function compileSwiftNodeLocal(
+async function compileSwiftNodeLocal(
   input,
   native?: NativeOptions,
 ) {
@@ -88,3 +88,6 @@ export async function compileSwiftNodeLocal(
     },
   }
 }
+
+export default compileSwiftNode
+export { compileSwiftNode }

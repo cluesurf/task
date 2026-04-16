@@ -5,6 +5,9 @@ export type MeasureDropletNodeInput = {
   type: DropletMetric
 }
 
-export async function measureDropletNode(source: MeasureDropletNodeInput): Promise<string> {
+async function measureDropletNode(source: MeasureDropletNodeInput): Promise<string> {
   return measureDroplet(source.id, source.type)
 }
+
+export default measureDropletNode
+export { measureDropletNode }

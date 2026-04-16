@@ -24,7 +24,7 @@ import {
 import { extend } from '~/code/tool/shared/object'
 import { resolveWorkFileNode } from '~/code/tool/node/request'
 
-export async function formatCodeWithClangFormatNode(
+async function formatCodeWithClangFormatNode(
   source: FormatCodeWithClangFormatNodeInput,
   native?: NativeOptions,
 ) {
@@ -62,7 +62,7 @@ async function formatCodeWithClangFormatNodeLocalInternal(
   return await formatCodeWithClangFormatNodeLocal(input, native)
 }
 
-export async function formatCodeWithClangFormatNodeRemote(
+async function formatCodeWithClangFormatNodeRemote(
   source: FormatCodeWithClangFormatNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -82,7 +82,7 @@ export async function formatCodeWithClangFormatNodeRemote(
   }
 }
 
-export async function formatCodeWithClangFormatNodeLocal(
+async function formatCodeWithClangFormatNodeLocal(
   source,
   native?: NativeOptions,
 ) {
@@ -112,3 +112,6 @@ export async function formatCodeWithClangFormatNodeLocal(
     },
   }
 }
+
+export default formatCodeWithClangFormatNode
+export { formatCodeWithClangFormatNode }

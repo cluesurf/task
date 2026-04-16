@@ -37,7 +37,7 @@ export type ParseHtmlNodeInput = {
   userAgent?: string
 }
 
-export async function parseHtmlNode(input: ParseHtmlNodeInput) {
+async function parseHtmlNode(input: ParseHtmlNodeInput) {
   const html = await resolveHtml({
     input: input.input,
     render: input.render,
@@ -103,3 +103,6 @@ function serialize(r: Record<string, unknown>, fmt: 'json' | 'csv'): string {
 function isUrl(s: string): boolean {
   return /^https?:\/\//i.test(s)
 }
+
+export default parseHtmlNode
+export { parseHtmlNode }

@@ -10,7 +10,7 @@ import { readOne } from '~/code/tool/node/ssh/base'
 
 export type OpenSshNodeInput = { name: string }
 
-export async function openSshNode(input: OpenSshNodeInput) {
+async function openSshNode(input: OpenSshNodeInput) {
   const entry = await readOne(input.name)
   if (!entry) {
     throw new Error(
@@ -26,3 +26,6 @@ export async function openSshNode(input: OpenSshNodeInput) {
     okExitCodes: [0, null],
   })
 }
+
+export default openSshNode
+export { openSshNode }

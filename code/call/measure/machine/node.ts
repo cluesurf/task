@@ -7,8 +7,11 @@ export type MeasureMachineNodeInput = {
   field: DropletMetric
 }
 
-export async function measureMachineNode(source: MeasureMachineNodeInput): Promise<string> {
+async function measureMachineNode(source: MeasureMachineNodeInput): Promise<string> {
   const p = normalizePlatform(source.platform)
   if (p === 'do') return measureDroplet(source.id, source.field)
   throw new Error(`unsupported platform: ${source.platform}`)
 }
+
+export default measureMachineNode
+export { measureMachineNode }

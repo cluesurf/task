@@ -9,7 +9,7 @@ import {
 
 export type ListDomainNodeInput = { records?: string }
 
-export async function listDomainNode(source: ListDomainNodeInput = {}): Promise<string> {
+async function listDomainNode(source: ListDomainNodeInput = {}): Promise<string> {
   if (source.records) return listDomainRecords(source.records)
   return listDomains()
 }
@@ -97,3 +97,6 @@ function formatTlds(tlds: IanaTld[], output: string): string {
       return JSON.stringify(tlds, null, 2)
   }
 }
+
+export default listDomainNode
+export { listDomainNode }

@@ -14,7 +14,7 @@ export type CopyEnvironmentNodeInput = {
   file?: string
 }
 
-export async function copyEnvironmentNode(
+async function copyEnvironmentNode(
   input: CopyEnvironmentNodeInput,
 ) {
   const value = input.file
@@ -63,3 +63,6 @@ async function readFromEnvFile(input: {
   }
   return null
 }
+
+export default copyEnvironmentNode
+export { copyEnvironmentNode }

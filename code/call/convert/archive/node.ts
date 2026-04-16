@@ -1,5 +1,6 @@
 import archiver from 'archiver'
 import fs from 'fs'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import {
   ArchiveParser,
 } from '~/code/form/action/archive/take'
@@ -37,7 +38,7 @@ import { buildCommandToArchiveWithRar } from '../../archive/command'
 import kink from '~/code/tool/shared/kink'
 import { testConvertArchive } from './shared'
 
-export async function convertArchiveNode(
+async function convertArchiveNode(
   source: ConvertArchiveNodeInput,
   native?: NativeOptions,
 ) {
@@ -69,7 +70,7 @@ async function convertArchiveNodeLocalInternal(
   return await convertArchiveNodeLocal(input, native)
 }
 
-export async function convertArchiveNodeRemote(
+async function convertArchiveNodeRemote(
   source: ConvertArchiveNodeRemoteInput,
   native?: NativeOptions,
 ) {
@@ -88,7 +89,7 @@ export async function convertArchiveNodeRemote(
   })
 }
 
-export async function convertArchiveNodeLocal(
+async function convertArchiveNodeLocal(
   input,
   native?: NativeOptions,
 ) {
@@ -105,9 +106,13 @@ export async function convertArchiveNodeLocal(
     }),
   )
 
-  const unarchiveSequence =
+  const unarchiveCmd =
     await buildCommandToExtractWithUnarchiver(unarchiveInput)
-  await runCommandSequence(unarchiveSequence)
+  await spawnAndWait({
+    verb: 'convert archive',
+    bin: unarchiveCmd.bin,
+    args: unarchiveCmd.args,
+  })
 
   const archiveInput = ArchiveParser.parse(
     merge(input, {
@@ -167,3 +172,6 @@ export function archiveWithArchiver(
     archive.finalize()
   })
 }
+
+export default convertArchiveNode
+export { convertArchiveNode }

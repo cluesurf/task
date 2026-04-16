@@ -2,7 +2,7 @@ import { readOne, updateConfig } from '~/code/tool/node/ssh/base'
 
 export type RemoveSshHostNodeInput = { name: string }
 
-export async function removeSshHostNode(
+async function removeSshHostNode(
   input: RemoveSshHostNodeInput,
 ) {
   const existing = await readOne(input.name)
@@ -14,3 +14,6 @@ export async function removeSshHostNode(
   await updateConfig(input.name, null)
   return { name: input.name, removed: true }
 }
+
+export default removeSshHostNode
+export { removeSshHostNode }

@@ -11,7 +11,7 @@ const BAD: Tint = { tone: 'red' }
 
 export type PingNodeInput = { host: string; count: number }
 
-export async function pingNode(input: PingNodeInput) {
+async function pingNode(input: PingNodeInput) {
   const result = await pingHost(input.host, input.count)
 
   const style = getLoggingStyle()
@@ -42,3 +42,6 @@ export async function pingNode(input: PingNodeInput) {
 
   return result
 }
+
+export default pingNode
+export { pingNode }

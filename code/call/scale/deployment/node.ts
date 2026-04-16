@@ -7,9 +7,12 @@ export type ScaleDeploymentNodeInput = {
   context?: string
 }
 
-export async function scaleDeploymentNode(source: ScaleDeploymentNodeInput): Promise<void> {
+async function scaleDeploymentNode(source: ScaleDeploymentNodeInput): Promise<void> {
   await scaleDeployment(source.name, source.replicas, {
     namespace: source.namespace,
     context: source.context,
   })
 }
+
+export default scaleDeploymentNode
+export { scaleDeploymentNode }

@@ -6,7 +6,7 @@ import { getLoggingStyle } from '~/code/tool/node/log'
 const HEAD: Tint = { tone: 'white' }
 const CELL: Tint = { tone: 'whiteBright' }
 
-export async function listNetworkInterfaceNode() {
+async function listNetworkInterfaceNode() {
   const ifaces = listInterfaces()
 
   const style = getLoggingStyle()
@@ -40,3 +40,6 @@ export async function listNetworkInterfaceNode() {
   }
   return { interfaces: ifaces }
 }
+
+export default listNetworkInterfaceNode
+export { listNetworkInterfaceNode }

@@ -8,7 +8,7 @@ export type ParseLogNodeInput = {
   limit?: number
 }
 
-export async function parseLogNode(input: ParseLogNodeInput) {
+async function parseLogNode(input: ParseLogNodeInput) {
   const text = await fs.readFile(input.file, 'utf8')
   const entries: LogEntry[] = []
   let count = 0
@@ -31,3 +31,6 @@ export async function parseLogNode(input: ParseLogNodeInput) {
   }
   return { entries, count }
 }
+
+export default parseLogNode
+export { parseLogNode }

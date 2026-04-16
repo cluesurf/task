@@ -21,7 +21,7 @@ export type AggregateLogNodeInput = {
   limit: number
 }
 
-export async function aggregateLogNode(input: AggregateLogNodeInput) {
+async function aggregateLogNode(input: AggregateLogNodeInput) {
   const text = await fs.readFile(input.file, 'utf8')
   const tally = new Map<string, number>()
 
@@ -77,3 +77,6 @@ function extract(entry: LogEntry, key: string): unknown {
   if (entry.extra && entry.extra[key] !== undefined) return entry.extra[key]
   return undefined
 }
+
+export default aggregateLogNode
+export { aggregateLogNode }

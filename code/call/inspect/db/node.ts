@@ -7,45 +7,27 @@
 //   task inspect db mydb --schemas
 //   task inspect db mydb --size
 
-import { exec } from '~/code/tool/node/process'
+import { spawnAndCapture } from '~/code/tool/node/spawn'
+import { buildCommandToInspectDb } from './command'
 
 export type InspectDbNodeInput = {
   db: string
   show?: 'tables' | 'schemas' | 'size' | 'extensions' | 'roles'
 }
 
-export async function inspectDbNode(
+async function inspectDbNode(
   source: InspectDbNodeInput,
 ): Promise<string> {
-  const query = QUERIES[source.show ?? 'tables']
-  const { stdout } = await exec([
-    'psql',
-    '-d',
-    source.db,
-    '-A',
-    '-t',
-    '-c',
-    query,
-  ])
-  return stdout
+  const command = buildCommandToInspectDb({
+    db: source.db,
+    show: source.show,
+  })
+  return await spawnAndCapture({
+    verb: 'inspect db',
+    bin: command.bin,
+    args: command.args,
+  })
 }
 
-const QUERIES = {
-  tables:
-    `SELECT table_schema || '.' || table_name AS table
-     FROM information_schema.tables
-     WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
-     ORDER BY table_schema, table_name;`,
-  schemas:
-    `SELECT schema_name
-     FROM information_schema.schemata
-     WHERE schema_name NOT LIKE 'pg_%'
-       AND schema_name <> 'information_schema'
-     ORDER BY schema_name;`,
-  size:
-    `SELECT pg_size_pretty(pg_database_size(current_database())) AS size;`,
-  extensions:
-    `SELECT extname, extversion FROM pg_extension ORDER BY extname;`,
-  roles:
-    `SELECT rolname FROM pg_roles ORDER BY rolname;`,
-}
+export default inspectDbNode
+export { inspectDbNode }

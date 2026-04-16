@@ -11,11 +11,6 @@
  * Pass `silent: true` to drop audio (`-an`).
  */
 
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-
 export type BuildOptimizeVideoInput = {
   input: string
   output: string
@@ -30,7 +25,7 @@ export type BuildOptimizeVideoInput = {
   silent?: boolean
 }
 
-export function buildOptimizeVideoCommand({
+export function buildCommandToOptimizeVideo({
   input,
   output,
   videoCodec = 'libx264',
@@ -42,27 +37,25 @@ export function buildOptimizeVideoCommand({
   audioBitrate = '128k',
   faststart = true,
   silent = false,
-}: BuildOptimizeVideoInput) {
-  const cmd = getCommand('ffmpeg')
+}: BuildOptimizeVideoInput): { bin: 'ffmpeg'; args: string[] } {
+  const args: string[] = ['-nostdin', '-y', '-i', input]
 
-  cmd.link.push('-nostdin', '-y', '-i', input)
-
-  cmd.link.push('-vcodec', videoCodec)
-  cmd.link.push('-crf', String(crf))
-  cmd.link.push('-preset', preset)
-  cmd.link.push('-vf', `scale=${width}:-2`)
-  cmd.link.push('-pix_fmt', pixelFormat)
+  args.push('-vcodec', videoCodec)
+  args.push('-crf', String(crf))
+  args.push('-preset', preset)
+  args.push('-vf', `scale=${width}:-2`)
+  args.push('-pix_fmt', pixelFormat)
 
   if (faststart) {
-    cmd.link.push('-movflags', '+faststart')
+    args.push('-movflags', '+faststart')
   }
 
   if (silent) {
-    cmd.link.push('-an')
+    args.push('-an')
   } else {
-    cmd.link.push('-acodec', audioCodec, '-b:a', audioBitrate)
+    args.push('-acodec', audioCodec, '-b:a', audioBitrate)
   }
 
-  cmd.link.push(output)
-  return buildCommandSequence(cmd)
+  args.push(output)
+  return { bin: 'ffmpeg', args }
 }
