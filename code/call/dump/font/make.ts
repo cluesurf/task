@@ -1,4 +1,4 @@
-import { buildSingleFileForms } from '~/code/tool/shared/base'
+import { buildSingleFileForms } from '~/code/tool/shared/make'
 
 /**
  * Action input for `task dump font` -- round-trips a font through

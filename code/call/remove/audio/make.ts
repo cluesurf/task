@@ -1,4 +1,4 @@
-import { buildSingleFileForms } from '~/code/tool/shared/base'
+import { buildSingleFileForms } from '~/code/tool/shared/make'
 
 /**
  * `task remove audio` -- strip the audio track out of a video

@@ -21,7 +21,7 @@
 
 import tint, { Tint } from '@termsurf/tint-text'
 import stripAnsi from 'strip-ansi'
-import { listInterfaces } from '~/code/tool/node/network/base'
+import { listInterfaces } from '~/code/tool/node/network/make'
 import { getLoggingStyle } from '~/code/tool/node/log'
 
 const IP: Tint = { tone: 'green' }

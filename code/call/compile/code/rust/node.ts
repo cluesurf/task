@@ -78,15 +78,9 @@ async function compileRustNodeLocal(
 ) {
   const localInput = CompileRustNodeLocalInputParser.parse(input)
 
-  const sequence = await buildCommandToCompileRust(localInput)
+  const command = await buildCommandToCompileRust(localInput)
 
-  for (const cmd of sequence.call) {
-    await spawnAndWait({
-      verb: 'compile rust',
-      bin: cmd.link[0]!,
-      args: cmd.link.slice(1),
-    })
-  }
+  await spawnAndWait({ verb: 'compile rust', bin: command.bin, args: command.args })
 
   return {
     file: {

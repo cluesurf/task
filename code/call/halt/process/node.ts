@@ -1,4 +1,4 @@
-import { killByText, killPid } from '~/code/tool/node/proc/base'
+import { killByText, killPid } from '~/code/tool/node/proc/make'
 import { getLoggingStyle } from '~/code/tool/node/log'
 
 export type HaltProcessNodeInput = {

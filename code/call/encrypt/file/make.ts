@@ -1,5 +1,5 @@
 import type { List } from '@cluesurf/form'
-import { buildSingleFileForms } from '~/code/tool/shared/base'
+import { buildSingleFileForms } from '~/code/tool/shared/make'
 
 export const encrypt_file_tool: List = {
   form: 'list',

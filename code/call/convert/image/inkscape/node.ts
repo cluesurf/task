@@ -88,12 +88,10 @@ async function convertImageWithInkscapeNodeLocal(
   const localInput =
     ConvertImageWithInkscapeNodeLocalInputParser.parse(input)
 
-  const sequence =
+  const { bin, args } =
     await buildCommandToConvertImageWithInkscape(localInput)
 
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'convert', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  await spawnAndWait({ verb: 'convert', bin, args })
 
   return ConvertImageWithInkscapeNodeOutputParser.parse({
     file: {

@@ -36,12 +36,9 @@ async function searchNode(
   }
 
   const wantsFilenameSearch = source.name === true
-  const sequence = wantsFilenameSearch
+  const { bin, args } = wantsFilenameSearch
     ? buildFdCommand(source)
     : buildRgCommand(source)
-  const cmd = sequence.call[0]!
-  const [bin, ...args] = cmd.link
-  if (!bin) throw new Error('search command had no binary')
 
   const exitCode = await spawnAndGetExitCode({
     verb: 'search',

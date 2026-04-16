@@ -88,7 +88,7 @@ async function convertLatexWithPdfLatexNodeLocal(
   const localInput =
     ConvertLatexWithPdfLatexNodeLocalInputParser.parse(input)
 
-  const sequence =
+  const command =
     await buildCommandToConvertLatexWithPdfLatex(localInput)
 
   const outputPath = path.join(
@@ -96,9 +96,7 @@ async function convertLatexWithPdfLatexNodeLocal(
     'document.pdf',
   )
 
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'convert', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  await spawnAndWait({ verb: 'convert', bin: command.bin, args: command.args })
 
   return ConvertLatexWithPdfLatexNodeOutputParser.parse({
     file: {

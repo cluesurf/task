@@ -1,4 +1,4 @@
-import { convertEol, type Eol } from '~/code/tool/node/text/base'
+import { convertEol, type Eol } from '~/code/tool/node/text/make'
 
 export type SetEolNodeInput = {
   target: Eol

@@ -1,43 +1,43 @@
-import { getCommand } from '~/code/tool/shared/command'
 import {
   DisassembleBinaryWithObjdump,
 } from '~/code/form/action/convert/disassemble/binary/shared'
 export async function buildCommandToDisassembleBinaryWithObjdump(
   input: DisassembleBinaryWithObjdump & { tool?: 'objdump' | 'llvm-objdump' },
-) {
+): Promise<{ bin: string; args: string[] }> {
   // `llvm-objdump` takes the same long-form flags we use here, so
-  // the builder is shared. Pick the binary via `tool` — useful on
+  // the builder is shared. Pick the binary via `tool` -- useful on
   // macOS where GNU binutils isn't the default.
-  const cmd = getCommand((input.tool ?? 'objdump') as never)
+  const bin = input.tool ?? 'objdump'
+  const args: string[] = []
   if (input.show?.includes('archive_header')) {
-    cmd.link.push(`--archive-header`)
+    args.push(`--archive-header`)
   }
   if (input.show?.includes('debugging_info')) {
-    cmd.link.push(`--debugging`)
+    args.push(`--debugging`)
   }
   if (input.show?.includes('section_header_summary')) {
-    cmd.link.push(`--section-headers`)
+    args.push(`--section-headers`)
   }
   if (input.show?.includes('source_code')) {
-    cmd.link.push(`--source`)
+    args.push(`--source`)
   }
   if (input.show?.includes('all_header')) {
-    cmd.link.push(`--all-headers`)
+    args.push(`--all-headers`)
   }
   if (input.hide?.includes('address')) {
-    cmd.link.push(`--no-addresses`)
+    args.push(`--no-addresses`)
   }
   if (input.hide?.includes('instruction_byte')) {
-    cmd.link.push(`--no-show-raw-insn`)
+    args.push(`--no-show-raw-insn`)
   }
   if (input.demangleStyle) {
-    cmd.link.push(`--demangle=${input.demangleStyle}`)
+    args.push(`--demangle=${input.demangleStyle}`)
   }
   if (input.color) {
-    cmd.link.push(`--disassembler-color=terminal`)
+    args.push(`--disassembler-color=terminal`)
   }
   if (input.disassembleAll) {
-    cmd.link.push(`--disassemble-all`)
+    args.push(`--disassemble-all`)
   }
-  return cmd
+  return { bin, args }
 }

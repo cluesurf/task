@@ -16,7 +16,7 @@ import type {
   CheckDomainNodeInput,
   CheckDomainNodeOutput,
   DomainProvider,
-} from './base'
+} from './make'
 
 const DEFAULT_PROVIDER: DomainProvider = 'namecheap'
 

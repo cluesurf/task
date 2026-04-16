@@ -1,4 +1,4 @@
-import { buildSingleFileForms } from '~/code/tool/shared/base'
+import { buildSingleFileForms } from '~/code/tool/shared/make'
 
 const disassemble_wasm_forms = buildSingleFileForms({
   name: 'disassemble_wasm',

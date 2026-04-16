@@ -102,7 +102,7 @@ const imageCmd: CommandModule = {
     .option('ignore-unfixed', { type: 'boolean' })
     .option('extra', { type: 'array', string: true }),
   handler: async argv => {
-    const { runScanImage } = await import('~/code/tool/node/scan/base')
+    const { runScanImage } = await import('~/code/tool/node/scan/make')
     const { runAction } = await import('~/code/tool/node/log')
     const input = anyOf(argv, { image: argv.image as string })
     await runAction({ action: 'scan', input, run: () => runScanImage(input as never) })
@@ -119,7 +119,7 @@ const fsCmd: CommandModule = {
     .option('output', { alias: 'o', type: 'string' })
     .option('extra', { type: 'array', string: true }),
   handler: async argv => {
-    const { runScanFilesystem } = await import('~/code/tool/node/scan/base')
+    const { runScanFilesystem } = await import('~/code/tool/node/scan/make')
     const { runAction } = await import('~/code/tool/node/log')
     const input = anyOf(argv, { path: argv.path as string })
     await runAction({ action: 'scan', input, run: () => runScanFilesystem(input as never) })
@@ -135,7 +135,7 @@ const hostCmd: CommandModule = {
     .option('output', { alias: 'o', type: 'string' })
     .option('extra', { type: 'array', string: true }),
   handler: async argv => {
-    const { runScanHost } = await import('~/code/tool/node/scan/base')
+    const { runScanHost } = await import('~/code/tool/node/scan/make')
     const { runAction } = await import('~/code/tool/node/log')
     const input = anyOf(argv, { root: argv.root as string | undefined })
     await runAction({ action: 'scan', input, run: () => runScanHost(input as never) })
@@ -151,7 +151,7 @@ const secretsCmd: CommandModule = {
     .option('output', { alias: 'o', type: 'string' })
     .option('extra', { type: 'array', string: true }),
   handler: async argv => {
-    const { runScanSecrets } = await import('~/code/tool/node/scan/base')
+    const { runScanSecrets } = await import('~/code/tool/node/scan/make')
     const { runAction } = await import('~/code/tool/node/log')
     const input = anyOf(argv, { path: argv.path as string })
     await runAction({ action: 'scan', input, run: () => runScanSecrets(input as never) })
@@ -167,7 +167,7 @@ const sbomCmd: CommandModule = {
     .option('output', { alias: 'o', type: 'string' })
     .option('extra', { type: 'array', string: true }),
   handler: async argv => {
-    const { runScanSbom } = await import('~/code/tool/node/scan/base')
+    const { runScanSbom } = await import('~/code/tool/node/scan/make')
     const { runAction } = await import('~/code/tool/node/log')
     const input = anyOf(argv, { input: argv.input as string })
     await runAction({ action: 'scan', input, run: () => runScanSbom(input as never) })
@@ -183,7 +183,7 @@ const networkCmd: CommandModule = {
     .option('output', { alias: 'o', type: 'string' })
     .option('i-accept-responsibility', { type: 'boolean' }),
   handler: async argv => {
-    const { runScanNetwork } = await import('~/code/tool/node/scan/base')
+    const { runScanNetwork } = await import('~/code/tool/node/scan/make')
     const { runAction } = await import('~/code/tool/node/log')
     const input = {
       target: argv.target as string,

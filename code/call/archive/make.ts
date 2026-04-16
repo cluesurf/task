@@ -28,9 +28,9 @@ export const archive: Form = {
   },
 }
 
-export * from './zip/base'
-export * from './rar/base'
-export * from './sevenzip/base'
-export * from './tar/base'
-export * from './atool/base'
-export * from './patool/base'
+export * from './zip/make'
+export * from './rar/make'
+export * from './sevenzip/make'
+export * from './tar/make'
+export * from './atool/make'
+export * from './patool/make'

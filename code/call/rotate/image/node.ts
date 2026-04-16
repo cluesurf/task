@@ -14,14 +14,12 @@ async function runLocal(input: RotateImageNodeLocalInput) {
   const inputPath = input.input.file.path
   const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
-  const sequence = buildCommandToRotateImage({
+  const { bin, args } = buildCommandToRotateImage({
     inputPath,
     outputPath,
     degree: input.degree,
   })
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'rotate', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  await spawnAndWait({ verb: 'rotate', bin, args })
   return { file: { path: outputPath } }
 }
 

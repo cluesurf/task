@@ -114,8 +114,9 @@ RUN apt-get -y install librsvg2-bin
 RUN apt-get -y install dcraw
 RUN apt-get -y install darktable
 RUN apt-get -y install rawtherapee
-# HDR (Radiance tools + OpenEXR + pfstools for .hdr ↔ .exr)
-RUN apt-get -y install radiance
+# HDR (OpenEXR + pfstools for .hdr ↔ .exr). Radiance's `ra_tiff`
+# isn't packaged for Ubuntu — pfstools covers the same conversions
+# via `pfsin | pfsout`. On macOS, `brew tap hdri/radiance` gets it.
 RUN apt-get -y install openexr
 RUN apt-get -y install pfstools
 # Animated image formats

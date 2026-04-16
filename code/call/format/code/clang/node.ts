@@ -101,10 +101,8 @@ async function formatCodeWithClangFormatNodeLocal(
     },
   }
 
-  const sequence = buildCommandToFormatCodeWithClangFormat(commandInput)
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'format clang', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  const command = buildCommandToFormatCodeWithClangFormat(commandInput)
+  await spawnAndWait({ verb: 'format clang', bin: command.bin, args: command.args })
 
   await fsp.unlink(stylePath)
 

@@ -75,15 +75,9 @@ async function compileCNodeRemote(
 async function compileCNodeLocal(input, native?: NativeOptions) {
   const localInput = CompileCNodeLocalInputParser.parse(input)
 
-  const sequence = await buildCommandToCompileC(localInput)
+  const command = await buildCommandToCompileC(localInput)
 
-  for (const cmd of sequence.call) {
-    await spawnAndWait({
-      verb: 'compile c',
-      bin: cmd.link[0]!,
-      args: cmd.link.slice(1),
-    })
-  }
+  await spawnAndWait({ verb: 'compile c', bin: command.bin, args: command.args })
 
   return {
     file: {

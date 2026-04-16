@@ -46,7 +46,7 @@ export function buildCompileConsole(input: {
       return b
     },
     handler: async argv => {
-      const { runCompile } = await import('./base')
+      const { runCompile } = await import('./make')
       const { runAction } = await import('~/code/tool/node/log')
       const opts: CompileOptions = {
         input: (argv.input as string) ?? (argv._[2] as string),

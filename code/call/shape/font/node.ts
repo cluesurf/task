@@ -20,7 +20,7 @@ import { getLoggingStyle } from '~/code/tool/node/log'
 import { buildShapeFontCommand } from './command'
 
 async function runLocal(input: ShapeFontNodeLocalInput) {
-  const sequence = buildShapeFontCommand({
+  const { bin, args } = buildShapeFontCommand({
     input: input.input.file.path,
     text: input.text,
     features: input.features,
@@ -28,11 +28,10 @@ async function runLocal(input: ShapeFontNodeLocalInput) {
     language: input.language,
     direction: input.direction,
   })
-  const cmd = sequence.call[0]!
   const stdout = await spawnAndCapture({
     verb: 'shape font',
-    bin: cmd.link[0]!,
-    args: cmd.link.slice(1),
+    bin,
+    args,
   })
   const glyphs = stdout.trim()
 

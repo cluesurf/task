@@ -1,4 +1,4 @@
-import { buildSingleFileForms } from '~/code/tool/shared/base'
+import { buildSingleFileForms } from '~/code/tool/shared/make'
 
 /**
  * `task normalize audio` -- run the file through ffmpeg's

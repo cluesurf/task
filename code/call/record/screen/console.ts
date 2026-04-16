@@ -30,7 +30,7 @@ export const recordScreenConsole: CommandModule = {
     .option('audio',     { type: 'string' })
     .option('cursor',    { type: 'boolean' }),
   handler: async argv => {
-    const { runRecordScreen } = await import('~/code/tool/node/record/base')
+    const { runRecordScreen } = await import('~/code/tool/node/record/make')
     const { runAction } = await import('~/code/tool/node/log')
     const input = {
       output: argv.output as string,

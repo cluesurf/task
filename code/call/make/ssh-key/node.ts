@@ -1,5 +1,5 @@
 import { generateKey } from '~/code/tool/node/ssh/key'
-import { updateConfig } from '~/code/tool/node/ssh/base'
+import { updateConfig } from '~/code/tool/node/ssh/make'
 
 export type MakeSshKeyNodeInput = {
   name: string

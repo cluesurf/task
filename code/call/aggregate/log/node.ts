@@ -8,7 +8,7 @@
 import fs from 'node:fs/promises'
 import tint, { Tint } from '@termsurf/tint-text'
 import stripAnsi from 'strip-ansi'
-import { parseLogLine, type LogEntry } from '~/code/tool/node/log-parse/base'
+import { parseLogLine, type LogEntry } from '~/code/tool/node/log-parse/make'
 import { getLoggingStyle } from '~/code/tool/node/log'
 
 const KEY: Tint = { tone: 'white' }

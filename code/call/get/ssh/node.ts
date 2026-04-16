@@ -1,6 +1,6 @@
 import tint, { Tint } from '@termsurf/tint-text'
 import stripAnsi from 'strip-ansi'
-import { readOne, type SshEntry } from '~/code/tool/node/ssh/base'
+import { readOne, type SshEntry } from '~/code/tool/node/ssh/make'
 import { getLoggingStyle } from '~/code/tool/node/log'
 
 export type GetSshNodeInput = { name: string }

@@ -22,7 +22,7 @@ export const containerSizeConsole: CommandModule = {
     .option('ci',             { type: 'boolean' })
     .option('highest-wasted', { type: 'number' }),
   handler: async argv => {
-    const { runSize } = await import('~/code/tool/node/container/base')
+    const { runSize } = await import('~/code/tool/node/container/make')
     const { runAction } = await import('~/code/tool/node/log')
     const input = {
       image: argv.image as string,

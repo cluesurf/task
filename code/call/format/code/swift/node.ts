@@ -81,10 +81,8 @@ async function formatSwiftNodeLocal(
 ) {
   const input = FormatSwiftNodeLocalInputParser.parse(source)
 
-  const sequence = buildCommandToFormatSwift(input)
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'format swift', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  const command = buildCommandToFormatSwift(input)
+  await spawnAndWait({ verb: 'format swift', bin: command.bin, args: command.args })
 
   return {
     file: {

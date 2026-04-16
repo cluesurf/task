@@ -17,15 +17,13 @@ async function runLocal(input: CompressVideoNodeLocalInput) {
   const inputPath = input.input.file.path
   const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
-  const sequence = buildCommandToCompressVideo({
+  const { bin, args } = buildCommandToCompressVideo({
     inputPath,
     outputPath,
     crf: input.crf,
     preset: input.preset,
   })
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'compress', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  await spawnAndWait({ verb: 'compress', bin, args })
   return { file: { path: outputPath } }
 }
 

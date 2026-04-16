@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises'
-import { parseLogLine, type LogEntry } from '~/code/tool/node/log-parse/base'
+import { parseLogLine, type LogEntry } from '~/code/tool/node/log-parse/make'
 import { getLoggingStyle } from '~/code/tool/node/log'
 
 export type ParseLogNodeInput = {

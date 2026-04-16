@@ -17,14 +17,12 @@ async function runLocal(input: CompressImageNodeLocalInput) {
   const inputPath = input.input.file.path
   const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
-  const sequence = buildCommandToCompressImage({
+  const { bin, args } = buildCommandToCompressImage({
     inputPath,
     outputPath,
     quality: input.quality,
   })
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'compress', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  await spawnAndWait({ verb: 'compress', bin, args })
   return { file: { path: outputPath } }
 }
 

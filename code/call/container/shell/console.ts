@@ -32,7 +32,7 @@ export const containerShellConsole: CommandModule = {
     .option('network',   { type: 'string' })
     .option('env',       { alias: 'e', type: 'array', string: true }),
   handler: async argv => {
-    const { runShell } = await import('~/code/tool/node/container/base')
+    const { runShell } = await import('~/code/tool/node/container/make')
     const { runAction } = await import('~/code/tool/node/log')
     const input = {
       image: argv.image as string,

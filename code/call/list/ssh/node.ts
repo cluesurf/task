@@ -1,6 +1,6 @@
 import tint, { Tint } from '@termsurf/tint-text'
 import stripAnsi from 'strip-ansi'
-import { readAll } from '~/code/tool/node/ssh/base'
+import { readAll } from '~/code/tool/node/ssh/make'
 import { getLoggingStyle } from '~/code/tool/node/log'
 
 const HEAD: Tint = { tone: 'white' }

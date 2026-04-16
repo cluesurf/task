@@ -3,10 +3,6 @@
 import { format as _formatSql } from 'sql-formatter'
 import decodeUtf8 from 'decode-utf8'
 import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-import {
   FormatAssemblyCommandInput,
   FormatCodeWithClangFormatCommandInput,
   FormatKotlinCommandInput,
@@ -20,13 +16,13 @@ import {
 } from '~/code/form/action/format/code/shared'
 export function buildCommandToFormatCodeWithClangFormat(
   input: FormatCodeWithClangFormatCommandInput,
-) {
-  const cmd = getCommand(`clang-format`)
-  cmd.link.push(
-    `--style="${input.style.path}"`,
-    `"${input.input.file.path}"`,
-  )
-  return buildCommandSequence(cmd)
+): { bin: string; args: string[] } {
+  const bin = 'clang-format'
+  const args: string[] = [
+    `--style=${input.style.path}`,
+    input.input.file.path,
+  ]
+  return { bin, args }
 }
 
 // https://github.com/sql-formatter-org/sql-formatter?tab=readme-ov-file
@@ -41,48 +37,48 @@ export function formatSqlWithContent(input: FormatSqlWithContent) {
 // objdump disassembly
 export function buildCommandToFormatKotlin(
   input: FormatKotlinCommandInput,
-) {
-  const cmd = getCommand('ktfmt')
-  cmd.link.push(input.input.file.path)
-  return buildCommandSequence(cmd)
+): { bin: string; args: string[] } {
+  const bin = 'ktfmt'
+  const args: string[] = [input.input.file.path]
+  return { bin, args }
 }
 
 export function buildCommandToFormatSwift(
   input: FormatSwiftCommandInput,
-) {
-  const cmd = getCommand('swift-format')
-  cmd.link.push(input.input.file.path)
-  return buildCommandSequence(cmd)
+): { bin: string; args: string[] } {
+  const bin = 'swift-format'
+  const args: string[] = [input.input.file.path]
+  return { bin, args }
 }
 
 export function buildCommandToFormatRust(
   input: FormatRustCommandInput,
-) {
-  const cmd = getCommand('rustfmt')
-  cmd.link.push(input.input.file.path)
-  return buildCommandSequence(cmd)
+): { bin: string; args: string[] } {
+  const bin = 'rustfmt'
+  const args: string[] = [input.input.file.path]
+  return { bin, args }
 }
 
 export function buildCommandToFormatPython(
   input: FormatPythonCommandInput,
-) {
-  const cmd = getCommand('black')
-  cmd.link.push(input.input.file.path)
-  return buildCommandSequence(cmd)
+): { bin: string; args: string[] } {
+  const bin = 'black'
+  const args: string[] = [input.input.file.path]
+  return { bin, args }
 }
 
-export function buildCommandToFormatRuby(input: FormatRuby) {
-  const cmd = getCommand('rubocop')
-  cmd.link.push(input.input.file.path)
-  return buildCommandSequence(cmd)
+export function buildCommandToFormatRuby(input: FormatRuby): { bin: string; args: string[] } {
+  const bin = 'rubocop'
+  const args: string[] = [input.input.file.path]
+  return { bin, args }
 }
 
 export function buildCommandToFormatAssembly(
   input: FormatAssemblyCommandInput,
-) {
-  const cmd = getCommand('asmfmt')
-  cmd.link.push(input.input.file.path)
-  return buildCommandSequence(cmd)
+): { bin: string; args: string[] } {
+  const bin = 'asmfmt'
+  const args: string[] = [input.input.file.path]
+  return { bin, args }
 }
 
 // rubocop --autocorrect file.rb

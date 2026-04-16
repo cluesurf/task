@@ -28,7 +28,7 @@ export const replayConsole: CommandModule = {
     .option('idle-limit', { type: 'number' })
     .option('format',     { type: 'string', choices: ['play', 'gif', 'mp4'] as const }),
   handler: async argv => {
-    const { runReplay } = await import('~/code/tool/node/record/base')
+    const { runReplay } = await import('~/code/tool/node/record/make')
     const { runAction } = await import('~/code/tool/node/log')
     const input = {
       input: argv.input as string,

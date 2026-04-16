@@ -24,7 +24,7 @@ export const containerCleanConsole: CommandModule = {
     .option('volumes',  { type: 'boolean' })
     .option('no-stats', { type: 'boolean' }),
   handler: async argv => {
-    const { runClean } = await import('~/code/tool/node/container/base')
+    const { runClean } = await import('~/code/tool/node/container/make')
     const { runAction } = await import('~/code/tool/node/log')
     const input = {
       all: argv.all as boolean | undefined,

@@ -17,7 +17,7 @@ import {
   resolveInternalInput,
 } from '~/code/tool/node/resolve'
 import { ensureParentDir } from '~/code/tool/node/file'
-import { stripInvisible } from '~/code/tool/node/unicode/base'
+import { stripInvisible } from '~/code/tool/node/unicode/make'
 
 async function runLocal(input: RemoveInvisibleNodeLocalInput) {
   const inputPath = input.input.file.path

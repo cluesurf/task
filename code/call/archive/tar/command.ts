@@ -1,8 +1,4 @@
 import path from 'node:path'
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
 import type { ArchiveWithTar } from '~/code/form/action/archive/tar'
 
 const COMPRESS_FLAG: Record<string, string> = {
@@ -17,42 +13,40 @@ const COMPRESS_FLAG: Record<string, string> = {
   tzst: '--zstd',
 }
 
-export function buildCommandToArchiveWithTar(input: ArchiveWithTar) {
-  const cmd = getCommand('tar')
-
-  cmd.link.push('-c')
-  cmd.link.push('-f', input.output.file.path)
+export function buildCommandToArchiveWithTar(input: ArchiveWithTar): { bin: string; args: string[] } {
+  const bin = 'tar'
+  const args: string[] = ['-c', '-f', input.output.file.path]
 
   const compress = COMPRESS_FLAG[input.output.format]
-  if (compress) cmd.link.push(compress)
+  if (compress) args.push(compress)
 
-  if (input.dereference) cmd.link.push('-h')
-  if (input.preserveOwner === false) cmd.link.push('--no-same-owner')
+  if (input.dereference) args.push('-h')
+  if (input.preserveOwner === false) args.push('--no-same-owner')
   if (input.preservePermissions === false) {
-    cmd.link.push('--no-same-permissions')
+    args.push('--no-same-permissions')
   }
   if (input.exclude) {
     for (const pattern of input.exclude) {
-      cmd.link.push(`--exclude=${pattern}`)
+      args.push(`--exclude=${pattern}`)
     }
   }
   let entry = input.input.path
   if (input.changeDirectory) {
-    cmd.link.push('-C', input.changeDirectory)
+    args.push('-C', input.changeDirectory)
   } else if (path.isAbsolute(entry) || entry.includes('/')) {
     const parent = path.dirname(entry) || '.'
     const base = path.basename(entry)
-    cmd.link.push('-C', parent)
+    args.push('-C', parent)
     entry = base
   }
 
   if (typeof input.compressionLevel === 'number') {
     // GNU tar forwards env to the compressor, so `-I "gzip -N"`
-    // style flags belong on the compressor invocation — leave that
+    // style flags belong on the compressor invocation -- leave that
     // to the caller via a future `compressorFlags` field.
   }
 
-  cmd.link.push(entry)
+  args.push(entry)
 
-  return buildCommandSequence(cmd)
+  return { bin, args }
 }

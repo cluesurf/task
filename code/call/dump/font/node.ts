@@ -47,7 +47,7 @@ async function runLocal(input: DumpFontNodeLocalInput) {
   const outputPath = input.output?.file?.path ?? defaultOut
   await ensureParentDir(outputPath)
 
-  const sequence = buildDumpFontCommand({
+  const { bin, args } = buildDumpFontCommand({
     input: inputPath,
     output: outputPath,
     tables: input.tables
@@ -57,9 +57,7 @@ async function runLocal(input: DumpFontNodeLocalInput) {
           .filter(Boolean)
       : undefined,
   })
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'dump', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  await spawnAndWait({ verb: 'dump', bin, args })
 
   return { file: { path: outputPath }, direction }
 }

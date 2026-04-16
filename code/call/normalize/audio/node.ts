@@ -23,16 +23,14 @@ async function runLocal(input: NormalizeAudioNodeLocalInput) {
   const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
 
-  const sequence = buildNormalizeAudioCommand({
+  const { bin, args } = buildNormalizeAudioCommand({
     inputPath: input.input.file.path,
     outputPath,
     target: input.target,
     peak: input.peak,
     range: input.range,
   })
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'normalize', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  await spawnAndWait({ verb: 'normalize', bin, args })
   return { file: { path: outputPath } }
 }
 

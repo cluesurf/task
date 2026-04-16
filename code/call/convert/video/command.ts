@@ -1,7 +1,3 @@
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
 type IOPath = { inputPath: string; outputPath: string }
 import {
   ConvertVideoWithFfmpegCommandInput,
@@ -61,7 +57,7 @@ import {
 // https://catswhocode.com/ffmpeg-commands/
 export async function buildCommandToConvertVideoWithFfmpeg(
   input: ConvertVideoWithFfmpegCommandInput,
-) {
+): Promise<{ bin: string; args: string[] }> {
   let {
     input: i,
     output,
@@ -85,64 +81,63 @@ export async function buildCommandToConvertVideoWithFfmpeg(
     progress,
   } = input
 
-  const cmd = getCommand(`ffmpeg`)
-
-  cmd.link.push(`-loglevel`, 'error', `-hide_banner`)
+  const bin = 'ffmpeg'
+  const args: string[] = [`-loglevel`, 'error', `-hide_banner`]
 
   if (overwrite) {
-    cmd.link.push(`-y`)
+    args.push(`-y`)
   } else {
-    cmd.link.push(`-n`, `-nostdin`)
+    args.push(`-n`, `-nostdin`)
   }
 
   if (progress) {
-    cmd.link.push(`-stats`, `-progress`, `-`)
+    args.push(`-stats`, `-progress`, `-`)
   }
 
-  cmd.link.push(`-i`, `${i.file.path}`)
+  args.push(`-i`, i.file.path)
 
   if (startTime) {
-    cmd.link.push(`-ss`, `${startTime}`)
+    args.push(`-ss`, `${startTime}`)
   }
 
   if (endTime) {
-    cmd.link.push(`-to`, `${endTime}`)
+    args.push(`-to`, `${endTime}`)
   }
 
   if (duration) {
-    cmd.link.push(`-t`, `${duration}`)
+    args.push(`-t`, `${duration}`)
   }
 
   if (strict) {
-    cmd.link.push(`-strict`, `${strict}`)
+    args.push(`-strict`, `${strict}`)
   }
 
   if (audioChannels) {
-    cmd.link.push(`-ac`, `${audioChannels}`)
+    args.push(`-ac`, `${audioChannels}`)
   }
 
   if (audioSamplingFrequency) {
-    cmd.link.push(`-ar`, `${audioSamplingFrequency}`)
+    args.push(`-ar`, `${audioSamplingFrequency}`)
   }
 
   if (scaleWidth) {
     if (scaleHeight) {
-      cmd.link.push(`-filter:v`, `scale=${scaleWidth}:${scaleHeight}`)
+      args.push(`-filter:v`, `scale=${scaleWidth}:${scaleHeight}`)
     } else {
-      cmd.link.push(`-filter:v`, `scale=${scaleWidth}:-1`)
+      args.push(`-filter:v`, `scale=${scaleWidth}:-1`)
     }
   } else if (scaleHeight) {
-    cmd.link.push(`-filter:v`, `scale=-1:${scaleHeight}`)
+    args.push(`-filter:v`, `scale=-1:${scaleHeight}`)
   } else if (rotation) {
-    cmd.link.push(`-filter:v`, `rotate=${rotation}`)
+    args.push(`-filter:v`, `rotate=${rotation}`)
   }
 
   if (audioBitRate) {
-    cmd.link.push(`-b:a`, `${audioBitRate}`)
+    args.push(`-b:a`, `${audioBitRate}`)
   }
 
   if (videoBitRate) {
-    cmd.link.push(`-b:v`, `${videoBitRate}`)
+    args.push(`-b:v`, `${videoBitRate}`)
   }
 
   // `--fps` and `--frame-rate` are aliases; whichever is set wins,
@@ -150,24 +145,24 @@ export async function buildCommandToConvertVideoWithFfmpeg(
   // knob and likely passed deliberately.
   const rate = fps ?? frameRate
   if (rate) {
-    cmd.link.push(`-r`, `${rate}`)
+    args.push(`-r`, `${rate}`)
   }
 
   if (videoCodec) {
-    cmd.link.push(`-c:v`, `${videoCodec}`)
+    args.push(`-c:v`, `${videoCodec}`)
   }
 
   if (audioCodec) {
-    cmd.link.push(`-c:a`, `${audioCodec}`)
+    args.push(`-c:a`, `${audioCodec}`)
   }
 
   if (subtitleCodec) {
-    cmd.link.push(`-s:a`, `${subtitleCodec}`)
+    args.push(`-s:a`, `${subtitleCodec}`)
   }
 
-  cmd.link.push(`${output.file!.path}`)
+  args.push(output.file!.path)
 
-  return buildCommandSequence(cmd)
+  return { bin, args }
 }
 
 export async function buildCommandToCompressVideoWithFfmpeg() {}

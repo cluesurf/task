@@ -17,14 +17,12 @@ async function runLocal(input: CompressAudioNodeLocalInput) {
   const inputPath = input.input.file.path
   const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
-  const sequence = buildCommandToCompressAudio({
+  const { bin, args } = buildCommandToCompressAudio({
     inputPath,
     outputPath,
     bitrate: input.bitrate,
   })
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'compress', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  await spawnAndWait({ verb: 'compress', bin, args })
   return { file: { path: outputPath } }
 }
 

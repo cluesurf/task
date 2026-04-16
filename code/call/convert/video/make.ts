@@ -1,5 +1,5 @@
 import { Form } from '@cluesurf/form'
-import { buildConvertForms } from '~/code/tool/shared/base'
+import { buildConvertForms } from '~/code/tool/shared/make'
 
 export const convert_video_to_audio_with_ffmpeg: Form = {
   form: 'form',

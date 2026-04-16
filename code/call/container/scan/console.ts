@@ -30,7 +30,7 @@ export const containerScanConsole: CommandModule = {
     .option('output',         { alias: 'o', type: 'string' })
     .option('ignore-unfixed', { type: 'boolean' }),
   handler: async argv => {
-    const { runScan } = await import('~/code/tool/node/container/base')
+    const { runScan } = await import('~/code/tool/node/container/make')
     const { runAction } = await import('~/code/tool/node/log')
     const input = {
       image: argv.image as string,

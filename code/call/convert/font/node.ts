@@ -90,11 +90,15 @@ async function convertFontWithFontForgeNodeLocal(
   const localInput =
     ConvertFontWithFontForgeNodeLocalInputParser.parse(input)
 
-  const sequence =
+  const command =
     await buildCommandToConvertFontWithFontForge(localInput)
 
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'convert', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  for (const cmd of command.call) {
+    await spawnAndWait({
+      verb: 'convert font',
+      bin: cmd.link[0]!,
+      args: cmd.link.slice(1),
+    })
   }
 
   return ConvertFontWithFontForgeNodeOutputParser.parse({

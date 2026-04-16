@@ -9,7 +9,7 @@ import {
   filterByText,
   listProcesses,
   topProcesses,
-} from '~/code/tool/node/proc/base'
+} from '~/code/tool/node/proc/make'
 import { renderProcesses } from '~/code/tool/node/proc/render'
 
 export type WatchProcessNodeInput = {

@@ -1,6 +1,6 @@
 import tint, { Tint } from '@termsurf/tint-text'
 import stripAnsi from 'strip-ansi'
-import { pingHost } from '~/code/tool/node/network/base'
+import { pingHost } from '~/code/tool/node/network/make'
 import { getLoggingStyle } from '~/code/tool/node/log'
 
 const KEY: Tint = { tone: 'white' }

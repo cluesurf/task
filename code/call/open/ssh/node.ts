@@ -6,7 +6,7 @@
  */
 
 import { spawnAndWait } from '~/code/tool/node/spawn'
-import { readOne } from '~/code/tool/node/ssh/base'
+import { readOne } from '~/code/tool/node/ssh/make'
 
 export type OpenSshNodeInput = { name: string }
 

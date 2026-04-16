@@ -23,16 +23,14 @@ async function runLocal(input: RenderFontNodeLocalInput) {
   const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
 
-  const sequence = buildRenderFontCommand({
+  const { bin, args } = buildRenderFontCommand({
     input: input.input.file.path,
     output: outputPath,
     text: input.text,
     fontSize: input.fontSize,
     features: input.features,
   })
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'render', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  await spawnAndWait({ verb: 'render', bin, args })
 
   return { file: { path: outputPath } }
 }

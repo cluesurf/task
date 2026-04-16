@@ -1,4 +1,4 @@
-import { convertEncoding } from '~/code/tool/node/text/base'
+import { convertEncoding } from '~/code/tool/node/text/make'
 
 export type SetEncodingNodeInput = {
   target: string

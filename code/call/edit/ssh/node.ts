@@ -7,7 +7,7 @@
 
 import fs from 'node:fs/promises'
 import { spawnAndWait } from '~/code/tool/node/spawn'
-import { DEFAULT_CONFIG_PATH } from '~/code/tool/node/ssh/base'
+import { DEFAULT_CONFIG_PATH } from '~/code/tool/node/ssh/make'
 
 async function editSshNode() {
   // `fs.open` with 'a' creates the file if it doesn't exist so the

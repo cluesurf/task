@@ -32,7 +32,7 @@ async function runLocal(input: SubsetFontNodeLocalInput) {
   await ensureParentDir(outputPath)
   const { size: sizeBefore } = await fs.stat(inputPath)
 
-  const sequence = buildSubsetFontCommand({
+  const { bin, args } = buildSubsetFontCommand({
     input: inputPath,
     output: outputPath,
     text: input.text,
@@ -40,9 +40,7 @@ async function runLocal(input: SubsetFontNodeLocalInput) {
     layoutFeatures: input.layoutFeatures,
     flavor: input.flavor,
   })
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'subset', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  await spawnAndWait({ verb: 'subset', bin, args })
 
   const { size: sizeAfter } = await fs.stat(outputPath)
   return { file: { path: outputPath }, sizeBefore, sizeAfter }

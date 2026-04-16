@@ -4,10 +4,6 @@ import {
 import {
   ConvertImageWithInkscapeCommandInput,
 } from '~/code/form/action/convert/inkscape/cli'
-import {
-  getCommand,
-  buildCommandSequence,
-} from '~/code/tool/shared/command'
 import { resolvePathRelativeToScope } from '~/code/tool/shared/file'
 import { getConfig } from '~/code/tool/shared/config'
 
@@ -25,7 +21,7 @@ import { getConfig } from '~/code/tool/shared/config'
 
 export function buildCommandToConvertImageWithImageMagick(
   input: ConvertImageWithImageMagickCommandInput,
-) {
+): { bin: string; args: string[] } {
   const ip = resolvePathRelativeToScope(
     input.input.file.path,
     input.pathScope,
@@ -35,18 +31,19 @@ export function buildCommandToConvertImageWithImageMagick(
     input.pathScope,
   )
 
-  const cmd = getCommand(`convert`)
+  const bin = 'convert'
+  const args: string[] = []
 
   const inputPath = ip.match(/\.cr2$/i) ? `cr2:${ip}` : ip
 
-  cmd.link.push(inputPath)
+  args.push(inputPath)
 
   if (input.compare) {
-    cmd.link.push(`-compare`)
+    args.push(`-compare`)
   }
 
   if (input.colorMatrix) {
-    cmd.link.push(
+    args.push(
       `-color-matrix`,
       `${input.colorMatrix.row}x${
         input.colorMatrix.column
@@ -58,7 +55,7 @@ export function buildCommandToConvertImageWithImageMagick(
     const IMAGE_MAGICK_COLOR_SPACE_CONTENT = getConfig(
       'image_magick_color_space_content',
     )
-    cmd.link.push(
+    args.push(
       `-colorspace`,
       IMAGE_MAGICK_COLOR_SPACE_CONTENT[input.colorSpace].head,
     )
@@ -68,25 +65,25 @@ export function buildCommandToConvertImageWithImageMagick(
     const IMAGE_MAGICK_COMPRESSION_CONTENT = getConfig(
       'image_magick_compression_content',
     )
-    cmd.link.push(
+    args.push(
       `-compress`,
       IMAGE_MAGICK_COMPRESSION_CONTENT[input.compression]
         .head as string,
     )
   }
   if (input.colorCount) {
-    cmd.link.push(`-colors`, String(input.colorCount))
+    args.push(`-colors`, String(input.colorCount))
   }
 
   if (input.density) {
-    cmd.link.push(`-density`, String(input.density))
+    args.push(`-density`, String(input.density))
   }
 
   if (input.quality) {
-    cmd.link.push(`-quality`, String(input.quality))
+    args.push(`-quality`, String(input.quality))
   }
 
-  cmd.link.push(op)
+  args.push(op)
 
   // const cmd = [
   //   `magick`,
@@ -115,7 +112,7 @@ export function buildCommandToConvertImageWithImageMagick(
   //   `\'Magick\'"`,
   //   `fuzzy-magick.png`,
   // ]
-  return buildCommandSequence(cmd)
+  return { bin, args }
 }
 
 // export async function replaceImageColorWithImageMagick(
@@ -158,7 +155,7 @@ export function buildCommandToConvertImageWithImageMagick(
 
 export async function buildCommandToConvertImageWithInkscape(
   input: ConvertImageWithInkscapeCommandInput,
-) {
+): Promise<{ bin: string; args: string[] }> {
   const inputPath = resolvePathRelativeToScope(
     input.input.file.path,
     input.pathScope,
@@ -168,13 +165,12 @@ export async function buildCommandToConvertImageWithInkscape(
     input.pathScope,
   )
 
-  const cmd = getCommand(`inkscape`)
-
-  cmd.link.push(
-    `"${inputPath}"`,
+  const bin = 'inkscape'
+  const args: string[] = [
+    inputPath,
     `-${process.platform === 'darwin' ? 'o' : 'l'}`,
-    `"${outputPath}"`,
-  )
+    outputPath,
+  ]
 
-  return buildCommandSequence(cmd)
+  return { bin, args }
 }

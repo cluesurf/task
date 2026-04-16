@@ -1,5 +1,5 @@
 import { Form, List } from '@cluesurf/form'
-import { baseCommonCompile, buildCompileForms } from './tool/base'
+import { baseCommonCompile, buildCompileForms } from './tool/make'
 import _ from 'lodash'
 
 export const swift_input_format: List = {

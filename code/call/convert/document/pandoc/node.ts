@@ -87,12 +87,10 @@ async function convertDocumentWithPandocNodeLocal(
   const localInput =
     ConvertDocumentWithPandocNodeLocalInputParser.parse(input)
 
-  const sequence =
+  const command =
     await buildCommandToConvertDocumentWithPandoc(localInput)
 
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'convert', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  await spawnAndWait({ verb: 'convert', bin: command.bin, args: command.args })
 
   return ConvertDocumentWithPandocNodeOutputParser.parse({
     file: {

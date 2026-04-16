@@ -1,5 +1,5 @@
 import { Form } from '@cluesurf/form'
-import { buildConvertFormsWithOutputDirectory } from '~/code/tool/shared/base'
+import { buildConvertFormsWithOutputDirectory } from '~/code/tool/shared/make'
 
 /**
  * Action forms for `task convert data` (folder-tree conversion

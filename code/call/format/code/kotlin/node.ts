@@ -78,10 +78,8 @@ async function formatKotlinNodeLocal(
 ) {
   const input = FormatKotlinNodeLocalInputParser.parse(source)
 
-  const sequence = buildCommandToFormatKotlin(input)
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'format kotlin', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  const command = buildCommandToFormatKotlin(input)
+  await spawnAndWait({ verb: 'format kotlin', bin: command.bin, args: command.args })
 
   return {
     file: {

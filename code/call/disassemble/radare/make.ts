@@ -1,21 +1,26 @@
-import { buildSingleFileForms } from '~/code/tool/shared/base'
+import type { List } from '@cluesurf/form'
+import { buildSingleFileForms } from '~/code/tool/shared/make'
+
+export const disassemble_radare_tool: List = {
+  form: 'list',
+  save: '~/code/form/action/disassemble/radare/shared',
+  list: ['radare2', 'rizin'],
+}
+
+export const disassemble_radare_profile: List = {
+  form: 'list',
+  save: '~/code/form/action/disassemble/radare/shared',
+  list: ['functions', 'calls', 'strings', 'full'],
+}
 
 const disassemble_radare_forms = buildSingleFileForms({
   name: 'disassemble_radare',
   save: '~/code/form/action/disassemble/radare',
   outputRequired: false,
   common: {
-    tool: {
-      like: 'string',
-      need: false,
-      take: ['radare2', 'rizin'],
-    },
+    tool: { like: 'disassemble_radare_tool', need: false },
     script: { like: 'string', need: false },
-    profile: {
-      like: 'string',
-      need: false,
-      take: ['functions', 'calls', 'strings', 'full'],
-    },
+    profile: { like: 'disassemble_radare_profile', need: false },
     commands: { like: 'string', need: false, list: true },
   },
 })

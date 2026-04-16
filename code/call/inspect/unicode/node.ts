@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import tint, { Tint } from '@termsurf/tint-text'
 import stripAnsi from 'strip-ansi'
-import { codepoints, describeCodepoint } from '~/code/tool/node/unicode/base'
+import { codepoints, describeCodepoint } from '~/code/tool/node/unicode/make'
 import { getLoggingStyle } from '~/code/tool/node/log'
 
 const HEAD: Tint = { tone: 'white' }

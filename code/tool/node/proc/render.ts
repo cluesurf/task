@@ -6,7 +6,7 @@
 
 import tint, { Tint } from '@termsurf/tint-text'
 import stripAnsi from 'strip-ansi'
-import type { PortRow, Process, ProcessTreeNode } from './base'
+import type { PortRow, Process, ProcessTreeNode } from './make'
 
 const HEAD: Tint = { tone: 'white' }
 const CELL: Tint = { tone: 'whiteBright' }

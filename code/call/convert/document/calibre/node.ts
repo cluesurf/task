@@ -88,11 +88,10 @@ async function convertDocumentWithCalibreNodeLocal(
   const localInput =
     ConvertDocumentWithCalibreNodeLocalInputParser.parse(input)
 
-  const sequence =
+  const command =
     await buildCommandToConvertDocumentWithCalibre(localInput)
 
-  const cmd = sequence.call[0]!
-  await spawnAndWait({ verb: 'convert', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  await spawnAndWait({ verb: 'convert document', bin: command.bin, args: command.args })
 
   return ConvertDocumentWithCalibreNodeOutputParser.parse({
     file: {

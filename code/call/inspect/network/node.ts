@@ -19,14 +19,14 @@ import {
   listInterfaces,
   listRoutes,
   lookupDns,
-} from '~/code/tool/node/network/base'
+} from '~/code/tool/node/network/make'
 import {
   listConnections,
   groupByRemote,
   only,
   type Connection,
 } from '~/code/tool/node/network/connections'
-import { listPorts } from '~/code/tool/node/proc/base'
+import { listPorts } from '~/code/tool/node/proc/make'
 import { getLoggingStyle, isExplaining } from '~/code/tool/node/log'
 
 const KEY: Tint = { tone: 'white' }

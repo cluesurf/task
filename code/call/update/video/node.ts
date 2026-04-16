@@ -34,14 +34,12 @@ async function runLocal(input: UpdateVideoNodeLocalInput) {
   }
   await ensureParentDir(outputPath)
 
-  const sequence = buildUpdateVideoCommand({
+  const { bin, args } = buildUpdateVideoCommand({
     inputPath,
     outputPath,
     subtitles: input.subtitles,
   })
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'update', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  await spawnAndWait({ verb: 'update', bin, args })
   return { file: { path: outputPath } }
 }
 

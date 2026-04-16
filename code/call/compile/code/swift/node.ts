@@ -78,15 +78,9 @@ async function compileSwiftNodeLocal(
 ) {
   const localInput = CompileSwiftNodeLocalInputParser.parse(input)
 
-  const sequence = await buildCommandToCompileSwift(localInput)
+  const command = await buildCommandToCompileSwift(localInput)
 
-  for (const cmd of sequence.call) {
-    await spawnAndWait({
-      verb: 'compile swift',
-      bin: cmd.link[0]!,
-      args: cmd.link.slice(1),
-    })
-  }
+  await spawnAndWait({ verb: 'compile swift', bin: command.bin, args: command.args })
 
   return {
     file: {

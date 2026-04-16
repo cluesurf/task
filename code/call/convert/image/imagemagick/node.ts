@@ -88,11 +88,9 @@ async function convertImageWithImageMagickNodeLocal(
   const localInput =
     ConvertImageWithImageMagickNodeLocalInputParser.parse(input)
 
-  const sequence = buildCommandToConvertImageWithImageMagick(localInput)
+  const { bin, args } = buildCommandToConvertImageWithImageMagick(localInput)
 
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'convert', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  await spawnAndWait({ verb: 'convert', bin, args })
 
   return ConvertImageWithImageMagickNodeOutputParser.parse({
     file: {

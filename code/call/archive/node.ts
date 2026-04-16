@@ -47,10 +47,8 @@ const DEFAULT_TOOL_BY_FORMAT: Record<string, ArchiveTool> = {
 
 async function archiveNode(source: ArchiveInput): Promise<void> {
   const tool = pickTool(source)
-  const sequence = await buildSequence({ tool, source })
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'archive', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  const { bin, args } = await buildSequence({ tool, source })
+  await spawnAndWait({ verb: 'archive', bin, args })
 }
 
 function pickTool(source: ArchiveInput): ArchiveTool {

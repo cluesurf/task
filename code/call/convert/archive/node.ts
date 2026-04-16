@@ -132,13 +132,7 @@ async function convertArchiveNodeLocal(
     case 'rar': {
       const archiveSequence =
         await buildCommandToArchiveWithRar(archiveInput)
-      for (const cmd of archiveSequence.call) {
-        await spawnAndWait({
-          verb: 'convert archive',
-          bin: cmd.link[0]!,
-          args: cmd.link.slice(1),
-        })
-      }
+      await spawnAndWait({ verb: 'convert archive', bin: archiveSequence.bin, args: archiveSequence.args })
       break
     }
     default:

@@ -28,7 +28,7 @@ export const recordTerminalConsole: CommandModule = {
     .option('idle-limit', { type: 'number' })
     .option('overwrite',  { type: 'boolean' }),
   handler: async argv => {
-    const { runRecordTerminal } = await import('~/code/tool/node/record/base')
+    const { runRecordTerminal } = await import('~/code/tool/node/record/make')
     const { runAction } = await import('~/code/tool/node/log')
     const input = {
       output: argv.output as string,

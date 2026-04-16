@@ -1,5 +1,5 @@
 import { List } from '@cluesurf/form'
-import { buildSingleFileForms } from '~/code/tool/shared/base'
+import { buildSingleFileForms } from '~/code/tool/shared/make'
 
 /**
  * Action input for `task pad` -- extends an audio file with

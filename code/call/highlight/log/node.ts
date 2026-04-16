@@ -7,7 +7,7 @@
 import fs from 'node:fs/promises'
 import tint, { Tint } from '@termsurf/tint-text'
 import stripAnsi from 'strip-ansi'
-import { parseLogLine } from '~/code/tool/node/log-parse/base'
+import { parseLogLine } from '~/code/tool/node/log-parse/make'
 import { getLoggingStyle } from '~/code/tool/node/log'
 
 const LEVEL_RANK: Record<string, number> = {

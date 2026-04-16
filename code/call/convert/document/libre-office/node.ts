@@ -99,11 +99,10 @@ async function convertDocumentWithLibreOfficeNodeLocal(
   )
   const outputPath = path.join(localInput.output.directory.path, name)
 
-  const sequence =
-    await buildCommandToConvertDocumentWithLibreOffice(localInput)
+  const { bin, args } =
+    buildCommandToConvertDocumentWithLibreOffice(localInput)
 
-  const cmd = sequence.call[0]!
-  await spawnAndWait({ verb: 'convert', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  await spawnAndWait({ verb: 'convert', bin, args })
 
   return ConvertDocumentWithLibreOfficeNodeOutputParser.parse({
     file: {

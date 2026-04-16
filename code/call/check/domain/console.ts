@@ -20,7 +20,7 @@ import type { CommandModule } from 'yargs'
 import type {
   DomainProvider,
   CheckDomainNodeInput,
-} from './base'
+} from './make'
 
 const PROVIDERS: ReadonlyArray<DomainProvider> = [
   'namecheap',

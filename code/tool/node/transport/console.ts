@@ -6,7 +6,7 @@
 
 import type { CommandModule } from 'yargs'
 import { registerHelp } from '~/code/tool/node/log/registry'
-import type { Direction, TransportOptions } from './base'
+import type { Direction, TransportOptions } from './make'
 
 type Protocol = 's3' | 'gcs' | 'azure' | 'ftp' | 'sftp' | 'webdav' | 'ipfs' | 'torrent'
 
@@ -68,7 +68,7 @@ export function buildTransportConsole(input: {
       return b
     },
     handler: async argv => {
-      const mod = await import('./base')
+      const mod = await import('./make')
       const { runAction } = await import('~/code/tool/node/log')
       const opts: TransportOptions = {
         src: argv.src as string,

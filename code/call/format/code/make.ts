@@ -1,5 +1,5 @@
 import { Form, List } from '@cluesurf/form'
-import { baseCommonFormat, buildFormatForms } from './tool/base'
+import { baseCommonFormat, buildFormatForms } from './tool/make'
 import _ from 'lodash'
 
 export const prettier_prose_wrap_option: List = {

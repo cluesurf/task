@@ -1,4 +1,4 @@
-import { buildConvertForms } from '../../../tool/shared/base'
+import { buildConvertForms } from '~/code/tool/shared/make'
 
 // convert_image_with_image_magick_forms
 

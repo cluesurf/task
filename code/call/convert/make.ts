@@ -1,6 +1,6 @@
 import { Form } from '@cluesurf/form'
 import _ from 'lodash'
-import { baseCommonConvert } from '~/code/tool/shared/base'
+import { baseCommonConvert } from '~/code/tool/shared/make'
 
 /**
  * Common CLI-level input shape for `task convert <thing>`. The

@@ -28,10 +28,8 @@ async function runLocal(input: CompressFontNodeLocalInput) {
   const inputPath = input.input.file.path
   const { size: sizeBefore } = await fs.stat(inputPath)
 
-  const sequence = buildCompressFontCommand({ input: inputPath })
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'compress', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  const { bin, args } = buildCompressFontCommand({ input: inputPath })
+  await spawnAndWait({ verb: 'compress', bin, args })
 
   const defaultOut =
     inputPath.replace(/\.(ttf|otf)$/i, '') + '.woff2'

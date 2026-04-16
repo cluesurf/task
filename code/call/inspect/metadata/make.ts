@@ -1,5 +1,5 @@
 import { Form } from '@cluesurf/form'
-import { buildSingleFileForms } from '~/code/tool/shared/base'
+import { buildSingleFileForms } from '~/code/tool/shared/make'
 
 /**
  * `task inspect metadata <path>` -- shells out to exiftool and

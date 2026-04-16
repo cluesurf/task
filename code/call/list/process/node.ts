@@ -11,7 +11,7 @@ import {
   topProcesses,
   type Process,
   type SortKey,
-} from '~/code/tool/node/proc/base'
+} from '~/code/tool/node/proc/make'
 import { parseFilter } from '~/code/tool/node/proc/filter'
 import {
   DEFAULT_PROCESS_COLUMNS,

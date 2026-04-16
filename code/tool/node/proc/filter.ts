@@ -18,7 +18,7 @@
  * and unit matching are case-insensitive.
  */
 
-import type { Process } from './base'
+import type { Process } from './make'
 
 const FIELD_ALIASES: Record<string, keyof Process> = {
   memory: 'rss',

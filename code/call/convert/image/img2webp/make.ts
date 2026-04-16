@@ -1,4 +1,4 @@
-import { buildSingleFileForms } from '~/code/tool/shared/base'
+import { buildSingleFileForms } from '~/code/tool/shared/make'
 
 const convert_image_with_img2webp_forms = buildSingleFileForms({
   name: 'convert_image_with_img2webp',

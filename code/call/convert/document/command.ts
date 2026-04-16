@@ -1,8 +1,4 @@
 import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-import {
   ConvertDocumentWithCalibreCommandInput,
 } from '~/code/form/action/convert/calibre/cli'
 import {
@@ -22,33 +18,35 @@ import {
 } from '~/code/form/action/convert/pdf-latex/cli'
 export function buildCommandToConvertDocumentWithLibreOffice(
   input: ConvertDocumentWithLibreOfficeCommandInput,
-) {
-  const cmd = getCommand('soffice')
-  cmd.link.push('--headless')
-  cmd.link.push('--convert-to')
-  cmd.link.push(input.output.format)
-  cmd.link.push('--outdir')
-  cmd.link.push(input.output.directory.path)
-  cmd.link.push(input.input.file.path)
-  return buildCommandSequence(cmd)
+): { bin: string; args: string[] } {
+  const bin = 'soffice'
+  const args: string[] = [
+    '--headless',
+    '--convert-to',
+    input.output.format,
+    '--outdir',
+    input.output.directory.path,
+    input.input.file.path,
+  ]
+  return { bin, args }
 }
 
 export function buildCommandToConvertDocumentWithPandoc(
   input: ConvertDocumentWithPandocCommandInput,
-) {
-  const cmd = getCommand(`pandoc`)
-  cmd.link.push(
+): { bin: string; args: string[] } {
+  const bin = 'pandoc'
+  const args: string[] = [
     `--sandbox`,
     `-f`,
-    `${input.input.format}`,
+    input.input.format,
     `-t`,
-    `${input.output.format}`,
+    input.output.format,
     `-o`,
-    `${input.output.file!.path}`,
-    `${input.input.file.path}`,
-  )
+    input.output.file!.path,
+    input.input.file.path,
+  ]
 
-  return buildCommandSequence(cmd)
+  return { bin, args }
 }
 
 // https://www.reddit.com/r/hacking/comments/108sp8f/how_to_know_if_a_pdf_contains_malware/
@@ -63,19 +61,19 @@ export function buildCommandToConvertLatexWithPdfLatex(
   input: ConvertLatexWithPdfLatexCommandInput & {
     engine?: 'pdflatex' | 'xelatex' | 'lualatex'
   },
-) {
+): { bin: string; args: string[] } {
   const engine = input.engine ?? 'pdflatex'
-  const cmd = getCommand(engine)
-  cmd.link.push(
+  const bin = engine
+  const args: string[] = [
     `-interaction=nonstopmode`,
     `-halt-on-error`,
     `-output-directory`,
-    `${input.output.directory.path}`,
+    input.output.directory.path,
     `-jobname=document`,
-    `${input.input.file.path}`,
-  )
+    input.input.file.path,
+  ]
 
-  return buildCommandSequence(cmd)
+  return { bin, args }
 }
 
 /**
@@ -89,54 +87,57 @@ export function buildCommandToConvertLatexWithMake4ht(input: {
   output: { directory: { path: string }; format?: string }
   /** Build file format, e.g. `html5`, `mathml`. Default `html5`. */
   buildFile?: string
-}) {
-  const cmd = getCommand('make4ht')
-  cmd.link.push('--utf8')
-  cmd.link.push('--output-dir', input.output.directory.path)
-  cmd.link.push(input.input.file.path)
-  cmd.link.push(input.buildFile ?? 'html5')
-  return buildCommandSequence(cmd)
+}): { bin: string; args: string[] } {
+  const bin = 'make4ht'
+  const args: string[] = [
+    '--utf8',
+    '--output-dir',
+    input.output.directory.path,
+    input.input.file.path,
+    input.buildFile ?? 'html5',
+  ]
+  return { bin, args }
 }
 
 export function buildCommandToConvertDocumentWithCalibre(
   input: ConvertDocumentWithCalibreCommandInput,
-) {
-  const cmd = getCommand(`ebook-convert`)
-  cmd.link.push(input.input.file.path, input.output.file!.path)
-  return buildCommandSequence(cmd)
+): { bin: string; args: string[] } {
+  const bin = 'ebook-convert'
+  const args: string[] = [input.input.file.path, input.output.file!.path]
+  return { bin, args }
 }
 
 export function buildCommandToConvertDocumentWithJupyter(
   input: ConvertDocumentWithJupyterCommandInput,
-) {
-  const cmd = getCommand(`jupyter`)
-
-  cmd.link.push(
+): { bin: string; args: string[] } {
+  const bin = 'jupyter'
+  const args: string[] = [
     `nbconvert`,
     `--to`,
     input.output.format,
     input.input.file.path,
-  )
+  ]
 
-  return buildCommandSequence(cmd)
+  return { bin, args }
 }
 
 export function buildCommandToConvertDocumentWithEnscript(
   input: ConvertDocumentWithEnscriptCommandInput,
-) {
-  const cmd = getCommand(`enscript`)
+): { bin: string; args: string[] } {
+  const bin = 'enscript'
+  const args: string[] = []
 
   // --margins=left:right:top:bottom
   // --ps-level=2
   // --word-wrap
   /// --language=PostScript,html,rtf
 
-  // cmd.link.push(
+  // args.push(
   //   `nbconvert`,
   //   `--to`,
   //   input.output.format,
   //   input.input.file.path,
   // )
 
-  return buildCommandSequence(cmd)
+  return { bin, args }
 }

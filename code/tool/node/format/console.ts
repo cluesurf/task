@@ -36,7 +36,7 @@ export function buildFormatConsole(input: {
       .option('config',  { type: 'string' })
       .option('extra',   { type: 'array', string: true }),
     handler: async argv => {
-      const { runFormat } = await import('./base')
+      const { runFormat } = await import('./make')
       const { runAction } = await import('~/code/tool/node/log')
       const opts: FormatOptions = {
         input: (argv.input as string) ?? (argv._[2] as string),

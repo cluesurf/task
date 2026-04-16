@@ -1,6 +1,6 @@
 import tint, { Tint } from '@termsurf/tint-text'
 import stripAnsi from 'strip-ansi'
-import { testConnection } from '~/code/tool/node/ssh/base'
+import { testConnection } from '~/code/tool/node/ssh/make'
 import { getLoggingStyle } from '~/code/tool/node/log'
 
 const OK: Tint = { tone: 'green' }

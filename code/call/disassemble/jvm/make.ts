@@ -1,4 +1,4 @@
-import { buildSingleFileForms } from '~/code/tool/shared/base'
+import { buildSingleFileForms } from '~/code/tool/shared/make'
 
 const disassemble_jvm_forms = buildSingleFileForms({
   name: 'disassemble_jvm',

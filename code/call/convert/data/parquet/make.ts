@@ -1,5 +1,5 @@
 import { Form } from '@cluesurf/form'
-import { buildConvertFormsWithOutputDirectory } from '~/code/tool/shared/base'
+import { buildConvertFormsWithOutputDirectory } from '~/code/tool/shared/make'
 
 /**
  * Parquet ↔ JSONL (and other structured-data) folder-tree

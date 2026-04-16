@@ -269,7 +269,7 @@ async function inspectFont(filePath: string): Promise<InspectGroup[]> {
 }
 
 async function inspectGeneric(filePath: string): Promise<InspectGroup[]> {
-  const { readFileTypeInfo } = await import('~/code/tool/node/text/base')
+  const { readFileTypeInfo } = await import('~/code/tool/node/text/make')
   const info = await readFileTypeInfo(filePath)
 
   const rows: InspectRow[] = []

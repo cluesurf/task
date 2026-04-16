@@ -1,5 +1,5 @@
 import { Form } from '@cluesurf/form'
-import { baseCommonSanitize, buildSanitizeForms } from './tool/base'
+import { baseCommonSanitize, buildSanitizeForms } from './tool/make'
 import _ from 'lodash'
 
 const sanitize_html_forms = buildSanitizeForms({

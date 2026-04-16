@@ -78,10 +78,8 @@ async function formatAssemblyNodeLocal(
 ) {
   const input = FormatAssemblyNodeLocalInputParser.parse(source)
 
-  const sequence = buildCommandToFormatAssembly(input)
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'format assembly', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  const command = buildCommandToFormatAssembly(input)
+  await spawnAndWait({ verb: 'format assembly', bin: command.bin, args: command.args })
 
   return {
     file: {

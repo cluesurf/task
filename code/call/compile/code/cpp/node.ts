@@ -79,15 +79,9 @@ async function compileCppNodeLocal(
 ) {
   const localInput = CompileCppNodeLocalInputParser.parse(input)
 
-  const sequence = await buildCommandToCompileCpp(localInput)
+  const command = await buildCommandToCompileCpp(localInput)
 
-  for (const cmd of sequence.call) {
-    await spawnAndWait({
-      verb: 'compile cpp',
-      bin: cmd.link[0]!,
-      args: cmd.link.slice(1),
-    })
-  }
+  await spawnAndWait({ verb: 'compile cpp', bin: command.bin, args: command.args })
 
   return {
     file: {

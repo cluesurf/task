@@ -1,4 +1,4 @@
-import { readOne, updateConfig, type SshEntry } from '~/code/tool/node/ssh/base'
+import { readOne, updateConfig, type SshEntry } from '~/code/tool/node/ssh/make'
 
 export type AddSshNodeInput = {
   name: string

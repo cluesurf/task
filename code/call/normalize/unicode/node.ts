@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { normalizeUnicode } from '~/code/tool/node/unicode/base'
+import { normalizeUnicode } from '~/code/tool/node/unicode/make'
 import { ensureParentDir } from '~/code/tool/node/file'
 
 export type NormalizeUnicodeNodeInput = {

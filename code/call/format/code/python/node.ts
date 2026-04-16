@@ -78,10 +78,8 @@ async function formatPythonNodeLocal(
 ) {
   const input = FormatPythonNodeLocalInputParser.parse(source)
 
-  const sequence = buildCommandToFormatPython(input)
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'format python', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  const command = buildCommandToFormatPython(input)
+  await spawnAndWait({ verb: 'format python', bin: command.bin, args: command.args })
 
   return {
     file: {

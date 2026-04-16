@@ -34,7 +34,7 @@ async function runLocal(input: UpdateImageNodeLocalInput) {
   }
 
   await ensureParentDir(outputPath)
-  const sequence = buildUpdateImageCommand({
+  const { bin, args } = buildUpdateImageCommand({
     inputPath,
     outputPath,
     grayscale: input.grayscale,
@@ -42,9 +42,7 @@ async function runLocal(input: UpdateImageNodeLocalInput) {
     contrast: input.contrast,
     saturation: input.saturation,
   })
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'update', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  await spawnAndWait({ verb: 'update', bin, args })
   return { file: { path: outputPath } }
 }
 

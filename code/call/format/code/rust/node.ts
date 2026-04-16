@@ -78,10 +78,8 @@ async function formatRustNodeLocal(
 ) {
   const input = FormatRustNodeLocalInputParser.parse(source)
 
-  const sequence = buildCommandToFormatRust(input)
-  for (const cmd of sequence.call) {
-    await spawnAndWait({ verb: 'format rust', bin: cmd.link[0]!, args: cmd.link.slice(1) })
-  }
+  const command = buildCommandToFormatRust(input)
+  await spawnAndWait({ verb: 'format rust', bin: command.bin, args: command.args })
 
   return {
     file: {

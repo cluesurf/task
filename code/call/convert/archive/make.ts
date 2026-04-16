@@ -1,5 +1,5 @@
 import { Form } from '@cluesurf/form'
-import { buildConvertForms } from '~/code/tool/shared/base'
+import { buildConvertForms } from '~/code/tool/shared/make'
 
 const convert_archive_forms = buildConvertForms(
   'convert_archive',

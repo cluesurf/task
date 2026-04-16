@@ -20,7 +20,7 @@ import type {
   CheckDomainNodeInput,
   CheckDomainNodeOutput,
   DomainCheckResult,
-} from '../base'
+} from '../make'
 
 /**
  * Namecheap caps a single bulk request at 50 domains.
