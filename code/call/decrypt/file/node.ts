@@ -3,7 +3,7 @@
  */
 
 import path from 'node:path'
-import { spawn } from 'node:child_process'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import { exec } from '~/code/tool/node/process'
 
 export type DecryptFileTool = 'age' | 'openssl' | 'gpg'
@@ -24,11 +24,17 @@ export async function decryptFileNode(
 
   switch (tool) {
     case 'age': {
-      const argv = buildAgeArgv(source)
+      const [bin, ...args] = buildAgeArgv(source)
       if (source.passphrase && !source.identity) {
-        await runWithStdin(argv, `${source.passphrase}\n`)
+        await spawnAndWait({
+          verb: 'decrypt file',
+          bin: bin!,
+          args,
+          stdin: `${source.passphrase}\n`,
+          pipe: true,
+        })
       } else {
-        await exec(argv)
+        await exec([bin!, ...args])
       }
       return
     }
@@ -91,14 +97,3 @@ function buildGpgArgv(input: DecryptFileNodeInput): string[] {
   return argv
 }
 
-function runWithStdin(argv: string[], input: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const [cmd, ...args] = argv
-    const child = spawn(cmd!, args, { stdio: ['pipe', 'inherit', 'inherit'] })
-    child.on('error', reject)
-    child.on('close', code =>
-      code === 0 ? resolve() : reject(new Error(`${cmd} exited ${code}`)),
-    )
-    child.stdin.end(input)
-  })
-}

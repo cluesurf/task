@@ -18,6 +18,7 @@ import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { runCommandSequence } from '~/code/tool/node/command'
+import { ensureParentDir } from '~/code/tool/node/file'
 import {
   buildEyeD3LyricsCommand,
   buildFfmpegMetadataCommand,
@@ -62,7 +63,7 @@ export async function setMetadataNode(
       )
     : outputPath
 
-  await fs.mkdir(path.dirname(tmpOut), { recursive: true })
+  await ensureParentDir(tmpOut)
 
   await runCommandSequence(
     buildFfmpegMetadataCommand({

@@ -3,7 +3,7 @@
 // "before/after" experience, pipe through `diff-so-fancy` or
 // `delta` by setting $KUBECTL_EXTERNAL_DIFF.
 
-import { spawn } from 'node:child_process'
+import { spawnAndGetExitCode } from '~/code/tool/node/spawn'
 
 export type K8sDiffNodeInput = {
   manifest: string
@@ -11,15 +11,18 @@ export type K8sDiffNodeInput = {
   context?: string
 }
 
-export async function k8sDiffNode(source: K8sDiffNodeInput): Promise<number> {
-  const argv = ['kubectl', 'diff', '-f', source.manifest]
-  if (source.namespace) argv.push('-n', source.namespace)
-  if (source.context) argv.push('--context', source.context)
-  return new Promise(resolve => {
-    const child = spawn(argv[0]!, argv.slice(1), { stdio: 'inherit' })
-    // kubectl diff returns 1 when there IS a diff — that's not an
-    // error. Propagate the exit code without throwing.
-    child.on('close', code => resolve(code ?? 1))
-    child.on('error', () => resolve(1))
+export async function k8sDiffNode(
+  source: K8sDiffNodeInput,
+): Promise<number> {
+  const args = ['diff', '-f', source.manifest]
+  if (source.namespace) args.push('-n', source.namespace)
+  if (source.context) args.push('--context', source.context)
+  // kubectl diff returns 1 when there IS a diff — that's not an
+  // error. Propagate the exit code without throwing.
+  const code = await spawnAndGetExitCode({
+    verb: 'k8s diff',
+    bin: 'kubectl',
+    args,
   })
+  return code ?? 1
 }

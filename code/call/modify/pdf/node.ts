@@ -11,6 +11,7 @@ import path from 'node:path'
 import { exec } from '~/code/tool/node/process'
 import { runCommandSequence } from '~/code/tool/node/command'
 import { getCommand } from '~/code/tool/shared/command'
+import { ensureParentDir } from '~/code/tool/node/file'
 import {
   parsePageList,
   parsePageRanges,
@@ -45,7 +46,7 @@ export async function modifyPdfNode(
 
   const inputPath = source.input.file.path
   const outputPath = source.output.file.path
-  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await ensureParentDir(outputPath)
 
   let spec: string
   let pagesAfter: number

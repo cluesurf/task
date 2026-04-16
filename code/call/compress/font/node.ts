@@ -11,6 +11,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { runCommandSequence } from '~/code/tool/node/command'
 import { buildCompressFontCommand } from './command'
+import { ensureParentDir } from '~/code/tool/node/file'
 
 export type CompressFontNodeInput = {
   input: { file: { path: string } }
@@ -43,7 +44,7 @@ export async function compressFontNode(
   let finalOut = defaultOut
 
   if (effectiveOut && path.resolve(effectiveOut) !== path.resolve(defaultOut)) {
-    await fs.mkdir(path.dirname(effectiveOut), { recursive: true })
+    await ensureParentDir(effectiveOut)
     await fs.rename(defaultOut, effectiveOut)
     finalOut = effectiveOut
   }

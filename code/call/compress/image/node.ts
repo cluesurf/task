@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { ensureParentDir } from '~/code/tool/node/file'
 import {
   buildCommandSequence,
   getCommand,
@@ -15,7 +16,7 @@ export type CompressImageNodeInput = {
 export async function compressImageNode(source: CompressImageNodeInput) {
   const inputPath = source.input.file.path
   const outputPath = source.output?.file?.path ?? inputPath
-  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await ensureParentDir(outputPath)
 
   const cmd = getCommand('convert')
   cmd.link.push(

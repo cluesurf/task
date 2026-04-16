@@ -12,6 +12,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { runCommandSequence } from '~/code/tool/node/command'
 import { buildCombineCommand } from './command'
+import { ensureParentDir } from '~/code/tool/node/file'
 
 export type CombineNodeInput = {
   input: { file: { path: string } }
@@ -33,7 +34,7 @@ export async function combineNode(
   source: CombineNodeInput,
 ): Promise<CombineNodeOutput> {
   const outputPath = source.output.file.path
-  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await ensureParentDir(outputPath)
 
   await runCommandSequence(
     buildCombineCommand({

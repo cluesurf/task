@@ -8,6 +8,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { exec } from '~/code/tool/node/process'
+import { ensureParentDir } from '~/code/tool/node/file'
 
 export type UpdateFontNodeInput = {
   input: { file: { path: string } }
@@ -38,7 +39,7 @@ export async function updateFontNode(
   const defaultOut =
     inputPath.replace(new RegExp(`\\${ext}$`, 'i'), '') + `.updated${ext}`
   const outputPath = source.output?.file?.path ?? defaultOut
-  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await ensureParentDir(outputPath)
 
   // Inline python: load the font, add features, save to output.
   // `addOpenTypeFeatures` mutates GSUB/GPOS in place and raises

@@ -13,6 +13,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { runCommandSequence } from '~/code/tool/node/command'
 import { buildExtractFontCommand } from './command'
+import { ensureParentDir } from '~/code/tool/node/file'
 
 export type ExtractFontNodeInput = {
   input: { file: { path: string } }
@@ -40,7 +41,7 @@ export async function extractFontNode(
   const defaultOut =
     inputPath.replace(/\.(ttf|otf|woff2?|ttx)$/i, '') + suffix
   const outputPath = source.output?.file?.path ?? defaultOut
-  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await ensureParentDir(outputPath)
 
   const tables = format === 'fea' ? ['GSUB', 'GPOS'] : undefined
   await runCommandSequence(

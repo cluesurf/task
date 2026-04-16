@@ -11,6 +11,7 @@
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { ensureParentDir } from '~/code/tool/node/file'
 
 export type LoadEnvironmentNodeInput = {
   key: string
@@ -39,7 +40,7 @@ export async function loadEnvironmentNode(
     existing = await fs.readFile(file, 'utf8')
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error
-    await fs.mkdir(path.dirname(file), { recursive: true })
+    await ensureParentDir(file)
   }
 
   const keyPattern = new RegExp(`^${escapeRegex(key)}=.*$`, 'm')

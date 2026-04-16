@@ -6,6 +6,7 @@
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { ensureParentDir } from '~/code/tool/node/file'
 import {
   buildCommandSequence,
   getCommand,
@@ -24,7 +25,7 @@ export async function resizeVideoNode(source: ResizeVideoNodeInput) {
     throw new Error('resize video: pass --width and/or --height')
   }
   const outputPath = source.output.file.path
-  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await ensureParentDir(outputPath)
 
   const w = source.width ?? -2
   const h = source.height ?? -2

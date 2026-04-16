@@ -20,11 +20,13 @@
 import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
-import { spawn } from 'node:child_process'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { formatShellCommand } from '~/code/tool/shared/verb'
 import { buildCommandToSync } from './command'
 import {
   detectTransport,
   parseSmbUrl,
+  parseSyncNode,
   testSyncNode,
   type SyncNodeInput,
   type SyncNodeOutput,
@@ -34,8 +36,9 @@ export type { SyncNodeInput, SyncNodeOutput }
 export { testSyncNode }
 
 export async function syncNode(
-  input: SyncNodeInput,
+  source: SyncNodeInput,
 ): Promise<SyncNodeOutput> {
+  const input = parseSyncNode(source)
   const transport = detectTransport(input.destination)
   let rsyncDest = input.destination
   let mountedAt: string | undefined
@@ -49,14 +52,17 @@ export async function syncNode(
     ...input,
     destination: rsyncDest,
   })
-  const printable = `${command.bin} ${command.args.map(quote).join(' ')}`
+  const printable = formatShellCommand(command)
 
   if (input.dryRun && input.verbose) {
     process.stdout.write(printable + '\n')
   }
 
   try {
-    await runProcess(command.bin, command.args, {
+    await spawnAndWait({
+      verb: 'sync',
+      bin: command.bin,
+      args: command.args,
       quiet: input.quiet,
     })
   } finally {
@@ -93,7 +99,10 @@ async function mountSmbShare(
       ? `${encodeURIComponent(input.user)}${input.password ? `:${encodeURIComponent(input.password)}` : ''}@`
       : ''
     const url = `//${cred}${parsed.host}/${parsed.share}`
-    await runProcess('mount_smbfs', [url, mountPoint], {
+    await spawnAndWait({
+      verb: 'sync',
+      bin: 'mount_smbfs',
+      args: [url, mountPoint],
       quiet: input.quiet,
     })
   } else if (process.platform === 'linux') {
@@ -108,7 +117,12 @@ async function mountSmbShare(
       mountPoint,
     ]
     if (opts.length) args.push('-o', opts.join(','))
-    await runProcess('mount', args, { quiet: input.quiet })
+    await spawnAndWait({
+      verb: 'sync',
+      bin: 'mount',
+      args,
+      quiet: input.quiet,
+    })
   } else {
     throw new Error(
       'sync: SMB auto-mount is only implemented on macOS and Linux. ' +
@@ -120,7 +134,12 @@ async function mountSmbShare(
 }
 
 async function unmountSmbShare(mountPoint: string): Promise<void> {
-  await runProcess('umount', [mountPoint], { quiet: true })
+  await spawnAndWait({
+    verb: 'sync',
+    bin: 'umount',
+    args: [mountPoint],
+    quiet: true,
+  })
 }
 
 async function isMounted(mountPoint: string): Promise<boolean> {
@@ -142,36 +161,3 @@ function resolveSmbRsyncPath(
   return subpath ? path.join(mountPoint, subpath) : mountPoint
 }
 
-function quote(s: string): string {
-  return /[\s"'$`\\]/.test(s)
-    ? `'${s.replace(/'/g, `'\\''`)}'`
-    : s
-}
-
-async function runProcess(
-  cmd: string,
-  args: string[],
-  opts: { quiet?: boolean },
-): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const child = spawn(cmd, args, {
-      stdio: opts.quiet
-        ? ['ignore', 'ignore', 'inherit']
-        : 'inherit',
-    })
-    child.on('error', err => {
-      const msg =
-        (err as NodeJS.ErrnoException).code === 'ENOENT'
-          ? `sync: \`${cmd}\` not found on PATH. Install it first.`
-          : `sync: ${cmd} failed — ${err.message}`
-      reject(new Error(msg))
-    })
-    child.on('exit', code => {
-      if (code === 0) resolve()
-      else
-        reject(
-          new Error(`sync: ${cmd} exited with code ${code}`),
-        )
-    })
-  })
-}

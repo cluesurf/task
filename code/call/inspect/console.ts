@@ -8,6 +8,7 @@ import { inspectClusterConsole } from './cluster/console'
 import { inspectColorConsole } from './color/console'
 import { inspectDbConsole } from './db/console'
 import { inspectDnsConsole } from './dns/console'
+import { inspectFigmaConsole } from './figma/console'
 import { inspectFileConsole } from './file/console'
 import { inspectFirewallConsole } from './firewall/console'
 import { inspectMachineConsole } from './machine/console'
@@ -39,6 +40,7 @@ registerGroupHelp({
     { name: 'color', describe: 'Inspect colors in an image' },
     { name: 'db', describe: 'Inspect a Postgres database' },
     { name: 'dns', describe: 'Cloudflare DNS records for a zone' },
+    { name: 'figma', describe: 'Summarize a Figma file (pages, frames, components)' },
     { name: 'file', describe: 'Inspect a file and print a key/value table of its metadata' },
     { name: 'firewall', describe: 'Cloudflare firewall events (last N)' },
     { name: 'machine', describe: 'Cloud machine / VM details' },
@@ -73,6 +75,7 @@ export const inspectConsole: CommandModule = {
       .command(inspectColorConsole)
       .command(inspectDbConsole)
       .command(inspectDnsConsole)
+      .command(inspectFigmaConsole)
       .command(inspectFileConsole)
       .command(inspectFirewallConsole)
       .command(inspectMachineConsole)

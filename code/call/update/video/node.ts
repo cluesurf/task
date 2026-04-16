@@ -7,6 +7,7 @@
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { ensureParentDir } from '~/code/tool/node/file'
 import {
   buildCommandSequence,
   getCommand,
@@ -31,7 +32,7 @@ export async function updateVideoNode(source: UpdateVideoNodeInput) {
       'update video: pass -o <out.mp4> — ffmpeg cannot remux in place',
     )
   }
-  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await ensureParentDir(outputPath)
 
   const cmd = getCommand('ffmpeg')
   cmd.link.push(

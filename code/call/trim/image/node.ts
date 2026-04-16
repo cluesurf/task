@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { ensureParentDir } from '~/code/tool/node/file'
 import {
   buildCommandSequence,
   getCommand,
@@ -23,7 +24,7 @@ export async function trimImageNode(source: TrimImageNodeInput) {
   const geometry = `${w}x${h}+${x}+${y}`
 
   const outputPath = source.output.file.path
-  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await ensureParentDir(outputPath)
 
   const cmd = getCommand('convert')
   cmd.link.push(source.input.file.path, '-crop', geometry, outputPath)

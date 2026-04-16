@@ -11,6 +11,7 @@
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { ensureParentDir } from '~/code/tool/node/file'
 
 export type MarkPdfNodeInput = {
   input: { file: { path: string } }
@@ -62,7 +63,7 @@ export async function markPdfNode(
   })
 
   const outputPath = source.output.file.path
-  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await ensureParentDir(outputPath)
   await fs.writeFile(outputPath, await doc.save())
 
   return { file: { path: outputPath }, label }

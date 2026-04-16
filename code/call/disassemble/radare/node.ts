@@ -11,33 +11,27 @@
  */
 
 import fs from 'node:fs/promises'
-import path from 'node:path'
-import { spawn } from 'node:child_process'
+import { writeOutputOrStdout } from '~/code/tool/node/file'
+import { spawnAndCapture } from '~/code/tool/node/spawn'
+import { buildCommandToDisassembleRadare } from './command'
+import {
+  RADARE_PROFILES,
+  parseDisassembleRadareNode,
+  testDisassembleRadareNode,
+  type DisassembleRadareNodeInput,
+  type DisassembleRadareNodeOutput,
+} from './shared'
 
-export type RadareTool = 'radare2' | 'rizin'
-export type DisassembleRadareNodeInput = {
-  input: string
-  output?: string
-  tool?: RadareTool
-  script?: string
-  profile?: 'functions' | 'calls' | 'strings' | 'full'
-  commands?: string[]
+export type {
+  DisassembleRadareNodeInput,
+  DisassembleRadareNodeOutput,
 }
-
-export type DisassembleRadareNodeOutput = { file?: { path: string } }
-
-const PROFILES: Record<string, string[]> = {
-  functions: ['aaa', 'afl'],
-  calls:     ['aaa', 'agCd'],                       // call-graph in dot
-  strings:   ['aaa', 'izq'],
-  full:      ['aaa', 'afl', 'izq', 's entry0', 'pdf'],
-}
+export { testDisassembleRadareNode }
 
 export async function disassembleRadareNode(
-  src: DisassembleRadareNodeInput,
+  source: DisassembleRadareNodeInput,
 ): Promise<DisassembleRadareNodeOutput> {
-  const bin = src.tool ?? 'radare2'
-
+  const src = parseDisassembleRadareNode(source)
   const commands = src.script
     ? (await fs.readFile(src.script, 'utf8'))
         .split('\n')
@@ -45,37 +39,14 @@ export async function disassembleRadareNode(
         .filter(l => l && !l.startsWith('#'))
     : src.commands && src.commands.length
       ? src.commands
-      : PROFILES[src.profile ?? 'full']!
+      : RADARE_PROFILES[src.profile ?? 'full']
 
-  const joined = commands.join(';') + ';q'
-  const args = ['-q', '-c', joined, src.input]
-
-  const text = await runCapture(bin, args)
-
-  if (src.output) {
-    await fs.mkdir(path.dirname(src.output), { recursive: true })
-    await fs.writeFile(src.output, text, 'utf8')
-    return { file: { path: src.output } }
-  }
-  process.stdout.write(text)
-  return {}
-}
-
-function runCapture(cmd: string, args: string[]): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const chunks: Buffer[] = []
-    const child = spawn(cmd, args, { stdio: ['ignore', 'pipe', 'inherit'] })
-    child.stdout!.on('data', (b: Buffer) => chunks.push(b))
-    child.on('error', err => {
-      reject(new Error(
-        (err as NodeJS.ErrnoException).code === 'ENOENT'
-          ? `disassemble radare: \`${cmd}\` not found. Install via \`brew install radare2\` / \`brew install rizin\`.`
-          : `disassemble radare: ${cmd} failed — ${err.message}`,
-      ))
-    })
-    child.on('exit', code => {
-      if (code === 0) resolve(Buffer.concat(chunks).toString('utf8'))
-      else reject(new Error(`disassemble radare: ${cmd} exited with code ${code}`))
-    })
+  const command = buildCommandToDisassembleRadare(src, commands)
+  const text = await spawnAndCapture({
+    verb: 'disassemble radare',
+    bin: command.bin,
+    args: command.args,
   })
+
+  return writeOutputOrStdout({ text, outputPath: src.output })
 }

@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { ensureParentDir } from '~/code/tool/node/file'
 import {
   buildCommandSequence,
   getCommand,
@@ -41,7 +42,7 @@ export async function updateImageNode(source: UpdateImageNodeInput) {
     )
   }
 
-  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await ensureParentDir(outputPath)
   const cmd = getCommand('convert')
   cmd.link.push(inputPath, ...ops, outputPath)
   await runCommandSequence(buildCommandSequence(cmd))

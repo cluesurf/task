@@ -63,7 +63,39 @@ RUN apt-get -y install gifsicle
 # ── Extended image conversion ─────────────────────────────────────
 # Raster ↔ vector
 RUN apt-get -y install potrace
-RUN apt-get -y install autotrace
+
+# autotrace was dropped from Ubuntu's main archive around the
+# 24.04 (noble) release — the Debian package went unmaintained
+# (https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=934554).
+# Build from the upstream git tag instead. The auto-generated
+# GitHub source archive is used (stable URL for every tag)
+# rather than a release-asset tarball whose filename varies
+# between releases. That means `configure` is not pre-built,
+# so we run `./autogen.sh` (which wraps autoreconf + friends)
+# as part of the build. Everything runs in a single `RUN` so
+# the intermediate tree does not bloat the image layer.
+ENV AUTOTRACE_VERSION=0.31.10
+RUN set -eux; \
+    apt-get -y install --no-install-recommends \
+      build-essential pkg-config autoconf automake libtool libtool-bin \
+      intltool gettext autopoint \
+      libpng-dev libexif-dev libtiff-dev libjpeg-dev \
+      libmagickcore-dev libmagickwand-dev \
+      ca-certificates curl; \
+    tmp="$(mktemp -d)"; \
+    cd "$tmp"; \
+    curl -fsSL -o autotrace.tar.gz \
+      "https://github.com/autotrace/autotrace/archive/refs/tags/${AUTOTRACE_VERSION}.tar.gz"; \
+    tar -xzf autotrace.tar.gz; \
+    cd "autotrace-${AUTOTRACE_VERSION}"; \
+    ./autogen.sh; \
+    ./configure --prefix=/usr/local; \
+    make -j"$(nproc)"; \
+    make install; \
+    ldconfig; \
+    cd /; \
+    rm -rf "$tmp"
+
 RUN apt-get -y install librsvg2-bin
 # RAW pipelines (dcraw + darktable-cli). rawtherapee-cli lands as
 # `rawtherapee` on noble; the binary name is `rawtherapee-cli`.

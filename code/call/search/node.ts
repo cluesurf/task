@@ -12,7 +12,7 @@
  * tolerate that exit code.
  */
 
-import child_process from 'node:child_process'
+import { spawnAndGetExitCode } from '~/code/tool/node/spawn'
 import {
   buildFdCommand,
   buildRgCommand,
@@ -40,35 +40,24 @@ export async function searchNode(
     ? buildFdCommand(source)
     : buildRgCommand(source)
   const cmd = sequence.call[0]!
+  const [bin, ...args] = cmd.link
+  if (!bin) throw new Error('search command had no binary')
 
-  const exitCode = await runStreaming(cmd.link)
+  const exitCode = await spawnAndGetExitCode({
+    verb: 'search',
+    bin,
+    args,
+  })
 
   // ripgrep + fd both exit 1 to mean "no matches". Keep the
   // task action successful in that case so JSON / pretty status
   // doesn't read as a failure for an empty search.
   if (exitCode !== 0 && exitCode !== 1) {
-    throw new Error(
-      `\`${cmd.link[0]}\` exited with code ${exitCode}`,
-    )
+    throw new Error(`\`${bin}\` exited with code ${exitCode}`)
   }
 
   return {
     tool: wantsFilenameSearch ? 'fd' : 'rg',
     matched: exitCode === 0,
   }
-}
-
-function runStreaming(argv: string[]): Promise<number> {
-  return new Promise((resolve, reject) => {
-    const [bin, ...rest] = argv
-    if (!bin) {
-      reject(new Error('search command had no binary'))
-      return
-    }
-    const child = child_process.spawn(bin, rest, {
-      stdio: ['ignore', 'inherit', 'inherit'],
-    })
-    child.on('error', reject)
-    child.on('close', code => resolve(code ?? 0))
-  })
 }

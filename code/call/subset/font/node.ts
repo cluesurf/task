@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { runCommandSequence } from '~/code/tool/node/command'
 import { buildSubsetFontCommand } from './command'
+import { ensureParentDir } from '~/code/tool/node/file'
 
 export type SubsetFontNodeInput = {
   input: { file: { path: string } }
@@ -30,7 +31,7 @@ export async function subsetFontNode(
     )
   }
 
-  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await ensureParentDir(outputPath)
   const { size: sizeBefore } = await fs.stat(inputPath)
 
   await runCommandSequence(

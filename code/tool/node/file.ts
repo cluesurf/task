@@ -150,6 +150,43 @@ export async function generateTemporaryDirectoryPath() {
   return await generateDirectoryPath(tmpdir())
 }
 
+/**
+ * Make sure the parent directory of `filePath` exists. Every verb
+ * that writes to a user-supplied output path calls this before
+ * the write — consolidated so the one-liner
+ * `fs.mkdir(path.dirname(p), { recursive: true })` doesn't appear
+ * in 45+ places.
+ */
+
+export async function ensureParentDir(
+  filePath: string,
+): Promise<void> {
+  await fsp.mkdir(pathParser.dirname(filePath), { recursive: true })
+}
+
+/**
+ * Write `text` to `outputPath` when set, otherwise stream it to
+ * stdout. Used by `task disassemble jvm`, `task disassemble radare`,
+ * and any other verb whose output can either be captured to a file
+ * or consumed interactively.
+ *
+ * Returns a shape that's easy for callers to turn into their verb
+ * output: `{ file: { path } }` when written, `{}` when streamed.
+ */
+
+export async function writeOutputOrStdout(input: {
+  text: string
+  outputPath?: string
+}): Promise<{ file?: { path: string } }> {
+  if (input.outputPath) {
+    await ensureParentDir(input.outputPath)
+    await fsp.writeFile(input.outputPath, input.text, 'utf8')
+    return { file: { path: input.outputPath } }
+  }
+  process.stdout.write(input.text)
+  return {}
+}
+
 export async function removeDirectory(path: string) {
   await fsp.rm(path, { recursive: true, force: true })
 }

@@ -10,6 +10,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { runCommandSequence } from '~/code/tool/node/command'
 import { buildQpdfMergeCommand } from './command'
+import { ensureParentDir } from '~/code/tool/node/file'
 
 export type MergeNodeInput = {
   inputs: string[]
@@ -25,7 +26,7 @@ export async function mergeNode(
   source: MergeNodeInput,
 ): Promise<MergeNodeOutput> {
   const outputPath = source.output.file.path
-  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await ensureParentDir(outputPath)
   await runCommandSequence(
     buildQpdfMergeCommand({ inputs: source.inputs, output: outputPath }),
   )

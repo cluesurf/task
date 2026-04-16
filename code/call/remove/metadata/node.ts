@@ -17,6 +17,7 @@
 import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
+import { ensureParentDir } from '~/code/tool/node/file'
 import {
   buildCommandSequence,
   getCommand,
@@ -50,7 +51,7 @@ export async function removeMetadataNode(source: RemoveMetadataNodeInput) {
         )
       : outputPath
     if (!inPlace) {
-      await fs.mkdir(path.dirname(outputPath), { recursive: true })
+      await ensureParentDir(outputPath)
     }
     const cmd = getCommand('ffmpeg')
     cmd.link.push(
@@ -71,7 +72,7 @@ export async function removeMetadataNode(source: RemoveMetadataNodeInput) {
   // Images, PDFs, and everything else — exiftool handles in-place
   // natively via `-overwrite_original`.
   if (!inPlace) {
-    await fs.mkdir(path.dirname(outputPath), { recursive: true })
+    await ensureParentDir(outputPath)
     await fs.copyFile(inputPath, outputPath)
   }
   const cmd = getCommand('exiftool')

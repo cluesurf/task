@@ -18,6 +18,7 @@ import os from 'node:os'
 import path from 'node:path'
 import { exec } from '~/code/tool/node/process'
 import { runCommandSequence } from '~/code/tool/node/command'
+import { ensureParentDir } from '~/code/tool/node/file'
 import {
   buildCopyAudioCommand,
   buildFfprobeDurationCommand,
@@ -48,7 +49,7 @@ export async function padNode(source: PadInput): Promise<PadOutput> {
   const currentMs = await probeDurationMs(inputPath)
 
   if (currentMs >= targetMs) {
-    await fs.mkdir(path.dirname(outputPath), { recursive: true })
+    await ensureParentDir(outputPath)
     if (path.resolve(inputPath) !== path.resolve(outputPath)) {
       await runCommandSequence(
         buildCopyAudioCommand({ input: inputPath, output: outputPath }),
@@ -76,7 +77,7 @@ export async function padNode(source: PadInput): Promise<PadOutput> {
       )
     : outputPath
 
-  await fs.mkdir(path.dirname(tmpOut), { recursive: true })
+  await ensureParentDir(tmpOut)
 
   await runCommandSequence(
     buildPadAudioCommand({

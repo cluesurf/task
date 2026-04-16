@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { ensureParentDir } from '~/code/tool/node/file'
 import {
   buildCommandSequence,
   getCommand,
@@ -17,7 +18,7 @@ export type TrimVideoNodeInput = {
 
 export async function trimVideoNode(source: TrimVideoNodeInput) {
   const outputPath = source.output.file.path
-  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await ensureParentDir(outputPath)
 
   const cmd = getCommand('ffmpeg')
   cmd.link.push('-y', '-i', source.input.file.path)

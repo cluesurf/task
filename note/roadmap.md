@@ -845,3 +845,145 @@ network round-trip.
   completions from the registered help entries.
 - **Man pages** — render the same registry into roff so
   `man task-convert` works after install.
+
+---
+
+## XLSX workflows
+
+Map of planned spreadsheet operations, grouped by workflow, each
+with a concrete `task` command. These slot into the existing
+verbs (`filter`, `convert`, `inspect`, `merge`, ...) rather than a
+dedicated `xlsx` verb, so every operation composes with the rest
+of the CLI.
+
+### Core row / column
+
+- filter by missing/null/regex/range → `task filter rows <in.xlsx> --where "col:empty|regex:^X|range:1..10|date:2024-01..2024-12"`
+- deduplicate by N columns → `task dedupe rows <in.xlsx> --by email,phone`
+- stable multi-column sort → `task sort rows <in.xlsx> --by status,-created_at`
+- select / drop / rename / reorder columns → `task select column <in.xlsx> --keep id,name --drop raw --rename "Full Name=full_name" --order id,full_name`
+- trim whitespace + normalize casing → `task normalize column <in.xlsx> --trim --case lower`
+- forward fill / default fill → `task fill column <in.xlsx> --column user --method ffill`
+- explode array cells into rows → `task split rows <in.xlsx> --column tags --delimiter ,`
+- group + aggregate rows → `task merge rows <in.xlsx> --by country --agg "users:count,revenue:sum"`
+
+### File splitting / combining
+
+- split into N rows per file → `task split xlsx <in.xlsx> --rows 200 -o chunks/`
+- split by column value → `task split xlsx <in.xlsx> --by country -o by-country/`
+- split by sheet → `task split xlsx <in.xlsx> --by-sheet -o sheets/`
+- merge files / sheets / rows → `task merge xlsx a.xlsx b.xlsx c.xlsx -o all.xlsx [--by-sheet|--append-rows]`
+- cell-level diff → `task diff xlsx a.xlsx b.xlsx`
+
+### Data cleaning / normalization
+
+- remove empty rows / duplicate headers → `task sanitize xlsx <in.xlsx> --drop-empty-rows --drop-duplicate-headers`
+- normalize phones / emails / URLs / ISO dates → `task normalize column <in.xlsx> --column phone --format e164`, `task normalize column <in.xlsx> --column created_at --format iso`
+- strip formatting (styles → values) → `task sanitize xlsx <in.xlsx> --strip-formatting`
+- evaluate formulas → `task convert xlsx <in.xlsx> --formulas evaluate -o computed.xlsx`
+- type coercion → `task convert column <in.xlsx> --column count --to integer`
+- schema validate → `task validate xlsx <in.xlsx> --schema schema.json`
+
+### Schema / structure
+
+- enforce schema (required + enums) → `task validate xlsx <in.xlsx> --schema schema.json --strict`
+- infer schema → `task inspect xlsx <in.xlsx> --infer-schema -o schema.json`
+- map columns → `task rename column <in.xlsx> --map columns.json`
+- flatten nested structures → `task flatten xlsx <in.xlsx>`
+- expand JSON-in-cell → `task expand column <in.xlsx> --column meta --format json`
+- pivot / unpivot → `task pivot xlsx <in.xlsx> --index country --columns year --values revenue`, `task unpivot xlsx <in.xlsx> --index id --value-name metric`
+- group + aggregate → `task merge rows <in.xlsx> --by region --agg "users:count"`
+
+### Search / matching / fuzzy
+
+- fuzzy match → `task search xlsx <in.xlsx> --column name --fuzzy "lance" --algo levenshtein`
+- inner / left join → `task join xlsx users.xlsx orders.xlsx --on user_id --type left -o enriched.xlsx`
+- lookup / enrich → `task enrich xlsx <in.xlsx> --from <other.xlsx> --on id --pull email,plan`
+- near-duplicate detection → `task dedupe rows <in.xlsx> --by name --fuzzy --threshold 0.92`
+- cluster similar rows → `task cluster rows <in.xlsx> --column description`
+- keyword search → `task search xlsx <in.xlsx> "needle"`
+
+### Language / text-specific
+
+- token / IPA / transliteration extraction → `task extract tokens <in.xlsx> --column text`, `task convert column <in.xlsx> --column word --to ipa`
+- script normalization → `task normalize column <in.xlsx> --column word --unicode nfc --no-diacritics`
+- definition summarization → `task summarize column <in.xlsx> --column def --max-words 3`
+- language detection → `task detect language <in.xlsx> --column text`
+- parallel-text alignment → `task align rows <in.xlsx> --columns en,ar`
+- frequency counts → `task measure frequency <in.xlsx> --column word`
+- concordance → `task inspect concordance <in.xlsx> --column text --token "foo"`
+
+### Validation / QA
+
+- required fields / invalid values / duplicates → `task validate xlsx <in.xlsx> --required id,email --unique id`
+- row-level rules ("if A then B") → `task validate xlsx <in.xlsx> --rules rules.yml`
+- validation report → `task validate xlsx <in.xlsx> --schema schema.json -o report.html`
+- outlier / rare-value highlighting → `task inspect anomalies <in.xlsx>`
+- row checksums → `task hash rows <in.xlsx> --columns id,email -o hashes.csv`
+
+### Conversion / interop
+
+- XLSX → CSV / TSV / JSON / NDJSON / Parquet → `task convert data <in.xlsx> -o <out.csv|tsv|json|ndjson|parquet>`
+- CSV / JSON → XLSX → `task convert data <in.csv> -o <out.xlsx>`
+- per-sheet export → `task export xlsx <in.xlsx> --sheet "Q1" -o q1.csv`
+- compress → `task archive file <in.xlsx> --format zst`
+- parquet for HuggingFace → `task convert data <in.xlsx> --to parquet --schema schema.json -o data.parquet`
+
+### Performance / large data
+
+- streaming read / write → `--stream` flag on `task filter rows` / `task convert data` so nothing loads the whole file
+- chunked pipelines → `task split xlsx <in.xlsx> --rows 10000 | task filter rows --where "status:active" | task merge xlsx - -o active.xlsx`
+- parallel workers → `--workers N` on CPU-bound verbs
+- lazy evaluation → stages compose via stdin/stdout, evaluated only when the last step consumes
+
+### Formatting / presentation
+
+- auto-size + freeze → `task format xlsx <in.xlsx> --auto-size --freeze 1`
+- header bolding / colors → `task format xlsx <in.xlsx> --header bold,bg=#eee`
+- autofilters → `task format xlsx <in.xlsx> --autofilter`
+- multi-sheet report → `task make xlsx report.xlsx --from summary.csv:Summary,detail.csv:Detail`
+
+### Automation / meta
+
+- batch a folder → `task batch ./inputs/*.xlsx --do "convert data --to parquet"`
+- watch directory → `task watch directory ./drop -o processed/ --on-new "convert data --to parquet"`
+- version datasets → `task hash xlsx <in.xlsx>`, `task diff xlsx <old.xlsx> <new.xlsx>`
+- transformation log → `--log <path>` global flag already prints every subprocess invocation; pipe into a file for an audit trail
+- dry-run → `--explain` already prints the native commands; extend to every xlsx verb
+- reversible transforms → out-of-scope first pass; achievable with a sidecar patch file
+
+### Advanced / niche
+
+- cell-level diff → `task diff xlsx a.xlsx b.xlsx --cell-level`
+- formula audit / dependency graph → `task inspect formulas <in.xlsx> [--broken | --graph dot]`
+- merged-cell detection → `task sanitize xlsx <in.xlsx> --normalize-merged`
+- extract comments / annotations → `task extract comments <in.xlsx>`
+- synthetic data from patterns → `task generate xlsx --schema schema.json --rows 1000`
+- semantic column inference (AI) → `task inspect columns <in.xlsx> --infer-meaning`
+- header fuzzy-map across files → `task match headers a.xlsx b.xlsx`
+- column similarity → `task compare columns a.xlsx b.xlsx`
+- time-series gap fill → `task fill column <in.xlsx> --column ts --method interpolate`
+
+### End-to-end pipeline examples
+
+```sh
+# 1. Clean + split
+task sanitize xlsx input.xlsx --drop-empty-rows --strip-formatting -o clean.xlsx
+task normalize column clean.xlsx --column created_at --format iso
+task dedupe rows clean.xlsx --by email -o clean.deduped.xlsx
+task split xlsx clean.deduped.xlsx --rows 200 -o chunks/
+
+# 2. Merge + enrich
+task join xlsx users.xlsx orders.xlsx --on user_id --type left -o enriched.xlsx
+
+# 3. Convert for HuggingFace
+task convert data enriched.xlsx --to parquet --schema schema.json -o data.parquet
+```
+
+### Priority for this project (per conversation)
+
+1. schema enforcement + validation (`validate xlsx --schema`)
+2. fuzzy matching + clustering (`search xlsx --fuzzy`, `cluster rows`)
+3. text normalization — IPA, scripts, unicode NFC/NFD (`normalize column`)
+4. JSON-in-cell expansion (`expand column`)
+5. XLSX → Parquet pipeline (`convert data --to parquet`)

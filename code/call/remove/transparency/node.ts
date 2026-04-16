@@ -5,53 +5,37 @@
  * viewers composite PNGs without alpha support.
  */
 
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { spawn } from 'node:child_process'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { siblingWithSuffix } from '~/code/tool/shared/verb'
+import { buildCommandToRemoveTransparency } from './command'
+import {
+  parseRemoveTransparencyNode,
+  testRemoveTransparencyNode,
+  type RemoveTransparencyNodeInput,
+  type RemoveTransparencyNodeOutput,
+} from './shared'
 
-export type RemoveTransparencyNodeInput = {
-  input: string
-  output?: string
-  background?: string
+export type {
+  RemoveTransparencyNodeInput,
+  RemoveTransparencyNodeOutput,
 }
-
-export type RemoveTransparencyNodeOutput = { file: { path: string } }
+export { testRemoveTransparencyNode }
 
 export async function removeTransparencyNode(
-  src: RemoveTransparencyNodeInput,
+  source: RemoveTransparencyNodeInput,
 ): Promise<RemoveTransparencyNodeOutput> {
-  const ext = path.extname(src.input)
-  const out = src.output ?? src.input.slice(0, -ext.length) + '.flat' + ext
-  await fs.mkdir(path.dirname(out), { recursive: true })
+  const src = parseRemoveTransparencyNode(source)
+  const out =
+    src.output ??
+    siblingWithSuffix({ path: src.input, suffix: '.flat' })
+  await ensureParentDir(out)
 
-  const bg = src.background ?? 'white'
-  await run('convert', [
-    src.input,
-    '-background', bg,
-    '-alpha', 'remove',
-    '-alpha', 'off',
-    out,
-  ])
-  return { file: { path: out } }
-}
-
-function run(cmd: string, args: string[]): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const child = spawn(cmd, args, { stdio: 'inherit' })
-    child.on('error', err =>
-      reject(enoentHint(cmd, err, 'brew install imagemagick  or  apt install imagemagick')),
-    )
-    child.on('exit', code => {
-      if (code === 0) resolve()
-      else reject(new Error(`remove transparency: ${cmd} exited with code ${code}`))
-    })
+  const command = buildCommandToRemoveTransparency(src, out)
+  await spawnAndWait({
+    verb: 'remove transparency',
+    bin: command.bin,
+    args: command.args,
   })
-}
-
-function enoentHint(cmd: string, err: unknown, hint: string): Error {
-  return new Error(
-    (err as NodeJS.ErrnoException).code === 'ENOENT'
-      ? `remove transparency: \`${cmd}\` not found. Install: ${hint}`
-      : `remove transparency: ${cmd} failed — ${(err as Error).message}`,
-  )
+  return { file: { path: out } }
 }

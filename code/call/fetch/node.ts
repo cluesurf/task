@@ -11,21 +11,24 @@
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { spawn } from 'node:child_process'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { formatShellCommand } from '~/code/tool/shared/verb'
 import { buildCommandToFetch } from './command'
 import {
+  parseFetchNode,
+  testFetchNode,
   type FetchNodeInput,
   type FetchNodeOutput,
-  testFetchNode,
 } from './shared'
 
 export type { FetchNodeInput, FetchNodeOutput }
 export { testFetchNode }
 
 export async function fetchNode(
-  input: FetchNodeInput,
+  source: FetchNodeInput,
 ): Promise<FetchNodeOutput> {
-  const urls = input.urls ?? []
+  const input = parseFetchNode(source)
+  const urls = input.urls
   if (urls.length === 0) {
     throw new Error('fetch: at least one URL required')
   }
@@ -34,7 +37,7 @@ export async function fetchNode(
 
   if (input.dryRun) {
     process.stdout.write(
-      `${command.bin} ${command.args.map(quote).join(' ')}\n`,
+      `${formatShellCommand(command)}\n`,
     )
     return { files: urls.map(u => ({ url: u, status: 'skipped' })) }
   }
@@ -43,7 +46,10 @@ export async function fetchNode(
     await fs.mkdir(input.into, { recursive: true })
   }
 
-  await runProcess(command.bin, command.args, {
+  await spawnAndWait({
+    verb: 'fetch',
+    bin: command.bin,
+    args: command.args,
     quiet: input.quiet,
     pipe: input.pipe,
   })
@@ -67,40 +73,4 @@ function resolveLikelyPath(
     input.name ??
     (path.basename(new URL(url).pathname) || 'index.html')
   return path.resolve(input.into ?? '.', name)
-}
-
-function quote(s: string): string {
-  return /[\s"'$`\\]/.test(s)
-    ? `'${s.replace(/'/g, `'\\''`)}'`
-    : s
-}
-
-async function runProcess(
-  cmd: string,
-  args: string[],
-  opts: { quiet?: boolean; pipe?: boolean },
-): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const child = spawn(cmd, args, {
-      stdio: opts.pipe
-        ? ['inherit', 'inherit', 'inherit']
-        : opts.quiet
-          ? ['ignore', 'ignore', 'inherit']
-          : 'inherit',
-    })
-    child.on('error', err => {
-      const msg =
-        (err as NodeJS.ErrnoException).code === 'ENOENT'
-          ? `fetch: \`${cmd}\` not found on PATH. Install it first.`
-          : `fetch: ${cmd} failed — ${err.message}`
-      reject(new Error(msg))
-    })
-    child.on('exit', code => {
-      if (code === 0) resolve()
-      else
-        reject(
-          new Error(`fetch: ${cmd} exited with code ${code}`),
-        )
-    })
-  })
 }

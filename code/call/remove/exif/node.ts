@@ -16,34 +16,28 @@
  */
 
 import fs from 'node:fs/promises'
-import path from 'node:path'
-import { spawn } from 'node:child_process'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { siblingWithSuffix } from '~/code/tool/shared/verb'
+import {
+  buildCommandToRemoveExif,
+  collectExifTags,
+} from './command'
+import {
+  parseRemoveExifNode,
+  testRemoveExifNode,
+  type RemoveExifNodeInput,
+  type RemoveExifNodeOutput,
+} from './shared'
 
-export type RemoveExifPreset = 'gps' | 'device' | 'user'
-
-export type RemoveExifNodeInput = {
-  input: string
-  output?: string
-  tag?: string[]
-  preset?: RemoveExifPreset[]
-  overwrite?: boolean
-}
-
-export type RemoveExifNodeOutput = { file: { path: string } }
-
-const PRESET_TAGS: Record<RemoveExifPreset, string[]> = {
-  gps:    ['GPS:all'],
-  device: ['Make', 'Model', 'SerialNumber', 'LensSerialNumber', 'InternalSerialNumber'],
-  user:   ['OwnerName', 'Creator', 'Artist', 'Copyright', 'By-line'],
-}
+export type { RemoveExifNodeInput, RemoveExifNodeOutput }
+export { testRemoveExifNode }
 
 export async function removeExifNode(
-  src: RemoveExifNodeInput,
+  source: RemoveExifNodeInput,
 ): Promise<RemoveExifNodeOutput> {
-  const tags = [
-    ...(src.tag ?? []),
-    ...(src.preset ?? []).flatMap(p => PRESET_TAGS[p]),
-  ]
+  const src = parseRemoveExifNode(source)
+  const tags = collectExifTags(src)
   if (tags.length === 0) {
     throw new Error(
       'remove exif: at least one --tag or --preset required. Use `task remove metadata` to strip all tags.',
@@ -52,43 +46,22 @@ export async function removeExifNode(
 
   const out = src.overwrite
     ? src.input
-    : src.output ?? siblingWithSuffix(src.input, '.noexif')
+    : (src.output ??
+      siblingWithSuffix({ path: src.input, suffix: '.noexif' }))
 
   if (!src.overwrite) {
-    await fs.mkdir(path.dirname(out), { recursive: true })
+    await ensureParentDir(out)
     await fs.copyFile(src.input, out)
   }
 
-  const args: string[] = ['-overwrite_original']
-  for (const tag of tags) args.push(`-${tag}=`)
-  args.push(out)
-
-  await run('exiftool', args)
-  return { file: { path: out } }
-}
-
-function siblingWithSuffix(p: string, suffix: string): string {
-  const ext = path.extname(p)
-  return p.slice(0, -ext.length) + suffix + ext
-}
-
-function run(cmd: string, args: string[]): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const child = spawn(cmd, args, { stdio: 'inherit' })
-    child.on('error', err =>
-      reject(enoentHint(cmd, err, 'brew install exiftool  or  apt install libimage-exiftool-perl')),
-    )
-    child.on('exit', code => {
-      if (code === 0) resolve()
-      else reject(new Error(`remove exif: exiftool exited with code ${code}`))
-    })
+  const command = buildCommandToRemoveExif({
+    tags,
+    outputPath: out,
   })
-}
-
-function enoentHint(cmd: string, err: unknown, hint: string): Error {
-  return new Error(
-    (err as NodeJS.ErrnoException).code === 'ENOENT'
-      ? `remove exif: \`${cmd}\` not found. Install: ${hint}`
-      : `remove exif: ${cmd} failed — ${(err as Error).message}`,
-  )
+  await spawnAndWait({
+    verb: 'remove exif',
+    bin: command.bin,
+    args: command.args,
+  })
+  return { file: { path: out } }
 }

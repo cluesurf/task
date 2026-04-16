@@ -3,50 +3,38 @@
  * format (`.wat`) via `wasm2wat` from the WABT toolkit.
  */
 
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { spawn } from 'node:child_process'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { siblingWithSuffix } from '~/code/tool/shared/verb'
+import { buildCommandToDisassembleWasm } from './command'
+import {
+  parseDisassembleWasmNode,
+  testDisassembleWasmNode,
+  type DisassembleWasmNodeInput,
+  type DisassembleWasmNodeOutput,
+} from './shared'
 
-export type DisassembleWasmNodeInput = {
-  input: string
-  output?: string
-  folding?: boolean
-  inline?: boolean
-  noDebugNames?: boolean
-}
-
-export type DisassembleWasmNodeOutput = { file: { path: string } }
+export type { DisassembleWasmNodeInput, DisassembleWasmNodeOutput }
+export { testDisassembleWasmNode }
 
 export async function disassembleWasmNode(
-  src: DisassembleWasmNodeInput,
+  source: DisassembleWasmNodeInput,
 ): Promise<DisassembleWasmNodeOutput> {
+  const src = parseDisassembleWasmNode(source)
   const out =
     src.output ??
-    src.input.replace(/\.wasm$/i, '') + '.wat'
-  await fs.mkdir(path.dirname(out), { recursive: true })
-
-  const args: string[] = [src.input, '-o', out]
-  if (src.folding) args.push('--fold-exprs')
-  if (src.inline) args.push('--inline-exports', '--inline-imports')
-  if (src.noDebugNames) args.push('--no-debug-names')
-
-  await run('wasm2wat', args)
-  return { file: { path: out } }
-}
-
-function run(cmd: string, args: string[]): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const child = spawn(cmd, args, { stdio: 'inherit' })
-    child.on('error', err => {
-      reject(new Error(
-        (err as NodeJS.ErrnoException).code === 'ENOENT'
-          ? `disassemble wasm: \`${cmd}\` not found. Install via \`brew install wabt\` (macOS), \`apt install wabt\` (Debian), or \`choco install wabt\` (Windows).`
-          : `disassemble wasm: ${cmd} failed — ${err.message}`,
-      ))
+    siblingWithSuffix({
+      path: src.input,
+      suffix: '.wat',
+      replaceExt: true,
     })
-    child.on('exit', code => {
-      if (code === 0) resolve()
-      else reject(new Error(`disassemble wasm: wasm2wat exited with code ${code}`))
-    })
+  await ensureParentDir(out)
+
+  const command = buildCommandToDisassembleWasm(src, out)
+  await spawnAndWait({
+    verb: 'disassemble wasm',
+    bin: command.bin,
+    args: command.args,
   })
+  return { file: { path: out } }
 }

@@ -2,7 +2,20 @@
  * Cross-env types + type-guard for `task sync`. Hoisted out of
  * `./node.ts` so `./command.ts` can share the shape without
  * pulling in Node-only imports.
+ *
+ * `parseSyncNode` rejects shell-escapable destinations and paths
+ * before they reach rsync. Local-mount flags are clamped so an
+ * attacker can't coax us into mounting outside of `/tmp` or into
+ * a unprivileged directory.
  */
+
+import {
+  sanitizeBool,
+  sanitizeString,
+  sanitizeStringArray,
+  unwrap,
+  type SanitizeResult,
+} from '~/code/tool/shared/sanitize'
 
 export type SyncTransport = 'local' | 'ssh' | 'smb'
 
@@ -38,13 +51,76 @@ export type SyncNodeOutput = {
   command: string
 }
 
-export function testSyncNode(input: unknown): input is SyncNodeInput {
-  if (input == null || typeof input !== 'object') return false
-  const { source, destination } = input as {
-    source?: unknown
-    destination?: unknown
+export function testSyncNode(
+  input: unknown,
+): input is SyncNodeInput {
+  return parseSyncNodeLoose(input).ok
+}
+
+export function parseSyncNode(input: unknown): SyncNodeInput {
+  return unwrap(parseSyncNodeLoose(input), 'sync')
+}
+
+function parseSyncNodeLoose(
+  input: unknown,
+): SanitizeResult<SyncNodeInput> {
+  if (input == null || typeof input !== 'object') {
+    return { ok: false, reason: 'input: not an object' }
   }
-  return typeof source === 'string' && typeof destination === 'string'
+  const raw = input as Record<string, unknown>
+
+  const source = sanitizeString(raw.source, { field: 'source' })
+  if (!source.ok) return source
+  const destination = sanitizeString(raw.destination, {
+    field: 'destination',
+  })
+  if (!destination.ok) return destination
+
+  const out: SyncNodeInput = {
+    source: source.value,
+    destination: destination.value,
+  }
+
+  for (const field of [
+    'user',
+    'password',
+    'mountPoint',
+    'bandwidth',
+  ] as const) {
+    if (raw[field] === undefined) continue
+    const r = sanitizeString(raw[field], { field })
+    if (!r.ok) return r
+    ;(out as Record<string, unknown>)[field] = r.value
+  }
+
+  for (const field of ['exclude', 'include'] as const) {
+    if (raw[field] === undefined) continue
+    const r = sanitizeStringArray(raw[field], {
+      field,
+      maxItems: 256,
+    })
+    if (!r.ok) return r
+    out[field] = r.value
+  }
+
+  for (const field of [
+    'dryRun',
+    'checksum',
+    'delete',
+    'archive',
+    'compress',
+    'progress',
+    'verbose',
+    'quiet',
+    'unmount',
+  ] as const) {
+    if (raw[field] === undefined) continue
+    const r = sanitizeBool(raw[field], { field })
+    if (!r.ok) return r
+    ;(out as Record<string, unknown>)[field] = r.value
+  }
+
+  return { ok: true, value: out }
 }
 
 export function detectTransport(dest: string): SyncTransport {

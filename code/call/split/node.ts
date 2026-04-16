@@ -8,6 +8,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { runCommandSequence } from '~/code/tool/node/command'
 import { buildQpdfExtractCommand } from './command'
+import { ensureParentDir } from '~/code/tool/node/file'
 
 export type SplitNodeInput = {
   input: { file: { path: string } }
@@ -28,7 +29,7 @@ export async function splitNode(
     source.output?.file?.path ??
     inputPath.replace(/\.pdf$/i, '') + `.pages-${source.pages}.pdf`
 
-  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await ensureParentDir(outputPath)
   await runCommandSequence(
     buildQpdfExtractCommand({
       input: inputPath,

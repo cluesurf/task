@@ -5,8 +5,8 @@
  * rolled into one.
  */
 
-import child_process from 'node:child_process'
 import fs from 'node:fs/promises'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import { DEFAULT_CONFIG_PATH } from '~/code/tool/node/ssh/base'
 
 export async function editSshNode() {
@@ -16,14 +16,11 @@ export async function editSshNode() {
   await handle.close()
 
   const editor = process.env.VISUAL || process.env.EDITOR || 'vi'
-  await new Promise<void>((resolve, reject) => {
-    const child = child_process.spawn(editor, [DEFAULT_CONFIG_PATH], {
-      stdio: 'inherit',
-    })
-    child.on('exit', code => {
-      if (code === 0 || code === null) resolve()
-      else reject(new Error(`${editor} exited with code ${code}`))
-    })
-    child.on('error', reject)
+  await spawnAndWait({
+    verb: 'edit ssh',
+    bin: editor,
+    args: [DEFAULT_CONFIG_PATH],
+    // Interactive editor: accept both clean exit and Ctrl+C (null).
+    okExitCodes: [0, null],
   })
 }

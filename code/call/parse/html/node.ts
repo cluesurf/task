@@ -9,6 +9,7 @@ import path from 'node:path'
 import { resolveHtml } from '~/code/tool/node/html/fetch'
 import { extractTables, tablesToCsv, type ExtractedTable } from '~/code/tool/node/html/tables'
 import { extractLinks, extractImages, extractText } from '~/code/tool/node/html/extract'
+import { ensureParentDir } from '~/code/tool/node/file'
 
 export type ParseHtmlNodeInput = {
   input: string
@@ -64,7 +65,7 @@ export async function parseHtmlNode(input: ParseHtmlNodeInput) {
   const serialized = serialize(result, fmt)
 
   if (input.output) {
-    await fs.mkdir(path.dirname(input.output), { recursive: true })
+    await ensureParentDir(input.output)
     await fs.writeFile(input.output, serialized, 'utf8')
     return { file: { path: input.output }, ...summarize(result) }
   }

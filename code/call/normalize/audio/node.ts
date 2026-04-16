@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { ensureParentDir } from '~/code/tool/node/file'
 import {
   buildCommandSequence,
   getCommand,
@@ -16,7 +17,7 @@ export type NormalizeAudioNodeInput = {
 
 export async function normalizeAudioNode(source: NormalizeAudioNodeInput) {
   const outputPath = source.output.file.path
-  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await ensureParentDir(outputPath)
 
   const target = source.target ?? '-16'
   const peak = source.peak ?? '-1'

@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { ensureParentDir } from '~/code/tool/node/file'
 import {
   buildCommandSequence,
   getCommand,
@@ -14,7 +15,7 @@ export type ConvertAudioNodeInput = {
 
 export async function convertAudioNode(source: ConvertAudioNodeInput) {
   const outputPath = source.output.file.path
-  await fs.mkdir(path.dirname(outputPath), { recursive: true })
+  await ensureParentDir(outputPath)
 
   const cmd = getCommand('ffmpeg')
   cmd.link.push('-y', '-i', source.input.file.path)

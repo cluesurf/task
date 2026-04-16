@@ -195,13 +195,16 @@ every concrete sub-thing of that action.
   `const x = (() => { ... })()`. Pull the logic into a named
   helper function declared elsewhere in the file. IIFEs are
   noisy at the call site and harder to test or re-use.
-- **All functions take a single object input.** Every function in
-  this package — routers, handlers, helpers, utilities — accepts
-  exactly one argument: a plain object with named properties. No
-  positional params, no splat arguments. Even when a function needs
-  only one logical value, wrap it (`{ source }`, `{ input, context }`,
-  etc.). Makes call sites readable, extension cheap, and matches the
-  mesh-wide convention.
+- **Functions take a single object input — with one narrow
+  exception.** Any function with 2+ parameters MUST take a single
+  `{ ... }` object with named properties. Positional args only
+  survive when the function takes exactly one argument AND the
+  meaning is self-evident at every call site
+  (`shellQuote(s)`, `kindFromPath(p)`). Two strings side-by-side
+  are easy to swap at the call site (`(bin, args)` vs
+  `(args, bin)`) — use `{ bin, args }` instead. Object-style calls
+  also survive reordering and adding fields without touching every
+  call site, and match the mesh-wide convention.
 
   ```ts
   // Yes
@@ -213,7 +216,13 @@ every concrete sub-thing of that action.
     context: ConvertCallContext
   }): Promise<unknown> { /* ... */ }
 
-  // No
+  // Yes (single, obvious arg)
+  export function shellQuote(s: string): string { /* ... */ }
+
+  // No (two unnamed strings, easy to reorder wrong)
+  export function formatShellCommand(bin: string, args: string[]): string
+
+  // No (general handler with positional params)
   export async function convertNode(source, context) { /* ... */ }
   ```
 
