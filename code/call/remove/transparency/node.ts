@@ -1,41 +1,53 @@
 /**
  * `task remove transparency` — flatten alpha into a solid
  * background via ImageMagick `-background <color> -alpha remove`.
- * Default background is white, which matches how most legacy
- * viewers composite PNGs without alpha support.
  */
 
-import { ensureParentDir } from '~/code/tool/node/file'
+import type { RemoveTransparencyNodeLocalInput } from '~/code/form/action/remove/transparency/node'
+import {
+  RemoveTransparencyNodeInputParser,
+  RemoveTransparencyNodeLocalInputParser,
+  RemoveTransparencyNodeOutputParser,
+} from '~/code/form/action/remove/transparency/node/take'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
 import { spawnAndWait } from '~/code/tool/node/spawn'
 import { siblingWithSuffix } from '~/code/tool/shared/verb'
 import { buildCommandToRemoveTransparency } from './command'
-import {
-  parseRemoveTransparencyNode,
-  testRemoveTransparencyNode,
-  type RemoveTransparencyNodeInput,
-  type RemoveTransparencyNodeOutput,
-} from './shared'
 
-export type {
-  RemoveTransparencyNodeInput,
-  RemoveTransparencyNodeOutput,
-}
-export { testRemoveTransparencyNode }
-
-export async function removeTransparencyNode(
-  source: RemoveTransparencyNodeInput,
-): Promise<RemoveTransparencyNodeOutput> {
-  const src = parseRemoveTransparencyNode(source)
-  const out =
-    src.output ??
-    siblingWithSuffix({ path: src.input, suffix: '.flat' })
-  await ensureParentDir(out)
-
-  const command = buildCommandToRemoveTransparency(src, out)
+async function runLocal(input: RemoveTransparencyNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const outputPath =
+    input.output?.file?.path ??
+    siblingWithSuffix({ path: inputPath, suffix: '.flat' })
+  const command = buildCommandToRemoveTransparency({
+    inputPath,
+    outputPath,
+    background: (input as { background?: string }).background,
+  })
   await spawnAndWait({
     verb: 'remove transparency',
     bin: command.bin,
     args: command.args,
   })
-  return { file: { path: out } }
+  return { file: { path: outputPath } }
 }
+
+const [removeTransparencyNode, testRemoveTransparencyNode] =
+  createNodeHandler({
+    parsers: {
+      input: RemoveTransparencyNodeInputParser,
+      local: RemoveTransparencyNodeLocalInputParser,
+      output: RemoveTransparencyNodeOutputParser,
+    },
+    resolvers: {
+      external: resolveExternalInput,
+      internal: resolveInternalInput,
+    },
+    runLocal,
+  })
+
+export { removeTransparencyNode, testRemoveTransparencyNode }

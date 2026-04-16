@@ -1,63 +1,52 @@
 /**
  * `task remove exif` — surgical per-tag EXIF removal via exiftool.
- *
- * `task remove metadata` nukes every tag. This variant keeps the
- * rest of the metadata intact and only clears the tags you name.
- * Great for "drop GPS but keep camera settings" workflows.
- *
- * Tag names follow ExifTool's canonical form:
- *   `GPSLatitude`, `GPSLongitude`, `GPSAltitude`, `SerialNumber`,
- *   `OwnerName`, `Make`, `Model`, ... — any tag ExifTool knows.
- *
- * Quality-of-life presets:
- *   `--preset gps`     → every GPS:* tag
- *   `--preset device`  → Make / Model / SerialNumber / LensSerialNumber
- *   `--preset user`    → OwnerName / Creator / Artist / Copyright
+ * Use `task remove metadata` to strip everything. This variant
+ * keeps the rest intact and only clears the tags you name.
  */
 
 import fs from 'node:fs/promises'
+import type { RemoveExifNodeLocalInput } from '~/code/form/action/remove/exif/node'
+import {
+  RemoveExifNodeInputParser,
+  RemoveExifNodeLocalInputParser,
+  RemoveExifNodeOutputParser,
+} from '~/code/form/action/remove/exif/node/take'
 import { ensureParentDir } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
 import { spawnAndWait } from '~/code/tool/node/spawn'
 import { siblingWithSuffix } from '~/code/tool/shared/verb'
-import {
-  buildCommandToRemoveExif,
-  collectExifTags,
-} from './command'
-import {
-  parseRemoveExifNode,
-  testRemoveExifNode,
-  type RemoveExifNodeInput,
-  type RemoveExifNodeOutput,
-} from './shared'
+import { buildCommandToRemoveExif, collectExifTags } from './command'
 
-export type { RemoveExifNodeInput, RemoveExifNodeOutput }
-export { testRemoveExifNode }
-
-export async function removeExifNode(
-  source: RemoveExifNodeInput,
-): Promise<RemoveExifNodeOutput> {
-  const src = parseRemoveExifNode(source)
-  const tags = collectExifTags(src)
+async function runLocal(input: RemoveExifNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const extra = input as {
+    tag?: string[]
+    preset?: string[]
+    overwrite?: boolean
+  }
+  const tags = collectExifTags(extra)
   if (tags.length === 0) {
     throw new Error(
       'remove exif: at least one --tag or --preset required. Use `task remove metadata` to strip all tags.',
     )
   }
 
-  const out = src.overwrite
-    ? src.input
-    : (src.output ??
-      siblingWithSuffix({ path: src.input, suffix: '.noexif' }))
+  const overwrite = extra.overwrite === true
+  const out = overwrite
+    ? inputPath
+    : (input.output?.file?.path ??
+      siblingWithSuffix({ path: inputPath, suffix: '.noexif' }))
 
-  if (!src.overwrite) {
+  if (!overwrite) {
     await ensureParentDir(out)
-    await fs.copyFile(src.input, out)
+    await fs.copyFile(inputPath, out)
   }
 
-  const command = buildCommandToRemoveExif({
-    tags,
-    outputPath: out,
-  })
+  const command = buildCommandToRemoveExif({ tags, outputPath: out })
   await spawnAndWait({
     verb: 'remove exif',
     bin: command.bin,
@@ -65,3 +54,18 @@ export async function removeExifNode(
   })
   return { file: { path: out } }
 }
+
+const [removeExifNode, testRemoveExifNode] = createNodeHandler({
+  parsers: {
+    input: RemoveExifNodeInputParser,
+    local: RemoveExifNodeLocalInputParser,
+    output: RemoveExifNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export { removeExifNode, testRemoveExifNode }

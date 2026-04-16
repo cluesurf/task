@@ -1,99 +1,92 @@
 /**
- * Router for `task decrypt file <in> -o <out>`. Mirror of encrypt.
+ * `task decrypt file <in> -o <out>` — decrypts via age, openssl,
+ * or gpg. Backend picked from `--tool` or input extension.
  */
 
-import path from 'node:path'
+import type { DecryptFileNodeLocalInput } from '~/code/form/action/decrypt/file/node'
+import {
+  DecryptFileNodeInputParser,
+  DecryptFileNodeLocalInputParser,
+  DecryptFileNodeOutputParser,
+} from '~/code/form/action/decrypt/file/node/take'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
 import { spawnAndWait } from '~/code/tool/node/spawn'
 import { exec } from '~/code/tool/node/process'
+import {
+  pickDecryptTool,
+  buildAgeDecryptCommand,
+  buildOpensslDecryptCommand,
+  buildGpgDecryptCommand,
+} from './command'
 
-export type DecryptFileTool = 'age' | 'openssl' | 'gpg'
-
-export type DecryptFileNodeInput = {
-  input: { path: string }
-  output: { path: string }
-  tool?: DecryptFileTool
-  passphrase?: string
-  identity?: string
-  cipher?: string
-}
-
-export async function decryptFileNode(
-  source: DecryptFileNodeInput,
-): Promise<void> {
-  const tool = source.tool ?? pickTool(source.input.path)
+async function runLocal(input: DecryptFileNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output.file.path
+  const tool = input.tool
+    ? (input.tool as 'age' | 'openssl' | 'gpg')
+    : pickDecryptTool(inputPath)
 
   switch (tool) {
     case 'age': {
-      const [bin, ...args] = buildAgeArgv(source)
-      if (source.passphrase && !source.identity) {
+      const cmd = buildAgeDecryptCommand({
+        inputPath,
+        outputPath,
+        passphrase: input.passphrase,
+        identity: input.identity,
+      })
+      if (cmd.stdin) {
         await spawnAndWait({
           verb: 'decrypt file',
-          bin: bin!,
-          args,
-          stdin: `${source.passphrase}\n`,
+          bin: cmd.bin,
+          args: cmd.args,
+          stdin: cmd.stdin,
           pipe: true,
         })
       } else {
-        await exec([bin!, ...args])
+        await exec([cmd.bin, ...cmd.args])
       }
-      return
+      return { file: { path: outputPath } }
     }
-    case 'openssl':
-      await exec(buildOpensslArgv(source))
-      return
-    case 'gpg':
-      await exec(buildGpgArgv(source))
-      return
+    case 'openssl': {
+      if (!input.passphrase) {
+        throw new Error('openssl decrypt requires `passphrase`')
+      }
+      const cmd = buildOpensslDecryptCommand({
+        inputPath,
+        outputPath,
+        passphrase: input.passphrase,
+        cipher: input.cipher,
+      })
+      await exec([cmd.bin, ...cmd.args])
+      return { file: { path: outputPath } }
+    }
+    case 'gpg': {
+      const cmd = buildGpgDecryptCommand({
+        inputPath,
+        outputPath,
+        passphrase: input.passphrase,
+      })
+      await exec([cmd.bin, ...cmd.args])
+      return { file: { path: outputPath } }
+    }
   }
 }
 
-function pickTool(inPath: string): DecryptFileTool {
-  const ext = path.extname(inPath).toLowerCase()
-  if (ext === '.age') return 'age'
-  if (ext === '.gpg' || ext === '.asc' || ext === '.pgp') return 'gpg'
-  if (ext === '.enc') return 'openssl'
-  return 'age'
-}
+const [decryptFileNode, testDecryptFileNode] = createNodeHandler({
+  parsers: {
+    input: DecryptFileNodeInputParser,
+    local: DecryptFileNodeLocalInputParser,
+    output: DecryptFileNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
 
-function buildAgeArgv(input: DecryptFileNodeInput): string[] {
-  const argv = ['age', '-d']
-  if (input.identity) argv.push('-i', input.identity)
-  argv.push('-o', input.output.path, input.input.path)
-  return argv
-}
-
-function buildOpensslArgv(input: DecryptFileNodeInput): string[] {
-  if (!input.passphrase) {
-    throw new Error(
-      'openssl decrypt requires `passphrase` (asymmetric not supported for file-level)',
-    )
-  }
-  return [
-    'openssl',
-    'enc',
-    '-d',
-    input.cipher ?? 'aes-256-cbc',
-    '-pbkdf2',
-    '-in',
-    input.input.path,
-    '-out',
-    input.output.path,
-    '-pass',
-    `pass:${input.passphrase}`,
-  ]
-}
-
-function buildGpgArgv(input: DecryptFileNodeInput): string[] {
-  const argv = ['gpg', '--batch', '--yes', '-o', input.output.path]
-  if (input.passphrase) {
-    argv.push(
-      '--passphrase',
-      input.passphrase,
-      '--pinentry-mode',
-      'loopback',
-    )
-  }
-  argv.push('--decrypt', input.input.path)
-  return argv
-}
-
+export { decryptFileNode, testDecryptFileNode }

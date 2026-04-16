@@ -85,6 +85,34 @@ import type {
   ConvertVideoWithFfmpegBrowserOutput,
 } from '~/code/form/action/convert/ffmpeg/browser'
 import type {
+  DecryptFileBrowserInput,
+  DecryptFileBrowserOutput,
+} from '~/code/form/action/decrypt/file/browser'
+import type {
+  DisassembleDotnetBrowserInput,
+  DisassembleDotnetBrowserOutput,
+} from '~/code/form/action/disassemble/dotnet/browser'
+import type {
+  DisassembleGhidraBrowserInput,
+  DisassembleGhidraBrowserOutput,
+} from '~/code/form/action/disassemble/ghidra/browser'
+import type {
+  DisassembleJvmBrowserInput,
+  DisassembleJvmBrowserOutput,
+} from '~/code/form/action/disassemble/jvm/browser'
+import type {
+  DisassembleRadareBrowserInput,
+  DisassembleRadareBrowserOutput,
+} from '~/code/form/action/disassemble/radare/browser'
+import type {
+  DisassembleWasmBrowserInput,
+  DisassembleWasmBrowserOutput,
+} from '~/code/form/action/disassemble/wasm/browser'
+import type {
+  EncryptFileBrowserInput,
+  EncryptFileBrowserOutput,
+} from '~/code/form/action/encrypt/file/browser'
+import type {
   FormatAssemblyBrowserInput,
   FormatAssemblyBrowserOutput,
   FormatCodeWithClangFormatBrowserInput,
@@ -98,6 +126,26 @@ import type {
   FormatSwiftBrowserInput,
   FormatSwiftBrowserOutput,
 } from '~/code/form/action/format/code/browser'
+import type {
+  RemoveExifBrowserInput,
+  RemoveExifBrowserOutput,
+} from '~/code/form/action/remove/exif/browser'
+import type {
+  RemovePasswordBrowserInput,
+  RemovePasswordBrowserOutput,
+} from '~/code/form/action/remove/password/browser'
+import type {
+  RemoveProfileBrowserInput,
+  RemoveProfileBrowserOutput,
+} from '~/code/form/action/remove/profile/browser'
+import type {
+  RemoveSubtitlesBrowserInput,
+  RemoveSubtitlesBrowserOutput,
+} from '~/code/form/action/remove/subtitles/browser'
+import type {
+  RemoveTransparencyBrowserInput,
+  RemoveTransparencyBrowserOutput,
+} from '~/code/form/action/remove/transparency/browser'
 import type {
   SanitizeHtmlBrowserInput,
   SanitizeHtmlBrowserOutput,
@@ -128,12 +176,28 @@ export interface TaskSurface {
   convert(input: ConvertTxtWithPuppeteerBrowserInput): Promise<ConvertTxtWithPuppeteerBrowserOutput>
   convert(input: ConvertVideoWithFfmpegBrowserInput): Promise<ConvertVideoWithFfmpegBrowserOutput>
 
+  decrypt(input: DecryptFileBrowserInput): Promise<DecryptFileBrowserOutput>
+
+  disassemble(input: DisassembleDotnetBrowserInput): Promise<DisassembleDotnetBrowserOutput>
+  disassemble(input: DisassembleGhidraBrowserInput): Promise<DisassembleGhidraBrowserOutput>
+  disassemble(input: DisassembleJvmBrowserInput): Promise<DisassembleJvmBrowserOutput>
+  disassemble(input: DisassembleRadareBrowserInput): Promise<DisassembleRadareBrowserOutput>
+  disassemble(input: DisassembleWasmBrowserInput): Promise<DisassembleWasmBrowserOutput>
+
+  encrypt(input: EncryptFileBrowserInput): Promise<EncryptFileBrowserOutput>
+
   format(input: FormatAssemblyBrowserInput): Promise<FormatAssemblyBrowserOutput>
   format(input: FormatCodeWithClangFormatBrowserInput): Promise<FormatCodeWithClangFormatBrowserOutput>
   format(input: FormatKotlinBrowserInput): Promise<FormatKotlinBrowserOutput>
   format(input: FormatPythonBrowserInput): Promise<FormatPythonBrowserOutput>
   format(input: FormatRustBrowserInput): Promise<FormatRustBrowserOutput>
   format(input: FormatSwiftBrowserInput): Promise<FormatSwiftBrowserOutput>
+
+  remove(input: RemoveExifBrowserInput): Promise<RemoveExifBrowserOutput>
+  remove(input: RemovePasswordBrowserInput): Promise<RemovePasswordBrowserOutput>
+  remove(input: RemoveProfileBrowserInput): Promise<RemoveProfileBrowserOutput>
+  remove(input: RemoveSubtitlesBrowserInput): Promise<RemoveSubtitlesBrowserOutput>
+  remove(input: RemoveTransparencyBrowserInput): Promise<RemoveTransparencyBrowserOutput>
 
   sanitize(input: SanitizeHtmlBrowserInput): Promise<SanitizeHtmlBrowserOutput>
 }
@@ -188,6 +252,29 @@ export type ConvertBrowserOutput =
   | ConvertTxtWithPuppeteerBrowserOutput
   | ConvertVideoWithFfmpegBrowserOutput
 
+export type DecryptBrowserInput =
+  | DecryptFileBrowserInput
+export type DecryptBrowserOutput =
+  | DecryptFileBrowserOutput
+
+export type DisassembleBrowserInput =
+  | DisassembleDotnetBrowserInput
+  | DisassembleGhidraBrowserInput
+  | DisassembleJvmBrowserInput
+  | DisassembleRadareBrowserInput
+  | DisassembleWasmBrowserInput
+export type DisassembleBrowserOutput =
+  | DisassembleDotnetBrowserOutput
+  | DisassembleGhidraBrowserOutput
+  | DisassembleJvmBrowserOutput
+  | DisassembleRadareBrowserOutput
+  | DisassembleWasmBrowserOutput
+
+export type EncryptBrowserInput =
+  | EncryptFileBrowserInput
+export type EncryptBrowserOutput =
+  | EncryptFileBrowserOutput
+
 export type FormatBrowserInput =
   | FormatAssemblyBrowserInput
   | FormatCodeWithClangFormatBrowserInput
@@ -202,6 +289,19 @@ export type FormatBrowserOutput =
   | FormatPythonBrowserOutput
   | FormatRustBrowserOutput
   | FormatSwiftBrowserOutput
+
+export type RemoveBrowserInput =
+  | RemoveExifBrowserInput
+  | RemovePasswordBrowserInput
+  | RemoveProfileBrowserInput
+  | RemoveSubtitlesBrowserInput
+  | RemoveTransparencyBrowserInput
+export type RemoveBrowserOutput =
+  | RemoveExifBrowserOutput
+  | RemovePasswordBrowserOutput
+  | RemoveProfileBrowserOutput
+  | RemoveSubtitlesBrowserOutput
+  | RemoveTransparencyBrowserOutput
 
 export type SanitizeBrowserInput =
   | SanitizeHtmlBrowserInput

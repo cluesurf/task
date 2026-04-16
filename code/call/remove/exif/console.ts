@@ -1,5 +1,7 @@
-import type { CommandModule } from 'yargs'
+import type { Argv, CommandModule } from 'yargs'
+import { runAction } from '~/code/tool/node/log'
 import { registerHelp } from '~/code/tool/node/log/registry'
+import { argvBool, argvString, argvStringArray } from '~/code/tool/shared/verb'
 
 registerHelp({
   command: 'task remove exif',
@@ -18,30 +20,40 @@ registerHelp({
   ],
 })
 
+function builder(y: Argv) {
+  return y
+    .positional('file', { type: 'string' })
+    .option('output', { alias: 'o', type: 'string' })
+    .option('tag', { alias: 't', type: 'array', string: true })
+    .option('preset', { type: 'array', string: true })
+    .option('overwrite', { type: 'boolean' })
+}
+
+async function handler(argv: Record<string, unknown>) {
+  const { removeExifNode } = await import('./node')
+  const filePath = argvString(argv.file) ?? ''
+  const outputPath = argvString(argv.output)
+  const tag = argvStringArray(argv.tag)
+  const preset = argvStringArray(argv.preset)
+  const overwrite = argvBool(argv.overwrite)
+  await runAction({
+    action: 'remove',
+    input: { file: filePath, tag, preset } as Record<string, unknown>,
+    run: () =>
+      removeExifNode({
+        handle: 'internal' as const,
+        input: { file: { path: filePath } },
+        output: { file: { path: outputPath ?? '' } },
+        tag,
+        preset,
+        overwrite,
+      }),
+  })
+}
+
 export const removeExifConsole: CommandModule = {
   command: 'exif <file>',
   describe: 'Strip specific EXIF tags from a file',
-  builder: y =>
-    y
-      .positional('file', { type: 'string' })
-      .option('output',    { alias: 'o', type: 'string' })
-      .option('tag',       { alias: 't', type: 'array', string: true })
-      .option('preset',    { type: 'array', string: true })
-      .option('overwrite', { type: 'boolean' }),
-  handler: async argv => {
-    const { removeExifNode } = await import('./node')
-    const { runAction } = await import('~/code/tool/node/log')
-    const input = {
-      input: argv.file as string,
-      output: argv.output as string | undefined,
-      tag: argv.tag as string[] | undefined,
-      preset: argv.preset as ('gps' | 'device' | 'user')[] | undefined,
-      overwrite: argv.overwrite as boolean | undefined,
-    }
-    await runAction({
-      action: 'remove',
-      input: input as unknown as Record<string, unknown>,
-      run: () => removeExifNode(input),
-    })
-  },
+  builder,
+  handler,
 }

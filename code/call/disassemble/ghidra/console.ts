@@ -1,5 +1,7 @@
-import type { CommandModule } from 'yargs'
+import type { Argv, CommandModule } from 'yargs'
+import { runAction } from '~/code/tool/node/log'
 import { registerHelp } from '~/code/tool/node/log/registry'
+import { argvBool, argvString } from '~/code/tool/shared/verb'
 
 registerHelp({
   command: 'task disassemble ghidra',
@@ -24,40 +26,61 @@ registerHelp({
   ],
 })
 
+function builder(y: Argv) {
+  return y
+    .positional('file', { type: 'string' })
+    .option('output',       { alias: 'o', type: 'string' })
+    .option('profile',      { type: 'string', choices: ['functions','calls','imports','exports','strings'] as const })
+    .option('script',       { type: 'string' })
+    .option('ghidra-home',  { type: 'string' })
+    .option('project-dir',  { type: 'string' })
+    .option('project-name', { type: 'string' })
+    .option('keep-project', { type: 'boolean' })
+    .option('verbose',      { type: 'boolean' })
+    .option('quiet',        { alias: 'q', type: 'boolean' })
+}
+
+async function handler(argv: Record<string, unknown>) {
+  const { disassembleGhidraNode } = await import('./node')
+  const filePath = argvString(argv.file) ?? ''
+  const outputPath = argvString(argv.output)
+  const profile = argvString(argv.profile) as
+    | 'functions'
+    | 'calls'
+    | 'imports'
+    | 'exports'
+    | 'strings'
+    | undefined
+  const script = argvString(argv.script)
+  const ghidraHome = argvString(argv['ghidra-home'])
+  const projectDir = argvString(argv['project-dir'])
+  const projectName = argvString(argv['project-name'])
+  const keepProject = argvBool(argv['keep-project'])
+  const verbose = argvBool(argv.verbose)
+  const quiet = argvBool(argv.quiet)
+  await runAction({
+    action: 'disassemble',
+    input: { file: filePath } as Record<string, unknown>,
+    run: () =>
+      disassembleGhidraNode({
+        handle: 'internal' as const,
+        input: { file: { path: filePath } },
+        output: { file: { path: outputPath ?? '' } },
+        profile,
+        script,
+        ghidraHome,
+        projectDir,
+        projectName,
+        keepProject,
+        verbose,
+        quiet,
+      }),
+  })
+}
+
 export const disassembleGhidraConsole: CommandModule = {
   command: 'ghidra <file>',
   describe: 'Headless Ghidra analyze + export',
-  builder: y =>
-    y
-      .positional('file', { type: 'string' })
-      .option('output',       { alias: 'o', type: 'string' })
-      .option('profile',      { type: 'string', choices: ['functions','calls','imports','exports','strings'] as const })
-      .option('script',       { type: 'string' })
-      .option('ghidra-home',  { type: 'string' })
-      .option('project-dir',  { type: 'string' })
-      .option('project-name', { type: 'string' })
-      .option('keep-project', { type: 'boolean' })
-      .option('verbose',      { type: 'boolean' })
-      .option('quiet',        { alias: 'q', type: 'boolean' }),
-  handler: async argv => {
-    const { disassembleGhidraNode } = await import('./node')
-    const { runAction } = await import('~/code/tool/node/log')
-    const input = {
-      input: argv.file as string,
-      output: argv.output as string | undefined,
-      profile: argv.profile as 'functions' | 'calls' | 'imports' | 'exports' | 'strings' | undefined,
-      script: argv.script as string | undefined,
-      ghidraHome: argv['ghidra-home'] as string | undefined,
-      projectDir: argv['project-dir'] as string | undefined,
-      projectName: argv['project-name'] as string | undefined,
-      keepProject: argv['keep-project'] as boolean | undefined,
-      verbose: argv.verbose as boolean | undefined,
-      quiet: argv.quiet as boolean | undefined,
-    }
-    await runAction({
-      action: 'disassemble',
-      input: input as unknown as Record<string, unknown>,
-      run: () => disassembleGhidraNode(input),
-    })
-  },
+  builder,
+  handler,
 }

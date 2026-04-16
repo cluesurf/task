@@ -1,5 +1,7 @@
-import type { CommandModule } from 'yargs'
+import type { Argv, CommandModule } from 'yargs'
+import { runAction } from '~/code/tool/node/log'
 import { registerHelp } from '~/code/tool/node/log/registry'
+import { argvString, argvStringArray } from '~/code/tool/shared/verb'
 
 registerHelp({
   command: 'task disassemble radare',
@@ -20,32 +22,48 @@ registerHelp({
   ],
 })
 
+function builder(y: Argv) {
+  return y
+    .positional('file', { type: 'string' })
+    .option('output',  { alias: 'o', type: 'string' })
+    .option('tool',    { type: 'string', choices: ['radare2', 'rizin'] as const })
+    .option('script',  { type: 'string' })
+    .option('profile', { type: 'string', choices: ['functions', 'calls', 'strings', 'full'] as const })
+    .option('command', { alias: 'C', type: 'array', string: true })
+}
+
+async function handler(argv: Record<string, unknown>) {
+  const { disassembleRadareNode } = await import('./node')
+  const filePath = argvString(argv.file) ?? ''
+  const outputPath = argvString(argv.output)
+  const tool = argvString(argv.tool) as 'radare2' | 'rizin' | undefined
+  const script = argvString(argv.script)
+  const profile = argvString(argv.profile) as
+    | 'functions'
+    | 'calls'
+    | 'strings'
+    | 'full'
+    | undefined
+  const commands = argvStringArray(argv.command)
+  await runAction({
+    action: 'disassemble',
+    input: { file: filePath } as Record<string, unknown>,
+    run: () =>
+      disassembleRadareNode({
+        handle: 'internal' as const,
+        input: { file: { path: filePath } },
+        output: { file: { path: outputPath ?? '' } },
+        tool,
+        script,
+        profile,
+        commands,
+      }),
+  })
+}
+
 export const disassembleRadareConsole: CommandModule = {
   command: 'radare <file>',
   describe: 'Scripted radare2 / rizin session',
-  builder: y =>
-    y
-      .positional('file', { type: 'string' })
-      .option('output',  { alias: 'o', type: 'string' })
-      .option('tool',    { type: 'string', choices: ['radare2', 'rizin'] as const })
-      .option('script',  { type: 'string' })
-      .option('profile', { type: 'string', choices: ['functions', 'calls', 'strings', 'full'] as const })
-      .option('command', { alias: 'C', type: 'array', string: true }),
-  handler: async argv => {
-    const { disassembleRadareNode } = await import('./node')
-    const { runAction } = await import('~/code/tool/node/log')
-    const input = {
-      input: argv.file as string,
-      output: argv.output as string | undefined,
-      tool: argv.tool as 'radare2' | 'rizin' | undefined,
-      script: argv.script as string | undefined,
-      profile: argv.profile as 'functions' | 'calls' | 'strings' | 'full' | undefined,
-      commands: argv.command as string[] | undefined,
-    }
-    await runAction({
-      action: 'disassemble',
-      input: input as unknown as Record<string, unknown>,
-      run: () => disassembleRadareNode(input),
-    })
-  },
+  builder,
+  handler,
 }

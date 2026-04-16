@@ -1,77 +1,62 @@
 /**
  * `task disassemble ghidra` — headless Ghidra analyze + export.
- *
- * Ghidra ships a CLI at `<install>/support/analyzeHeadless` that
- * creates a project, imports a binary, runs analysis, and then
- * executes a post-script. We generate the post-script on the fly
- * (Jython) for one of a few canned profiles:
- *
- *   functions  → one line per function: `addr  size  name`
- *   calls      → call graph in DOT (`digraph G { ... }`)
- *   imports    → resolved import symbols
- *   exports    → exported symbols
- *   strings    → defined strings + addresses
- *
- * The Ghidra install location is found via:
- *   1. `--ghidra-home <dir>`
- *   2. `GHIDRA_INSTALL_DIR` env var
- *   3. `analyzeHeadless` directly on PATH (some package managers
- *      drop it there)
- *
- * Project state is dropped after the run unless `--keep-project` —
- * we use a temp dir so successive runs don't accumulate state.
+ * Generates a Jython post-script for the chosen profile and
+ * shells out to `analyzeHeadless`.
  */
 
 import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
+import type { DisassembleGhidraNodeLocalInput } from '~/code/form/action/disassemble/ghidra/node'
+import {
+  DisassembleGhidraNodeInputParser,
+  DisassembleGhidraNodeLocalInputParser,
+  DisassembleGhidraNodeOutputParser,
+} from '~/code/form/action/disassemble/ghidra/node/take'
 import { ensureParentDir } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
 import { spawnAndWait } from '~/code/tool/node/spawn'
 import { buildCommandToDisassembleGhidra } from './command'
-import {
-  parseDisassembleGhidraNode,
-  testDisassembleGhidraNode,
-  type DisassembleGhidraNodeInput,
-  type DisassembleGhidraNodeOutput,
-  type GhidraProfile,
-} from './shared'
 
-export type {
-  DisassembleGhidraNodeInput,
-  DisassembleGhidraNodeOutput,
-  GhidraProfile,
-}
-export { testDisassembleGhidraNode }
+type GhidraProfile =
+  | 'functions'
+  | 'calls'
+  | 'imports'
+  | 'exports'
+  | 'strings'
 
-export async function disassembleGhidraNode(
-  source: DisassembleGhidraNodeInput,
-): Promise<DisassembleGhidraNodeOutput> {
-  const src = parseDisassembleGhidraNode(source)
-  const profile: GhidraProfile = src.profile ?? 'functions'
-  const out =
-    src.output ??
-    `${src.input}.${profile === 'calls' ? 'dot' : 'txt'}`
-  await ensureParentDir(out)
+async function runLocal(input: DisassembleGhidraNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const profile = (input.profile ?? 'functions') as GhidraProfile
+  const outputPath =
+    input.output?.file?.path ??
+    `${inputPath}.${profile === 'calls' ? 'dot' : 'txt'}`
+  await ensureParentDir(outputPath)
 
-  const headlessBin = await locateAnalyzeHeadless(src.ghidraHome)
-
+  const headlessBin = await locateAnalyzeHeadless(input.ghidraHome)
   const projectDir =
-    src.projectDir ??
+    input.projectDir ??
     (await fs.mkdtemp(path.join(os.tmpdir(), 'task-ghidra-')))
-  const projectName = src.projectName ?? 'task-disasm'
-
+  const projectName = input.projectName ?? 'task-disasm'
   const scriptPath =
-    src.script ?? (await materializePostScript(profile, out))
+    input.script ??
+    (await materializePostScript(profile, outputPath))
   const scriptDir = path.dirname(scriptPath)
   const scriptName = path.basename(scriptPath)
 
   const command = buildCommandToDisassembleGhidra({
-    source: src,
     headlessBin,
+    inputPath,
     projectDir,
     projectName,
     scriptDir,
     scriptName,
+    keepProject: input.keepProject,
+    quiet: input.quiet,
   })
 
   try {
@@ -79,26 +64,27 @@ export async function disassembleGhidraNode(
       verb: 'disassemble ghidra',
       bin: command.bin,
       args: command.args,
-      quiet: src.quiet,
+      quiet: input.quiet,
     })
   } finally {
-    if (!src.script)
+    if (!input.script)
       await fs.unlink(scriptPath).catch(() => undefined)
-    if (!src.projectDir && !src.keepProject) {
+    if (!input.projectDir && !input.keepProject) {
       await fs
         .rm(projectDir, { recursive: true, force: true })
         .catch(() => undefined)
     }
   }
 
-  return { file: { path: out } }
+  return { file: { path: outputPath } }
 }
 
-async function locateAnalyzeHeadless(home?: string): Promise<string> {
+async function locateAnalyzeHeadless(
+  home?: string,
+): Promise<string> {
   const candidates: string[] = []
-  if (home) {
+  if (home)
     candidates.push(path.join(home, 'support', 'analyzeHeadless'))
-  }
   if (process.env.GHIDRA_INSTALL_DIR) {
     candidates.push(
       path.join(
@@ -108,10 +94,9 @@ async function locateAnalyzeHeadless(home?: string): Promise<string> {
       ),
     )
   }
-  candidates.push('analyzeHeadless') // PATH lookup
-
+  candidates.push('analyzeHeadless')
   for (const c of candidates) {
-    if (c === 'analyzeHeadless') return c // let spawn resolve it
+    if (c === 'analyzeHeadless') return c
     try {
       await fs.access(c)
       return c
@@ -120,16 +105,10 @@ async function locateAnalyzeHeadless(home?: string): Promise<string> {
     }
   }
   throw new Error(
-    'disassemble ghidra: analyzeHeadless not found. Pass --ghidra-home <install>, ' +
-      'set GHIDRA_INSTALL_DIR, or `brew install ghidra` and put it on PATH.',
+    'disassemble ghidra: analyzeHeadless not found. Pass --ghidra-home, set GHIDRA_INSTALL_DIR, or put it on PATH.',
   )
 }
 
-/**
- * Write a Jython post-script for the requested profile to a temp
- * file and return its path. These run inside the headless analyzer
- * with the standard Ghidra script API in scope.
- */
 async function materializePostScript(
   profile: GhidraProfile,
   outputPath: string,
@@ -138,14 +117,19 @@ async function materializePostScript(
   const dir = await fs.mkdtemp(
     path.join(os.tmpdir(), 'task-ghidra-script-'),
   )
-  const file = path.join(dir, `Export${capitalize(profile)}.py`)
+  const file = path.join(
+    dir,
+    `Export${profile.charAt(0).toUpperCase() + profile.slice(1)}.py`,
+  )
   await fs.writeFile(file, body, 'utf8')
   return file
 }
 
-const HEADER = `# Auto-generated by @cluesurf/task — disassemble ghidra
-# This script runs inside Ghidra's headless analyzer.
-`
+function pyStr(s: string): string {
+  return `'${s.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`
+}
+
+const HEADER = `# Auto-generated by @cluesurf/task\n`
 
 const SCRIPT_BODIES: Record<
   GhidraProfile,
@@ -153,60 +137,33 @@ const SCRIPT_BODIES: Record<
 > = {
   functions: out =>
     HEADER +
-    `
-fm = currentProgram.getFunctionManager()
-with open(${py(out)}, 'w') as fh:
-    for f in fm.getFunctions(True):
-        fh.write('%s\\t%d\\t%s\\n' % (
-            f.getEntryPoint(), f.getBody().getNumAddresses(), f.getName()))
-`,
+    `\nfm = currentProgram.getFunctionManager()\nwith open(${pyStr(out)}, 'w') as fh:\n    for f in fm.getFunctions(True):\n        fh.write('%s\\t%d\\t%s\\n' % (f.getEntryPoint(), f.getBody().getNumAddresses(), f.getName()))\n`,
   calls: out =>
     HEADER +
-    `
-fm = currentProgram.getFunctionManager()
-with open(${py(out)}, 'w') as fh:
-    fh.write('digraph G {\\n')
-    for f in fm.getFunctions(True):
-        src = f.getName().replace('"', "'")
-        for callee in f.getCalledFunctions(monitor):
-            dst = callee.getName().replace('"', "'")
-            fh.write('  "%s" -> "%s";\\n' % (src, dst))
-    fh.write('}\\n')
-`,
+    `\nfm = currentProgram.getFunctionManager()\nwith open(${pyStr(out)}, 'w') as fh:\n    fh.write('digraph G {\\n')\n    for f in fm.getFunctions(True):\n        src = f.getName().replace('"', "'")\n        for callee in f.getCalledFunctions(monitor):\n            dst = callee.getName().replace('"', "'")\n            fh.write('  "%s" -> "%s";\\n' % (src, dst))\n    fh.write('}\\n')\n`,
   imports: out =>
     HEADER +
-    `
-st = currentProgram.getSymbolTable()
-with open(${py(out)}, 'w') as fh:
-    for s in st.getExternalSymbols():
-        fh.write('%s\\t%s\\n' % (s.getName(), s.getParentNamespace().getName()))
-`,
+    `\nst = currentProgram.getSymbolTable()\nwith open(${pyStr(out)}, 'w') as fh:\n    for s in st.getExternalSymbols():\n        fh.write('%s\\t%s\\n' % (s.getName(), s.getParentNamespace().getName()))\n`,
   exports: out =>
     HEADER +
-    `
-st = currentProgram.getSymbolTable()
-with open(${py(out)}, 'w') as fh:
-    for s in st.getSymbolIterator():
-        if s.isExternalEntryPoint():
-            fh.write('%s\\t%s\\n' % (s.getAddress(), s.getName()))
-`,
+    `\nst = currentProgram.getSymbolTable()\nwith open(${pyStr(out)}, 'w') as fh:\n    for s in st.getSymbolIterator():\n        if s.isExternalEntryPoint():\n            fh.write('%s\\t%s\\n' % (s.getAddress(), s.getName()))\n`,
   strings: out =>
     HEADER +
-    `
-listing = currentProgram.getListing()
-with open(${py(out)}, 'w') as fh:
-    for d in listing.getDefinedData(True):
-        v = d.getValue()
-        if v is not None and hasattr(v, 'toString'):
-            fh.write('%s\\t%s\\n' % (d.getAddress(), v.toString()))
-`,
+    `\nlisting = currentProgram.getListing()\nwith open(${pyStr(out)}, 'w') as fh:\n    for d in listing.getDefinedData(True):\n        v = d.getValue()\n        if v is not None and hasattr(v, 'toString'):\n            fh.write('%s\\t%s\\n' % (d.getAddress(), v.toString()))\n`,
 }
 
-function py(s: string): string {
-  return `'${s.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`
-}
+const [disassembleGhidraNode, testDisassembleGhidraNode] =
+  createNodeHandler({
+    parsers: {
+      input: DisassembleGhidraNodeInputParser,
+      local: DisassembleGhidraNodeLocalInputParser,
+      output: DisassembleGhidraNodeOutputParser,
+    },
+    resolvers: {
+      external: resolveExternalInput,
+      internal: resolveInternalInput,
+    },
+    runLocal,
+  })
 
-function capitalize(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1)
-}
-
+export { disassembleGhidraNode, testDisassembleGhidraNode }

@@ -1,5 +1,7 @@
-import type { CommandModule } from 'yargs'
+import type { Argv, CommandModule } from 'yargs'
+import { runAction } from '~/code/tool/node/log'
 import { registerHelp } from '~/code/tool/node/log/registry'
+import { argvBool, argvString } from '~/code/tool/shared/verb'
 
 registerHelp({
   command: 'task disassemble dotnet',
@@ -16,30 +18,40 @@ registerHelp({
   ],
 })
 
+function builder(y: Argv) {
+  return y
+    .positional('file', { type: 'string' })
+    .option('output', { alias: 'o', type: 'string' })
+    .option('bytes',  { type: 'boolean' })
+    .option('header', { type: 'boolean' })
+    .option('tokens', { type: 'boolean' })
+}
+
+async function handler(argv: Record<string, unknown>) {
+  const { disassembleDotnetNode } = await import('./node')
+  const filePath = argvString(argv.file) ?? ''
+  const outputPath = argvString(argv.output)
+  const bytes = argvBool(argv.bytes)
+  const header = argvBool(argv.header)
+  const tokens = argvBool(argv.tokens)
+  await runAction({
+    action: 'disassemble',
+    input: { file: filePath } as Record<string, unknown>,
+    run: () =>
+      disassembleDotnetNode({
+        handle: 'internal' as const,
+        input: { file: { path: filePath } },
+        output: { file: { path: outputPath ?? '' } },
+        bytes,
+        header,
+        tokens,
+      }),
+  })
+}
+
 export const disassembleDotnetConsole: CommandModule = {
   command: 'dotnet <file>',
   describe: '.NET assembly → IL',
-  builder: y =>
-    y
-      .positional('file', { type: 'string' })
-      .option('output', { alias: 'o', type: 'string' })
-      .option('bytes',  { type: 'boolean' })
-      .option('header', { type: 'boolean' })
-      .option('tokens', { type: 'boolean' }),
-  handler: async argv => {
-    const { disassembleDotnetNode } = await import('./node')
-    const { runAction } = await import('~/code/tool/node/log')
-    const input = {
-      input: argv.file as string,
-      output: argv.output as string | undefined,
-      bytes: argv.bytes as boolean | undefined,
-      header: argv.header as boolean | undefined,
-      tokens: argv.tokens as boolean | undefined,
-    }
-    await runAction({
-      action: 'disassemble',
-      input: input as unknown as Record<string, unknown>,
-      run: () => disassembleDotnetNode(input),
-    })
-  },
+  builder,
+  handler,
 }

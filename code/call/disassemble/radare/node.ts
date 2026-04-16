@@ -1,52 +1,68 @@
 /**
  * `task disassemble radare` — scripted `radare2` / `rizin` session.
- *
- * `-q -c "<cmd>"` runs a single r2/rz command and exits. We either
- * take a user-supplied `--script` (path to a `.r2` file with one
- * command per line) or fall back to a useful default dump:
- *   `aaa` (analyze all), `afl` (list functions), `pdf` on entry0.
- *
- * Preset profiles (`--profile functions | calls | strings`) hide
- * the scripting from users who just want a canned output.
+ * Preset profiles hide the scripting from users who just want
+ * a canned output.
  */
 
 import fs from 'node:fs/promises'
+import type { DisassembleRadareNodeLocalInput } from '~/code/form/action/disassemble/radare/node'
+import {
+  DisassembleRadareNodeInputParser,
+  DisassembleRadareNodeLocalInputParser,
+  DisassembleRadareNodeOutputParser,
+} from '~/code/form/action/disassemble/radare/node/take'
 import { writeOutputOrStdout } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
 import { spawnAndCapture } from '~/code/tool/node/spawn'
-import { buildCommandToDisassembleRadare } from './command'
 import {
   RADARE_PROFILES,
-  parseDisassembleRadareNode,
-  testDisassembleRadareNode,
-  type DisassembleRadareNodeInput,
-  type DisassembleRadareNodeOutput,
-} from './shared'
+  buildCommandToDisassembleRadare,
+  type RadareProfile,
+} from './command'
 
-export type {
-  DisassembleRadareNodeInput,
-  DisassembleRadareNodeOutput,
-}
-export { testDisassembleRadareNode }
-
-export async function disassembleRadareNode(
-  source: DisassembleRadareNodeInput,
-): Promise<DisassembleRadareNodeOutput> {
-  const src = parseDisassembleRadareNode(source)
-  const commands = src.script
-    ? (await fs.readFile(src.script, 'utf8'))
+async function runLocal(input: DisassembleRadareNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const commands = input.script
+    ? (await fs.readFile(input.script, 'utf8'))
         .split('\n')
         .map(l => l.trim())
         .filter(l => l && !l.startsWith('#'))
-    : src.commands && src.commands.length
-      ? src.commands
-      : RADARE_PROFILES[src.profile ?? 'full']
+    : input.commands && input.commands.length
+      ? input.commands
+      : RADARE_PROFILES[(input.profile ?? 'full') as RadareProfile]
 
-  const command = buildCommandToDisassembleRadare(src, commands)
+  const command = buildCommandToDisassembleRadare({
+    inputPath,
+    tool: input.tool,
+    commands,
+  })
   const text = await spawnAndCapture({
     verb: 'disassemble radare',
     bin: command.bin,
     args: command.args,
   })
-
-  return writeOutputOrStdout({ text, outputPath: src.output })
+  return writeOutputOrStdout({
+    text,
+    outputPath: input.output?.file?.path,
+  })
 }
+
+const [disassembleRadareNode, testDisassembleRadareNode] =
+  createNodeHandler({
+    parsers: {
+      input: DisassembleRadareNodeInputParser,
+      local: DisassembleRadareNodeLocalInputParser,
+      output: DisassembleRadareNodeOutputParser,
+    },
+    resolvers: {
+      external: resolveExternalInput,
+      internal: resolveInternalInput,
+    },
+    runLocal,
+  })
+
+export { disassembleRadareNode, testDisassembleRadareNode }

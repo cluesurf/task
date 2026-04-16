@@ -1,5 +1,7 @@
-import type { CommandModule } from 'yargs'
+import type { Argv, CommandModule } from 'yargs'
+import { runAction } from '~/code/tool/node/log'
 import { registerHelp } from '~/code/tool/node/log/registry'
+import { argvBool, argvString } from '~/code/tool/shared/verb'
 
 registerHelp({
   command: 'task disassemble wasm',
@@ -16,30 +18,40 @@ registerHelp({
   ],
 })
 
+function builder(y: Argv) {
+  return y
+    .positional('file', { type: 'string' })
+    .option('output',         { alias: 'o', type: 'string' })
+    .option('folding',        { type: 'boolean' })
+    .option('inline',         { type: 'boolean' })
+    .option('no-debug-names', { type: 'boolean' })
+}
+
+async function handler(argv: Record<string, unknown>) {
+  const { disassembleWasmNode } = await import('./node')
+  const filePath = argvString(argv.file) ?? ''
+  const outputPath = argvString(argv.output)
+  const folding = argvBool(argv.folding)
+  const inline = argvBool(argv.inline)
+  const noDebugNames = argvBool(argv['no-debug-names'])
+  await runAction({
+    action: 'disassemble',
+    input: { file: filePath } as Record<string, unknown>,
+    run: () =>
+      disassembleWasmNode({
+        handle: 'internal' as const,
+        input: { file: { path: filePath } },
+        output: { file: { path: outputPath ?? '' } },
+        folding,
+        inline,
+        noDebugNames,
+      }),
+  })
+}
+
 export const disassembleWasmConsole: CommandModule = {
   command: 'wasm <file>',
   describe: 'WebAssembly binary → text format (wat)',
-  builder: y =>
-    y
-      .positional('file', { type: 'string' })
-      .option('output',         { alias: 'o', type: 'string' })
-      .option('folding',        { type: 'boolean' })
-      .option('inline',         { type: 'boolean' })
-      .option('no-debug-names', { type: 'boolean' }),
-  handler: async argv => {
-    const { disassembleWasmNode } = await import('./node')
-    const { runAction } = await import('~/code/tool/node/log')
-    const input = {
-      input: argv.file as string,
-      output: argv.output as string | undefined,
-      folding: argv.folding as boolean | undefined,
-      inline: argv.inline as boolean | undefined,
-      noDebugNames: argv['no-debug-names'] as boolean | undefined,
-    }
-    await runAction({
-      action: 'disassemble',
-      input: input as unknown as Record<string, unknown>,
-      run: () => disassembleWasmNode(input),
-    })
-  },
+  builder,
+  handler,
 }

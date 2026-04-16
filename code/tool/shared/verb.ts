@@ -39,6 +39,31 @@ export function formatShellCommand(input: {
   return `${input.bin} ${input.args.map(shellQuote).join(' ')}`
 }
 
+/** Extract a string from an argv `Record<string, unknown>` value.
+ * Returns `undefined` when the key is missing or not a string.
+ * Avoids the eslint `no-base-to-string` warning that fires when
+ * calling `String(unknown)`. */
+
+export function argvString(value: unknown): string | undefined {
+  return typeof value === 'string' && value.length > 0
+    ? value
+    : undefined
+}
+
+/** Extract a string array from argv. yargs may hand us
+ * `(string | number)[]` for `--tag a --tag b`. */
+
+export function argvStringArray(value: unknown): string[] | undefined {
+  if (!Array.isArray(value)) return undefined
+  return value.map(v => String(v))
+}
+
+/** Extract a boolean from argv. */
+
+export function argvBool(value: unknown): boolean | undefined {
+  return typeof value === 'boolean' ? value : undefined
+}
+
 /** Wrap a `parse<Verb>Node(input): <Verb>NodeInput` function into
  * the matching `test<Verb>Node(input): input is <Verb>NodeInput`
  * predicate. Avoids rewriting the try/catch in every `shared.ts`. */

@@ -191,6 +191,34 @@ every concrete sub-thing of that action.
 
 ## Principles
 
+- **Prefer named functions over anonymous lambdas.** When passing
+  a function as a config value (e.g. `runLocal`, `resolveExternal`),
+  declare it as a named `function` or `const` above the call site,
+  then pass the reference. Anonymous `async ({ parsed }) => { ... }`
+  bodies inside config objects are harder to test, harder to read in
+  stack traces, and resist extraction. Short one-liner callbacks
+  (`arr.map(x => x.name)`) are fine.
+- **Verify zero TS errors after every migration batch.** After
+  touching a group of files, run `pnpm make` (tsc + tsc-alias)
+  before moving to the next batch. Don't accumulate errors across
+  batches. If a batch breaks, fix it before proceeding.
+- **Only lazy-import heavy implementation modules.** In console
+  handler functions, `await import('./node')` is correct because
+  the verb's node.ts pulls in binaries, DuckDB, ffmpeg, etc.
+  Shared lightweight helpers (`runAction` from `~/code/tool/node/log`,
+  `registerHelp`, `spawnAndWait`, etc.) should be static `import`
+  statements at the top of the file. The test: if the module just
+  re-exports functions with no side-effects, import it statically.
+  If it transitively loads native bindings, large data, or
+  child-process wrappers that do I/O at import time, lazy-import it.
+- **Minimize `as` type assertions.** Prefer letting TypeScript
+  infer or using explicit type annotations over `as` casts.
+  `as never`, `as any`, and `as unknown as X` are code smells
+  that paper over a type mismatch rather than fixing it. When the
+  types genuinely can't align (e.g. bridging generated zod output
+  to a handler), add a typed adapter function rather than casting
+  inline. A single `as Record<string, unknown>` at a console
+  boundary is tolerable; chains of `as` are not.
 - **Never use self-executing functions (IIFEs).** Don't write
   `const x = (() => { ... })()`. Pull the logic into a named
   helper function declared elsewhere in the file. IIFEs are

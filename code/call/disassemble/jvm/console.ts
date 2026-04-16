@@ -1,5 +1,7 @@
-import type { CommandModule } from 'yargs'
+import type { Argv, CommandModule } from 'yargs'
+import { runAction } from '~/code/tool/node/log'
 import { registerHelp } from '~/code/tool/node/log/registry'
+import { argvBool, argvString } from '~/code/tool/shared/verb'
 
 registerHelp({
   command: 'task disassemble jvm',
@@ -20,36 +22,54 @@ registerHelp({
   ],
 })
 
+function builder(y: Argv) {
+  return y
+    .positional('file', { type: 'string' })
+    .option('output',       { alias: 'o', type: 'string' })
+    .option('level',        { type: 'string', choices: ['public','protected','package','private'] as const })
+    .option('verbose',      { type: 'boolean' })
+    .option('constants',    { type: 'boolean' })
+    .option('line-numbers', { type: 'boolean' })
+    .option('classpath',    { type: 'string' })
+    .option('class-name',   { type: 'string' })
+}
+
+async function handler(argv: Record<string, unknown>) {
+  const { disassembleJvmNode } = await import('./node')
+  const filePath = argvString(argv.file) ?? ''
+  const outputPath = argvString(argv.output)
+  const level = argvString(argv.level) as
+    | 'public'
+    | 'protected'
+    | 'package'
+    | 'private'
+    | undefined
+  const verbose = argvBool(argv.verbose)
+  const constants = argvBool(argv.constants)
+  const lineNumbers = argvBool(argv['line-numbers'])
+  const classpath = argvString(argv.classpath)
+  const className = argvString(argv['class-name'])
+  await runAction({
+    action: 'disassemble',
+    input: { file: filePath } as Record<string, unknown>,
+    run: () =>
+      disassembleJvmNode({
+        handle: 'internal' as const,
+        input: { file: { path: filePath } },
+        output: { file: { path: outputPath ?? '' } },
+        level,
+        verbose,
+        constants,
+        lineNumbers,
+        classpath,
+        className,
+      }),
+  })
+}
+
 export const disassembleJvmConsole: CommandModule = {
   command: 'jvm <file>',
   describe: 'JVM .class / .jar → bytecode listing',
-  builder: y =>
-    y
-      .positional('file', { type: 'string' })
-      .option('output',       { alias: 'o', type: 'string' })
-      .option('level',        { type: 'string', choices: ['public','protected','package','private'] as const })
-      .option('verbose',      { type: 'boolean' })
-      .option('constants',    { type: 'boolean' })
-      .option('line-numbers', { type: 'boolean' })
-      .option('classpath',    { type: 'string' })
-      .option('class-name',   { type: 'string' }),
-  handler: async argv => {
-    const { disassembleJvmNode } = await import('./node')
-    const { runAction } = await import('~/code/tool/node/log')
-    const input = {
-      input: argv.file as string,
-      output: argv.output as string | undefined,
-      level: argv.level as 'public' | 'protected' | 'package' | 'private' | undefined,
-      verbose: argv.verbose as boolean | undefined,
-      constants: argv.constants as boolean | undefined,
-      lineNumbers: argv['line-numbers'] as boolean | undefined,
-      classpath: argv.classpath as string | undefined,
-      className: argv['class-name'] as string | undefined,
-    }
-    await runAction({
-      action: 'disassemble',
-      input: input as unknown as Record<string, unknown>,
-      run: () => disassembleJvmNode(input),
-    })
-  },
+  builder,
+  handler,
 }

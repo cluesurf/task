@@ -1,9 +1,32 @@
-import { PRESET_TAGS, type RemoveExifNodeInput } from './shared'
+export type RemoveExifPreset = 'gps' | 'device' | 'user'
 
-export function collectExifTags(input: RemoveExifNodeInput): string[] {
+export const PRESET_TAGS: Record<RemoveExifPreset, string[]> = {
+  gps: ['GPS:all'],
+  device: [
+    'Make',
+    'Model',
+    'SerialNumber',
+    'LensSerialNumber',
+    'InternalSerialNumber',
+  ],
+  user: [
+    'OwnerName',
+    'Creator',
+    'Artist',
+    'Copyright',
+    'By-line',
+  ],
+}
+
+export function collectExifTags(input: {
+  tag?: string[]
+  preset?: string[]
+}): string[] {
   return [
     ...(input.tag ?? []),
-    ...(input.preset ?? []).flatMap(p => PRESET_TAGS[p]),
+    ...(input.preset ?? []).flatMap(
+      p => PRESET_TAGS[p as RemoveExifPreset] ?? [],
+    ),
   ]
 }
 

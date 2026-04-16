@@ -1,5 +1,7 @@
-import type { CommandModule } from 'yargs'
+import type { Argv, CommandModule } from 'yargs'
+import { runAction } from '~/code/tool/node/log'
 import { registerHelp } from '~/code/tool/node/log/registry'
+import { argvString } from '~/code/tool/shared/verb'
 
 registerHelp({
   command: 'task remove transparency',
@@ -15,26 +17,34 @@ registerHelp({
   ],
 })
 
+function builder(y: Argv) {
+  return y
+    .positional('file', { type: 'string' })
+    .option('output', { alias: 'o', type: 'string' })
+    .option('background', { alias: 'b', type: 'string' })
+}
+
+async function handler(argv: Record<string, unknown>) {
+  const { removeTransparencyNode } = await import('./node')
+  const filePath = argvString(argv.file) ?? ''
+  const outputPath = argvString(argv.output)
+  const background = argvString(argv.background) ?? 'white'
+  await runAction({
+    action: 'remove',
+    input: { file: filePath, background } as Record<string, unknown>,
+    run: () =>
+      removeTransparencyNode({
+        handle: 'internal' as const,
+        input: { file: { path: filePath } },
+        output: { file: { path: outputPath ?? '' } },
+        background,
+      }),
+  })
+}
+
 export const removeTransparencyConsole: CommandModule = {
   command: 'transparency <file>',
   describe: 'Flatten alpha channel onto a solid background',
-  builder: y =>
-    y
-      .positional('file', { type: 'string' })
-      .option('output',     { alias: 'o', type: 'string' })
-      .option('background', { alias: 'b', type: 'string' }),
-  handler: async argv => {
-    const { removeTransparencyNode } = await import('./node')
-    const { runAction } = await import('~/code/tool/node/log')
-    const input = {
-      input: argv.file as string,
-      output: argv.output as string | undefined,
-      background: argv.background as string | undefined,
-    }
-    await runAction({
-      action: 'remove',
-      input: input as unknown as Record<string, unknown>,
-      run: () => removeTransparencyNode(input),
-    })
-  },
+  builder,
+  handler,
 }

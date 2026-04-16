@@ -85,9 +85,37 @@ import type {
   ConvertVideoWithFfmpegNodeOutput,
 } from '~/code/form/action/convert/ffmpeg/node'
 import type {
+  DecryptFileNodeInput,
+  DecryptFileNodeOutput,
+} from '~/code/form/action/decrypt/file/node'
+import type {
+  DisassembleDotnetNodeInput,
+  DisassembleDotnetNodeOutput,
+} from '~/code/form/action/disassemble/dotnet/node'
+import type {
+  DisassembleGhidraNodeInput,
+  DisassembleGhidraNodeOutput,
+} from '~/code/form/action/disassemble/ghidra/node'
+import type {
+  DisassembleJvmNodeInput,
+  DisassembleJvmNodeOutput,
+} from '~/code/form/action/disassemble/jvm/node'
+import type {
+  DisassembleRadareNodeInput,
+  DisassembleRadareNodeOutput,
+} from '~/code/form/action/disassemble/radare/node'
+import type {
+  DisassembleWasmNodeInput,
+  DisassembleWasmNodeOutput,
+} from '~/code/form/action/disassemble/wasm/node'
+import type {
   DownloadHuggingFaceNodeInput,
   DownloadHuggingFaceNodeOutput,
 } from '~/code/form/action/download/hugging-face/node'
+import type {
+  EncryptFileNodeInput,
+  EncryptFileNodeOutput,
+} from '~/code/form/action/encrypt/file/node'
 import type {
   FormatAssemblyNodeInput,
   FormatAssemblyNodeOutput,
@@ -102,6 +130,26 @@ import type {
   FormatSwiftNodeInput,
   FormatSwiftNodeOutput,
 } from '~/code/form/action/format/code/node'
+import type {
+  RemoveExifNodeInput,
+  RemoveExifNodeOutput,
+} from '~/code/form/action/remove/exif/node'
+import type {
+  RemovePasswordNodeInput,
+  RemovePasswordNodeOutput,
+} from '~/code/form/action/remove/password/node'
+import type {
+  RemoveProfileNodeInput,
+  RemoveProfileNodeOutput,
+} from '~/code/form/action/remove/profile/node'
+import type {
+  RemoveSubtitlesNodeInput,
+  RemoveSubtitlesNodeOutput,
+} from '~/code/form/action/remove/subtitles/node'
+import type {
+  RemoveTransparencyNodeInput,
+  RemoveTransparencyNodeOutput,
+} from '~/code/form/action/remove/transparency/node'
 import type {
   SanitizeHtmlNodeInput,
   SanitizeHtmlNodeOutput,
@@ -132,7 +180,17 @@ export interface TaskSurface {
   convert(input: ConvertTxtWithPuppeteerNodeInput): Promise<ConvertTxtWithPuppeteerNodeOutput>
   convert(input: ConvertVideoWithFfmpegNodeInput): Promise<ConvertVideoWithFfmpegNodeOutput>
 
+  decrypt(input: DecryptFileNodeInput): Promise<DecryptFileNodeOutput>
+
+  disassemble(input: DisassembleDotnetNodeInput): Promise<DisassembleDotnetNodeOutput>
+  disassemble(input: DisassembleGhidraNodeInput): Promise<DisassembleGhidraNodeOutput>
+  disassemble(input: DisassembleJvmNodeInput): Promise<DisassembleJvmNodeOutput>
+  disassemble(input: DisassembleRadareNodeInput): Promise<DisassembleRadareNodeOutput>
+  disassemble(input: DisassembleWasmNodeInput): Promise<DisassembleWasmNodeOutput>
+
   download(input: DownloadHuggingFaceNodeInput): Promise<DownloadHuggingFaceNodeOutput>
+
+  encrypt(input: EncryptFileNodeInput): Promise<EncryptFileNodeOutput>
 
   format(input: FormatAssemblyNodeInput): Promise<FormatAssemblyNodeOutput>
   format(input: FormatCodeWithClangFormatNodeInput): Promise<FormatCodeWithClangFormatNodeOutput>
@@ -140,6 +198,12 @@ export interface TaskSurface {
   format(input: FormatPythonNodeInput): Promise<FormatPythonNodeOutput>
   format(input: FormatRustNodeInput): Promise<FormatRustNodeOutput>
   format(input: FormatSwiftNodeInput): Promise<FormatSwiftNodeOutput>
+
+  remove(input: RemoveExifNodeInput): Promise<RemoveExifNodeOutput>
+  remove(input: RemovePasswordNodeInput): Promise<RemovePasswordNodeOutput>
+  remove(input: RemoveProfileNodeInput): Promise<RemoveProfileNodeOutput>
+  remove(input: RemoveSubtitlesNodeInput): Promise<RemoveSubtitlesNodeOutput>
+  remove(input: RemoveTransparencyNodeInput): Promise<RemoveTransparencyNodeOutput>
 
   sanitize(input: SanitizeHtmlNodeInput): Promise<SanitizeHtmlNodeOutput>
 }
@@ -194,10 +258,33 @@ export type ConvertNodeOutput =
   | ConvertTxtWithPuppeteerNodeOutput
   | ConvertVideoWithFfmpegNodeOutput
 
+export type DecryptNodeInput =
+  | DecryptFileNodeInput
+export type DecryptNodeOutput =
+  | DecryptFileNodeOutput
+
+export type DisassembleNodeInput =
+  | DisassembleDotnetNodeInput
+  | DisassembleGhidraNodeInput
+  | DisassembleJvmNodeInput
+  | DisassembleRadareNodeInput
+  | DisassembleWasmNodeInput
+export type DisassembleNodeOutput =
+  | DisassembleDotnetNodeOutput
+  | DisassembleGhidraNodeOutput
+  | DisassembleJvmNodeOutput
+  | DisassembleRadareNodeOutput
+  | DisassembleWasmNodeOutput
+
 export type DownloadNodeInput =
   | DownloadHuggingFaceNodeInput
 export type DownloadNodeOutput =
   | DownloadHuggingFaceNodeOutput
+
+export type EncryptNodeInput =
+  | EncryptFileNodeInput
+export type EncryptNodeOutput =
+  | EncryptFileNodeOutput
 
 export type FormatNodeInput =
   | FormatAssemblyNodeInput
@@ -213,6 +300,19 @@ export type FormatNodeOutput =
   | FormatPythonNodeOutput
   | FormatRustNodeOutput
   | FormatSwiftNodeOutput
+
+export type RemoveNodeInput =
+  | RemoveExifNodeInput
+  | RemovePasswordNodeInput
+  | RemoveProfileNodeInput
+  | RemoveSubtitlesNodeInput
+  | RemoveTransparencyNodeInput
+export type RemoveNodeOutput =
+  | RemoveExifNodeOutput
+  | RemovePasswordNodeOutput
+  | RemoveProfileNodeOutput
+  | RemoveSubtitlesNodeOutput
+  | RemoveTransparencyNodeOutput
 
 export type SanitizeNodeInput =
   | SanitizeHtmlNodeInput

@@ -1,4 +1,4 @@
-import type { CommandModule } from 'yargs'
+import type { Argv, CommandModule } from 'yargs'
 import { registerHelp } from '~/code/tool/node/log/registry'
 
 registerHelp({

@@ -27,8 +27,7 @@ export async function convertImageWithImageMagickNode(
   source: ConvertImageWithImageMagickNodeInput,
   native?: NativeOptions,
 ) {
-  const input =
-    ConvertImageWithImageMagickNodeInputParser.parse(source)
+  const input = ConvertImageWithImageMagickNodeInputParser.parse(source)
 
   switch (input.handle) {
     case 'remote':
@@ -73,11 +72,11 @@ export async function convertImageWithImageMagickNodeRemote(
     )
 
   const request = buildRequestToConvert(clientInput)
-  await resolveWorkFileNode(request, input.output.file!.path)
+  await resolveWorkFileNode(request, input.output.file.path)
 
   return ConvertImageWithImageMagickNodeOutputParser.parse({
     file: {
-      path: input.output.file!.path,
+      path: input.output.file.path,
     },
   })
 }
@@ -89,8 +88,7 @@ export async function convertImageWithImageMagickNodeLocal(
   const localInput =
     ConvertImageWithImageMagickNodeLocalInputParser.parse(input)
 
-  const sequence =
-    await buildCommandToConvertImageWithImageMagick(localInput)
+  const sequence = buildCommandToConvertImageWithImageMagick(localInput)
 
   await runCommandSequence(sequence)
 
