@@ -2,32 +2,63 @@
 // img2webp ships with libwebp. Tight control over per-frame
 // quality + delay + codec.
 
-import { exec } from '~/code/tool/node/process'
+import type {
+  ConvertImageWithImg2webpNodeInput,
+  ConvertImageWithImg2webpNodeLocalInput,
+} from '~/code/form/action/convert/image/img2webp/node'
+import {
+  ConvertImageWithImg2webpNodeInputParser,
+  ConvertImageWithImg2webpNodeLocalInputParser,
+  ConvertImageWithImg2webpNodeOutputParser,
+} from '~/code/form/action/convert/image/img2webp/node/take'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { buildCommandToConvertImageWithImg2webp } from './command'
 
-export type ConvertImageWithImg2webpNodeInput = {
-  input: { path: string | string[] }
-  output: { path: string }
-  /** Quality 0–100. Ignored when lossless. */
-  quality?: number
-  /** Use lossless codec. */
-  lossless?: boolean
-  /** Frame delay (ms). */
-  delay?: number
-  /** Loop count (0 = infinite). */
-  loop?: number
+async function runLocal(
+  input: ConvertImageWithImg2webpNodeLocalInput,
+) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output.file.path
+  const command = buildCommandToConvertImageWithImg2webp({
+    inputPaths: [inputPath],
+    outputPath,
+    quality: input.quality,
+    lossless: input.lossless,
+    delay: input.delay,
+    loop: input.loop,
+  })
+  await spawnAndWait({
+    verb: 'convert image',
+    bin: command.bin,
+    args: command.args,
+  })
+  return { file: { path: outputPath } }
 }
 
-export async function convertImageWithImg2webpNode(
-  source: ConvertImageWithImg2webpNodeInput,
-): Promise<void> {
-  const argv = ['img2webp']
-  if (source.lossless) argv.push('-lossless')
-  else argv.push('-lossy', '-q', String(source.quality ?? 80))
-  if (source.delay != null) argv.push('-d', String(source.delay))
-  if (source.loop != null) argv.push('-loop', String(source.loop))
-  const paths = Array.isArray(source.input.path)
-    ? source.input.path
-    : [source.input.path]
-  argv.push(...paths, '-o', source.output.path)
-  await exec(argv)
+const [
+  convertImageWithImg2webpNode,
+  testConvertImageWithImg2webpNode,
+] = createNodeHandler({
+  parsers: {
+    input: ConvertImageWithImg2webpNodeInputParser,
+    local: ConvertImageWithImg2webpNodeLocalInputParser,
+    output: ConvertImageWithImg2webpNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export default convertImageWithImg2webpNode
+export {
+  convertImageWithImg2webpNode,
+  testConvertImageWithImg2webpNode,
 }
+export type { ConvertImageWithImg2webpNodeInput }

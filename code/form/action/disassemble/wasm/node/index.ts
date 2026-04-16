@@ -45,7 +45,7 @@ export type DisassembleWasmNodeLocalInput = {
   input: {
     file: LocalPath
   }
-  output: {
+  output?: {
     file?: LocalPath
   }
   folding?: boolean
@@ -57,7 +57,7 @@ export type DisassembleWasmNodeLocalInternalInput = {
   input: {
     file: FileInputPath | FileContentWithSha256
   }
-  output: {
+  output?: {
     file?: LocalOutputPath
   }
   folding?: boolean

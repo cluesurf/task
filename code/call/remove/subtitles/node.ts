@@ -50,4 +50,5 @@ const [removeSubtitlesNode, testRemoveSubtitlesNode] =
     runLocal,
   })
 
+export default removeSubtitlesNode
 export { removeSubtitlesNode, testRemoveSubtitlesNode }

@@ -36,8 +36,8 @@ export type CompressFontNodeLocalInput = {
   input: {
     file: LocalPath
   }
-  output: {
-    file: LocalPath
+  output?: {
+    file?: LocalPath
   }
 }
 export type CompressFontNodeLocalInternalInput = {
@@ -45,8 +45,8 @@ export type CompressFontNodeLocalInternalInput = {
   input: {
     file: FileInputPath | FileContentWithSha256
   }
-  output: {
-    file: LocalOutputPath
+  output?: {
+    file?: LocalOutputPath
   }
 }
 export type CompressFontNodeOutput = {

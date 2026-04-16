@@ -77,9 +77,11 @@ export const RemoveExifNodeLocalInputParser = z.object({
   input: z.object({
     file: z.lazy(() => LocalPathParser),
   }),
-  output: z.object({
-    file: z.lazy(() => LocalPathParser),
-  }),
+  output: z.optional(
+    z.object({
+      file: z.optional(z.lazy(() => LocalPathParser)),
+    }),
+  ),
   tag: z.optional(z.array(z.string())),
   preset: z.optional(z.array(z.string())),
   overwrite: z.optional(z.boolean()),
@@ -97,9 +99,11 @@ export const RemoveExifNodeLocalInternalInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  output: z.object({
-    file: z.lazy(() => LocalOutputPathParser),
-  }),
+  output: z.optional(
+    z.object({
+      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+    }),
+  ),
   tag: z.optional(z.array(z.string())),
   preset: z.optional(z.array(z.string())),
   overwrite: z.optional(z.boolean()),

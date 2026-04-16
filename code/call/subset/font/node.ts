@@ -60,4 +60,5 @@ const [subsetFontNode, testSubsetFontNode] = createNodeHandler({
   runLocal,
 })
 
+export default subsetFontNode
 export { subsetFontNode, testSubsetFontNode }

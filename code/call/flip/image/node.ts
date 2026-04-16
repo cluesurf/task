@@ -37,4 +37,5 @@ const [flipImageNode, testFlipImageNode] = createNodeHandler({
   runLocal,
 })
 
+export default flipImageNode
 export { flipImageNode, testFlipImageNode }

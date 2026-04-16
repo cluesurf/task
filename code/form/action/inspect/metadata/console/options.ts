@@ -14,5 +14,17 @@ export const options: CliOption[] = [
     "like": "string",
     "list": false,
     "need": true
+  },
+  {
+    "path": [
+      "output",
+      "file",
+      "path"
+    ],
+    "long": "output-file-path",
+    "short": "o",
+    "like": "string",
+    "list": false,
+    "need": false
   }
 ]

@@ -51,7 +51,7 @@ export type ShapeFontNodeLocalInput = {
   input: {
     file: LocalPath
   }
-  output: {
+  output?: {
     file?: LocalPath
   }
   text: string
@@ -65,7 +65,7 @@ export type ShapeFontNodeLocalInternalInput = {
   input: {
     file: FileInputPath | FileContentWithSha256
   }
-  output: {
+  output?: {
     file?: LocalOutputPath
   }
   text: string

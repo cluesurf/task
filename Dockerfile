@@ -23,16 +23,6 @@ ENV NODE_VERSION=24.14.1
 # Replace shell with bash so we can source files
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-# Swap archive.ubuntu.com for a fast, CDN-backed mirror. Docker
-# Desktop's VM intermittently can't reach the primary archive.
-# Noble (24.04) uses deb822-format .sources files; older releases
-# use sources.list. Handle both.
-RUN if ls /etc/apt/sources.list.d/*.sources >/dev/null 2>&1; then \
-      sed -i 's|http://archive.ubuntu.com/ubuntu|http://us.archive.ubuntu.com/ubuntu|g' /etc/apt/sources.list.d/*.sources; \
-    elif [ -f /etc/apt/sources.list ]; then \
-      sed -i 's|http://archive.ubuntu.com/ubuntu|http://us.archive.ubuntu.com/ubuntu|g' /etc/apt/sources.list; \
-    fi
-
 RUN apt-get update -y -q
 RUN apt-get upgrade -y -q
 

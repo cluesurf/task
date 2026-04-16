@@ -32,7 +32,7 @@ async function runLocal(input: CompressFontNodeLocalInput) {
 
   const defaultOut =
     inputPath.replace(/\.(ttf|otf)$/i, '') + '.woff2'
-  const requestedOut = input.output.file.path
+  const requestedOut = input.output?.file?.path
   // When the positional `<file>` shorthand fills BOTH input and
   // output, requestedOut equals inputPath. Treat that as "no
   // explicit output" and let the sibling `.woff2` win.
@@ -69,4 +69,5 @@ const [compressFontNode, testCompressFontNode] = createNodeHandler({
   runLocal,
 })
 
+export default compressFontNode
 export { compressFontNode, testCompressFontNode }

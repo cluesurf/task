@@ -55,4 +55,5 @@ const [shapeFontNode, testShapeFontNode] = createNodeHandler({
   runLocal,
 })
 
+export default shapeFontNode
 export { shapeFontNode, testShapeFontNode }

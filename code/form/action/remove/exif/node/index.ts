@@ -45,8 +45,8 @@ export type RemoveExifNodeLocalInput = {
   input: {
     file: LocalPath
   }
-  output: {
-    file: LocalPath
+  output?: {
+    file?: LocalPath
   }
   tag?: Array<string>
   preset?: Array<string>
@@ -57,8 +57,8 @@ export type RemoveExifNodeLocalInternalInput = {
   input: {
     file: FileInputPath | FileContentWithSha256
   }
-  output: {
-    file: LocalOutputPath
+  output?: {
+    file?: LocalOutputPath
   }
   tag?: Array<string>
   preset?: Array<string>

@@ -48,7 +48,7 @@ export type UpdateImageNodeLocalInput = {
   input: {
     file: LocalPath
   }
-  output: {
+  output?: {
     file?: LocalPath
   }
   grayscale?: boolean
@@ -61,7 +61,7 @@ export type UpdateImageNodeLocalInternalInput = {
   input: {
     file: FileInputPath | FileContentWithSha256
   }
-  output: {
+  output?: {
     file?: LocalOutputPath
   }
   grayscale?: boolean

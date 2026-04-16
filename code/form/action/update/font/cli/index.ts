@@ -1,11 +1,13 @@
-import { LocalPath } from '~/code/form/object/file'
-
 export type UpdateFontCommandInput = {
   input: {
-    file: LocalPath
+    file: {
+      path: string
+    }
   }
-  output: {
-    file?: LocalPath
+  output?: {
+    file?: {
+      path?: string
+    }
   }
   fea: string
 }

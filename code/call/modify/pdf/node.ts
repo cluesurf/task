@@ -1,83 +1,103 @@
 /**
- * `task modify pdf` (Node) — qpdf shell-out for both `--order`
+ * `task modify pdf` (Node) -- qpdf shell-out for both `--order`
  * and `--remove`. Browser path stays in `./browser.ts`.
  *
- *   --order 3,1,2 → qpdf --empty --pages in 3,1,2 -- out
- *   --remove 2,5  → derive complement spec, then same recipe
+ *   --order 3,1,2 -> qpdf --empty --pages in 3,1,2 -- out
+ *   --remove 2,5  -> derive complement spec, then same recipe
  */
 
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { exec } from '~/code/tool/node/process'
-import { runCommandSequence } from '~/code/tool/node/command'
-import { getCommand } from '~/code/tool/shared/command'
+import type { ModifyPdfNodeLocalInput } from '~/code/form/action/modify/pdf/node'
+import {
+  ModifyPdfNodeInputParser,
+  ModifyPdfNodeLocalInputParser,
+  ModifyPdfNodeOutputParser,
+} from '~/code/form/action/modify/pdf/node/take'
 import { ensureParentDir } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
+import { spawnAndCapture, spawnAndWait } from '~/code/tool/node/spawn'
 import {
   parsePageList,
   parsePageRanges,
 } from '~/code/tool/shared/pdf-pages'
 import {
+  buildPdfinfoCommand,
   buildQpdfReorderCommand,
   complementSpec,
 } from './command'
 
-export type ModifyPdfNodeInput = {
-  input: { file: { path: string } }
-  output: { file: { path: string } }
-  order?: string
-  remove?: string
-}
-
-export type ModifyPdfNodeOutput = {
-  file: { path: string }
-  pagesAfter: number
-  operation: 'order' | 'remove'
-}
-
-export async function modifyPdfNode(
-  source: ModifyPdfNodeInput,
-): Promise<ModifyPdfNodeOutput> {
-  if (source.order && source.remove) {
+async function runLocal(
+  input: ModifyPdfNodeLocalInput,
+) {
+  if (input.order && input.remove) {
     throw new Error('Pass either --order or --remove, not both')
   }
-  if (!source.order && !source.remove) {
+  if (!input.order && !input.remove) {
     throw new Error('Pass --order <list> or --remove <list>')
   }
 
-  const inputPath = source.input.file.path
-  const outputPath = source.output.file.path
+  const inputPath = input.input.file.path
+  const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
 
   let spec: string
   let pagesAfter: number
-  let operation: 'order' | 'remove'
 
-  if (source.order) {
-    pagesAfter = parsePageList(source.order).length
-    spec = source.order
-    operation = 'order'
+  if (input.order) {
+    pagesAfter = parsePageList(input.order).length
+    spec = input.order
   } else {
     const total = await pdfPageCount(inputPath)
-    const drop = new Set(parsePageRanges(source.remove!))
+    const drop = new Set(parsePageRanges(input.remove!))
     spec = complementSpec(total, drop)
     pagesAfter = total - drop.size
-    operation = 'remove'
   }
 
-  await runCommandSequence(
-    buildQpdfReorderCommand({ input: inputPath, output: outputPath, spec }),
-  )
+  const command = buildQpdfReorderCommand({
+    input: inputPath,
+    output: outputPath,
+    spec,
+  })
+  await spawnAndWait({
+    verb: 'modify pdf',
+    bin: command.bin,
+    args: command.args,
+  })
 
-  return { file: { path: outputPath }, pagesAfter, operation }
+  return { file: { path: outputPath } }
 }
 
-async function pdfPageCount(input: string): Promise<number> {
-  const cmd = getCommand('pdfinfo')
-  cmd.link.push(input)
-  const { stdout } = await exec(cmd.link)
+async function pdfPageCount(inputPath: string): Promise<number> {
+  const command = buildPdfinfoCommand(inputPath)
+  const stdout = await spawnAndCapture({
+    verb: 'modify pdf',
+    bin: command.bin,
+    args: command.args,
+  })
   const match = stdout.match(/^Pages:\s+(\d+)/m)
   if (!match) {
-    throw new Error(`pdfinfo could not read page count from "${input}"`)
+    throw new Error(
+      `pdfinfo could not read page count from "${inputPath}"`,
+    )
   }
   return Number(match[1])
 }
+
+const [modifyPdfNode, testModifyPdfNode] = createNodeHandler({
+  parsers: {
+    input: ModifyPdfNodeInputParser,
+    local: ModifyPdfNodeLocalInputParser,
+    output: ModifyPdfNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export default modifyPdfNode
+export { modifyPdfNode, testModifyPdfNode }

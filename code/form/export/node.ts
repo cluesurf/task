@@ -77,13 +77,57 @@ import type {
   ConvertTxtWithPuppeteerNodeOutput,
 } from '~/code/form/action/convert/puppeteer/node'
 import type {
+  ConvertImageWithApngasmNodeInput,
+  ConvertImageWithApngasmNodeOutput,
+} from '~/code/form/action/convert/image/apngasm/node'
+import type {
+  ConvertImageWithAutotraceNodeInput,
+  ConvertImageWithAutotraceNodeOutput,
+} from '~/code/form/action/convert/image/autotrace/node'
+import type {
+  ConvertImageWithDarktableNodeInput,
+  ConvertImageWithDarktableNodeOutput,
+} from '~/code/form/action/convert/image/darktable/node'
+import type {
+  ConvertImageWithDcrawNodeInput,
+  ConvertImageWithDcrawNodeOutput,
+} from '~/code/form/action/convert/image/dcraw/node'
+import type {
+  ConvertImageWithFfmpegNodeInput,
+  ConvertImageWithFfmpegNodeOutput,
+} from '~/code/form/action/convert/image/ffmpeg/node'
+import type {
+  ConvertImageWithGifsicleNodeInput,
+  ConvertImageWithGifsicleNodeOutput,
+} from '~/code/form/action/convert/image/gifsicle/node'
+import type {
   ConvertImageWithImageMagickNodeInput,
   ConvertImageWithImageMagickNodeOutput,
 } from '~/code/form/action/convert/imagemagick/node'
 import type {
+  ConvertImageWithImg2WebpNodeInput,
+  ConvertImageWithImg2WebpNodeOutput,
+} from '~/code/form/action/convert/image/img2webp/node'
+import type {
   ConvertImageWithInkscapeNodeInput,
   ConvertImageWithInkscapeNodeOutput,
 } from '~/code/form/action/convert/inkscape/node'
+import type {
+  ConvertImageWithPotraceNodeInput,
+  ConvertImageWithPotraceNodeOutput,
+} from '~/code/form/action/convert/image/potrace/node'
+import type {
+  ConvertImageWithRadianceNodeInput,
+  ConvertImageWithRadianceNodeOutput,
+} from '~/code/form/action/convert/image/radiance/node'
+import type {
+  ConvertImageWithRawtherapeeNodeInput,
+  ConvertImageWithRawtherapeeNodeOutput,
+} from '~/code/form/action/convert/image/rawtherapee/node'
+import type {
+  ConvertImageWithRsvgNodeInput,
+  ConvertImageWithRsvgNodeOutput,
+} from '~/code/form/action/convert/image/rsvg/node'
 import type {
   ConvertLatexToPngNodeInput,
   ConvertLatexToPngNodeOutput,
@@ -155,13 +199,45 @@ import type {
   FormatSwiftNodeOutput,
 } from '~/code/form/action/format/code/node'
 import type {
+  GetDurationNodeInput,
+  GetDurationNodeOutput,
+} from '~/code/form/action/get/duration/node'
+import type {
+  InspectFileNodeInput,
+  InspectFileNodeOutput,
+} from '~/code/form/action/inspect/file/node'
+import type {
+  InspectMetadataNodeInput,
+  InspectMetadataNodeOutput,
+} from '~/code/form/action/inspect/metadata/node'
+import type {
+  ModifyPdfNodeInput,
+  ModifyPdfNodeOutput,
+} from '~/code/form/action/modify/pdf/node'
+import type {
   NormalizeAudioNodeInput,
   NormalizeAudioNodeOutput,
 } from '~/code/form/action/normalize/audio/node'
 import type {
+  PadNodeInput,
+  PadNodeOutput,
+} from '~/code/form/action/pad/node'
+import type {
+  RemoveAudioNodeInput,
+  RemoveAudioNodeOutput,
+} from '~/code/form/action/remove/audio/node'
+import type {
   RemoveExifNodeInput,
   RemoveExifNodeOutput,
 } from '~/code/form/action/remove/exif/node'
+import type {
+  RemoveInvisibleNodeInput,
+  RemoveInvisibleNodeOutput,
+} from '~/code/form/action/remove/invisible/node'
+import type {
+  RemoveMetadataNodeInput,
+  RemoveMetadataNodeOutput,
+} from '~/code/form/action/remove/metadata/node'
 import type {
   RemovePasswordNodeInput,
   RemovePasswordNodeOutput,
@@ -198,6 +274,10 @@ import type {
   ShapeFontNodeInput,
   ShapeFontNodeOutput,
 } from '~/code/form/action/shape/font/node'
+import type {
+  SplitAudioNodeInput,
+  SplitAudioNodeOutput,
+} from '~/code/form/action/split/audio/node'
 import type {
   SubsetFontNodeInput,
   SubsetFontNodeOutput,
@@ -248,8 +328,19 @@ export interface TaskSurface {
   convert(input: ConvertDocumentWithPandocNodeInput): Promise<ConvertDocumentWithPandocNodeOutput>
   convert(input: ConvertFontWithFontForgeNodeInput): Promise<ConvertFontWithFontForgeNodeOutput>
   convert(input: ConvertHtmlWithPuppeteerNodeInput): Promise<ConvertHtmlWithPuppeteerNodeOutput>
+  convert(input: ConvertImageWithApngasmNodeInput): Promise<ConvertImageWithApngasmNodeOutput>
+  convert(input: ConvertImageWithAutotraceNodeInput): Promise<ConvertImageWithAutotraceNodeOutput>
+  convert(input: ConvertImageWithDarktableNodeInput): Promise<ConvertImageWithDarktableNodeOutput>
+  convert(input: ConvertImageWithDcrawNodeInput): Promise<ConvertImageWithDcrawNodeOutput>
+  convert(input: ConvertImageWithFfmpegNodeInput): Promise<ConvertImageWithFfmpegNodeOutput>
+  convert(input: ConvertImageWithGifsicleNodeInput): Promise<ConvertImageWithGifsicleNodeOutput>
   convert(input: ConvertImageWithImageMagickNodeInput): Promise<ConvertImageWithImageMagickNodeOutput>
+  convert(input: ConvertImageWithImg2WebpNodeInput): Promise<ConvertImageWithImg2WebpNodeOutput>
   convert(input: ConvertImageWithInkscapeNodeInput): Promise<ConvertImageWithInkscapeNodeOutput>
+  convert(input: ConvertImageWithPotraceNodeInput): Promise<ConvertImageWithPotraceNodeOutput>
+  convert(input: ConvertImageWithRadianceNodeInput): Promise<ConvertImageWithRadianceNodeOutput>
+  convert(input: ConvertImageWithRawtherapeeNodeInput): Promise<ConvertImageWithRawtherapeeNodeOutput>
+  convert(input: ConvertImageWithRsvgNodeInput): Promise<ConvertImageWithRsvgNodeOutput>
   convert(input: ConvertLatexToPngNodeInput): Promise<ConvertLatexToPngNodeOutput>
   convert(input: ConvertLatexWithPdfLatexNodeInput): Promise<ConvertLatexWithPdfLatexNodeOutput>
   convert(input: ConvertMarkdownWithPuppeteerNodeInput): Promise<ConvertMarkdownWithPuppeteerNodeOutput>
@@ -280,9 +371,21 @@ export interface TaskSurface {
   format(input: FormatRustNodeInput): Promise<FormatRustNodeOutput>
   format(input: FormatSwiftNodeInput): Promise<FormatSwiftNodeOutput>
 
+  get(input: GetDurationNodeInput): Promise<GetDurationNodeOutput>
+
+  inspect(input: InspectFileNodeInput): Promise<InspectFileNodeOutput>
+  inspect(input: InspectMetadataNodeInput): Promise<InspectMetadataNodeOutput>
+
+  modify(input: ModifyPdfNodeInput): Promise<ModifyPdfNodeOutput>
+
   normalize(input: NormalizeAudioNodeInput): Promise<NormalizeAudioNodeOutput>
 
+  pad(input: PadNodeInput): Promise<PadNodeOutput>
+
+  remove(input: RemoveAudioNodeInput): Promise<RemoveAudioNodeOutput>
   remove(input: RemoveExifNodeInput): Promise<RemoveExifNodeOutput>
+  remove(input: RemoveInvisibleNodeInput): Promise<RemoveInvisibleNodeOutput>
+  remove(input: RemoveMetadataNodeInput): Promise<RemoveMetadataNodeOutput>
   remove(input: RemovePasswordNodeInput): Promise<RemovePasswordNodeOutput>
   remove(input: RemoveProfileNodeInput): Promise<RemoveProfileNodeOutput>
   remove(input: RemoveSubtitlesNodeInput): Promise<RemoveSubtitlesNodeOutput>
@@ -296,6 +399,8 @@ export interface TaskSurface {
   sanitize(input: SanitizeHtmlNodeInput): Promise<SanitizeHtmlNodeOutput>
 
   shape(input: ShapeFontNodeInput): Promise<ShapeFontNodeOutput>
+
+  split(input: SplitAudioNodeInput): Promise<SplitAudioNodeOutput>
 
   subset(input: SubsetFontNodeInput): Promise<SubsetFontNodeOutput>
 
@@ -342,8 +447,19 @@ export type ConvertNodeInput =
   | ConvertDocumentWithPandocNodeInput
   | ConvertFontWithFontForgeNodeInput
   | ConvertHtmlWithPuppeteerNodeInput
+  | ConvertImageWithApngasmNodeInput
+  | ConvertImageWithAutotraceNodeInput
+  | ConvertImageWithDarktableNodeInput
+  | ConvertImageWithDcrawNodeInput
+  | ConvertImageWithFfmpegNodeInput
+  | ConvertImageWithGifsicleNodeInput
   | ConvertImageWithImageMagickNodeInput
+  | ConvertImageWithImg2WebpNodeInput
   | ConvertImageWithInkscapeNodeInput
+  | ConvertImageWithPotraceNodeInput
+  | ConvertImageWithRadianceNodeInput
+  | ConvertImageWithRawtherapeeNodeInput
+  | ConvertImageWithRsvgNodeInput
   | ConvertLatexToPngNodeInput
   | ConvertLatexWithPdfLatexNodeInput
   | ConvertMarkdownWithPuppeteerNodeInput
@@ -360,8 +476,19 @@ export type ConvertNodeOutput =
   | ConvertDocumentWithPandocNodeOutput
   | ConvertFontWithFontForgeNodeOutput
   | ConvertHtmlWithPuppeteerNodeOutput
+  | ConvertImageWithApngasmNodeOutput
+  | ConvertImageWithAutotraceNodeOutput
+  | ConvertImageWithDarktableNodeOutput
+  | ConvertImageWithDcrawNodeOutput
+  | ConvertImageWithFfmpegNodeOutput
+  | ConvertImageWithGifsicleNodeOutput
   | ConvertImageWithImageMagickNodeOutput
+  | ConvertImageWithImg2WebpNodeOutput
   | ConvertImageWithInkscapeNodeOutput
+  | ConvertImageWithPotraceNodeOutput
+  | ConvertImageWithRadianceNodeOutput
+  | ConvertImageWithRawtherapeeNodeOutput
+  | ConvertImageWithRsvgNodeOutput
   | ConvertLatexToPngNodeOutput
   | ConvertLatexWithPdfLatexNodeOutput
   | ConvertMarkdownWithPuppeteerNodeOutput
@@ -422,19 +549,47 @@ export type FormatNodeOutput =
   | FormatRustNodeOutput
   | FormatSwiftNodeOutput
 
+export type GetNodeInput =
+  | GetDurationNodeInput
+export type GetNodeOutput =
+  | GetDurationNodeOutput
+
+export type InspectNodeInput =
+  | InspectFileNodeInput
+  | InspectMetadataNodeInput
+export type InspectNodeOutput =
+  | InspectFileNodeOutput
+  | InspectMetadataNodeOutput
+
+export type ModifyNodeInput =
+  | ModifyPdfNodeInput
+export type ModifyNodeOutput =
+  | ModifyPdfNodeOutput
+
 export type NormalizeNodeInput =
   | NormalizeAudioNodeInput
 export type NormalizeNodeOutput =
   | NormalizeAudioNodeOutput
 
+export type PadNodeInput =
+  | PadNodeInput
+export type PadNodeOutput =
+  | PadNodeOutput
+
 export type RemoveNodeInput =
+  | RemoveAudioNodeInput
   | RemoveExifNodeInput
+  | RemoveInvisibleNodeInput
+  | RemoveMetadataNodeInput
   | RemovePasswordNodeInput
   | RemoveProfileNodeInput
   | RemoveSubtitlesNodeInput
   | RemoveTransparencyNodeInput
 export type RemoveNodeOutput =
+  | RemoveAudioNodeOutput
   | RemoveExifNodeOutput
+  | RemoveInvisibleNodeOutput
+  | RemoveMetadataNodeOutput
   | RemovePasswordNodeOutput
   | RemoveProfileNodeOutput
   | RemoveSubtitlesNodeOutput
@@ -461,6 +616,11 @@ export type ShapeNodeInput =
   | ShapeFontNodeInput
 export type ShapeNodeOutput =
   | ShapeFontNodeOutput
+
+export type SplitNodeInput =
+  | SplitAudioNodeInput
+export type SplitNodeOutput =
+  | SplitAudioNodeOutput
 
 export type SubsetNodeInput =
   | SubsetFontNodeInput

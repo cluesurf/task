@@ -1,10 +1,12 @@
-import { LocalPath } from '~/code/form/object/file'
-
 export type RemoveProfileCommandInput = {
   input: {
-    file: LocalPath
+    file: {
+      path: string
+    }
   }
   output: {
-    file: LocalPath
+    file: {
+      path: string
+    }
   }
 }

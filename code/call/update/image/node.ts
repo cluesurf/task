@@ -60,4 +60,5 @@ const [updateImageNode, testUpdateImageNode] = createNodeHandler({
   runLocal,
 })
 
+export default updateImageNode
 export { updateImageNode, testUpdateImageNode }

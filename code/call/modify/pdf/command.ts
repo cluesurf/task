@@ -1,14 +1,9 @@
 /**
- * Pure argv builders for `task modify pdf` on Node — qpdf does
- * the rewrite. `--order 3,1,2` becomes `--pages input 3,1,2`;
+ * Pure argv builders for `task modify pdf` on Node. qpdf does
+ * the rewrite. `--order 3,1,2` becomes `--pages input 3,1,2`.
  * `--remove 2,5` becomes the complement spec computed from the
- * input's page count (pdfinfo / qpdf both expose it).
+ * input's page count.
  */
-
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
 
 export function buildQpdfReorderCommand({
   input,
@@ -19,10 +14,20 @@ export function buildQpdfReorderCommand({
   output: string
   /** Comma-separated 1-based page indices, in target order. */
   spec: string
-}) {
-  const cmd = getCommand('qpdf')
-  cmd.link.push('--empty', '--pages', input, spec, '--', output)
-  return buildCommandSequence(cmd)
+}): { bin: 'qpdf'; args: string[] } {
+  return {
+    bin: 'qpdf',
+    args: ['--empty', '--pages', input, spec, '--', output],
+  }
+}
+
+export function buildPdfinfoCommand(
+  input: string,
+): { bin: 'pdfinfo'; args: string[] } {
+  return {
+    bin: 'pdfinfo',
+    args: [input],
+  }
 }
 
 /**

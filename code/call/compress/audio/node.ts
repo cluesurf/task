@@ -39,4 +39,5 @@ const [compressAudioNode, testCompressAudioNode] = createNodeHandler({
   runLocal,
 })
 
+export default compressAudioNode
 export { compressAudioNode, testCompressAudioNode }

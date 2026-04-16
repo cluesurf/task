@@ -50,4 +50,5 @@ const [removeTransparencyNode, testRemoveTransparencyNode] =
     runLocal,
   })
 
+export default removeTransparencyNode
 export { removeTransparencyNode, testRemoveTransparencyNode }

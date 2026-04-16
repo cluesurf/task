@@ -1,16 +1,32 @@
-import { Form } from '@cluesurf/form'
+import { buildSingleFileForms } from '~/code/tool/shared/base'
 
 /**
- * `task remove audio` — strip the audio track out of a video
+ * `task remove audio` -- strip the audio track out of a video
  * with ffmpeg's `-an`. Input video stays untouched; output is
  * written to an explicit `-o` path so the caller doesn't lose
  * the original by accident.
  */
-export const remove_audio: Form = {
-  form: 'form',
+
+const forms = buildSingleFileForms({
+  name: 'remove_audio',
   save: '~/code/form/action/remove/audio',
-  link: {
-    input: { link: { file: { link: { path: { like: 'string', name: { mark: 'i' } } } } } },
-    output: { link: { file: { link: { path: { like: 'string', name: { mark: 'o' } } } } } },
-  },
-}
+})
+
+export const remove_audio_node_input = forms.node_input
+export const remove_audio_node_remote_input = forms.node_remote_input
+export const remove_audio_node_external_input =
+  forms.node_external_input
+export const remove_audio_node_client_input = forms.node_client_input
+export const remove_audio_node_local_external_input =
+  forms.node_local_external_input
+export const remove_audio_node_local_internal_input =
+  forms.node_local_internal_input
+export const remove_audio_node_local_input = forms.node_local_input
+export const remove_audio_node_output = forms.node_output
+export const remove_audio_command_input = forms.command_input
+export const remove_audio_browser_input = forms.browser_input
+export const remove_audio_browser_remote_input =
+  forms.browser_remote_input
+export const remove_audio_browser_local_input =
+  forms.browser_local_input
+export const remove_audio_browser_output = forms.browser_output

@@ -68,9 +68,11 @@ export const CompressFontNodeLocalInputParser = z.object({
   input: z.object({
     file: z.lazy(() => LocalPathParser),
   }),
-  output: z.object({
-    file: z.lazy(() => LocalPathParser),
-  }),
+  output: z.optional(
+    z.object({
+      file: z.optional(z.lazy(() => LocalPathParser)),
+    }),
+  ),
 })
 
 export type CompressFontNodeLocalInputRecord = z.infer<
@@ -85,9 +87,11 @@ export const CompressFontNodeLocalInternalInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  output: z.object({
-    file: z.lazy(() => LocalOutputPathParser),
-  }),
+  output: z.optional(
+    z.object({
+      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+    }),
+  ),
 })
 
 export type CompressFontNodeLocalInternalInputRecord = z.infer<

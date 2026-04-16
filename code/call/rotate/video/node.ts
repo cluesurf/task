@@ -36,4 +36,5 @@ const [rotateVideoNode, testRotateVideoNode] = createNodeHandler({
   runLocal,
 })
 
+export default rotateVideoNode
 export { rotateVideoNode, testRotateVideoNode }

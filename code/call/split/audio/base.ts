@@ -1,31 +1,17 @@
-import { Form } from '@cluesurf/form'
+import { buildSingleFileForms } from '~/code/tool/shared/base'
 
 /**
- * `task split audio --segments silence` — ffmpeg silencedetect
- * finds gaps, we carve the input into one segment per gap. The
+ * `task split audio --segments silence` uses ffmpeg silencedetect
+ * to find gaps and carve the input into one segment per gap. The
  * alternative shape is `--segments <seconds>` which produces
  * fixed-duration chunks.
  */
-export const split_audio: Form = {
-  form: 'form',
+
+const forms = buildSingleFileForms({
+  name: 'split_audio',
   save: '~/code/form/action/split/audio',
-  link: {
-    input: {
-      link: {
-        file: {
-          link: { path: { like: 'string', name: { mark: 'i' } } },
-        },
-      },
-    },
-    output: {
-      link: {
-        file: {
-          link: {
-            path: { like: 'string', name: { mark: 'o' }, need: false },
-          },
-        },
-      },
-    },
+  outputRequired: false,
+  common: {
     segments: {
       like: 'string',
       need: true,
@@ -43,4 +29,23 @@ export const split_audio: Form = {
       note: 'Minimum silence duration in seconds (default 0.5)',
     },
   },
-}
+})
+
+export const split_audio_node_input = forms.node_input
+export const split_audio_node_remote_input = forms.node_remote_input
+export const split_audio_node_external_input =
+  forms.node_external_input
+export const split_audio_node_client_input = forms.node_client_input
+export const split_audio_node_local_external_input =
+  forms.node_local_external_input
+export const split_audio_node_local_internal_input =
+  forms.node_local_internal_input
+export const split_audio_node_local_input = forms.node_local_input
+export const split_audio_node_output = forms.node_output
+export const split_audio_command_input = forms.command_input
+export const split_audio_browser_input = forms.browser_input
+export const split_audio_browser_remote_input =
+  forms.browser_remote_input
+export const split_audio_browser_local_input =
+  forms.browser_local_input
+export const split_audio_browser_output = forms.browser_output

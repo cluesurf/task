@@ -1,22 +1,29 @@
 // Time + EXPLAIN a SQL query. Prints `EXPLAIN (ANALYZE, BUFFERS)`
 // output — the richest planner info psql exposes.
 
-import { exec } from '~/code/tool/node/process'
+import { spawnAndCapture } from '~/code/tool/node/spawn'
+import { buildCommandToMeasureDb } from './command'
 
 export type MeasureDbNodeInput = {
   db: string
   sql: string
-  /** Skip EXPLAIN, just time the query. */
   plain?: boolean
 }
 
-export async function measureDbNode(
+async function measureDbNode(
   source: MeasureDbNodeInput,
 ): Promise<string> {
-  const wrapped = source.plain
-    ? source.sql
-    : `EXPLAIN (ANALYZE, BUFFERS, VERBOSE) ${source.sql}`
-  const argv = ['psql', '-d', source.db, '-c', `\\timing on`, '-c', wrapped]
-  const { stdout } = await exec(argv)
-  return stdout
+  const command = buildCommandToMeasureDb({
+    db: source.db,
+    sql: source.sql,
+    plain: source.plain,
+  })
+  return spawnAndCapture({
+    verb: 'measure db',
+    bin: command.bin,
+    args: command.args,
+  })
 }
+
+export default measureDbNode
+export { measureDbNode }

@@ -1,7 +1,8 @@
-import { Form, List } from '@cluesurf/form'
+import { List } from '@cluesurf/form'
+import { buildSingleFileForms } from '~/code/tool/shared/base'
 
 /**
- * Action input for `task pad` — extends an audio file with
+ * Action input for `task pad` -- extends an audio file with
  * silence so its duration meets a target length. Common audio
  * containers all flow through ffmpeg, so the schema doesn't need
  * a `<thing>` segment.
@@ -20,28 +21,32 @@ export const audio_pad_format: List = {
   list: ['mp3', 'wav', 'flac', 'ogg', 'opus', 'm4a', 'aac'],
 }
 
-export const pad: Form = {
-  form: 'form',
+const forms = buildSingleFileForms({
+  name: 'pad',
   save: '~/code/form/action/pad',
-  link: {
-    input: {
-      link: {
-        format: { like: 'audio_pad_format', name: { mark: 'I' }, need: false },
-        file: {
-          link: { path: { like: 'string', name: { mark: 'i' } } },
-        },
-      },
+  common: {
+    to: {
+      like: 'string',
+      need: true,
+      note: 'Target duration (MM:SS.mmm or seconds)',
     },
-    output: {
-      link: {
-        format: { like: 'audio_pad_format', name: { mark: 'O' }, need: false },
-        file: {
-          link: { path: { like: 'string', name: { mark: 'o' } } },
-        },
-      },
-    },
-    to: { like: 'string', need: true, note: 'Target duration (MM:SS.mmm or seconds)' },
     sampleRate: { like: 'natural_number', need: false },
     channels: { like: 'natural_number', need: false },
   },
-}
+})
+
+export const pad_node_input = forms.node_input
+export const pad_node_remote_input = forms.node_remote_input
+export const pad_node_external_input = forms.node_external_input
+export const pad_node_client_input = forms.node_client_input
+export const pad_node_local_external_input =
+  forms.node_local_external_input
+export const pad_node_local_internal_input =
+  forms.node_local_internal_input
+export const pad_node_local_input = forms.node_local_input
+export const pad_node_output = forms.node_output
+export const pad_command_input = forms.command_input
+export const pad_browser_input = forms.browser_input
+export const pad_browser_remote_input = forms.browser_remote_input
+export const pad_browser_local_input = forms.browser_local_input
+export const pad_browser_output = forms.browser_output

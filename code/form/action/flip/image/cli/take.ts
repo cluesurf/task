@@ -1,13 +1,15 @@
 import { z } from 'zod'
 
-import { LocalPathParser } from '~/code/form/object/file/take'
-
 export const FlipImageCommandInputParser = z.object({
   input: z.object({
-    file: z.lazy(() => LocalPathParser),
+    file: z.object({
+      path: z.string(),
+    }),
   }),
   output: z.object({
-    file: z.lazy(() => LocalPathParser),
+    file: z.object({
+      path: z.string(),
+    }),
   }),
   horizontal: z.optional(z.boolean()),
   vertical: z.optional(z.boolean()),

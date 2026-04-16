@@ -77,9 +77,11 @@ export const DisassembleWasmNodeLocalInputParser = z.object({
   input: z.object({
     file: z.lazy(() => LocalPathParser),
   }),
-  output: z.object({
-    file: z.optional(z.lazy(() => LocalPathParser)),
-  }),
+  output: z.optional(
+    z.object({
+      file: z.optional(z.lazy(() => LocalPathParser)),
+    }),
+  ),
   folding: z.optional(z.boolean()),
   inline: z.optional(z.boolean()),
   noDebugNames: z.optional(z.boolean()),
@@ -97,9 +99,11 @@ export const DisassembleWasmNodeLocalInternalInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  output: z.object({
-    file: z.optional(z.lazy(() => LocalOutputPathParser)),
-  }),
+  output: z.optional(
+    z.object({
+      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+    }),
+  ),
   folding: z.optional(z.boolean()),
   inline: z.optional(z.boolean()),
   noDebugNames: z.optional(z.boolean()),

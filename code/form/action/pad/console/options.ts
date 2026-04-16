@@ -6,17 +6,6 @@ export const options: CliOption[] = [
   {
     "path": [
       "input",
-      "format"
-    ],
-    "long": "input-format",
-    "short": "I",
-    "like": "audio_pad_format",
-    "list": false,
-    "need": false
-  },
-  {
-    "path": [
-      "input",
       "file",
       "path"
     ],
@@ -25,17 +14,6 @@ export const options: CliOption[] = [
     "like": "string",
     "list": false,
     "need": true
-  },
-  {
-    "path": [
-      "output",
-      "format"
-    ],
-    "long": "output-format",
-    "short": "O",
-    "like": "audio_pad_format",
-    "list": false,
-    "need": false
   },
   {
     "path": [

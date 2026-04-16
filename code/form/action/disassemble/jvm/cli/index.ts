@@ -1,11 +1,13 @@
-import { LocalPath } from '~/code/form/object/file'
-
 export type DisassembleJvmCommandInput = {
   input: {
-    file: LocalPath
+    file: {
+      path: string
+    }
   }
-  output: {
-    file?: LocalPath
+  output?: {
+    file?: {
+      path?: string
+    }
   }
   level?: string
   verbose?: boolean

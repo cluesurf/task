@@ -7,21 +7,25 @@ import {
 import { ensureParentDir } from '~/code/tool/node/file'
 import { createNodeHandler } from '~/code/tool/node/handler'
 import { resolveExternalInput, resolveInternalInput } from '~/code/tool/node/resolve'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import { buildCommandToTrimAudio } from './command'
 
 async function runLocal(input: TrimAudioNodeLocalInput) {
   const inputPath = input.input.file.path
   const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
-  const sequence = buildCommandToTrimAudio({
+  const command = buildCommandToTrimAudio({
     inputPath,
     outputPath,
     start: input.start,
     end: input.end,
     duration: input.duration,
   })
-  await runCommandSequence(sequence)
+  await spawnAndWait({
+    verb: 'trim audio',
+    bin: command.bin,
+    args: command.args,
+  })
   return { file: { path: outputPath } }
 }
 
@@ -38,4 +42,5 @@ const [trimAudioNode, testTrimAudioNode] = createNodeHandler({
   runLocal,
 })
 
+export default trimAudioNode
 export { trimAudioNode, testTrimAudioNode }

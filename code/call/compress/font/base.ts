@@ -9,6 +9,7 @@ import { buildSingleFileForms } from '~/code/tool/shared/base'
 const forms = buildSingleFileForms({
   name: 'compress_font',
   save: '~/code/form/action/compress/font',
+  outputRequired: false,
 })
 
 export const compress_font_node_input = forms.node_input

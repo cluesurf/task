@@ -65,4 +65,5 @@ const [disassembleRadareNode, testDisassembleRadareNode] =
     runLocal,
   })
 
+export default disassembleRadareNode
 export { disassembleRadareNode, testDisassembleRadareNode }

@@ -1039,6 +1039,7 @@ export function buildSingleFileForms(cfg: {
           },
         },
         output: {
+          need: outNeed ? undefined : false,
           link: {
             file: {
               like: 'local_output_path',
@@ -1058,7 +1059,10 @@ export function buildSingleFileForms(cfg: {
       {
         input: { link: { file: { like: 'local_path' } } },
         output: {
-          link: { file: { like: 'local_path', need: outNeed } },
+          need: outNeed ? undefined : false,
+          link: {
+            file: { like: 'local_path', need: outNeed },
+          },
         },
       },
       common,
@@ -1076,9 +1080,32 @@ export function buildSingleFileForms(cfg: {
     save: `${save}/cli`,
     link: _.merge(
       {
-        input: { link: { file: { like: 'local_path' } } },
+        input: {
+          link: {
+            file: {
+              link: {
+                path: {
+                  like: 'string',
+                  name: { mark: 'i' },
+                },
+              },
+            },
+          },
+        },
         output: {
-          link: { file: { like: 'local_path', need: outNeed } },
+          need: outNeed ? undefined : false,
+          link: {
+            file: {
+              need: outNeed,
+              link: {
+                path: {
+                  like: 'string',
+                  name: { mark: 'o' },
+                  need: outNeed,
+                },
+              },
+            },
+          },
         },
       },
       common,

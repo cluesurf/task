@@ -39,7 +39,7 @@ export type UpdateFontNodeLocalInput = {
   input: {
     file: LocalPath
   }
-  output: {
+  output?: {
     file?: LocalPath
   }
   fea: string
@@ -49,7 +49,7 @@ export type UpdateFontNodeLocalInternalInput = {
   input: {
     file: FileInputPath | FileContentWithSha256
   }
-  output: {
+  output?: {
     file?: LocalOutputPath
   }
   fea: string

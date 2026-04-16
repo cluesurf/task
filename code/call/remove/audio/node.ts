@@ -1,31 +1,51 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { ensureParentDir } from '~/code/tool/node/file'
+/**
+ * `task remove audio` -- strip the audio track from a video
+ * via `ffmpeg -an`. Four-branch node handler.
+ */
+
+import type { RemoveAudioNodeLocalInput } from '~/code/form/action/remove/audio/node'
 import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-import { runCommandSequence } from '~/code/tool/node/command'
+  RemoveAudioNodeInputParser,
+  RemoveAudioNodeLocalInputParser,
+  RemoveAudioNodeOutputParser,
+} from '~/code/form/action/remove/audio/node/take'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { buildCommandToRemoveAudio } from './command'
 
-export type RemoveAudioNodeInput = {
-  input: { file: { path: string } }
-  output: { file: { path: string } }
-}
-
-export async function removeAudioNode(source: RemoveAudioNodeInput) {
-  const outputPath = source.output.file.path
+async function runLocal(input: RemoveAudioNodeLocalInput) {
+  const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
 
-  const cmd = getCommand('ffmpeg')
-  cmd.link.push(
-    '-y',
-    '-i',
-    source.input.file.path,
-    '-c',
-    'copy',
-    '-an',
+  const command = buildCommandToRemoveAudio({
+    inputPath: input.input.file.path,
     outputPath,
-  )
-  await runCommandSequence(buildCommandSequence(cmd))
+  })
+  await spawnAndWait({
+    verb: 'remove audio',
+    bin: command.bin,
+    args: command.args,
+  })
   return { file: { path: outputPath } }
 }
+
+const [removeAudioNode, testRemoveAudioNode] = createNodeHandler({
+  parsers: {
+    input: RemoveAudioNodeInputParser,
+    local: RemoveAudioNodeLocalInputParser,
+    output: RemoveAudioNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export default removeAudioNode
+export { removeAudioNode, testRemoveAudioNode }

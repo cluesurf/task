@@ -53,4 +53,5 @@ const [disassembleJvmNode, testDisassembleJvmNode] =
     runLocal,
   })
 
+export default disassembleJvmNode
 export { disassembleJvmNode, testDisassembleJvmNode }

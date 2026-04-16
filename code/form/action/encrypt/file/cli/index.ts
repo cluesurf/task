@@ -1,11 +1,13 @@
-import { LocalPath } from '~/code/form/object/file'
-
 export type EncryptFileCommandInput = {
   input: {
-    file: LocalPath
+    file: {
+      path: string
+    }
   }
   output: {
-    file: LocalPath
+    file: {
+      path: string
+    }
   }
   tool?: string
   passphrase?: string

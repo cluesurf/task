@@ -1,30 +1,61 @@
-// Animated GIF optimizer + converter. gif → gif (resize, quantize,
-// optimize) is the core use case; for gif → other formats prefer
+// Animated GIF optimizer + converter. gif -> gif (resize, quantize,
+// optimize) is the core use case. For gif -> other formats prefer
 // convert/image/ffmpeg or convert/image/img2webp.
 
-import { exec } from '~/code/tool/node/process'
+import type {
+  ConvertImageWithGifsicleNodeInput,
+  ConvertImageWithGifsicleNodeLocalInput,
+} from '~/code/form/action/convert/image/gifsicle/node'
+import {
+  ConvertImageWithGifsicleNodeInputParser,
+  ConvertImageWithGifsicleNodeLocalInputParser,
+  ConvertImageWithGifsicleNodeOutputParser,
+} from '~/code/form/action/convert/image/gifsicle/node/take'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { buildCommandToConvertImageWithGifsicle } from './command'
 
-export type ConvertImageWithGifsicleNodeInput = {
-  input: { path: string }
-  output: { path: string }
-  /** Optimization level 1–3; higher is slower + smaller. */
-  optimize?: 1 | 2 | 3
-  /** Lossy quantization level (0 = lossless, 200 = most lossy). */
-  lossy?: number
-  /** Resize output — `400x300` or `_x300` (preserve aspect ratio). */
-  resize?: string
-  /** Reduce palette to N colors (max 256). */
-  colors?: number
+async function runLocal(
+  input: ConvertImageWithGifsicleNodeLocalInput,
+) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output.file.path
+  const command = buildCommandToConvertImageWithGifsicle({
+    inputPath,
+    outputPath,
+    optimize: input.optimize,
+    lossy: input.lossy,
+    resize: input.resize,
+    colors: input.colors,
+  })
+  await spawnAndWait({
+    verb: 'convert image',
+    bin: command.bin,
+    args: command.args,
+  })
+  return { file: { path: outputPath } }
 }
 
-export async function convertImageWithGifsicleNode(
-  source: ConvertImageWithGifsicleNodeInput,
-): Promise<void> {
-  const argv = ['gifsicle']
-  argv.push(`-O${source.optimize ?? 3}`)
-  if (source.lossy != null) argv.push(`--lossy=${source.lossy}`)
-  if (source.resize) argv.push('--resize', source.resize)
-  if (source.colors != null) argv.push('--colors', String(source.colors))
-  argv.push(source.input.path, '-o', source.output.path)
-  await exec(argv)
-}
+const [
+  convertImageWithGifsicleNode,
+  testConvertImageWithGifsicleNode,
+] = createNodeHandler({
+  parsers: {
+    input: ConvertImageWithGifsicleNodeInputParser,
+    local: ConvertImageWithGifsicleNodeLocalInputParser,
+    output: ConvertImageWithGifsicleNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export default convertImageWithGifsicleNode
+export { convertImageWithGifsicleNode, testConvertImageWithGifsicleNode }
+export type { ConvertImageWithGifsicleNodeInput }

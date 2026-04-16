@@ -1,18 +1,13 @@
 /**
  * Pure argv builders for `task pad`.
  *
- * `ffprobe` reports current duration; `ffmpeg` mixes the input
+ * `ffprobe` reports current duration. `ffmpeg` mixes the input
  * with `anullsrc` for the missing tail and re-encodes with the
  * codec that matches the output extension.
  *
- * No execution here — the runner in `./node.ts` invokes the
- * sequences via the shared command runner.
+ * No execution here. The runner in `./node.ts` invokes via
+ * `spawnAndWait` / `spawnAndCapture`.
  */
-
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
 
 const CODEC_BY_EXT: Record<string, string> = {
   mp3: 'libmp3lame',
@@ -25,20 +20,23 @@ const CODEC_BY_EXT: Record<string, string> = {
 }
 
 /** ffprobe: report stream-0 duration in seconds (float). */
-export function buildFfprobeDurationCommand(input: string) {
-  const cmd = getCommand('ffprobe')
-  cmd.link.push(
-    '-v',
-    'quiet',
-    '-select_streams',
-    'a:0',
-    '-show_entries',
-    'stream=duration',
-    '-of',
-    'default=noprint_wrappers=1:nokey=1',
-    input,
-  )
-  return buildCommandSequence(cmd)
+export function buildFfprobeDurationCommand(
+  input: string,
+): { bin: 'ffprobe'; args: string[] } {
+  return {
+    bin: 'ffprobe',
+    args: [
+      '-v',
+      'quiet',
+      '-select_streams',
+      'a:0',
+      '-show_entries',
+      'stream=duration',
+      '-of',
+      'default=noprint_wrappers=1:nokey=1',
+      input,
+    ],
+  }
 }
 
 export type BuildPadAudioInput = {
@@ -60,30 +58,31 @@ export function buildPadAudioCommand({
   padSeconds,
   sampleRate = 48000,
   channels = 2,
-}: BuildPadAudioInput) {
-  const cmd = getCommand('ffmpeg')
+}: BuildPadAudioInput): { bin: 'ffmpeg'; args: string[] } {
   const ext = output.split('.').pop()?.toLowerCase() ?? 'mp3'
   const codec = CODEC_BY_EXT[ext] ?? 'libmp3lame'
   const layout = channels === 1 ? 'mono' : 'stereo'
 
-  cmd.link.push(
-    '-nostdin',
-    '-y',
-    '-i',
-    input,
-    '-f',
-    'lavfi',
-    '-t',
-    padSeconds.toFixed(3),
-    '-i',
-    `anullsrc=r=${sampleRate}:cl=${layout}`,
-    '-filter_complex',
-    '[0:a][1:a]concat=n=2:v=0:a=1',
-    '-c:a',
-    codec,
-    output,
-  )
-  return buildCommandSequence(cmd)
+  return {
+    bin: 'ffmpeg',
+    args: [
+      '-nostdin',
+      '-y',
+      '-i',
+      input,
+      '-f',
+      'lavfi',
+      '-t',
+      padSeconds.toFixed(3),
+      '-i',
+      `anullsrc=r=${sampleRate}:cl=${layout}`,
+      '-filter_complex',
+      '[0:a][1:a]concat=n=2:v=0:a=1',
+      '-c:a',
+      codec,
+      output,
+    ],
+  }
 }
 
 /**
@@ -96,17 +95,18 @@ export function buildCopyAudioCommand({
 }: {
   input: string
   output: string
-}) {
-  const cmd = getCommand('ffmpeg')
-  cmd.link.push('-nostdin', '-y', '-i', input, '-c', 'copy', output)
-  return buildCommandSequence(cmd)
+}): { bin: 'ffmpeg'; args: string[] } {
+  return {
+    bin: 'ffmpeg',
+    args: ['-nostdin', '-y', '-i', input, '-c', 'copy', output],
+  }
 }
 
 /**
  * Parse a duration string into milliseconds. Accepts:
- *   `MM:SS.mmm`   →  M*60000 + S*1000 + ms
- *   `SS.mmm`      →  S*1000 + ms
- *   `Ns`          →  N*1000  (`s` suffix optional)
+ *   `MM:SS.mmm`   ->  M*60000 + S*1000 + ms
+ *   `SS.mmm`      ->  S*1000 + ms
+ *   `Ns`          ->  N*1000  (`s` suffix optional)
  */
 export function parseDurationMs(raw: string): number {
   const trimmed = raw.trim().replace(/s$/i, '')
@@ -124,6 +124,6 @@ export function parseDurationMs(raw: string): number {
     return Math.round(seconds * 1000)
   }
   throw new Error(
-    `Invalid duration "${raw}" — use MM:SS.mmm, seconds, or Ns`,
+    `Invalid duration "${raw}" -- use MM:SS.mmm, seconds, or Ns`,
   )
 }

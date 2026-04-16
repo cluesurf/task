@@ -56,5 +56,6 @@ const [removePasswordNode, testRemovePasswordNode] = createNodeHandler({
   runLocal,
 })
 
+export default removePasswordNode
 export { removePasswordNode, testRemovePasswordNode }
 export type { RemovePasswordNodeInput }

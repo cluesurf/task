@@ -92,9 +92,11 @@ export const DisassembleGhidraNodeLocalInputParser = z.object({
   input: z.object({
     file: z.lazy(() => LocalPathParser),
   }),
-  output: z.object({
-    file: z.optional(z.lazy(() => LocalPathParser)),
-  }),
+  output: z.optional(
+    z.object({
+      file: z.optional(z.lazy(() => LocalPathParser)),
+    }),
+  ),
   profile: z.optional(z.string()),
   script: z.optional(z.string()),
   ghidraHome: z.optional(z.string()),
@@ -117,9 +119,11 @@ export const DisassembleGhidraNodeLocalInternalInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  output: z.object({
-    file: z.optional(z.lazy(() => LocalOutputPathParser)),
-  }),
+  output: z.optional(
+    z.object({
+      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+    }),
+  ),
   profile: z.optional(z.string()),
   script: z.optional(z.string()),
   ghidraHome: z.optional(z.string()),

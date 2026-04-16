@@ -40,4 +40,5 @@ const [compressVideoNode, testCompressVideoNode] = createNodeHandler({
   runLocal,
 })
 
+export default compressVideoNode
 export { compressVideoNode, testCompressVideoNode }

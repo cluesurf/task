@@ -1,27 +1,63 @@
-// RAW → JPEG / TIFF / PNG via darktable-cli. Slower than dcraw but
+// RAW -> JPEG / TIFF / PNG via darktable-cli. Slower than dcraw but
 // applies the full darktable pipeline (denoise, lens correction,
 // color). Use this when output quality matters.
 
-import { exec } from '~/code/tool/node/process'
+import type {
+  ConvertImageWithDarktableNodeInput,
+  ConvertImageWithDarktableNodeLocalInput,
+} from '~/code/form/action/convert/image/darktable/node'
+import {
+  ConvertImageWithDarktableNodeInputParser,
+  ConvertImageWithDarktableNodeLocalInputParser,
+  ConvertImageWithDarktableNodeOutputParser,
+} from '~/code/form/action/convert/image/darktable/node/take'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { buildCommandToConvertImageWithDarktable } from './command'
 
-export type ConvertImageWithDarktableNodeInput = {
-  input: { path: string }
-  output: { path: string }
-  /** Optional XMP sidecar with develop parameters. */
-  xmp?: string
-  /** High-quality resampling (slower). */
-  highQuality?: boolean
-  /** Upscale output beyond the input's pixel dimensions. */
-  upscale?: boolean
+async function runLocal(
+  input: ConvertImageWithDarktableNodeLocalInput,
+) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output.file.path
+  const command = buildCommandToConvertImageWithDarktable({
+    inputPath,
+    outputPath,
+    xmp: input.xmp,
+    highQuality: input.highQuality,
+    upscale: input.upscale,
+  })
+  await spawnAndWait({
+    verb: 'convert image',
+    bin: command.bin,
+    args: command.args,
+  })
+  return { file: { path: outputPath } }
 }
 
-export async function convertImageWithDarktableNode(
-  source: ConvertImageWithDarktableNodeInput,
-): Promise<void> {
-  const argv = ['darktable-cli', source.input.path]
-  if (source.xmp) argv.push(source.xmp)
-  argv.push(source.output.path)
-  if (source.highQuality) argv.push('--hq', '1')
-  if (source.upscale) argv.push('--upscale', '1')
-  await exec(argv)
+const [
+  convertImageWithDarktableNode,
+  testConvertImageWithDarktableNode,
+] = createNodeHandler({
+  parsers: {
+    input: ConvertImageWithDarktableNodeInputParser,
+    local: ConvertImageWithDarktableNodeLocalInputParser,
+    output: ConvertImageWithDarktableNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export default convertImageWithDarktableNode
+export {
+  convertImageWithDarktableNode,
+  testConvertImageWithDarktableNode,
 }
+export type { ConvertImageWithDarktableNodeInput }

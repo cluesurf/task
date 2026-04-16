@@ -58,4 +58,5 @@ const [disassembleWasmNode, testDisassembleWasmNode] =
     runLocal,
   })
 
+export default disassembleWasmNode
 export { disassembleWasmNode, testDisassembleWasmNode }

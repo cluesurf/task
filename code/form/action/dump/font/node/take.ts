@@ -71,9 +71,11 @@ export const DumpFontNodeLocalInputParser = z.object({
   input: z.object({
     file: z.lazy(() => LocalPathParser),
   }),
-  output: z.object({
-    file: z.optional(z.lazy(() => LocalPathParser)),
-  }),
+  output: z.optional(
+    z.object({
+      file: z.optional(z.lazy(() => LocalPathParser)),
+    }),
+  ),
   tables: z.optional(z.string()),
 })
 
@@ -89,9 +91,11 @@ export const DumpFontNodeLocalInternalInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  output: z.object({
-    file: z.optional(z.lazy(() => LocalOutputPathParser)),
-  }),
+  output: z.optional(
+    z.object({
+      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+    }),
+  ),
   tables: z.optional(z.string()),
 })
 

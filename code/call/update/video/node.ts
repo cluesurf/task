@@ -57,4 +57,5 @@ const [updateVideoNode, testUpdateVideoNode] = createNodeHandler({
   runLocal,
 })
 
+export default updateVideoNode
 export { updateVideoNode, testUpdateVideoNode }

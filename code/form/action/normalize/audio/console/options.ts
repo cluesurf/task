@@ -35,7 +35,7 @@ export const options: CliOption[] = [
     "like": "string",
     "list": false,
     "need": false,
-    "note": "Integrated loudness target in LUFS (default −16)"
+    "note": "Integrated loudness target in LUFS (default -16)"
   },
   {
     "path": [
@@ -45,7 +45,7 @@ export const options: CliOption[] = [
     "like": "string",
     "list": false,
     "need": false,
-    "note": "True-peak ceiling in dBTP (default −1)"
+    "note": "True-peak ceiling in dBTP (default -1)"
   },
   {
     "path": [

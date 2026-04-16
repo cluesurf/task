@@ -1,16 +1,16 @@
 /**
- * `task inspect file <path>` — produce a key/value table about a
+ * `task inspect file <path>` -- produce a key/value table about a
  * file. Routes by extension to a per-format extractor:
  *
- *   .pdf                  → pdf-lib
- *   .png .jpg .gif .webp  → ffprobe (covers most raster + many
+ *   .pdf                  -> pdf-lib
+ *   .png .jpg .gif .webp  -> ffprobe (covers most raster + many
  *                            container formats)
- *   .mp3 .wav .flac .ogg  → ffprobe
- *   .mp4 .mov .mkv        → ffprobe
- *   anything else         → fallback: type + size only
+ *   .mp3 .wav .flac .ogg  -> ffprobe
+ *   .mp4 .mov .mkv        -> ffprobe
+ *   anything else         -> fallback: type + size only
  *
  * Returns `{ groups: [{ rows: [{ key, value }] }] }`. Pretty / text
- * mode prints the table to stdout; JSON mode emits the structure
+ * mode prints the table to stdout. JSON mode emits the structure
  * (consumers that pipe this through `task ... -f json | jq` get
  * a stable shape).
  */
@@ -19,27 +19,25 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import tint, { Tint } from '@termsurf/tint-text'
 import stripAnsi from 'strip-ansi'
-import { exec } from '~/code/tool/node/process'
-import { getCommand } from '~/code/tool/shared/command'
+import type { InspectFileNodeLocalInput } from '~/code/form/action/inspect/file/node'
+import {
+  InspectFileNodeInputParser,
+  InspectFileNodeLocalInputParser,
+  InspectFileNodeOutputParser,
+} from '~/code/form/action/inspect/file/node/take'
+import { createNodeHandler } from '~/code/tool/node/handler'
 import { getLoggingStyle } from '~/code/tool/node/log'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
+import { spawnAndCapture } from '~/code/tool/node/spawn'
 
 export type InspectRow = { key: string; value: string }
 export type InspectGroup = { label?: string; rows: InspectRow[] }
 
-export type InspectFileNodeInput = {
-  input: { file: { path: string } }
-}
-
-export type InspectFileNodeOutput = {
-  file: { path: string }
-  type: string
-  groups: InspectGroup[]
-}
-
-export async function inspectFileNode(
-  source: InspectFileNodeInput,
-): Promise<InspectFileNodeOutput> {
-  const filePath = source.input.file.path
+async function runLocal(input: InspectFileNodeLocalInput) {
+  const filePath = input.input.file.path
   const stats = await fs.stat(filePath)
   const type = detectType(filePath)
 
@@ -68,10 +66,6 @@ export async function inspectFileNode(
       break
   }
 
-  // Fold the per-type extractor's first group into the header so
-  // the top block reads as one compact summary (type / size /
-  // pages, type / size / codec, ...) instead of breaking after two
-  // rows. Subsequent groups keep their own visual separator.
   const groups: InspectGroup[] = []
   if (extra.length > 0) {
     groups.push({ rows: [...header, ...extra[0]!.rows] })
@@ -80,7 +74,6 @@ export async function inspectFileNode(
     groups.push({ rows: header })
   }
 
-  // Render to stdout for the human modes; runAction handles JSON.
   if (
     getLoggingStyle() === 'pretty' ||
     getLoggingStyle() === 'text'
@@ -92,11 +85,7 @@ export async function inspectFileNode(
     })
   }
 
-  return {
-    file: { path: filePath },
-    type,
-    groups,
-  }
+  return { file: { path: filePath } }
 }
 
 // ---- per-type extractors ------------------------------------------
@@ -132,11 +121,11 @@ async function inspectPdf(filePath: string): Promise<InspectGroup[]> {
   if (size) {
     layout.push({
       key: 'dimensions',
-      value: `${Math.round(size.width)} × ${Math.round(size.height)} pt` +
+      value: `${Math.round(size.width)} x ${Math.round(size.height)} pt` +
         ` (${describePageSize(size.width, size.height)})`,
     })
   }
-  layout.push({ key: 'rotation', value: `${rotation}°` })
+  layout.push({ key: 'rotation', value: `${rotation} deg` })
 
   const flags: InspectRow[] = [
     { key: 'encrypted', value: pdf.isEncrypted ? 'yes' : 'no' },
@@ -153,17 +142,19 @@ async function inspectMedia(
   filePath: string,
   kind: 'audio' | 'video',
 ): Promise<InspectGroup[]> {
-  const ffprobe = getCommand('ffprobe')
-  ffprobe.link.push(
-    '-v',
-    'quiet',
-    '-print_format',
-    'json',
-    '-show_format',
-    '-show_streams',
-    filePath,
-  )
-  const { stdout } = await exec(ffprobe.link)
+  const stdout = await spawnAndCapture({
+    verb: 'inspect file',
+    bin: 'ffprobe',
+    args: [
+      '-v',
+      'quiet',
+      '-print_format',
+      'json',
+      '-show_format',
+      '-show_streams',
+      filePath,
+    ],
+  })
   const probe: ProbeJson = stdout ? JSON.parse(stdout) : {}
 
   const stream = probe.streams?.find(s =>
@@ -177,7 +168,7 @@ async function inspectMedia(
     if (stream.width && stream.height) {
       meta.push({
         key: 'dimensions',
-        value: `${stream.width} × ${stream.height} px`,
+        value: `${stream.width} x ${stream.height} px`,
       })
     }
     if (stream.sample_rate) {
@@ -214,10 +205,6 @@ async function inspectMedia(
 }
 
 async function inspectFont(filePath: string): Promise<InspectGroup[]> {
-  // Pure-JS SFNT reader — no python subprocess. Covers TTF / OTF
-  // directly and WOFF via zlib inflation. WOFF2's Brotli + table
-  // transforms aren't implemented here; those callers get a hint
-  // to go through `task dump font` (via ttx) instead.
   const { readFontInfo } = await import('./font')
   const info = await readFontInfo(filePath)
 
@@ -228,7 +215,7 @@ async function inspectFont(filePath: string): Promise<InspectGroup[]> {
           {
             key: 'note',
             value:
-              'WOFF2 tables are Brotli-encoded; run `task dump font` to decode, ' +
+              'WOFF2 tables are Brotli-encoded. Run `task dump font` to decode, ' +
               'then `task inspect file` on the .ttx.',
           },
         ],
@@ -266,7 +253,7 @@ async function inspectFont(filePath: string): Promise<InspectGroup[]> {
 
   const axes: InspectRow[] = (info.axes ?? []).map(a => ({
     key: `axis ${a.tag}`,
-    value: `${a.min} → ${a.default} → ${a.max}`,
+    value: `${a.min} -> ${a.default} -> ${a.max}`,
   }))
 
   const tables: InspectRow[] = info.tables.length
@@ -281,12 +268,6 @@ async function inspectFont(filePath: string): Promise<InspectGroup[]> {
   return groups
 }
 
-/**
- * Fallback inspector for anything that didn't match a dedicated
- * extractor (text files, binaries, random stuff). Reports the
- * libmagic type + MIME plus line-ending and character-encoding
- * when the file has any text content.
- */
 async function inspectGeneric(filePath: string): Promise<InspectGroup[]> {
   const { readFileTypeInfo } = await import('~/code/tool/node/text/base')
   const info = await readFileTypeInfo(filePath)
@@ -365,7 +346,6 @@ function isoDate(d: Date): string {
 }
 
 function describePageSize(width: number, height: number): string {
-  // Common page sizes (pt at 72 DPI), with ±2pt tolerance.
   const candidates: Array<[string, number, number]> = [
     ['Letter', 612, 792],
     ['Legal', 612, 1008],
@@ -401,7 +381,7 @@ function formatClock(ms: number): string {
 
 // ---- pretty / text renderer ---------------------------------------
 
-async function renderTable({
+function renderTable({
   title,
   groups,
   color,
@@ -409,22 +389,19 @@ async function renderTable({
   title: string
   groups: InspectGroup[]
   color: boolean
-}): Promise<void> {
+}): void {
   const paint = color
     ? (s: string, tone: Tint) => tint(s, tone)
     : (s: string) => s
 
-  const KEY: Tint = { tone: 'white' }
-  const VAL: Tint = { tone: 'whiteBright' }
-  const HEAD: Tint = { tone: 'whiteBright', bold: true }
+  const KEY_T: Tint = { tone: 'white' }
+  const VAL_T: Tint = { tone: 'whiteBright' }
+  const HEAD_T: Tint = { tone: 'whiteBright', bold: true }
 
   const widest = groups
     .flatMap(g => g.rows.map(r => r.key.length))
     .reduce((m, n) => Math.max(m, n), 0)
 
-  // Terminal width for value wrapping. Fall back to 100 when
-  // stdout isn't a TTY (piped output, tests) so the layout stays
-  // deterministic.
   const termWidth =
     process.stdout.columns && process.stdout.columns > 40
       ? process.stdout.columns
@@ -436,18 +413,18 @@ async function renderTable({
 
   const out: string[] = []
   out.push('')
-  out.push(paint(title, HEAD))
+  out.push(paint(title, HEAD_T))
   out.push('')
 
   for (let i = 0; i < groups.length; i++) {
     const g = groups[i]!
     if (g.rows.length === 0) continue
     for (const row of g.rows) {
-      const key = paint(row.key.padEnd(widest), KEY)
+      const key = paint(row.key.padEnd(widest), KEY_T)
       const chunks = wrapValue(row.value, valueWidth)
-      out.push(`${key}${gap}${paint(chunks[0] ?? '', VAL)}`)
+      out.push(`${key}${gap}${paint(chunks[0] ?? '', VAL_T)}`)
       for (let j = 1; j < chunks.length; j++) {
-        out.push(`${continuation}${paint(chunks[j]!, VAL)}`)
+        out.push(`${continuation}${paint(chunks[j]!, VAL_T)}`)
       }
     }
     if (i < groups.length - 1) out.push('')
@@ -458,13 +435,6 @@ async function renderTable({
   process.stdout.write(color ? text + '\n' : stripAnsi(text) + '\n')
 }
 
-/**
- * Wrap a value into lines of at most `width` visible chars so
- * the caller can emit continuation lines aligned under the value
- * column. Splits on whitespace; hard-breaks tokens that don't
- * fit (long URLs, hashes) so an unsplittable string never blows
- * past the column.
- */
 function wrapValue(value: string, width: number): string[] {
   if (!value) return ['']
   if (value.length <= width) return [value]
@@ -494,3 +464,19 @@ function wrapValue(value: string, width: number): string[] {
   if (current) lines.push(current)
   return lines
 }
+
+const [inspectFileNode, testInspectFileNode] = createNodeHandler({
+  parsers: {
+    input: InspectFileNodeInputParser,
+    local: InspectFileNodeLocalInputParser,
+    output: InspectFileNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export default inspectFileNode
+export { inspectFileNode, testInspectFileNode }

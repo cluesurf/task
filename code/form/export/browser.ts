@@ -77,13 +77,57 @@ import type {
   ConvertTxtWithPuppeteerBrowserOutput,
 } from '~/code/form/action/convert/puppeteer/browser'
 import type {
+  ConvertImageWithApngasmBrowserInput,
+  ConvertImageWithApngasmBrowserOutput,
+} from '~/code/form/action/convert/image/apngasm/browser'
+import type {
+  ConvertImageWithAutotraceBrowserInput,
+  ConvertImageWithAutotraceBrowserOutput,
+} from '~/code/form/action/convert/image/autotrace/browser'
+import type {
+  ConvertImageWithDarktableBrowserInput,
+  ConvertImageWithDarktableBrowserOutput,
+} from '~/code/form/action/convert/image/darktable/browser'
+import type {
+  ConvertImageWithDcrawBrowserInput,
+  ConvertImageWithDcrawBrowserOutput,
+} from '~/code/form/action/convert/image/dcraw/browser'
+import type {
+  ConvertImageWithFfmpegBrowserInput,
+  ConvertImageWithFfmpegBrowserOutput,
+} from '~/code/form/action/convert/image/ffmpeg/browser'
+import type {
+  ConvertImageWithGifsicleBrowserInput,
+  ConvertImageWithGifsicleBrowserOutput,
+} from '~/code/form/action/convert/image/gifsicle/browser'
+import type {
   ConvertImageWithImageMagickBrowserInput,
   ConvertImageWithImageMagickBrowserOutput,
 } from '~/code/form/action/convert/imagemagick/browser'
 import type {
+  ConvertImageWithImg2WebpBrowserInput,
+  ConvertImageWithImg2WebpBrowserOutput,
+} from '~/code/form/action/convert/image/img2webp/browser'
+import type {
   ConvertImageWithInkscapeBrowserInput,
   ConvertImageWithInkscapeBrowserOutput,
 } from '~/code/form/action/convert/inkscape/browser'
+import type {
+  ConvertImageWithPotraceBrowserInput,
+  ConvertImageWithPotraceBrowserOutput,
+} from '~/code/form/action/convert/image/potrace/browser'
+import type {
+  ConvertImageWithRadianceBrowserInput,
+  ConvertImageWithRadianceBrowserOutput,
+} from '~/code/form/action/convert/image/radiance/browser'
+import type {
+  ConvertImageWithRawtherapeeBrowserInput,
+  ConvertImageWithRawtherapeeBrowserOutput,
+} from '~/code/form/action/convert/image/rawtherapee/browser'
+import type {
+  ConvertImageWithRsvgBrowserInput,
+  ConvertImageWithRsvgBrowserOutput,
+} from '~/code/form/action/convert/image/rsvg/browser'
 import type {
   ConvertLatexToPngBrowserInput,
   ConvertLatexToPngBrowserOutput,
@@ -151,13 +195,45 @@ import type {
   FormatSwiftBrowserOutput,
 } from '~/code/form/action/format/code/browser'
 import type {
+  GetDurationBrowserInput,
+  GetDurationBrowserOutput,
+} from '~/code/form/action/get/duration/browser'
+import type {
+  InspectFileBrowserInput,
+  InspectFileBrowserOutput,
+} from '~/code/form/action/inspect/file/browser'
+import type {
+  InspectMetadataBrowserInput,
+  InspectMetadataBrowserOutput,
+} from '~/code/form/action/inspect/metadata/browser'
+import type {
+  ModifyPdfBrowserInput,
+  ModifyPdfBrowserOutput,
+} from '~/code/form/action/modify/pdf/browser'
+import type {
   NormalizeAudioBrowserInput,
   NormalizeAudioBrowserOutput,
 } from '~/code/form/action/normalize/audio/browser'
 import type {
+  PadBrowserInput,
+  PadBrowserOutput,
+} from '~/code/form/action/pad/browser'
+import type {
+  RemoveAudioBrowserInput,
+  RemoveAudioBrowserOutput,
+} from '~/code/form/action/remove/audio/browser'
+import type {
   RemoveExifBrowserInput,
   RemoveExifBrowserOutput,
 } from '~/code/form/action/remove/exif/browser'
+import type {
+  RemoveInvisibleBrowserInput,
+  RemoveInvisibleBrowserOutput,
+} from '~/code/form/action/remove/invisible/browser'
+import type {
+  RemoveMetadataBrowserInput,
+  RemoveMetadataBrowserOutput,
+} from '~/code/form/action/remove/metadata/browser'
 import type {
   RemovePasswordBrowserInput,
   RemovePasswordBrowserOutput,
@@ -194,6 +270,10 @@ import type {
   ShapeFontBrowserInput,
   ShapeFontBrowserOutput,
 } from '~/code/form/action/shape/font/browser'
+import type {
+  SplitAudioBrowserInput,
+  SplitAudioBrowserOutput,
+} from '~/code/form/action/split/audio/browser'
 import type {
   SubsetFontBrowserInput,
   SubsetFontBrowserOutput,
@@ -244,8 +324,19 @@ export interface TaskSurface {
   convert(input: ConvertDocumentWithPandocBrowserInput): Promise<ConvertDocumentWithPandocBrowserOutput>
   convert(input: ConvertFontWithFontForgeBrowserInput): Promise<ConvertFontWithFontForgeBrowserOutput>
   convert(input: ConvertHtmlWithPuppeteerBrowserInput): Promise<ConvertHtmlWithPuppeteerBrowserOutput>
+  convert(input: ConvertImageWithApngasmBrowserInput): Promise<ConvertImageWithApngasmBrowserOutput>
+  convert(input: ConvertImageWithAutotraceBrowserInput): Promise<ConvertImageWithAutotraceBrowserOutput>
+  convert(input: ConvertImageWithDarktableBrowserInput): Promise<ConvertImageWithDarktableBrowserOutput>
+  convert(input: ConvertImageWithDcrawBrowserInput): Promise<ConvertImageWithDcrawBrowserOutput>
+  convert(input: ConvertImageWithFfmpegBrowserInput): Promise<ConvertImageWithFfmpegBrowserOutput>
+  convert(input: ConvertImageWithGifsicleBrowserInput): Promise<ConvertImageWithGifsicleBrowserOutput>
   convert(input: ConvertImageWithImageMagickBrowserInput): Promise<ConvertImageWithImageMagickBrowserOutput>
+  convert(input: ConvertImageWithImg2WebpBrowserInput): Promise<ConvertImageWithImg2WebpBrowserOutput>
   convert(input: ConvertImageWithInkscapeBrowserInput): Promise<ConvertImageWithInkscapeBrowserOutput>
+  convert(input: ConvertImageWithPotraceBrowserInput): Promise<ConvertImageWithPotraceBrowserOutput>
+  convert(input: ConvertImageWithRadianceBrowserInput): Promise<ConvertImageWithRadianceBrowserOutput>
+  convert(input: ConvertImageWithRawtherapeeBrowserInput): Promise<ConvertImageWithRawtherapeeBrowserOutput>
+  convert(input: ConvertImageWithRsvgBrowserInput): Promise<ConvertImageWithRsvgBrowserOutput>
   convert(input: ConvertLatexToPngBrowserInput): Promise<ConvertLatexToPngBrowserOutput>
   convert(input: ConvertLatexWithPdfLatexBrowserInput): Promise<ConvertLatexWithPdfLatexBrowserOutput>
   convert(input: ConvertMarkdownWithPuppeteerBrowserInput): Promise<ConvertMarkdownWithPuppeteerBrowserOutput>
@@ -274,9 +365,21 @@ export interface TaskSurface {
   format(input: FormatRustBrowserInput): Promise<FormatRustBrowserOutput>
   format(input: FormatSwiftBrowserInput): Promise<FormatSwiftBrowserOutput>
 
+  get(input: GetDurationBrowserInput): Promise<GetDurationBrowserOutput>
+
+  inspect(input: InspectFileBrowserInput): Promise<InspectFileBrowserOutput>
+  inspect(input: InspectMetadataBrowserInput): Promise<InspectMetadataBrowserOutput>
+
+  modify(input: ModifyPdfBrowserInput): Promise<ModifyPdfBrowserOutput>
+
   normalize(input: NormalizeAudioBrowserInput): Promise<NormalizeAudioBrowserOutput>
 
+  pad(input: PadBrowserInput): Promise<PadBrowserOutput>
+
+  remove(input: RemoveAudioBrowserInput): Promise<RemoveAudioBrowserOutput>
   remove(input: RemoveExifBrowserInput): Promise<RemoveExifBrowserOutput>
+  remove(input: RemoveInvisibleBrowserInput): Promise<RemoveInvisibleBrowserOutput>
+  remove(input: RemoveMetadataBrowserInput): Promise<RemoveMetadataBrowserOutput>
   remove(input: RemovePasswordBrowserInput): Promise<RemovePasswordBrowserOutput>
   remove(input: RemoveProfileBrowserInput): Promise<RemoveProfileBrowserOutput>
   remove(input: RemoveSubtitlesBrowserInput): Promise<RemoveSubtitlesBrowserOutput>
@@ -290,6 +393,8 @@ export interface TaskSurface {
   sanitize(input: SanitizeHtmlBrowserInput): Promise<SanitizeHtmlBrowserOutput>
 
   shape(input: ShapeFontBrowserInput): Promise<ShapeFontBrowserOutput>
+
+  split(input: SplitAudioBrowserInput): Promise<SplitAudioBrowserOutput>
 
   subset(input: SubsetFontBrowserInput): Promise<SubsetFontBrowserOutput>
 
@@ -336,8 +441,19 @@ export type ConvertBrowserInput =
   | ConvertDocumentWithPandocBrowserInput
   | ConvertFontWithFontForgeBrowserInput
   | ConvertHtmlWithPuppeteerBrowserInput
+  | ConvertImageWithApngasmBrowserInput
+  | ConvertImageWithAutotraceBrowserInput
+  | ConvertImageWithDarktableBrowserInput
+  | ConvertImageWithDcrawBrowserInput
+  | ConvertImageWithFfmpegBrowserInput
+  | ConvertImageWithGifsicleBrowserInput
   | ConvertImageWithImageMagickBrowserInput
+  | ConvertImageWithImg2WebpBrowserInput
   | ConvertImageWithInkscapeBrowserInput
+  | ConvertImageWithPotraceBrowserInput
+  | ConvertImageWithRadianceBrowserInput
+  | ConvertImageWithRawtherapeeBrowserInput
+  | ConvertImageWithRsvgBrowserInput
   | ConvertLatexToPngBrowserInput
   | ConvertLatexWithPdfLatexBrowserInput
   | ConvertMarkdownWithPuppeteerBrowserInput
@@ -354,8 +470,19 @@ export type ConvertBrowserOutput =
   | ConvertDocumentWithPandocBrowserOutput
   | ConvertFontWithFontForgeBrowserOutput
   | ConvertHtmlWithPuppeteerBrowserOutput
+  | ConvertImageWithApngasmBrowserOutput
+  | ConvertImageWithAutotraceBrowserOutput
+  | ConvertImageWithDarktableBrowserOutput
+  | ConvertImageWithDcrawBrowserOutput
+  | ConvertImageWithFfmpegBrowserOutput
+  | ConvertImageWithGifsicleBrowserOutput
   | ConvertImageWithImageMagickBrowserOutput
+  | ConvertImageWithImg2WebpBrowserOutput
   | ConvertImageWithInkscapeBrowserOutput
+  | ConvertImageWithPotraceBrowserOutput
+  | ConvertImageWithRadianceBrowserOutput
+  | ConvertImageWithRawtherapeeBrowserOutput
+  | ConvertImageWithRsvgBrowserOutput
   | ConvertLatexToPngBrowserOutput
   | ConvertLatexWithPdfLatexBrowserOutput
   | ConvertMarkdownWithPuppeteerBrowserOutput
@@ -411,19 +538,47 @@ export type FormatBrowserOutput =
   | FormatRustBrowserOutput
   | FormatSwiftBrowserOutput
 
+export type GetBrowserInput =
+  | GetDurationBrowserInput
+export type GetBrowserOutput =
+  | GetDurationBrowserOutput
+
+export type InspectBrowserInput =
+  | InspectFileBrowserInput
+  | InspectMetadataBrowserInput
+export type InspectBrowserOutput =
+  | InspectFileBrowserOutput
+  | InspectMetadataBrowserOutput
+
+export type ModifyBrowserInput =
+  | ModifyPdfBrowserInput
+export type ModifyBrowserOutput =
+  | ModifyPdfBrowserOutput
+
 export type NormalizeBrowserInput =
   | NormalizeAudioBrowserInput
 export type NormalizeBrowserOutput =
   | NormalizeAudioBrowserOutput
 
+export type PadBrowserInput =
+  | PadBrowserInput
+export type PadBrowserOutput =
+  | PadBrowserOutput
+
 export type RemoveBrowserInput =
+  | RemoveAudioBrowserInput
   | RemoveExifBrowserInput
+  | RemoveInvisibleBrowserInput
+  | RemoveMetadataBrowserInput
   | RemovePasswordBrowserInput
   | RemoveProfileBrowserInput
   | RemoveSubtitlesBrowserInput
   | RemoveTransparencyBrowserInput
 export type RemoveBrowserOutput =
+  | RemoveAudioBrowserOutput
   | RemoveExifBrowserOutput
+  | RemoveInvisibleBrowserOutput
+  | RemoveMetadataBrowserOutput
   | RemovePasswordBrowserOutput
   | RemoveProfileBrowserOutput
   | RemoveSubtitlesBrowserOutput
@@ -450,6 +605,11 @@ export type ShapeBrowserInput =
   | ShapeFontBrowserInput
 export type ShapeBrowserOutput =
   | ShapeFontBrowserOutput
+
+export type SplitBrowserInput =
+  | SplitAudioBrowserInput
+export type SplitBrowserOutput =
+  | SplitAudioBrowserOutput
 
 export type SubsetBrowserInput =
   | SubsetFontBrowserInput

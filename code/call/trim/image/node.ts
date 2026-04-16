@@ -7,7 +7,7 @@ import {
 import { ensureParentDir } from '~/code/tool/node/file'
 import { createNodeHandler } from '~/code/tool/node/handler'
 import { resolveExternalInput, resolveInternalInput } from '~/code/tool/node/resolve'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import { buildCommandToTrimImage } from './command'
 
 function parseCropGeometry(crop: string): string {
@@ -26,12 +26,16 @@ async function runLocal(input: TrimImageNodeLocalInput) {
   const outputPath = input.output.file.path
   const geometry = parseCropGeometry(input.crop)
   await ensureParentDir(outputPath)
-  const sequence = buildCommandToTrimImage({
+  const command = buildCommandToTrimImage({
     inputPath,
     outputPath,
     geometry,
   })
-  await runCommandSequence(sequence)
+  await spawnAndWait({
+    verb: 'trim image',
+    bin: command.bin,
+    args: command.args,
+  })
   return { file: { path: outputPath } }
 }
 
@@ -48,4 +52,5 @@ const [trimImageNode, testTrimImageNode] = createNodeHandler({
   runLocal,
 })
 
+export default trimImageNode
 export { trimImageNode, testTrimImageNode }

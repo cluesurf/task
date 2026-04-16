@@ -1,24 +1,30 @@
 /**
- * Pad an audio file with trailing silence so its duration meets
- * a target. Workflow:
+ * `task pad` -- pad an audio file with trailing silence so its
+ * duration meets a target. Workflow:
  *
  *   1. ffprobe the input to read its current duration.
  *   2. If already >= target, ffmpeg-copy through to the output.
  *   3. Otherwise, ffmpeg-concat with `anullsrc` of the missing
  *      tail and re-encode with the codec matched to the output
  *      extension.
- *
- * Inspired by `deck/etch/scripts/audio/song-length.sh`. The
- * shape supports every common audio container; ffmpeg picks the
- * encoder from the output extension.
  */
 
 import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
-import { exec } from '~/code/tool/node/process'
-import { runCommandSequence } from '~/code/tool/node/command'
+import type { PadNodeLocalInput } from '~/code/form/action/pad/node'
+import {
+  PadNodeInputParser,
+  PadNodeLocalInputParser,
+  PadNodeOutputParser,
+} from '~/code/form/action/pad/node/take'
 import { ensureParentDir } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
+import { spawnAndWait, spawnAndCapture } from '~/code/tool/node/spawn'
 import {
   buildCopyAudioCommand,
   buildFfprobeDurationCommand,
@@ -26,49 +32,32 @@ import {
   parseDurationMs,
 } from './command'
 
-export type PadInput = {
-  input: { file: { path: string }; format?: string }
-  output: { file: { path: string }; format?: string }
-  to: string
-  sampleRate?: number
-  channels?: number
-}
-
-export type PadOutput = {
-  file: { path: string }
-  durationMsBefore: number
-  durationMsAfter: number
-  padded: boolean
-}
-
-export async function padNode(source: PadInput): Promise<PadOutput> {
-  const inputPath = source.input.file.path
-  const outputPath = source.output.file.path
-  const targetMs = parseDurationMs(source.to)
+async function runLocal(input: PadNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output.file.path
+  const targetMs = parseDurationMs(input.to)
 
   const currentMs = await probeDurationMs(inputPath)
 
   if (currentMs >= targetMs) {
     await ensureParentDir(outputPath)
     if (path.resolve(inputPath) !== path.resolve(outputPath)) {
-      await runCommandSequence(
-        buildCopyAudioCommand({ input: inputPath, output: outputPath }),
-      )
+      const command = buildCopyAudioCommand({
+        input: inputPath,
+        output: outputPath,
+      })
+      await spawnAndWait({
+        verb: 'pad',
+        bin: command.bin,
+        args: command.args,
+      })
     }
-    return {
-      file: { path: outputPath },
-      durationMsBefore: currentMs,
-      durationMsAfter: currentMs,
-      padded: false,
-    }
+    return { file: { path: outputPath } }
   }
 
   const padMs = targetMs - currentMs
   const padSeconds = padMs / 1000
 
-  // ffmpeg refuses to overwrite an in-place input. When the
-  // caller passes the same path for input and output, route
-  // through a tmp file and rename.
   const samePath = path.resolve(inputPath) === path.resolve(outputPath)
   const tmpOut = samePath
     ? path.join(
@@ -79,37 +68,54 @@ export async function padNode(source: PadInput): Promise<PadOutput> {
 
   await ensureParentDir(tmpOut)
 
-  await runCommandSequence(
-    buildPadAudioCommand({
-      input: inputPath,
-      output: tmpOut,
-      padSeconds,
-      sampleRate: source.sampleRate,
-      channels: source.channels,
-    }),
-  )
+  const command = buildPadAudioCommand({
+    input: inputPath,
+    output: tmpOut,
+    padSeconds,
+    sampleRate: input.sampleRate,
+    channels: input.channels,
+  })
+  await spawnAndWait({
+    verb: 'pad',
+    bin: command.bin,
+    args: command.args,
+  })
 
   if (samePath) {
     await fs.rename(tmpOut, outputPath)
   }
 
-  return {
-    file: { path: outputPath },
-    durationMsBefore: currentMs,
-    durationMsAfter: targetMs,
-    padded: true,
-  }
+  return { file: { path: outputPath } }
 }
 
-async function probeDurationMs(input: string): Promise<number> {
-  const sequence = buildFfprobeDurationCommand(input)
-  const cmd = sequence.call[0]!
-  const { stdout } = await exec(cmd.link)
+async function probeDurationMs(inputPath: string): Promise<number> {
+  const command = buildFfprobeDurationCommand(inputPath)
+  const stdout = await spawnAndCapture({
+    verb: 'pad',
+    bin: command.bin,
+    args: command.args,
+  })
   const seconds = Number.parseFloat(stdout.trim())
   if (!Number.isFinite(seconds)) {
     throw new Error(
-      `ffprobe returned no duration for "${input}" — is it a valid audio file?`,
+      `ffprobe returned no duration for "${inputPath}" -- is it a valid audio file?`,
     )
   }
   return Math.round(seconds * 1000)
 }
+
+const [padNode, testPadNode] = createNodeHandler({
+  parsers: {
+    input: PadNodeInputParser,
+    local: PadNodeLocalInputParser,
+    output: PadNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export default padNode
+export { padNode, testPadNode }

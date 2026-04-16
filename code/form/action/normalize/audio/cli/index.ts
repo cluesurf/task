@@ -1,11 +1,13 @@
-import { LocalPath } from '~/code/form/object/file'
-
 export type NormalizeAudioCommandInput = {
   input: {
-    file: LocalPath
+    file: {
+      path: string
+    }
   }
   output: {
-    file: LocalPath
+    file: {
+      path: string
+    }
   }
   target?: string
   peak?: string

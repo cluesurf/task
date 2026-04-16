@@ -35,7 +35,7 @@ export const options: CliOption[] = [
     "like": "string",
     "list": false,
     "need": false,
-    "note": "H.264 CRF, 0 (lossless) – 51 (worst). Default 28."
+    "note": "H.264 CRF, 0 (lossless) to 51 (worst). Default 28."
   },
   {
     "path": [
@@ -45,6 +45,6 @@ export const options: CliOption[] = [
     "like": "string",
     "list": false,
     "need": false,
-    "note": "x264 preset (ultrafast…veryslow). Default medium."
+    "note": "x264 preset (ultrafast to veryslow). Default medium."
   }
 ]

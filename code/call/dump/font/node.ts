@@ -76,4 +76,5 @@ const [dumpFontNode, testDumpFontNode] = createNodeHandler({
   runLocal,
 })
 
+export default dumpFontNode
 export { dumpFontNode, testDumpFontNode }

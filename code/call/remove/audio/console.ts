@@ -5,9 +5,13 @@ export const removeAudioConsole = buildActionCommand({
   command: 'audio',
   describe: 'Strip the audio track from a video',
   options,
-  path: ['remove', 'audio'],
   loadHandler: () => import('./node'),
+  path: ['remove', 'audio'],
   examples: [
-    { comment: 'mute a clip', command: 'task remove audio -i clip.mp4 -o clip.silent.mp4' },
+    {
+      comment: 'mute a clip',
+      command:
+        'task remove audio -i clip.mp4 -o clip.silent.mp4',
+    },
   ],
 })

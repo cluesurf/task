@@ -60,7 +60,7 @@ export type DisassembleGhidraNodeLocalInput = {
   input: {
     file: LocalPath
   }
-  output: {
+  output?: {
     file?: LocalPath
   }
   profile?: string
@@ -77,7 +77,7 @@ export type DisassembleGhidraNodeLocalInternalInput = {
   input: {
     file: FileInputPath | FileContentWithSha256
   }
-  output: {
+  output?: {
     file?: LocalOutputPath
   }
   profile?: string

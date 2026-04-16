@@ -1,32 +1,57 @@
-// Vector → raster. rsvg-convert is the fast, scriptable SVG
+// Vector -> raster. rsvg-convert is the fast, scriptable SVG
 // renderer from librsvg. Prefer over inkscape for batch jobs.
 
-import { exec } from '~/code/tool/node/process'
+import type {
+  ConvertImageWithRsvgNodeInput,
+  ConvertImageWithRsvgNodeLocalInput,
+} from '~/code/form/action/convert/image/rsvg/node'
+import {
+  ConvertImageWithRsvgNodeInputParser,
+  ConvertImageWithRsvgNodeLocalInputParser,
+  ConvertImageWithRsvgNodeOutputParser,
+} from '~/code/form/action/convert/image/rsvg/node/take'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { buildCommandToConvertImageWithRsvg } from './command'
 
-export type ConvertImageWithRsvgNodeInput = {
-  input: { path: string }
-  output: {
-    path: string
-    format?: 'png' | 'pdf' | 'ps' | 'eps' | 'svg'
-  }
-  /** Output width in pixels. Preserves aspect ratio if only one set. */
-  width?: number
-  height?: number
-  /** DPI for raster output. Default 96. */
-  dpi?: number
-  /** Background color (`#fff`, `none`, ...). Defaults to transparent. */
-  background?: string
+async function runLocal(input: ConvertImageWithRsvgNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output.file.path
+  const command = buildCommandToConvertImageWithRsvg({
+    inputPath,
+    outputPath,
+    outputFormat: input.outputFormat,
+    width: input.width,
+    height: input.height,
+    dpi: input.dpi,
+    background: input.background,
+  })
+  await spawnAndWait({
+    verb: 'convert image',
+    bin: command.bin,
+    args: command.args,
+  })
+  return { file: { path: outputPath } }
 }
 
-export async function convertImageWithRsvgNode(
-  source: ConvertImageWithRsvgNodeInput,
-): Promise<void> {
-  const fmt = source.output.format ?? 'png'
-  const argv = ['rsvg-convert', '-f', fmt, '-o', source.output.path]
-  if (source.width != null) argv.push('-w', String(source.width))
-  if (source.height != null) argv.push('-h', String(source.height))
-  if (source.dpi != null) argv.push('-d', String(source.dpi))
-  if (source.background) argv.push('-b', source.background)
-  argv.push(source.input.path)
-  await exec(argv)
-}
+const [convertImageWithRsvgNode, testConvertImageWithRsvgNode] =
+  createNodeHandler({
+    parsers: {
+      input: ConvertImageWithRsvgNodeInputParser,
+      local: ConvertImageWithRsvgNodeLocalInputParser,
+      output: ConvertImageWithRsvgNodeOutputParser,
+    },
+    resolvers: {
+      external: resolveExternalInput,
+      internal: resolveInternalInput,
+    },
+    runLocal,
+  })
+
+export default convertImageWithRsvgNode
+export { convertImageWithRsvgNode, testConvertImageWithRsvgNode }
+export type { ConvertImageWithRsvgNodeInput }

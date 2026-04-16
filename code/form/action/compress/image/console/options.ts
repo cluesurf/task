@@ -25,7 +25,7 @@ export const options: CliOption[] = [
     "short": "o",
     "like": "string",
     "list": false,
-    "need": false
+    "need": true
   },
   {
     "path": [
@@ -36,6 +36,6 @@ export const options: CliOption[] = [
     "like": "string",
     "list": false,
     "need": false,
-    "note": "JPEG/WebP quality 1–100 (default 80)"
+    "note": "JPEG/WebP quality 1 to 100 (default 80)"
   }
 ]

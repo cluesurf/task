@@ -36,4 +36,5 @@ const [rotateImageNode, testRotateImageNode] = createNodeHandler({
   runLocal,
 })
 
+export default rotateImageNode
 export { rotateImageNode, testRotateImageNode }

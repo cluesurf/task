@@ -7,14 +7,14 @@ import {
 import { ensureParentDir } from '~/code/tool/node/file'
 import { createNodeHandler } from '~/code/tool/node/handler'
 import { resolveExternalInput, resolveInternalInput } from '~/code/tool/node/resolve'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import { buildCommandToTrimVideo } from './command'
 
 async function runLocal(input: TrimVideoNodeLocalInput) {
   const inputPath = input.input.file.path
   const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
-  const sequence = buildCommandToTrimVideo({
+  const command = buildCommandToTrimVideo({
     inputPath,
     outputPath,
     start: input.start,
@@ -22,7 +22,11 @@ async function runLocal(input: TrimVideoNodeLocalInput) {
     duration: input.duration,
     reencode: input.reencode,
   })
-  await runCommandSequence(sequence)
+  await spawnAndWait({
+    verb: 'trim video',
+    bin: command.bin,
+    args: command.args,
+  })
   return { file: { path: outputPath } }
 }
 
@@ -39,4 +43,5 @@ const [trimVideoNode, testTrimVideoNode] = createNodeHandler({
   runLocal,
 })
 
+export default trimVideoNode
 export { trimVideoNode, testTrimVideoNode }

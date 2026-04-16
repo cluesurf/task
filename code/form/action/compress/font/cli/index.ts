@@ -1,10 +1,12 @@
-import { LocalPath } from '~/code/form/object/file'
-
 export type CompressFontCommandInput = {
   input: {
-    file: LocalPath
+    file: {
+      path: string
+    }
   }
-  output: {
-    file: LocalPath
+  output?: {
+    file?: {
+      path?: string
+    }
   }
 }

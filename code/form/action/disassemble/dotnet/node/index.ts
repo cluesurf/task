@@ -48,7 +48,7 @@ export type DisassembleDotnetNodeLocalInput = {
   input: {
     file: LocalPath
   }
-  output: {
+  output?: {
     file?: LocalPath
   }
   bytes?: boolean
@@ -61,7 +61,7 @@ export type DisassembleDotnetNodeLocalInternalInput = {
   input: {
     file: FileInputPath | FileContentWithSha256
   }
-  output: {
+  output?: {
     file?: LocalOutputPath
   }
   bytes?: boolean

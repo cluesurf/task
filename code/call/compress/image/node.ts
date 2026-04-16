@@ -39,4 +39,5 @@ const [compressImageNode, testCompressImageNode] = createNodeHandler({
   runLocal,
 })
 
+export default compressImageNode
 export { compressImageNode, testCompressImageNode }

@@ -3,6 +3,7 @@ import { buildSingleFileForms } from '~/code/tool/shared/base'
 const forms = buildSingleFileForms({
   name: 'remove_exif',
   save: '~/code/form/action/remove/exif',
+  outputRequired: false,
   common: {
     tag: {
       like: 'string',

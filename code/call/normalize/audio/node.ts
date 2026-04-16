@@ -48,4 +48,5 @@ const [normalizeAudioNode, testNormalizeAudioNode] = createNodeHandler({
   runLocal,
 })
 
+export default normalizeAudioNode
 export { normalizeAudioNode, testNormalizeAudioNode }

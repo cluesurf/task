@@ -68,4 +68,5 @@ const [removeExifNode, testRemoveExifNode] = createNodeHandler({
   runLocal,
 })
 
+export default removeExifNode
 export { removeExifNode, testRemoveExifNode }

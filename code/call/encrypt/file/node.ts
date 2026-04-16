@@ -91,4 +91,5 @@ const [encryptFileNode, testEncryptFileNode] = createNodeHandler({
   runLocal,
 })
 
+export default encryptFileNode
 export { encryptFileNode, testEncryptFileNode }

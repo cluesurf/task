@@ -69,4 +69,5 @@ const [updateFontNode, testUpdateFontNode] = createNodeHandler({
   runLocal,
 })
 
+export default updateFontNode
 export { updateFontNode, testUpdateFontNode }

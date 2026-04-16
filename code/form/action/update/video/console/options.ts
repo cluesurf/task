@@ -25,7 +25,7 @@ export const options: CliOption[] = [
     "short": "o",
     "like": "string",
     "list": false,
-    "need": false
+    "need": true
   },
   {
     "path": [

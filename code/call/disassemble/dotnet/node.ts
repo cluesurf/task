@@ -73,4 +73,5 @@ const [disassembleDotnetNode, testDisassembleDotnetNode] =
     runLocal,
   })
 
+export default disassembleDotnetNode
 export { disassembleDotnetNode, testDisassembleDotnetNode }

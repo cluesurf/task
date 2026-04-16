@@ -80,9 +80,11 @@ export const DisassembleRadareNodeLocalInputParser = z.object({
   input: z.object({
     file: z.lazy(() => LocalPathParser),
   }),
-  output: z.object({
-    file: z.optional(z.lazy(() => LocalPathParser)),
-  }),
+  output: z.optional(
+    z.object({
+      file: z.optional(z.lazy(() => LocalPathParser)),
+    }),
+  ),
   tool: z.optional(z.string()),
   script: z.optional(z.string()),
   profile: z.optional(z.string()),
@@ -101,9 +103,11 @@ export const DisassembleRadareNodeLocalInternalInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  output: z.object({
-    file: z.optional(z.lazy(() => LocalOutputPathParser)),
-  }),
+  output: z.optional(
+    z.object({
+      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+    }),
+  ),
   tool: z.optional(z.string()),
   script: z.optional(z.string()),
   profile: z.optional(z.string()),

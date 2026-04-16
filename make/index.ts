@@ -100,6 +100,17 @@ async function collectConsoleFormNames(): Promise<Set<string>> {
   const names = new Set<string>()
   const root = path.join('.', 'code', 'call')
   await walkConsoleFiles(root, names)
+
+  // Also include every *_command_input form in MESH that has a
+  // `save` field. Covers verbs that migrated to buildActionCommand
+  // + generated options and no longer have a `formName:` string.
+  const mesh = MESH as unknown as Record<string, { form?: string; save?: string }>
+  for (const name of Object.keys(mesh)) {
+    if (!name.endsWith('_command_input')) continue
+    const form = mesh[name]
+    if (form?.form === 'form' && form.save) names.add(name)
+  }
+
   return names
 }
 

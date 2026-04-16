@@ -45,4 +45,5 @@ const [removeProfileNode, testRemoveProfileNode] = createNodeHandler({
   runLocal,
 })
 
+export default removeProfileNode
 export { removeProfileNode, testRemoveProfileNode }

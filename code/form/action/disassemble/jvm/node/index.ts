@@ -54,7 +54,7 @@ export type DisassembleJvmNodeLocalInput = {
   input: {
     file: LocalPath
   }
-  output: {
+  output?: {
     file?: LocalPath
   }
   level?: string
@@ -69,7 +69,7 @@ export type DisassembleJvmNodeLocalInternalInput = {
   input: {
     file: FileInputPath | FileContentWithSha256
   }
-  output: {
+  output?: {
     file?: LocalOutputPath
   }
   level?: string

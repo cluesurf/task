@@ -1,21 +1,61 @@
-// HDR ↔ TIFF via Radiance's ra_tiff. For .hdr ↔ .exr, round-trip
-// through TIFF (ra_tiff → OpenEXR's exrinput/exroutput) or use
+// HDR <-> TIFF via Radiance's ra_tiff. For .hdr <-> .exr, round-trip
+// through TIFF (ra_tiff -> OpenEXR's exrinput/exroutput) or use
 // convert/image/pfstools which handles both natively.
 
-import { exec } from '~/code/tool/node/process'
+import type {
+  ConvertImageWithRadianceNodeInput,
+  ConvertImageWithRadianceNodeLocalInput,
+} from '~/code/form/action/convert/image/radiance/node'
+import {
+  ConvertImageWithRadianceNodeInputParser,
+  ConvertImageWithRadianceNodeLocalInputParser,
+  ConvertImageWithRadianceNodeOutputParser,
+} from '~/code/form/action/convert/image/radiance/node/take'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { buildCommandToConvertImageWithRadiance } from './command'
 
-export type ConvertImageWithRadianceNodeInput = {
-  input: { path: string }
-  output: { path: string }
-  /** Reverse direction (TIFF → HDR). Auto-detected from extensions. */
-  reverse?: boolean
+async function runLocal(
+  input: ConvertImageWithRadianceNodeLocalInput,
+) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output.file.path
+  const command = buildCommandToConvertImageWithRadiance({
+    inputPath,
+    outputPath,
+    reverse: input.reverse,
+  })
+  await spawnAndWait({
+    verb: 'convert image',
+    bin: command.bin,
+    args: command.args,
+  })
+  return { file: { path: outputPath } }
 }
 
-export async function convertImageWithRadianceNode(
-  source: ConvertImageWithRadianceNodeInput,
-): Promise<void> {
-  const argv = ['ra_tiff']
-  if (source.reverse) argv.push('-r')
-  argv.push(source.input.path, source.output.path)
-  await exec(argv)
+const [
+  convertImageWithRadianceNode,
+  testConvertImageWithRadianceNode,
+] = createNodeHandler({
+  parsers: {
+    input: ConvertImageWithRadianceNodeInputParser,
+    local: ConvertImageWithRadianceNodeLocalInputParser,
+    output: ConvertImageWithRadianceNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export default convertImageWithRadianceNode
+export {
+  convertImageWithRadianceNode,
+  testConvertImageWithRadianceNode,
 }
+export type { ConvertImageWithRadianceNodeInput }

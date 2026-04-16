@@ -80,9 +80,11 @@ export const DisassembleDotnetNodeLocalInputParser = z.object({
   input: z.object({
     file: z.lazy(() => LocalPathParser),
   }),
-  output: z.object({
-    file: z.optional(z.lazy(() => LocalPathParser)),
-  }),
+  output: z.optional(
+    z.object({
+      file: z.optional(z.lazy(() => LocalPathParser)),
+    }),
+  ),
   bytes: z.optional(z.boolean()),
   header: z.optional(z.boolean()),
   tokens: z.optional(z.boolean()),
@@ -101,9 +103,11 @@ export const DisassembleDotnetNodeLocalInternalInputParser = z.object({
       z.lazy(() => FileContentWithSha256Parser),
     ]),
   }),
-  output: z.object({
-    file: z.optional(z.lazy(() => LocalOutputPathParser)),
-  }),
+  output: z.optional(
+    z.object({
+      file: z.optional(z.lazy(() => LocalOutputPathParser)),
+    }),
+  ),
   bytes: z.optional(z.boolean()),
   header: z.optional(z.boolean()),
   tokens: z.optional(z.boolean()),

@@ -166,4 +166,5 @@ const [disassembleGhidraNode, testDisassembleGhidraNode] =
     runLocal,
   })
 
+export default disassembleGhidraNode
 export { disassembleGhidraNode, testDisassembleGhidraNode }

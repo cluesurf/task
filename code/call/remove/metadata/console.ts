@@ -5,10 +5,16 @@ export const removeMetadataConsole = buildActionCommand({
   command: 'metadata',
   describe: 'Strip metadata (EXIF / XMP / ID3) from a file',
   options,
-  path: ['remove', 'metadata'],
   loadHandler: () => import('./node'),
+  path: ['remove', 'metadata'],
   examples: [
-    { comment: 'in-place strip', command: 'task remove metadata photo.jpg' },
-    { comment: 'write to a new file', command: 'task remove metadata song.mp3 -o clean.mp3' },
+    {
+      comment: 'in-place strip',
+      command: 'task remove metadata photo.jpg',
+    },
+    {
+      comment: 'write to a new file',
+      command: 'task remove metadata song.mp3 -o clean.mp3',
+    },
   ],
 })

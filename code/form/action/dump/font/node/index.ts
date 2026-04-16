@@ -39,7 +39,7 @@ export type DumpFontNodeLocalInput = {
   input: {
     file: LocalPath
   }
-  output: {
+  output?: {
     file?: LocalPath
   }
   tables?: string
@@ -49,7 +49,7 @@ export type DumpFontNodeLocalInternalInput = {
   input: {
     file: FileInputPath | FileContentWithSha256
   }
-  output: {
+  output?: {
     file?: LocalOutputPath
   }
   tables?: string

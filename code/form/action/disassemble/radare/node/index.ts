@@ -48,7 +48,7 @@ export type DisassembleRadareNodeLocalInput = {
   input: {
     file: LocalPath
   }
-  output: {
+  output?: {
     file?: LocalPath
   }
   tool?: string
@@ -61,7 +61,7 @@ export type DisassembleRadareNodeLocalInternalInput = {
   input: {
     file: FileInputPath | FileContentWithSha256
   }
-  output: {
+  output?: {
     file?: LocalOutputPath
   }
   tool?: string

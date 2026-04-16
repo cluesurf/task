@@ -89,4 +89,5 @@ const [decryptFileNode, testDecryptFileNode] = createNodeHandler({
   runLocal,
 })
 
+export default decryptFileNode
 export { decryptFileNode, testDecryptFileNode }

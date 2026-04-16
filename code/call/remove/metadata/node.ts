@@ -1,14 +1,9 @@
 /**
- * `task remove metadata` — strip every metadata tag. Routes by
+ * `task remove metadata` -- strip every metadata tag. Routes by
  * extension to the tool that actually handles that container:
  *
- *   audio / video  →  ffmpeg -map_metadata -1 -c copy
- *                     (MP3, WAV, FLAC, OGG, M4A, MP4, MOV, MKV,
- *                     WEBM — exiftool refuses to write most of
- *                     these)
- *   everything     →  exiftool -all= -overwrite_original
- *                     (images, PDFs, and the rest — the path
- *                     exiftool was written for)
+ *   audio / video  ->  ffmpeg -map_metadata -1 -c copy
+ *   everything     ->  exiftool -all= -overwrite_original
  *
  * ffmpeg won't read-and-write the same path, so in-place mode
  * goes through a sibling tmp file and renames on success.
@@ -17,66 +12,106 @@
 import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
-import { ensureParentDir } from '~/code/tool/node/file'
+import type { RemoveMetadataNodeLocalInput } from '~/code/form/action/remove/metadata/node'
 import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-import { runCommandSequence } from '~/code/tool/node/command'
+  RemoveMetadataNodeInputParser,
+  RemoveMetadataNodeLocalInputParser,
+  RemoveMetadataNodeOutputParser,
+} from '~/code/form/action/remove/metadata/node/take'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import {
+  FFMPEG_EXTS,
+  buildCommandToRemoveMetadataFfmpeg,
+  buildCommandToRemoveMetadataExiftool,
+} from './command'
 
-export type RemoveMetadataNodeInput = {
-  input: { file: { path: string } }
-  output?: { file?: { path?: string } }
-}
-
-const FFMPEG_EXTS = new Set([
-  '.mp3', '.wav', '.flac', '.ogg', '.opus', '.m4a', '.aac',
-  '.mp4', '.mov', '.mkv', '.webm', '.avi', '.m4v',
-])
-
-export async function removeMetadataNode(source: RemoveMetadataNodeInput) {
-  const inputPath = source.input.file.path
-  const outputPath = source.output?.file?.path ?? inputPath
+async function runLocal(input: RemoveMetadataNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output?.file?.path ?? inputPath
   const inPlace = path.resolve(inputPath) === path.resolve(outputPath)
   const ext = path.extname(outputPath).toLowerCase()
 
   if (FFMPEG_EXTS.has(ext)) {
-    // ffmpeg refuses to read and write the same path. For an
-    // in-place edit, write to a tmp file and rename over the
-    // input on success; for explicit -o, write straight there.
-    const target = inPlace
-      ? path.join(
-          os.tmpdir(),
-          `remove-metadata.${process.pid}.${Date.now()}${ext}`,
-        )
-      : outputPath
-    if (!inPlace) {
-      await ensureParentDir(outputPath)
-    }
-    const cmd = getCommand('ffmpeg')
-    cmd.link.push(
-      '-y',
-      '-i',
-      inputPath,
-      '-map_metadata',
-      '-1',
-      '-c',
-      'copy',
-      target,
-    )
-    await runCommandSequence(buildCommandSequence(cmd))
-    if (inPlace) await fs.rename(target, inputPath)
-    return { file: { path: outputPath } }
+    return runLocalFfmpeg({ inputPath, outputPath, inPlace, ext })
   }
 
-  // Images, PDFs, and everything else — exiftool handles in-place
-  // natively via `-overwrite_original`.
-  if (!inPlace) {
-    await ensureParentDir(outputPath)
-    await fs.copyFile(inputPath, outputPath)
-  }
-  const cmd = getCommand('exiftool')
-  cmd.link.push('-all=', '-overwrite_original', outputPath)
-  await runCommandSequence(buildCommandSequence(cmd))
-  return { file: { path: outputPath } }
+  return runLocalExiftool({ inputPath, outputPath, inPlace })
 }
+
+async function runLocalFfmpeg(input: {
+  inputPath: string
+  outputPath: string
+  inPlace: boolean
+  ext: string
+}) {
+  const target = input.inPlace
+    ? path.join(
+        os.tmpdir(),
+        `remove-metadata.${process.pid}.${Date.now()}${input.ext}`,
+      )
+    : input.outputPath
+
+  if (!input.inPlace) {
+    await ensureParentDir(input.outputPath)
+  }
+
+  const command = buildCommandToRemoveMetadataFfmpeg({
+    inputPath: input.inputPath,
+    outputPath: target,
+  })
+  await spawnAndWait({
+    verb: 'remove metadata',
+    bin: command.bin,
+    args: command.args,
+  })
+
+  if (input.inPlace) {
+    await fs.rename(target, input.inputPath)
+  }
+
+  return { file: { path: input.outputPath } }
+}
+
+async function runLocalExiftool(input: {
+  inputPath: string
+  outputPath: string
+  inPlace: boolean
+}) {
+  if (!input.inPlace) {
+    await ensureParentDir(input.outputPath)
+    await fs.copyFile(input.inputPath, input.outputPath)
+  }
+
+  const command = buildCommandToRemoveMetadataExiftool({
+    filePath: input.outputPath,
+  })
+  await spawnAndWait({
+    verb: 'remove metadata',
+    bin: command.bin,
+    args: command.args,
+  })
+
+  return { file: { path: input.outputPath } }
+}
+
+const [removeMetadataNode, testRemoveMetadataNode] = createNodeHandler({
+  parsers: {
+    input: RemoveMetadataNodeInputParser,
+    local: RemoveMetadataNodeLocalInputParser,
+    output: RemoveMetadataNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export default removeMetadataNode
+export { removeMetadataNode, testRemoveMetadataNode }

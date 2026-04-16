@@ -49,4 +49,5 @@ const [renderFontNode, testRenderFontNode] = createNodeHandler({
   runLocal,
 })
 
+export default renderFontNode
 export { renderFontNode, testRenderFontNode }

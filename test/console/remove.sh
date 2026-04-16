@@ -56,6 +56,6 @@ expect_contains "error mentions --tag or --preset" \
   "at least one"
 
 step "password help"
-expect_contains "qpdf description" "task remove password --help" "qpdf"
+expect_contains "password description" "task remove password --help" "password"
 
 summary

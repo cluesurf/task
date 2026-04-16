@@ -214,9 +214,11 @@ export function buildActionCommand(
   const hasInputPath = options.some(
     o => arraysEqual(o.path, ['input', 'file', 'path']),
   )
-  const hasOutputPath = options.some(
+  const outputOption = options.find(
     o => arraysEqual(o.path, ['output', 'file', 'path']),
   )
+  const hasOutputPath = !!outputOption
+  const outputRequired = outputOption?.need === true
   // Positional `file` is accepted when the schema has an input path.
   // If the schema also has an output path, the positional fills both
   // (in-place edit). Read-only verbs like `inspect file` get the
@@ -344,7 +346,7 @@ export function buildActionCommand(
             { hint: helpHint },
           )
         }
-        if (hasOutputPath) {
+        if (hasOutputPath && outputRequired) {
           const hasOutput =
             readPath(unpacked, ['output', 'file', 'path']) !== undefined
           if (!hasOutput) {
@@ -362,10 +364,14 @@ export function buildActionCommand(
       const verb = input.path?.[0] ?? input.command.split(' ')[0] ?? input.command
       const { runAction } = await import('~/code/tool/node/log')
 
+      // CLI invocations are always local-internal. Inject the
+      // handle so createNodeHandler's zod parser accepts it.
+      const withHandle = { ...unpacked, handle: 'internal' }
+
       await runAction({
         action: verb,
         input: unpacked,
-        run: () => fn(unpacked),
+        run: () => fn(withHandle),
       })
     },
   }
