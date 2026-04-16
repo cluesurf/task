@@ -47,7 +47,7 @@
   "format_swift_command_input": "~/code/form/action/format/code/console/options",
   "inspect_file_command_input": "~/code/form/action/inspect/file/console/options",
   "inspect_metadata_command_input": "~/code/form/action/inspect/metadata/console/options",
-  "pad_command_input": "~/code/form/action/pad/console/options",
+  "pad_audio_command_input": "~/code/form/action/pad/audio/console/options",
   "remove_exif_command_input": "~/code/form/action/remove/exif/console/options",
   "remove_metadata_command_input": "~/code/form/action/remove/metadata/console/options",
   "remove_password_command_input": "~/code/form/action/remove/password/console/options",

@@ -1,7 +1,7 @@
 export function buildCommandToConvertImageWithGifsicle(input: {
   inputPath: string
   outputPath: string
-  optimize?: 1 | 2 | 3
+  optimize?: number
   lossy?: number
   resize?: string
   colors?: number

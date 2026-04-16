@@ -219,9 +219,9 @@ import type {
   NormalizeAudioNodeOutput,
 } from '~/code/form/action/normalize/audio/node'
 import type {
-  PadNodeInput,
-  PadNodeOutput,
-} from '~/code/form/action/pad/node'
+  PadAudioNodeInput,
+  PadAudioNodeOutput,
+} from '~/code/form/action/pad/audio/node'
 import type {
   RemoveAudioNodeInput,
   RemoveAudioNodeOutput,
@@ -380,7 +380,7 @@ export interface TaskSurface {
 
   normalize(input: NormalizeAudioNodeInput): Promise<NormalizeAudioNodeOutput>
 
-  pad(input: PadNodeInput): Promise<PadNodeOutput>
+  pad(input: PadAudioNodeInput): Promise<PadAudioNodeOutput>
 
   remove(input: RemoveAudioNodeInput): Promise<RemoveAudioNodeOutput>
   remove(input: RemoveExifNodeInput): Promise<RemoveExifNodeOutput>
@@ -572,9 +572,9 @@ export type NormalizeNodeOutput =
   | NormalizeAudioNodeOutput
 
 export type PadNodeInput =
-  | PadNodeInput
+  | PadAudioNodeInput
 export type PadNodeOutput =
-  | PadNodeOutput
+  | PadAudioNodeOutput
 
 export type RemoveNodeInput =
   | RemoveAudioNodeInput

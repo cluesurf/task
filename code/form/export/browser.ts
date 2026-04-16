@@ -215,9 +215,9 @@ import type {
   NormalizeAudioBrowserOutput,
 } from '~/code/form/action/normalize/audio/browser'
 import type {
-  PadBrowserInput,
-  PadBrowserOutput,
-} from '~/code/form/action/pad/browser'
+  PadAudioBrowserInput,
+  PadAudioBrowserOutput,
+} from '~/code/form/action/pad/audio/browser'
 import type {
   RemoveAudioBrowserInput,
   RemoveAudioBrowserOutput,
@@ -374,7 +374,7 @@ export interface TaskSurface {
 
   normalize(input: NormalizeAudioBrowserInput): Promise<NormalizeAudioBrowserOutput>
 
-  pad(input: PadBrowserInput): Promise<PadBrowserOutput>
+  pad(input: PadAudioBrowserInput): Promise<PadAudioBrowserOutput>
 
   remove(input: RemoveAudioBrowserInput): Promise<RemoveAudioBrowserOutput>
   remove(input: RemoveExifBrowserInput): Promise<RemoveExifBrowserOutput>
@@ -561,9 +561,9 @@ export type NormalizeBrowserOutput =
   | NormalizeAudioBrowserOutput
 
 export type PadBrowserInput =
-  | PadBrowserInput
+  | PadAudioBrowserInput
 export type PadBrowserOutput =
-  | PadBrowserOutput
+  | PadAudioBrowserOutput
 
 export type RemoveBrowserInput =
   | RemoveAudioBrowserInput

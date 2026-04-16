@@ -3,13 +3,13 @@
 // quality + delay + codec.
 
 import type {
-  ConvertImageWithImg2webpNodeInput,
-  ConvertImageWithImg2webpNodeLocalInput,
+  ConvertImageWithImg2WebpNodeInput,
+  ConvertImageWithImg2WebpNodeLocalInput,
 } from '~/code/form/action/convert/image/img2webp/node'
 import {
-  ConvertImageWithImg2webpNodeInputParser,
-  ConvertImageWithImg2webpNodeLocalInputParser,
-  ConvertImageWithImg2webpNodeOutputParser,
+  ConvertImageWithImg2WebpNodeInputParser,
+  ConvertImageWithImg2WebpNodeLocalInputParser,
+  ConvertImageWithImg2WebpNodeOutputParser,
 } from '~/code/form/action/convert/image/img2webp/node/take'
 import { createNodeHandler } from '~/code/tool/node/handler'
 import {
@@ -20,7 +20,7 @@ import { spawnAndWait } from '~/code/tool/node/spawn'
 import { buildCommandToConvertImageWithImg2webp } from './command'
 
 async function runLocal(
-  input: ConvertImageWithImg2webpNodeLocalInput,
+  input: ConvertImageWithImg2WebpNodeLocalInput,
 ) {
   const inputPath = input.input.file.path
   const outputPath = input.output.file.path
@@ -41,13 +41,13 @@ async function runLocal(
 }
 
 const [
-  convertImageWithImg2webpNode,
-  testConvertImageWithImg2webpNode,
+  convertImageWithImg2WebpNode,
+  testConvertImageWithImg2WebpNode,
 ] = createNodeHandler({
   parsers: {
-    input: ConvertImageWithImg2webpNodeInputParser,
-    local: ConvertImageWithImg2webpNodeLocalInputParser,
-    output: ConvertImageWithImg2webpNodeOutputParser,
+    input: ConvertImageWithImg2WebpNodeInputParser,
+    local: ConvertImageWithImg2WebpNodeLocalInputParser,
+    output: ConvertImageWithImg2WebpNodeOutputParser,
   },
   resolvers: {
     external: resolveExternalInput,
@@ -56,9 +56,9 @@ const [
   runLocal,
 })
 
-export default convertImageWithImg2webpNode
+export default convertImageWithImg2WebpNode
 export {
-  convertImageWithImg2webpNode,
-  testConvertImageWithImg2webpNode,
+  convertImageWithImg2WebpNode,
+  testConvertImageWithImg2WebpNode,
 }
-export type { ConvertImageWithImg2webpNodeInput }
+export type { ConvertImageWithImg2WebpNodeInput }

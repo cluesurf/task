@@ -12,12 +12,12 @@
 import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
-import type { PadNodeLocalInput } from '~/code/form/action/pad/node'
+import type { PadAudioNodeLocalInput } from '~/code/form/action/pad/audio/node'
 import {
-  PadNodeInputParser,
-  PadNodeLocalInputParser,
-  PadNodeOutputParser,
-} from '~/code/form/action/pad/node/take'
+  PadAudioNodeInputParser,
+  PadAudioNodeLocalInputParser,
+  PadAudioNodeOutputParser,
+} from '~/code/form/action/pad/audio/node/take'
 import { ensureParentDir } from '~/code/tool/node/file'
 import { createNodeHandler } from '~/code/tool/node/handler'
 import {
@@ -32,7 +32,7 @@ import {
   parseDurationMs,
 } from './command'
 
-async function runLocal(input: PadNodeLocalInput) {
+async function runLocal(input: PadAudioNodeLocalInput) {
   const inputPath = input.input.file.path
   const outputPath = input.output.file.path
   const targetMs = parseDurationMs(input.to)
@@ -106,9 +106,9 @@ async function probeDurationMs(inputPath: string): Promise<number> {
 
 const [padNode, testPadNode] = createNodeHandler({
   parsers: {
-    input: PadNodeInputParser,
-    local: PadNodeLocalInputParser,
-    output: PadNodeOutputParser,
+    input: PadAudioNodeInputParser,
+    local: PadAudioNodeLocalInputParser,
+    output: PadAudioNodeOutputParser,
   },
   resolvers: {
     external: resolveExternalInput,

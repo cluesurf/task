@@ -22,8 +22,8 @@ export const audio_pad_format: List = {
 }
 
 const forms = buildSingleFileForms({
-  name: 'pad',
-  save: '~/code/form/action/pad',
+  name: 'pad_audio',
+  save: '~/code/form/action/pad/audio',
   common: {
     to: {
       like: 'string',
@@ -35,18 +35,18 @@ const forms = buildSingleFileForms({
   },
 })
 
-export const pad_node_input = forms.node_input
-export const pad_node_remote_input = forms.node_remote_input
-export const pad_node_external_input = forms.node_external_input
-export const pad_node_client_input = forms.node_client_input
-export const pad_node_local_external_input =
+export const pad_audio_node_input = forms.node_input
+export const pad_audio_node_remote_input = forms.node_remote_input
+export const pad_audio_node_external_input = forms.node_external_input
+export const pad_audio_node_client_input = forms.node_client_input
+export const pad_audio_node_local_external_input =
   forms.node_local_external_input
-export const pad_node_local_internal_input =
+export const pad_audio_node_local_internal_input =
   forms.node_local_internal_input
-export const pad_node_local_input = forms.node_local_input
-export const pad_node_output = forms.node_output
-export const pad_command_input = forms.command_input
-export const pad_browser_input = forms.browser_input
-export const pad_browser_remote_input = forms.browser_remote_input
-export const pad_browser_local_input = forms.browser_local_input
-export const pad_browser_output = forms.browser_output
+export const pad_audio_node_local_input = forms.node_local_input
+export const pad_audio_node_output = forms.node_output
+export const pad_audio_command_input = forms.command_input
+export const pad_audio_browser_input = forms.browser_input
+export const pad_audio_browser_remote_input = forms.browser_remote_input
+export const pad_audio_browser_local_input = forms.browser_local_input
+export const pad_audio_browser_output = forms.browser_output
