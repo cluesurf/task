@@ -73,7 +73,7 @@ describe('task.compile', () => {
   it('rejects an unsupported extension', async () => {
     const input = path.join(OUT, 'bogus.xyz')
     await fs.writeFile(input, 'nope')
-    await expect(
+    await expect(async () =>
       task.compile({
         input: { format: 'xyz', file: { path: input } },
         output: { format: 'binary', file: { path: path.join(OUT, 'bogus') } },

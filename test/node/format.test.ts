@@ -84,7 +84,7 @@ describe('task.format', () => {
   it('rejects when language is missing', async () => {
     const filePath = path.join(OUT, 'messy.py')
     await fs.writeFile(filePath, 'x = 1\n')
-    await expect(
+    await expect(async () =>
       task.format({
         input: { file: { path: filePath } },
         output: { file: { path: filePath } },

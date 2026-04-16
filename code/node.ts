@@ -8,14 +8,32 @@
  *     output: { format: 'jpg', file: { path: 'a.jpg' } },
  *   })
  *
- * Each verb method lazy-imports its handler on first call so the
- * Task class boots instantly without pulling every binary wrapper
- * into memory.
+ * Each verb method lazy-imports its handler on first call.
  */
 
 export type TaskOptions = {
   host?: string
   code?: string
+}
+
+type Handler = (input: any) => Promise<any>
+
+/** Extension → handler module path for multi-kind verbs. */
+type ExtRoute = Record<string, string>
+
+const AUDIO_EXTS = ['mp3', 'wav', 'flac', 'ogg', 'opus', 'm4a', 'aac']
+const VIDEO_EXTS = ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v']
+const FONT_EXTS = ['ttf', 'otf', 'woff', 'woff2', 'eot']
+
+function extOf(input: any): string {
+  const p = input?.input?.file?.path ?? ''
+  return typeof p === 'string'
+    ? (p.split('.').pop()?.toLowerCase() ?? '')
+    : ''
+}
+
+function extMatch(ext: string, list: string[]): boolean {
+  return list.includes(ext)
 }
 
 export default class Task {
@@ -27,8 +45,7 @@ export default class Task {
     this.code = options.code
   }
 
-  /** Inject `handle: 'internal'` when not present. All
-   * programmatic calls are local-internal by default. */
+  /** Inject `handle: 'internal'` when not present. */
   private local(input: any): any {
     if (input && typeof input === 'object' && !input.handle) {
       return { ...input, handle: 'internal' }
@@ -36,251 +53,193 @@ export default class Task {
     return input
   }
 
-  async archive(input: any) {
-    const mod = await import('~/code/call/archive/node')
-    return mod.default(this.local(input))
+  /** Load a default export and call it. */
+  private async run(mod: string, input: any): Promise<any> {
+    const m = await import(mod)
+    return m.default(this.local(input))
   }
 
-  async combine(input: any) {
-    const mod = await import('~/code/call/combine/node')
-    return mod.default(this.local(input))
+  /** Load a named export and call it. */
+  private async call(
+    mod: string,
+    name: string,
+    input: any,
+  ): Promise<any> {
+    const m = await import(mod)
+    return m[name](this.local(input))
   }
 
-  async compile(input: any) {
-    const inPath = input.input?.file?.path ?? ''
-    const ext = typeof inPath === 'string' ? inPath.split('.').pop()?.toLowerCase() ?? '' : ''
-    switch (ext) {
-      case 'c': case 'h': {
-        const m = await import('~/code/call/compile/code/c/node')
-        return m.default(this.local(normalized))
+  /** Dispatch by input file extension. */
+  private async byExt(
+    input: any,
+    routes: ExtRoute,
+    fallback?: string,
+  ): Promise<any> {
+    const ext = extOf(input)
+    for (const [exts, mod] of Object.entries(routes)) {
+      if (exts.split(',').includes(ext)) {
+        return this.run(mod, input)
       }
-      case 'cpp': case 'cc': case 'cxx': {
-        const m = await import('~/code/call/compile/code/cpp/node')
-        return m.default(this.local(normalized))
-      }
-      case 'rs': {
-        const m = await import('~/code/call/compile/code/rust/node')
-        return m.default(this.local(normalized))
-      }
-      case 'swift': {
-        const m = await import('~/code/call/compile/code/swift/node')
-        return m.default(this.local(normalized))
-      }
-      default:
-        throw new Error(`compile: unsupported extension .${ext}`)
     }
+    if (fallback) return this.run(fallback, input)
+    throw new Error(`No handler for extension .${ext}`)
   }
 
-  async compress(input: any) {
-    const { compressAudioNode } = await import('~/code/call/compress/audio/node')
-    const { compressFontNode } = await import('~/code/call/compress/font/node')
-    const { compressImageNode } = await import('~/code/call/compress/image/node')
-    const { compressVideoNode } = await import('~/code/call/compress/video/node')
-    // Dispatch by checking which fields exist
-    if ('input' in input && 'output' in input) {
-      const inPath = input.input?.file?.path ?? ''
-      const ext = inPath.split('.').pop()?.toLowerCase() ?? ''
-      if (['mp3', 'wav', 'flac', 'ogg', 'opus', 'm4a', 'aac'].includes(ext)) return compressAudioNode(this.local(input))
-      if (['mp4', 'mov', 'mkv', 'webm', 'avi'].includes(ext)) return compressVideoNode(this.local(input))
-      if (['ttf', 'otf', 'woff', 'woff2'].includes(ext)) return compressFontNode(this.local(input))
-      return compressImageNode(this.local(input))
-    }
-    return compressImageNode(this.local(input))
-  }
+  // ── Single-handler verbs ───────────────────────────
+
+  archive(i: any) { return this.run('~/code/call/archive/node', i) }
+  combine(i: any) { return this.run('~/code/call/combine/node', i) }
+  crop(i: any) { return this.run('~/code/call/crop/document/node', i) }
+  decrypt(i: any) { return this.run('~/code/call/decrypt/file/node', i) }
+  dump(i: any) { return this.run('~/code/call/dump/font/node', i) }
+  encrypt(i: any) { return this.run('~/code/call/encrypt/file/node', i) }
+  fetch(i: any) { return this.run('~/code/call/fetch/node', i) }
+  flip(i: any) { return this.run('~/code/call/flip/image/node', i) }
+  highlight(i: any) { return this.run('~/code/call/highlight/node', i) }
+  merge(i: any) { return this.run('~/code/call/merge/node', i) }
+  normalize(i: any) { return this.run('~/code/call/normalize/audio/node', i) }
+  pad(i: any) { return this.run('~/code/call/pad/node', i) }
+  render(i: any) { return this.run('~/code/call/render/font/node', i) }
+  search(i: any) { return this.run('~/code/call/search/node', i) }
+  shape(i: any) { return this.run('~/code/call/shape/font/node', i) }
+  split(i: any) { return this.run('~/code/call/split/node', i) }
+  subset(i: any) { return this.run('~/code/call/subset/font/node', i) }
+  sync(i: any) { return this.run('~/code/call/sync/node', i) }
+  verify(i: any) { return this.run('~/code/call/verify/image/node', i) }
+
+  // ── Format-pair dispatch ───────────────────────────
 
   async convert(input: any) {
-    const { default: convertNode } = await import('~/code/call/convert/node')
-    return convertNode(this.local(input))
+    const { default: fn } = await import('~/code/call/convert/node')
+    return fn(this.local(input))
   }
 
-  async crop(input: any) {
-    const mod = await import('~/code/call/crop/document/node')
-    return mod.default(this.local(input))
+  // ── Extension-dispatched verbs ─────────────────────
+
+  compress(input: any) {
+    return this.byExt(input, {
+      [AUDIO_EXTS.join(',')]: '~/code/call/compress/audio/node',
+      [VIDEO_EXTS.join(',')]: '~/code/call/compress/video/node',
+      [FONT_EXTS.join(',')]: '~/code/call/compress/font/node',
+    }, '~/code/call/compress/image/node')
   }
 
-  async decrypt(input: any) {
-    const mod = await import('~/code/call/decrypt/file/node')
-    return mod.default(this.local(input))
+  trim(input: any) {
+    return this.byExt(input, {
+      [AUDIO_EXTS.join(',')]: '~/code/call/trim/audio/node',
+      [VIDEO_EXTS.join(',')]: '~/code/call/trim/video/node',
+    }, '~/code/call/trim/image/node')
   }
 
-  async disassemble(input: any) {
-    const { disassembleWasmNode } = await import('~/code/call/disassemble/wasm/node')
-    const { disassembleJvmNode } = await import('~/code/call/disassemble/jvm/node')
-    const { disassembleDotnetNode } = await import('~/code/call/disassemble/dotnet/node')
-    const { disassembleRadareNode } = await import('~/code/call/disassemble/radare/node')
-    const { disassembleGhidraNode } = await import('~/code/call/disassemble/ghidra/node')
-    // Dispatch by input path extension or explicit tool field
-    const inPath = input.input?.file?.path ?? input.input ?? ''
-    const ext = typeof inPath === 'string' ? inPath.split('.').pop()?.toLowerCase() ?? '' : ''
-    if (ext === 'wasm') return disassembleWasmNode(this.local(input))
-    if (ext === 'class' || ext === 'jar') return disassembleJvmNode(this.local(input))
-    if (ext === 'dll' || ext === 'exe') return disassembleDotnetNode(this.local(input))
-    if (input.profile || input.ghidraHome) return disassembleGhidraNode(this.local(input))
-    return disassembleRadareNode(this.local(input))
+  resize(input: any) {
+    return this.byExt(input, {
+      [VIDEO_EXTS.join(',')]: '~/code/call/resize/video/node',
+    }, '~/code/call/resize/image/node')
   }
 
-  async dump(input: any) {
-    const mod = await import('~/code/call/dump/font/node')
-    return mod.default(this.local(input))
+  rotate(input: any) {
+    return this.byExt(input, {
+      [VIDEO_EXTS.join(',')]: '~/code/call/rotate/video/node',
+    }, '~/code/call/rotate/image/node')
   }
 
-  async encrypt(input: any) {
-    const mod = await import('~/code/call/encrypt/file/node')
-    return mod.default(this.local(input))
+  update(input: any) {
+    return this.byExt(input, {
+      [FONT_EXTS.join(',')]: '~/code/call/update/font/node',
+      [VIDEO_EXTS.join(',')]: '~/code/call/update/video/node',
+    }, '~/code/call/update/image/node')
   }
 
-  async flip(input: any) {
-    const mod = await import('~/code/call/flip/image/node')
-    return mod.default(this.local(input))
+  optimize(input: any) {
+    return this.byExt(input, {
+      [VIDEO_EXTS.join(',')]: '~/code/call/optimize/video/node',
+    }, '~/code/call/optimize/image/local/node')
   }
 
-  async format(input: any) {
-    // Format dispatches by language. Accept either `language` or
-    // `format` field. The handler schema expects `format`.
-    const lang = input.language ?? input.format ?? input.input?.format
+  // ── Compile by extension ───────────────────────────
+
+  compile(input: any) {
+    const ext = extOf(input)
+    const map: Record<string, string> = {
+      c: '~/code/call/compile/code/c/node',
+      h: '~/code/call/compile/code/c/node',
+      cpp: '~/code/call/compile/code/cpp/node',
+      cc: '~/code/call/compile/code/cpp/node',
+      cxx: '~/code/call/compile/code/cpp/node',
+      rs: '~/code/call/compile/code/rust/node',
+      swift: '~/code/call/compile/code/swift/node',
+    }
+    const mod = map[ext]
+    if (!mod) throw new Error(`compile: unsupported extension .${ext}`)
+    return this.run(mod, input)
+  }
+
+  // ── Format by language ─────────────────────────────
+
+  format(input: any) {
+    const lang = input.language ?? input.format
     if (!lang) throw new Error('format: language required')
+    const map: Record<string, string> = {
+      c: '~/code/call/format/code/clang/node',
+      cpp: '~/code/call/format/code/clang/node',
+      objc: '~/code/call/format/code/clang/node',
+      python: '~/code/call/format/code/python/node',
+      rust: '~/code/call/format/code/rust/node',
+      swift: '~/code/call/format/code/swift/node',
+      kotlin: '~/code/call/format/code/kotlin/node',
+      ruby: '~/code/call/format/code/ruby/node',
+      assembly: '~/code/call/format/code/assembly/node',
+      asm: '~/code/call/format/code/assembly/node',
+    }
+    const mod = map[lang]
+    if (!mod) throw new Error(`format: unsupported language "${lang}"`)
+    // Normalize language → format for the handler schema
     const normalized = { ...input, format: lang }
     delete normalized.language
-    switch (lang) {
-      case 'c': case 'cpp': case 'objc': {
-        const m = await import('~/code/call/format/code/clang/node')
-        return m.default(this.local(normalized))
-      }
-      case 'python': {
-        const m = await import('~/code/call/format/code/python/node')
-        return m.default(this.local(normalized))
-      }
-      case 'rust': {
-        const m = await import('~/code/call/format/code/rust/node')
-        return m.default(this.local(normalized))
-      }
-      case 'swift': {
-        const m = await import('~/code/call/format/code/swift/node')
-        return m.default(this.local(normalized))
-      }
-      case 'kotlin': {
-        const m = await import('~/code/call/format/code/kotlin/node')
-        return m.default(this.local(normalized))
-      }
-      case 'ruby': {
-        const m = await import('~/code/call/format/code/ruby/node')
-        return m.default(this.local(normalized))
-      }
-      case 'assembly': case 'asm': {
-        const m = await import('~/code/call/format/code/assembly/node')
-        return m.default(this.local(normalized))
-      }
-      default:
-        throw new Error(`format: unsupported language "${lang}"`)
-    }
+    return this.run(mod, normalized)
   }
 
-  async normalize(input: any) {
-    const mod = await import('~/code/call/normalize/audio/node')
-    return mod.default(this.local(input))
+  // ── Disassemble by extension / fields ──────────────
+
+  disassemble(input: any) {
+    const ext = extOf(input)
+    if (ext === 'wasm') return this.run('~/code/call/disassemble/wasm/node', input)
+    if (ext === 'class' || ext === 'jar') return this.run('~/code/call/disassemble/jvm/node', input)
+    if (ext === 'dll' || ext === 'exe') return this.run('~/code/call/disassemble/dotnet/node', input)
+    if (input.ghidraHome || input.profile === 'imports' || input.profile === 'exports')
+      return this.run('~/code/call/disassemble/ghidra/node', input)
+    return this.run('~/code/call/disassemble/radare/node', input)
   }
 
-  async optimize(input: any) {
-    const { optimizeVideoNode } = await import('~/code/call/optimize/video/node')
-    return optimizeVideoNode(this.local(input))
+  // ── Remove by field presence ───────────────────────
+
+  remove(input: any) {
+    if (input.tag || input.preset) return this.run('~/code/call/remove/exif/node', input)
+    if (input.password !== undefined) return this.run('~/code/call/remove/password/node', input)
+    if (input.background) return this.run('~/code/call/remove/transparency/node', input)
+    return this.run('~/code/call/remove/metadata/node', input)
   }
 
-  async pad(input: any) {
-    const mod = await import('~/code/call/pad/node')
-    return mod.default(this.local(input))
+  // ── Inspect ────────────────────────────────────────
+
+  inspect(input: any) {
+    if (input.kind === 'metadata') return this.run('~/code/call/inspect/metadata/node', input)
+    return this.run('~/code/call/inspect/file/node', input)
   }
 
-  async remove(input: any) {
-    const { removePasswordNode } = await import('~/code/call/remove/password/node')
-    const { removeProfileNode } = await import('~/code/call/remove/profile/node')
-    const { removeTransparencyNode } = await import('~/code/call/remove/transparency/node')
-    const { removeSubtitlesNode } = await import('~/code/call/remove/subtitles/node')
-    const { removeExifNode } = await import('~/code/call/remove/exif/node')
-    const { removeMetadataNode } = await import('~/code/call/remove/metadata/node')
-    const { removeAudioNode } = await import('~/code/call/remove/audio/node')
-    // Dispatch by what fields exist
-    if (input.tag || input.preset) return removeExifNode(this.local(input))
-    if (input.password !== undefined) return removePasswordNode(this.local(input))
-    if (input.background) return removeTransparencyNode(this.local(input))
-    return removeMetadataNode(this.local(input))
+  // ── Set (encoding, eol, metadata) ──────────────────
+
+  set(input: any) {
+    if (input.encoding) return this.call('~/code/call/set/encoding/node', 'setEncodingNode', input)
+    if (input.eol) return this.call('~/code/call/set/eol/node', 'setEolNode', { target: input.eol, file: input.file, output: input.output })
+    if (input.title || input.artist || input.album) return this.run('~/code/call/set/metadata/node', input)
+    throw new Error('set: specify encoding, eol, or metadata fields')
   }
 
-  async render(input: any) {
-    const mod = await import('~/code/call/render/font/node')
-    return mod.default(this.local(input))
-  }
+  // ── Detect ─────────────────────────────────────────
 
-  async resize(input: any) {
-    const mod = await import('~/code/call/resize/video/node')
-    return mod.default(this.local(input))
-  }
-
-  async rotate(input: any) {
-    const { rotateImageNode } = await import('~/code/call/rotate/image/node')
-    return rotateImageNode(this.local(input))
-  }
-
-  async shape(input: any) {
-    const mod = await import('~/code/call/shape/font/node')
-    return mod.default(this.local(input))
-  }
-
-  async split(input: any) {
-    const mod = await import('~/code/call/split/node')
-    return mod.default(this.local(input))
-  }
-
-  async subset(input: any) {
-    const mod = await import('~/code/call/subset/font/node')
-    return mod.default(this.local(input))
-  }
-
-  async trim(input: any) {
-    const { trimAudioNode } = await import('~/code/call/trim/audio/node')
-    const { trimVideoNode } = await import('~/code/call/trim/video/node')
-    const { trimImageNode } = await import('~/code/call/trim/image/node')
-    const inPath = input.input?.file?.path ?? ''
-    const ext = typeof inPath === 'string' ? inPath.split('.').pop()?.toLowerCase() ?? '' : ''
-    if (['mp3', 'wav', 'flac', 'ogg', 'opus', 'm4a', 'aac'].includes(ext)) return trimAudioNode(this.local(input))
-    if (['mp4', 'mov', 'mkv', 'webm', 'avi'].includes(ext)) return trimVideoNode(this.local(input))
-    return trimImageNode(this.local(input))
-  }
-
-  async update(input: any) {
-    const { updateFontNode } = await import('~/code/call/update/font/node')
-    return updateFontNode(this.local(input))
-  }
-
-  async verify(input: any) {
-    const mod = await import('~/code/call/verify/image/node')
-    return mod.default(this.local(input))
-  }
-
-  // Network verbs (no file I/O)
-  async fetch(input: any) {
-    const mod = await import('~/code/call/fetch/node')
-    return mod.default(this.local(input))
-  }
-
-  async search(input: any) {
-    const mod = await import('~/code/call/search/node')
-    return mod.default(this.local(input))
-  }
-
-  async sync(input: any) {
-    const mod = await import('~/code/call/sync/node')
-    return mod.default(this.local(input))
-  }
-
-  async merge(input: any) {
-    const mod = await import('~/code/call/merge/node')
-    return mod.default(this.local(input))
-  }
-
-  // Highlight
-  async highlight(input: any) {
-    const mod = await import('~/code/call/highlight/node')
-    return mod.default(this.local(input))
+  detect(input: any) {
+    return this.call('~/code/call/detect/bidi/node', 'detectBidiNode', input)
   }
 }
 
