@@ -3,11 +3,6 @@
  * `convert` flags for grayscale / brightness / contrast / saturation.
  */
 
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-
 export function buildUpdateImageCommand(input: {
   inputPath: string
   outputPath: string
@@ -15,8 +10,9 @@ export function buildUpdateImageCommand(input: {
   brightness?: string
   contrast?: string
   saturation?: string
-}) {
-  const cmd = getCommand('convert')
+}): { bin: string; args: string[] } {
+  const bin = 'convert'
+  const args: string[] = []
   const ops: Array<string> = []
 
   if (input.grayscale) {
@@ -34,8 +30,8 @@ export function buildUpdateImageCommand(input: {
     ops.push('-modulate', `100,${s},100`)
   }
 
-  cmd.link.push(input.inputPath, ...ops, input.outputPath)
-  return buildCommandSequence(cmd)
+  args.push(input.inputPath, ...ops, input.outputPath)
+  return { bin, args }
 }
 
 function parseSigned(value?: string): number {

@@ -1,19 +1,15 @@
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
 import type { ArchiveWithAtool } from '~/code/form/action/archive/atool'
 
-export function buildCommandToArchiveWithAtool(input: ArchiveWithAtool) {
-  const cmd = getCommand('atool')
+export function buildCommandToArchiveWithAtool(input: ArchiveWithAtool): { bin: string; args: string[] } {
+  const bin = 'atool'
+  const args: string[] = ['--add']
 
-  cmd.link.push('--add')
-  if (input.force) cmd.link.push('--force')
-  if (input.quiet !== false) cmd.link.push('--quiet')
-  if (input.verbose) cmd.link.push('--verbose')
+  if (input.force) args.push('--force')
+  if (input.quiet !== false) args.push('--quiet')
+  if (input.verbose) args.push('--verbose')
 
-  cmd.link.push(input.output.file.path)
-  cmd.link.push(input.input.path)
+  args.push(input.output.file.path)
+  args.push(input.input.path)
 
-  return buildCommandSequence(cmd)
+  return { bin, args }
 }

@@ -32,7 +32,7 @@ import { checkDomainNode } from '~/code/call/check/domain/node'
 import type {
   DomainCheckResult,
   DomainProvider,
-} from '~/code/call/check/domain/base'
+} from '~/code/call/check/domain/make'
 
 import { expandPatterns, parsePatternList } from './shared'
 

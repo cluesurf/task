@@ -1,16 +1,11 @@
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-
 export function buildCommandToCompressVideo(input: {
   inputPath: string
   outputPath: string
   crf?: string
   preset?: string
-}) {
-  const cmd = getCommand('ffmpeg')
-  cmd.link.push(
+}): { bin: string; args: string[] } {
+  const bin = 'ffmpeg'
+  const args: string[] = [
     '-y',
     '-i',
     input.inputPath,
@@ -25,6 +20,6 @@ export function buildCommandToCompressVideo(input: {
     '-b:a',
     '128k',
     input.outputPath,
-  )
-  return buildCommandSequence(cmd)
+  ]
+  return { bin, args }
 }

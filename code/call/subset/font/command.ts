@@ -1,8 +1,3 @@
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-
 export type SubsetFontArgs = {
   input: string
   output: string
@@ -12,14 +7,14 @@ export type SubsetFontArgs = {
   flavor?: string
 }
 
-export function buildSubsetFontCommand(args: SubsetFontArgs) {
-  const cmd = getCommand('pyftsubset')
-  cmd.link.push(args.input, `--output-file=${args.output}`)
-  if (args.text) cmd.link.push(`--text=${args.text}`)
-  if (args.unicodes) cmd.link.push(`--unicodes=${args.unicodes}`)
+export function buildSubsetFontCommand(args: SubsetFontArgs): { bin: string; args: string[] } {
+  const bin = 'pyftsubset'
+  const a: string[] = [args.input, `--output-file=${args.output}`]
+  if (args.text) a.push(`--text=${args.text}`)
+  if (args.unicodes) a.push(`--unicodes=${args.unicodes}`)
   if (args.layoutFeatures) {
-    cmd.link.push(`--layout-features=${args.layoutFeatures}`)
+    a.push(`--layout-features=${args.layoutFeatures}`)
   }
-  if (args.flavor) cmd.link.push(`--flavor=${args.flavor}`)
-  return buildCommandSequence(cmd)
+  if (args.flavor) a.push(`--flavor=${args.flavor}`)
+  return { bin, args: a }
 }

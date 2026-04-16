@@ -1,6 +1,6 @@
 import makeTree from '@cluesurf/form/make'
 import type { Load, Form } from '@cluesurf/form'
-import * as MESH from '~/code/base'
+import * as MESH from '~/code/make'
 import NAME from '~/code/base/name'
 import {
   collectCliOptions,

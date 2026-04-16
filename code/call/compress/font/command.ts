@@ -1,14 +1,9 @@
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-
 export function buildCompressFontCommand({
   input,
 }: {
   input: string
-}) {
-  const cmd = getCommand('woff2_compress')
-  cmd.link.push(input)
-  return buildCommandSequence(cmd)
+}): { bin: string; args: string[] } {
+  const bin = 'woff2_compress'
+  const args: string[] = [input]
+  return { bin, args }
 }

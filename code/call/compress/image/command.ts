@@ -1,19 +1,14 @@
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-
 export function buildCommandToCompressImage(input: {
   inputPath: string
   outputPath: string
   quality?: string
-}) {
-  const cmd = getCommand('convert')
-  cmd.link.push(
+}): { bin: string; args: string[] } {
+  const bin = 'convert'
+  const args: string[] = [
     input.inputPath,
     '-quality',
     input.quality ?? '80',
     input.outputPath,
-  )
-  return buildCommandSequence(cmd)
+  ]
+  return { bin, args }
 }

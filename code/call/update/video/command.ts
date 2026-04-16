@@ -3,18 +3,13 @@
  * flags to mux a subtitle sidecar into the video container.
  */
 
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-
 export function buildUpdateVideoCommand(input: {
   inputPath: string
   outputPath: string
   subtitles: string
-}) {
-  const cmd = getCommand('ffmpeg')
-  cmd.link.push(
+}): { bin: string; args: string[] } {
+  const bin = 'ffmpeg'
+  const args: string[] = [
     '-y',
     '-i',
     input.inputPath,
@@ -29,6 +24,6 @@ export function buildUpdateVideoCommand(input: {
     '-c:s',
     'mov_text',
     input.outputPath,
-  )
-  return buildCommandSequence(cmd)
+  ]
+  return { bin, args }
 }

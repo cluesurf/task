@@ -8,11 +8,6 @@
  * which to call based on `input.name`.
  */
 
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-
 export type SearchInput = {
   pattern?: string
   path?: string
@@ -26,42 +21,44 @@ export type SearchInput = {
   maxCount?: number
 }
 
-export function buildRgCommand(input: SearchInput) {
-  const cmd = getCommand('rg')
+export function buildRgCommand(input: SearchInput): { bin: string; args: string[] } {
+  const bin = 'rg'
+  const args: string[] = []
 
-  if (input.fixed) cmd.link.push('-F')
-  if (input.ignoreCase) cmd.link.push('-i')
+  if (input.fixed) args.push('-F')
+  if (input.ignoreCase) args.push('-i')
   if (input.hidden) {
-    cmd.link.push('--hidden', '--no-ignore')
+    args.push('--hidden', '--no-ignore')
   }
-  if (input.files) cmd.link.push('-l')
-  if (input.count) cmd.link.push('-c')
-  if (input.type) cmd.link.push('-g', `*.${input.type}`)
+  if (input.files) args.push('-l')
+  if (input.count) args.push('-c')
+  if (input.type) args.push('-g', `*.${input.type}`)
   if (typeof input.maxCount === 'number') {
-    cmd.link.push('-m', String(input.maxCount))
+    args.push('-m', String(input.maxCount))
   }
 
-  if (input.pattern !== undefined) cmd.link.push(input.pattern)
-  if (input.path) cmd.link.push(input.path)
+  if (input.pattern !== undefined) args.push(input.pattern)
+  if (input.path) args.push(input.path)
 
-  return buildCommandSequence(cmd)
+  return { bin, args }
 }
 
-export function buildFdCommand(input: SearchInput) {
-  const cmd = getCommand('fd')
+export function buildFdCommand(input: SearchInput): { bin: string; args: string[] } {
+  const bin = 'fd'
+  const args: string[] = []
 
-  if (input.fixed) cmd.link.push('--fixed-strings')
-  if (input.ignoreCase) cmd.link.push('--ignore-case')
+  if (input.fixed) args.push('--fixed-strings')
+  if (input.ignoreCase) args.push('--ignore-case')
   if (input.hidden) {
-    cmd.link.push('--hidden', '--no-ignore')
+    args.push('--hidden', '--no-ignore')
   }
-  if (input.type) cmd.link.push('-e', input.type)
+  if (input.type) args.push('-e', input.type)
   if (typeof input.maxCount === 'number') {
-    cmd.link.push('--max-results', String(input.maxCount))
+    args.push('--max-results', String(input.maxCount))
   }
 
-  if (input.pattern !== undefined) cmd.link.push(input.pattern)
-  if (input.path) cmd.link.push(input.path)
+  if (input.pattern !== undefined) args.push(input.pattern)
+  if (input.path) args.push(input.path)
 
-  return buildCommandSequence(cmd)
+  return { bin, args }
 }

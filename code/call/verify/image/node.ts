@@ -18,9 +18,8 @@ const IMAGEMAGICK_FORMAT_VARIANT_NAME: Record<string, Array<string>> = {
 async function verifyImageWithImageMagickNode(
   input: VerifyImageWithImageMagick,
 ) {
-  const sequence = buildCommandToVerifyImageWithImageMagick(input)
-  const cmd = sequence.call[0]!
-  const stdout = await spawnAndCapture({ verb: 'verify', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  const { bin, args } = buildCommandToVerifyImageWithImageMagick(input)
+  const stdout = await spawnAndCapture({ verb: 'verify', bin, args })
   const pattern = /^([^\s]+)\s+(\w+)/i
   stdout.match(pattern)
   const data = {

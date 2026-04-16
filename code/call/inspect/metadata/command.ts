@@ -1,17 +1,13 @@
 import camelCase from 'lodash/camelCase'
 import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-import {
   InspectMetadataFromImage,
 } from '~/code/form/action/inspect/metadata/shared'
 export function buildCommandToInspectMetadataFromImage(
   input: InspectMetadataFromImage,
-) {
-  const cmd = getCommand('exiftool')
-  cmd.link.push(input.input.file.path)
-  return buildCommandSequence(cmd)
+): { bin: string; args: string[] } {
+  const bin = 'exiftool'
+  const args: string[] = [input.input.file.path]
+  return { bin, args }
 }
 
 export type ExifMetadata = { name: string; bond: string | number }

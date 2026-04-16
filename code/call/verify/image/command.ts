@@ -1,13 +1,9 @@
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
 import { VerifyImageWithImageMagick } from '~/code/form/action/verify/image/shared'
 
 export function buildCommandToVerifyImageWithImageMagick(
   input: VerifyImageWithImageMagick,
-) {
-  const cmd = getCommand(`identify`)
-  cmd.link.push(input.file.path)
-  return buildCommandSequence(cmd)
+): { bin: string; args: string[] } {
+  const bin = 'identify'
+  const args: string[] = [input.file.path]
+  return { bin, args }
 }
