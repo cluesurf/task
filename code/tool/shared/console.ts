@@ -364,14 +364,12 @@ export function buildActionCommand(
       const verb = input.path?.[0] ?? input.command.split(' ')[0] ?? input.command
       const { runAction } = await import('~/code/tool/node/log')
 
-      // CLI invocations are always local-internal. Inject the
-      // handle so createNodeHandler's zod parser accepts it.
-      const withHandle = { ...unpacked, handle: 'internal' }
-
+      // The handler defaults to 'internal' when handle is missing,
+      // so CLI doesn't need to inject it.
       await runAction({
         action: verb,
         input: unpacked,
-        run: () => fn(withHandle),
+        run: () => fn(unpacked),
       })
     },
   }

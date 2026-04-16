@@ -18,7 +18,7 @@ probe() {
   # Run `tsx` directly via node — pnpm scripts inside a nested
   # cwd get cute about resolving the project root, which breaks
   # detection (tsx ends up running in `$ROOT` instead of `$dir`).
-  line=$(cd "$dir" && "$ROOT/node_modules/.bin/tsx" "$ROOT/code/console" project "$verb" --dry-run 2>&1 | tail -5)
+  line=$(cd "$dir" && "$ROOT/node_modules/.bin/tsx" "$ROOT/code/console" "$verb" code --dry-run 2>&1 | tail -5)
   printf '%s' "$line" | grep -Fq "$expect"
 }
 

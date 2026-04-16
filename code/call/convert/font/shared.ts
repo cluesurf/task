@@ -4,10 +4,6 @@ import {
 import {
   FontFormat,
 } from '~/code/form/object/font'
-import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
 import debug from '~/code/tool/shared/debug'
 import { testConvertFileInputOutput } from '../shared'
 import { getConfig } from '~/code/tool/shared/config'
@@ -15,19 +11,17 @@ import { getConfig } from '~/code/tool/shared/config'
 export async function buildCommandToConvertFontWithFontForge(
   input: ConvertFontWithFontForgeCommandInput,
 ) {
-  const cmd = getCommand(`fontforge`)
-
-  cmd.link.push(
+  const args: string[] = [
     `-lang=ff`,
     `-c`,
-    `'Open($1); Generate($2)'`,
-    `"${input.input.file.path}"`,
-    `"${input.output.file!.path}"`,
-  )
+    `Open($1); Generate($2)`,
+    input.input.file.path,
+    input.output.file!.path,
+  ]
 
-  debug('buildCommandToConvertFontWithFontForge', cmd.link)
+  debug('buildCommandToConvertFontWithFontForge', args)
 
-  return buildCommandSequence(cmd)
+  return { bin: 'fontforge', args }
 }
 
 export function testConvertFontWithFontForge(input: any) {

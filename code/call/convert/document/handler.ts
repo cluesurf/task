@@ -1,27 +1,32 @@
-import { ChildProcessError, exec } from '~/code/tool/node/process'
 import kink from '~/code/tool/shared/kink'
 import {
-  Command,
-} from '~/code/form/object/request'
-export async function runCalibreCommand(cmd: Command) {
-  await exec(cmd.link)
+  spawnAndWait,
+  spawnAndCapture,
+} from '~/code/tool/node/spawn'
+
+type BinArgs = { bin: string; args: string[] }
+
+export async function runCalibreCommand(input: BinArgs) {
+  await spawnAndWait({ verb: 'convert', ...input })
 }
 
-export async function runLibreOfficeCommand(cmd: Command) {
-  await exec(cmd.link)
+export async function runLibreOfficeCommand(input: BinArgs) {
+  await spawnAndWait({ verb: 'convert', ...input })
 }
 
 // https://html-validate.org/dev/running-in-browser.html
 // https://github.com/apostrophecms/sanitize-html
 
-export async function runPdfLatexCommand(cmd: Command) {
+export async function runPdfLatexCommand(input: BinArgs) {
   try {
-    await exec(cmd.link)
+    await spawnAndCapture({ verb: 'convert', ...input })
   } catch (e) {
-    if (e instanceof ChildProcessError) {
-      const message = e.data.stdout && parseLatexError(e.data.stdout)
-      const error = new Error(message ?? e.data.error.message)
-      throw error
+    if (e instanceof Error) {
+      const parsed = parseLatexError(e.message)
+      if (parsed) {
+        throw new Error(parsed)
+      }
+      throw e
     }
   }
 }
@@ -77,43 +82,40 @@ function parseLatexError(text: string) {
   return message.join('\n').replace(/\n\n+/gm, '\n\n')
 }
 
-export async function runExiftoolCommand(cmd: Command) {
-  return await exec(cmd.link)
+export async function runExiftoolCommand(input: BinArgs) {
+  return await spawnAndCapture({ verb: 'convert', ...input })
 }
 
-export async function runEbookConvertCommand(cmd: Command) {
-  return await exec(cmd.link)
+export async function runEbookConvertCommand(input: BinArgs) {
+  await spawnAndWait({ verb: 'convert', ...input })
 }
 
-export async function runSofficeCommand(cmd: Command) {
-  return await exec(cmd.link)
+export async function runSofficeCommand(input: BinArgs) {
+  await spawnAndWait({ verb: 'convert', ...input })
 }
 
-export async function runJupyterCommand(cmd: Command) {
-  return await exec(cmd.link)
+export async function runJupyterCommand(input: BinArgs) {
+  await spawnAndWait({ verb: 'convert', ...input })
 }
 
-export async function runDocx2pdfCommand(cmd: Command) {
-  return await exec(cmd.link)
+export async function runDocx2pdfCommand(input: BinArgs) {
+  await spawnAndWait({ verb: 'convert', ...input })
 }
 
-export async function runUnoconvCommand(cmd: Command) {
-  return await exec(cmd.link)
+export async function runUnoconvCommand(input: BinArgs) {
+  await spawnAndWait({ verb: 'convert', ...input })
 }
 
-export async function runPandocCommand(cmd: Command) {
+export async function runPandocCommand(input: BinArgs) {
   try {
-    return await exec(cmd.link)
+    return await spawnAndCapture({ verb: 'convert', ...input })
   } catch (e) {
     if (e instanceof Error) {
-      if (e instanceof ChildProcessError) {
-        if (
-          e.data.stderr?.match(
-            /pandoc: (.+): withBinaryFile: does not exist \(No such file or directory\)/,
-          )
-        ) {
-          throw kink('file_missing_error', { path: RegExp.$1 })
-        }
+      const match = e.message.match(
+        /pandoc: (.+): withBinaryFile: does not exist \(No such file or directory\)/,
+      )
+      if (match) {
+        throw kink('file_missing_error', { path: match[1]! })
       }
     }
     throw e

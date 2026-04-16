@@ -1,8 +1,4 @@
 import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-import {
   WriteMetadataToImage,
 } from '~/code/form/action/resize/image/shared'
 import { YYYY_MM_DD_HH_MM_SS, toDayJs } from '~/code/tool/shared/date'
@@ -23,72 +19,72 @@ export function buildCommandToWriteMetadataToImage(
     title,
     description,
   } = source
-  const cmd = getCommand('exiftool')
+  const args: string[] = []
 
   if (copyright) {
-    cmd.link.push(
+    args.push(
       `-rights`,
-      `"${copyright}"`,
+      copyright,
       `-CopyrightNotice`,
-      `"${copyright}"`,
+      copyright,
     )
   }
 
   if (artist) {
-    cmd.link.push(`artist`, `"${artist}"`)
+    args.push(`artist`, artist)
   }
 
   if (originalDate) {
     const od = YYYY_MM_DD_HH_MM_SS(toDayJs(originalDate))
     // 1986:11:05 12:00:00
-    cmd.link.push(`-datetimeoriginal`, `"${od}"`)
+    args.push(`-datetimeoriginal`, od)
   }
 
   if (creationDate) {
     // 1986:11:05 12:00:00
     const od = YYYY_MM_DD_HH_MM_SS(toDayJs(creationDate))
-    cmd.link.push(`-createdate`, `"${od}"`)
+    args.push(`-createdate`, od)
   }
 
   if (allDates) {
     const d = YYYY_MM_DD_HH_MM_SS(toDayJs(allDates))
-    cmd.link.push(`-AllDates`, d)
+    args.push(`-AllDates`, d)
   }
 
   if (creator) {
-    cmd.link.push(`-XMP-dc:Creator`, `"${creator}"`)
+    args.push(`-XMP-dc:Creator`, creator)
   }
 
   if (keywords) {
-    cmd.link.push(
+    args.push(
       `-sep`,
-      `", "`,
+      `, `,
       `-keywords`,
-      `"${keywords.join(', ')}"`,
+      keywords.join(', '),
     )
-    cmd.link.push(`XMP-xmp:Keywords`, `"${keywords.join(', ')}"`)
+    args.push(`XMP-xmp:Keywords`, keywords.join(', '))
   }
 
   if (license) {
-    cmd.link.push(
+    args.push(
       `-XMP-dc:Rights`,
-      `"${license}"`,
+      license,
       `-xmp:usageterms`,
-      `"${license}"`,
+      license,
     )
   }
 
   if (title) {
-    cmd.link.push(`-XMP-dc:Title`, `"${title}"`)
-    cmd.link.push(`-XMP-xmp:Title`, `"${title}"`)
+    args.push(`-XMP-dc:Title`, title)
+    args.push(`-XMP-xmp:Title`, title)
   }
 
   if (description) {
-    cmd.link.push(`-XMP-dc:Description`, `"${description}"`)
-    cmd.link.push(`-XMP-xmp:Description`, `"${description}"`)
+    args.push(`-XMP-dc:Description`, description)
+    args.push(`-XMP-xmp:Description`, description)
   }
 
-  cmd.link.push(`"${input.file.path}"`)
+  args.push(input.file.path)
 
-  return buildCommandSequence(cmd)
+  return { bin: 'exiftool', args }
 }

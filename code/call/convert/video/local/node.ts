@@ -78,16 +78,25 @@ export async function handlePatoolCommand(cmd: Command) {
   return await exec(cmd.link)
 }
 
-export async function handleBlackCommand(cmd: Command) {
-  return await exec(cmd.link)
+export async function handleBlackCommand(input: {
+  bin: string
+  args: string[]
+}) {
+  return await exec([input.bin, ...input.args])
 }
 
-export async function handleAsmfmtCommand(cmd: Command) {
-  return await exec(cmd.link)
+export async function handleAsmfmtCommand(input: {
+  bin: string
+  args: string[]
+}) {
+  return await exec([input.bin, ...input.args])
 }
 
-export async function handleKtfmtCommand(cmd: Command) {
-  return await exec(cmd.link)
+export async function handleKtfmtCommand(input: {
+  bin: string
+  args: string[]
+}) {
+  return await exec([input.bin, ...input.args])
 }
 
 export async function handleJavaCommand(cmd: Command) {
@@ -106,8 +115,11 @@ export async function handleLlcCommand(cmd: Command) {
   return await exec(cmd.link)
 }
 
-export async function handleClangFormatCommand(cmd: Command) {
-  return await exec(cmd.link)
+export async function handleClangFormatCommand(input: {
+  bin: string
+  args: string[]
+}) {
+  return await exec([input.bin, ...input.args])
 }
 
 export async function handleSwiftFormatCommand(cmd: Command) {

@@ -1,39 +1,38 @@
 import snakeCase from 'lodash/snakeCase'
-import { ChildProcessError, exec } from '~/code/tool/node/process'
 import {
-  Command,
-} from '~/code/form/object/request'
-export async function runConvertCommand(cmd: Command) {
+  spawnAndWait,
+  spawnAndCapture,
+} from '~/code/tool/node/spawn'
+
+type BinArgs = { bin: string; args: string[] }
+
+export async function runConvertCommand(input: BinArgs) {
   try {
-    return await exec(cmd.link)
+    return await spawnAndCapture({ verb: 'convert', ...input })
   } catch (e) {
-    if (e instanceof ChildProcessError) {
-      if (e.data.stderr) {
-        if (e.data.stderr.match(/^convert: unable to open image/i)) {
-          // throw new Kink
-          throw new Error(`Cannot process image.`)
-        }
+    if (e instanceof Error) {
+      if (e.message.match(/convert: unable to open image/i)) {
+        throw new Error(`Cannot process image.`)
       }
-    } else {
-      throw new Error(`System error`)
     }
+    throw new Error(`System error`)
   }
 }
 
-export async function runMogrifyCommand(cmd: Command) {
-  return await exec(cmd.link)
+export async function runMogrifyCommand(input: BinArgs) {
+  await spawnAndWait({ verb: 'convert', ...input })
 }
 
-export async function runInkscapeCommand(cmd: Command) {
-  return await exec(cmd.link)
+export async function runInkscapeCommand(input: BinArgs) {
+  await spawnAndWait({ verb: 'convert', ...input })
 }
 
-export async function handleIdentifyCommand(cmd: Command) {
-  const { stdout, stderr } = await exec(cmd.link)
+export async function handleIdentifyCommand(input: BinArgs) {
+  const stdout = await spawnAndCapture({ verb: 'identify', ...input })
   const pattern = new RegExp(`^([^\\s]+)\\s+(\\w+)`, 'i')
-  stdout.match(pattern)
+  const match = stdout.match(pattern)
   return {
-    path: RegExp.$1,
-    format: snakeCase(RegExp.$2),
+    path: match?.[1] ?? '',
+    format: snakeCase(match?.[2] ?? ''),
   }
 }

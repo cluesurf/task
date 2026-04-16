@@ -70,7 +70,7 @@ import { optimizeConsole } from '~/code/call/optimize/console'
 import { padConsole } from '~/code/call/pad/console'
 import { parseConsole } from '~/code/call/parse/console'
 import { pingConsole } from '~/code/call/ping/console'
-import { projectConsole } from '~/code/call/project/console'
+// project/ merged into verb-first paths (build/code, test/code, etc.)
 import { pushConsole } from '~/code/call/push/console'
 import { queryConsole } from '~/code/call/query/console'
 import { recordConsole } from '~/code/call/record/console'
@@ -154,7 +154,6 @@ registerGroupHelp({
     { name: 'pad',         describe: 'Pad an audio file with trailing silence' },
     { name: 'parse',       describe: 'Parse source or data into a structured form' },
     { name: 'ping',        describe: 'ICMP ping a host and report latency / loss' },
-    { name: 'project',     describe: 'Zero-config build runner (build / test / run / lint / install / ...)' },
     { name: 'push',        describe: 'Push an artifact to a remote (SSH key → host)' },
     { name: 'record',      describe: 'Record screen / terminal sessions' },
     { name: 'remove',      describe: 'Remove content, metadata, or a stored entry' },
@@ -337,7 +336,7 @@ async function main() {
     .command(padConsole)
     .command(parseConsole)
     .command(pingConsole)
-    .command(projectConsole)
+    // project merged into verb-first (build/code, test/code, etc.)
     .command(pushConsole)
     .command(queryConsole)
     .command(recordConsole)

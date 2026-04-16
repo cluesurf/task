@@ -1,38 +1,35 @@
 import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
-import {
   BuildCommandToOptimizeGifWithGifsicle,
 } from '~/code/form/action/optimize/image/shared'
+
 export function buildCommandToOptimizeGifWithGifsicle(
   input: BuildCommandToOptimizeGifWithGifsicle,
 ) {
-  const cmd = getCommand('gifsicle')
-  cmd.link.push(`--no-warnings`)
-  cmd.link.push(`-o`, input.output.file!.path)
+  const args: string[] = []
+  args.push(`--no-warnings`)
+  args.push(`-o`, input.output.file!.path)
 
   if (input.left || input.right || input.top || input.bottom) {
     const start = [input.left || '0', input.top || '0'].join(',')
     const end = [input.right || '0', input.bottom || '0'].join(',')
-    cmd.link.push(`--crop`, `${start}+${end}`)
+    args.push(`--crop`, `${start}+${end}`)
   }
 
   if (input.flip) {
-    cmd.link.push(`--flip-${input.flip}`)
+    args.push(`--flip-${input.flip}`)
   }
 
   if (input.transparent) {
-    cmd.link.push(`--transparent`, `"${input.transparent}"`)
+    args.push(`--transparent`, input.transparent)
   }
 
   if (input.optimize) {
-    cmd.link.push(`-O${input.optimize}`)
+    args.push(`-O${input.optimize}`)
   }
 
   if (input.scale) {
-    cmd.link.push(`--scale`, `${input.scale}`)
+    args.push(`--scale`, `${input.scale}`)
   }
 
-  return buildCommandSequence(cmd)
+  return { bin: 'gifsicle', args }
 }

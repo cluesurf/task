@@ -76,7 +76,13 @@ export function createNodeHandler<
     source: TInput,
     native?: NativeOptions,
   ): Promise<TOutput> => {
-    const input = parsers.input.parse(source)
+    // Default to 'internal' when no handle is provided — the
+    // programmatic API and CLI both omit it for local calls.
+    const withHandle =
+      (source as { handle?: string }).handle
+        ? source
+        : ({ ...source, handle: 'internal' } as TInput)
+    const input = parsers.input.parse(withHandle)
 
     switch ((input as { handle?: string }).handle) {
       case 'remote':

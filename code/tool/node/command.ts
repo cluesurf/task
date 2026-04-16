@@ -34,9 +34,12 @@ import {
   runSwiftCommand,
 } from '~/code/call/compile/code/handler'
 
+type BinArgs = { bin: string; args: string[] }
+type BinArgsHandler = (input: BinArgs) => any
+
 export type CommandHandlerName = CommandKey
 
-export const COMMAND_HANDLER: Record<string, (cmd: Command) => any> = {
+export const COMMAND_HANDLER: Record<string, BinArgsHandler> = {
   convert: runConvertCommand,
   mogrify: runMogrifyCommand,
   inkscape: runInkscapeCommand,
@@ -87,8 +90,8 @@ export const COMMAND_HANDLER: Record<string, (cmd: Command) => any> = {
   swift: runSwiftCommand,
 }
 
-export async function runGenericCommand(cmd: Command) {
-  await exec(cmd.link)
+export async function runGenericCommand(input: BinArgs) {
+  await exec([input.bin, ...input.args])
 }
 
 export async function runCommandSequence(sequence: CommandSequence) {
@@ -104,5 +107,8 @@ export async function runCommand(command: Command) {
   if (!handler) {
     throw new Error('No command handler for ' + command.key)
   }
-  return await handler(command)
+  return await handler({
+    bin: command.link[0]!,
+    args: command.link.slice(1),
+  })
 }

@@ -1,21 +1,19 @@
-import { ChildProcessError, exec } from '~/code/tool/node/process'
 import kink from '~/code/tool/shared/kink'
-import {
-  Command,
-} from '~/code/form/object/request'
-export async function runFontforgeCommand(cmd: Command) {
+import { spawnAndCapture } from '~/code/tool/node/spawn'
+
+export async function runFontforgeCommand(input: {
+  bin: string
+  args: string[]
+}) {
   try {
-    return await exec(cmd.link)
+    return await spawnAndCapture({ verb: 'convert font', ...input })
   } catch (e) {
-    if (e instanceof ChildProcessError) {
-      if (e.data.stderr) {
-        const parsedError = parseFontError(e.data.stderr)
-        if (parsedError) {
-          throw kink('font_forge_error', { note: parsedError })
-        }
+    if (e instanceof Error) {
+      const parsedError = parseFontError(e.message)
+      if (parsedError) {
+        throw kink('font_forge_error', { note: parsedError })
       }
     }
-    // throw e
   }
 }
 

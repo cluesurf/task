@@ -1,31 +1,35 @@
-import { ChildProcessError, exec } from '~/code/tool/node/process'
 import kink from '~/code/tool/shared/kink'
-import {
-  Command,
-} from '~/code/form/object/request'
-export async function runClangCommand(cmd: Command) {
-  await exec(cmd.link)
+import { spawnAndWait, spawnAndCapture } from '~/code/tool/node/spawn'
+
+export async function runClangCommand(input: {
+  bin: string
+  args: string[]
+}) {
+  await spawnAndWait({ verb: 'compile', ...input })
 }
 
-export async function runClangppCommand(cmd: Command) {
-  await exec(cmd.link)
+export async function runClangppCommand(input: {
+  bin: string
+  args: string[]
+}) {
+  await spawnAndWait({ verb: 'compile', ...input })
 }
 
-export async function runSwiftCommand(cmd: Command) {
-  await exec(cmd.link)
+export async function runSwiftCommand(input: {
+  bin: string
+  args: string[]
+}) {
+  await spawnAndWait({ verb: 'compile', ...input })
 }
 
-export async function runRustcCommand(cmd: Command) {
+export async function runRustcCommand(input: {
+  bin: string
+  args: string[]
+}) {
   try {
-    return await exec(cmd.link)
+    return await spawnAndCapture({ verb: 'compile', ...input })
   } catch (e) {
-    if (e instanceof ChildProcessError) {
-      if (e.data.stderr) {
-        throw kink('compilation_error', { note: e.data.stderr })
-      } else {
-        throw kink('compilation_error', { note: e.data.stdout ?? '' })
-      }
-    } else if (e instanceof Error) {
+    if (e instanceof Error) {
       throw kink('compilation_error', { note: e.message })
     }
   }

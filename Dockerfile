@@ -134,9 +134,10 @@ RUN apt-get -y install ghostscript
 RUN apt-get -y install qpdf
 
 # ── Binary analysis ───────────────────────────────────────────────
-# task disassemble / inspect binary route through radare2 + rizin.
+# task disassemble / inspect binary route through radare2. rizin
+# (radare2's fork) isn't in Ubuntu apt — available on macOS via
+# `brew install rizin` and on Arch/Fedora, but skipped here.
 RUN apt-get -y install radare2
-RUN apt-get -y install rizin
 
 # ── Postgres client tools ─────────────────────────────────────────
 # psql + pg_dump for task {inspect,query,measure,backup,export} db.

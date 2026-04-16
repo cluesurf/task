@@ -373,8 +373,6 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1030.0",
-    "blessed": "^0.1.81",
-    "blessed-contrib": "^4.11.0",
     "@cluesurf/form": "0.8.20",
     "@epic-web/invariant": "^1.0.0",
     "@lancejpollard/color-splat.js": "^0.0.14",
@@ -493,6 +491,7 @@
     "unified": "11.0.5",
     "unrar": "^0.2.0",
     "util": "^0.12.5",
+    "vitest": "^4.1.4",
     "web-tree-sitter": "0.26.5",
     "yaml": "^2.8.3",
     "yargs": "^18.0.0",

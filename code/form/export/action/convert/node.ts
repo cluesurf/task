@@ -155,4 +155,26 @@ export const convertRouteNode: ReadonlyArray<ConvertRoute> = [
       }
     },
   },
+  {
+    tool: 'ffmpeg-audio',
+    loadBase: async () => ({
+      input: ['mp3', 'wav', 'flac', 'ogg', 'opus', 'm4a', 'aac', 'wma', 'aiff', 'amr'] as const,
+      output: ['mp3', 'wav', 'flac', 'ogg', 'opus', 'm4a', 'aac'] as const,
+    }),
+    loadCall: async () => {
+      const mod = await import('~/code/call/convert/audio/node')
+      return { run: (source: unknown) => mod.default(source as never) }
+    },
+  },
+  {
+    tool: 'ffmpeg-video',
+    loadBase: async () => ({
+      input: ['mp4', 'mkv', 'webm', 'avi', 'mov', 'flv', 'wmv', 'ts', 'm4v', 'mpg', 'mpeg'] as const,
+      output: ['mp4', 'mkv', 'webm', 'avi', 'mov', 'gif'] as const,
+    }),
+    loadCall: async () => {
+      const mod = await import('~/code/call/convert/video/ffmpeg/node')
+      return { run: (source: unknown) => mod.convertVideoWithFfmpegNode(source as never) }
+    },
+  },
 ]
