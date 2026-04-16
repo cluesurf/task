@@ -39,7 +39,7 @@ onto a Windows host (or a Docker container with `mono` +
 
     ```sh
     # GitHub Pages-served feed
-    export CHOCO_SOURCE=https://cluesurf.github.io/choco-code
+    export CHOCO_SOURCE=https://deck.clue.surf/choco
     ```
 
 ## Publish

@@ -1,7 +1,7 @@
-import { Form } from '@cluesurf/form'
+import { buildSingleFileForms } from '~/code/tool/shared/base'
 
 /**
- * Action input for `task update font` — compile a `.fea` file and
+ * Action input for `task update font` -- compile a `.fea` file and
  * inject it into the font's GSUB / GPOS tables. Uses fontTools'
  * `feaLib.builder.addOpenTypeFeatures`.
  *
@@ -10,26 +10,11 @@ import { Form } from '@cluesurf/form'
  * never clobbered by accident.
  */
 
-export const update_font: Form = {
-  form: 'form',
+const forms = buildSingleFileForms({
+  name: 'update_font',
   save: '~/code/form/action/update/font',
-  link: {
-    input: {
-      link: {
-        file: {
-          link: { path: { like: 'string', name: { mark: 'i' } } },
-        },
-      },
-    },
-    output: {
-      link: {
-        file: {
-          link: {
-            path: { like: 'string', name: { mark: 'o' }, need: false },
-          },
-        },
-      },
-    },
+  outputRequired: false,
+  common: {
     fea: {
       like: 'string',
       need: true,
@@ -37,4 +22,22 @@ export const update_font: Form = {
       note: 'Path to a .fea feature file to apply',
     },
   },
-}
+})
+
+export const update_font_node_input = forms.node_input
+export const update_font_node_remote_input = forms.node_remote_input
+export const update_font_node_external_input =
+  forms.node_external_input
+export const update_font_node_client_input = forms.node_client_input
+export const update_font_node_local_external_input =
+  forms.node_local_external_input
+export const update_font_node_local_internal_input =
+  forms.node_local_internal_input
+export const update_font_node_local_input = forms.node_local_input
+export const update_font_node_output = forms.node_output
+export const update_font_command_input = forms.command_input
+export const update_font_browser_input = forms.browser_input
+export const update_font_browser_remote_input =
+  forms.browser_remote_input
+export const update_font_browser_local_input = forms.browser_local_input
+export const update_font_browser_output = forms.browser_output

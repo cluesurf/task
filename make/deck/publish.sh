@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Top-level dispatcher. Calls the publish.sh of each named ecosystem.
 # Required env vars per ecosystem are documented in each subdir's
-# publish.sh and in the table in load/readme.md.
+# publish.sh and in the table in make/deck/readme.md.
 #
 #   ./publish.sh deb               # one
 #   ./publish.sh deb rpm scoop     # several

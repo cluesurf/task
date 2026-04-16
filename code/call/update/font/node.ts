@@ -1,30 +1,30 @@
 /**
- * `task update font` — compile `.fea` + inject into a font. The
+ * `task update font` -- compile `.fea` + inject into a font. The
  * heavy lifting is fontTools' `feaLib.builder`, invoked through
  * an inline python snippet so we don't need a separate script
- * file. Input and output stay on the Node side.
+ * file.
  */
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { exec } from '~/code/tool/node/process'
+import type { UpdateFontNodeLocalInput } from '~/code/form/action/update/font/node'
+import {
+  UpdateFontNodeInputParser,
+  UpdateFontNodeLocalInputParser,
+  UpdateFontNodeOutputParser,
+} from '~/code/form/action/update/font/node/take'
 import { ensureParentDir } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
+import { spawnAndWait } from '~/code/tool/node/spawn'
+import { buildUpdateFontCommand } from './command'
 
-export type UpdateFontNodeInput = {
-  input: { file: { path: string } }
-  output?: { file?: { path?: string } }
-  fea: string
-}
-
-export type UpdateFontNodeOutput = {
-  file: { path: string }
-}
-
-export async function updateFontNode(
-  source: UpdateFontNodeInput,
-): Promise<UpdateFontNodeOutput> {
-  const inputPath = source.input.file.path
-  const feaPath = source.fea
+async function runLocal(input: UpdateFontNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const feaPath = input.fea
   const feaAbs = path.resolve(feaPath)
 
   try {
@@ -37,24 +37,36 @@ export async function updateFontNode(
 
   const ext = path.extname(inputPath)
   const defaultOut =
-    inputPath.replace(new RegExp(`\\${ext}$`, 'i'), '') + `.updated${ext}`
-  const outputPath = source.output?.file?.path ?? defaultOut
+    inputPath.replace(new RegExp(`\\${ext}$`, 'i'), '') +
+    `.updated${ext}`
+  const outputPath = input.output?.file?.path ?? defaultOut
   await ensureParentDir(outputPath)
 
-  // Inline python: load the font, add features, save to output.
-  // `addOpenTypeFeatures` mutates GSUB/GPOS in place and raises
-  // FeatureLibError on parse failures, which surfaces here as a
-  // non-zero exit via exec().
-  const script = `
-import sys
-from fontTools.ttLib import TTFont
-from fontTools.feaLib.builder import addOpenTypeFeatures
-font_path, fea_path, out_path = sys.argv[1], sys.argv[2], sys.argv[3]
-font = TTFont(font_path)
-addOpenTypeFeatures(font, fea_path)
-font.save(out_path)
-`
-  await exec(['python3', '-c', script, inputPath, feaAbs, outputPath])
+  const command = buildUpdateFontCommand({
+    inputPath,
+    outputPath,
+    feaPath: feaAbs,
+  })
+  await spawnAndWait({
+    verb: 'update font',
+    bin: command.bin,
+    args: command.args,
+  })
 
   return { file: { path: outputPath } }
 }
+
+const [updateFontNode, testUpdateFontNode] = createNodeHandler({
+  parsers: {
+    input: UpdateFontNodeInputParser,
+    local: UpdateFontNodeLocalInputParser,
+    output: UpdateFontNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export { updateFontNode, testUpdateFontNode }

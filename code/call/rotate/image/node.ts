@@ -1,29 +1,39 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { ensureParentDir } from '~/code/tool/node/file'
+import type { RotateImageNodeLocalInput } from '~/code/form/action/rotate/image/node'
 import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
+  RotateImageNodeInputParser,
+  RotateImageNodeLocalInputParser,
+  RotateImageNodeOutputParser,
+} from '~/code/form/action/rotate/image/node/take'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import { resolveExternalInput, resolveInternalInput } from '~/code/tool/node/resolve'
 import { runCommandSequence } from '~/code/tool/node/command'
+import { buildCommandToRotateImage } from './command'
 
-export type RotateImageNodeInput = {
-  input: { file: { path: string } }
-  output: { file: { path: string } }
-  degree: string
-}
-
-export async function rotateImageNode(source: RotateImageNodeInput) {
-  const outputPath = source.output.file.path
+async function runLocal(input: RotateImageNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
-
-  const cmd = getCommand('convert')
-  cmd.link.push(
-    source.input.file.path,
-    '-rotate',
-    String(source.degree),
+  const sequence = buildCommandToRotateImage({
+    inputPath,
     outputPath,
-  )
-  await runCommandSequence(buildCommandSequence(cmd))
+    degree: input.degree,
+  })
+  await runCommandSequence(sequence)
   return { file: { path: outputPath } }
 }
+
+const [rotateImageNode, testRotateImageNode] = createNodeHandler({
+  parsers: {
+    input: RotateImageNodeInputParser,
+    local: RotateImageNodeLocalInputParser,
+    output: RotateImageNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export { rotateImageNode, testRotateImageNode }

@@ -1,40 +1,43 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { ensureParentDir } from '~/code/tool/node/file'
+import type { CompressVideoNodeLocalInput } from '~/code/form/action/compress/video/node'
 import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
+  CompressVideoNodeInputParser,
+  CompressVideoNodeLocalInputParser,
+  CompressVideoNodeOutputParser,
+} from '~/code/form/action/compress/video/node/take'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
 import { runCommandSequence } from '~/code/tool/node/command'
+import { buildCommandToCompressVideo } from './command'
 
-export type CompressVideoNodeInput = {
-  input: { file: { path: string } }
-  output: { file: { path: string } }
-  crf?: string
-  preset?: string
-}
-
-export async function compressVideoNode(source: CompressVideoNodeInput) {
-  const outputPath = source.output.file.path
+async function runLocal(input: CompressVideoNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
-
-  const cmd = getCommand('ffmpeg')
-  cmd.link.push(
-    '-y',
-    '-i',
-    source.input.file.path,
-    '-c:v',
-    'libx264',
-    '-crf',
-    source.crf ?? '28',
-    '-preset',
-    source.preset ?? 'medium',
-    '-c:a',
-    'aac',
-    '-b:a',
-    '128k',
+  const sequence = buildCommandToCompressVideo({
+    inputPath,
     outputPath,
-  )
-  await runCommandSequence(buildCommandSequence(cmd))
+    crf: input.crf,
+    preset: input.preset,
+  })
+  await runCommandSequence(sequence)
   return { file: { path: outputPath } }
 }
+
+const [compressVideoNode, testCompressVideoNode] = createNodeHandler({
+  parsers: {
+    input: CompressVideoNodeInputParser,
+    local: CompressVideoNodeLocalInputParser,
+    output: CompressVideoNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export { compressVideoNode, testCompressVideoNode }

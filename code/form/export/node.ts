@@ -21,6 +21,22 @@ import type {
   CompileWastNodeOutput,
 } from '~/code/form/action/compile/code/wast/node'
 import type {
+  CompressAudioNodeInput,
+  CompressAudioNodeOutput,
+} from '~/code/form/action/compress/audio/node'
+import type {
+  CompressFontNodeInput,
+  CompressFontNodeOutput,
+} from '~/code/form/action/compress/font/node'
+import type {
+  CompressImageNodeInput,
+  CompressImageNodeOutput,
+} from '~/code/form/action/compress/image/node'
+import type {
+  CompressVideoNodeInput,
+  CompressVideoNodeOutput,
+} from '~/code/form/action/compress/video/node'
+import type {
   ConvertArchiveNodeInput,
   ConvertArchiveNodeOutput,
 } from '~/code/form/action/convert/archive/node'
@@ -113,9 +129,17 @@ import type {
   DownloadHuggingFaceNodeOutput,
 } from '~/code/form/action/download/hugging-face/node'
 import type {
+  DumpFontNodeInput,
+  DumpFontNodeOutput,
+} from '~/code/form/action/dump/font/node'
+import type {
   EncryptFileNodeInput,
   EncryptFileNodeOutput,
 } from '~/code/form/action/encrypt/file/node'
+import type {
+  FlipImageNodeInput,
+  FlipImageNodeOutput,
+} from '~/code/form/action/flip/image/node'
 import type {
   FormatAssemblyNodeInput,
   FormatAssemblyNodeOutput,
@@ -130,6 +154,10 @@ import type {
   FormatSwiftNodeInput,
   FormatSwiftNodeOutput,
 } from '~/code/form/action/format/code/node'
+import type {
+  NormalizeAudioNodeInput,
+  NormalizeAudioNodeOutput,
+} from '~/code/form/action/normalize/audio/node'
 import type {
   RemoveExifNodeInput,
   RemoveExifNodeOutput,
@@ -151,9 +179,53 @@ import type {
   RemoveTransparencyNodeOutput,
 } from '~/code/form/action/remove/transparency/node'
 import type {
+  RenderFontNodeInput,
+  RenderFontNodeOutput,
+} from '~/code/form/action/render/font/node'
+import type {
+  RotateImageNodeInput,
+  RotateImageNodeOutput,
+} from '~/code/form/action/rotate/image/node'
+import type {
+  RotateVideoNodeInput,
+  RotateVideoNodeOutput,
+} from '~/code/form/action/rotate/video/node'
+import type {
   SanitizeHtmlNodeInput,
   SanitizeHtmlNodeOutput,
 } from '~/code/form/action/sanitize/code/node'
+import type {
+  ShapeFontNodeInput,
+  ShapeFontNodeOutput,
+} from '~/code/form/action/shape/font/node'
+import type {
+  SubsetFontNodeInput,
+  SubsetFontNodeOutput,
+} from '~/code/form/action/subset/font/node'
+import type {
+  TrimAudioNodeInput,
+  TrimAudioNodeOutput,
+} from '~/code/form/action/trim/audio/node'
+import type {
+  TrimImageNodeInput,
+  TrimImageNodeOutput,
+} from '~/code/form/action/trim/image/node'
+import type {
+  TrimVideoNodeInput,
+  TrimVideoNodeOutput,
+} from '~/code/form/action/trim/video/node'
+import type {
+  UpdateFontNodeInput,
+  UpdateFontNodeOutput,
+} from '~/code/form/action/update/font/node'
+import type {
+  UpdateImageNodeInput,
+  UpdateImageNodeOutput,
+} from '~/code/form/action/update/image/node'
+import type {
+  UpdateVideoNodeInput,
+  UpdateVideoNodeOutput,
+} from '~/code/form/action/update/video/node'
 
 export interface TaskSurface {
   compile(input: CompileCNodeInput): Promise<CompileCNodeOutput>
@@ -161,6 +233,11 @@ export interface TaskSurface {
   compile(input: CompileRustNodeInput): Promise<CompileRustNodeOutput>
   compile(input: CompileSwiftNodeInput): Promise<CompileSwiftNodeOutput>
   compile(input: CompileWastNodeInput): Promise<CompileWastNodeOutput>
+
+  compress(input: CompressAudioNodeInput): Promise<CompressAudioNodeOutput>
+  compress(input: CompressFontNodeInput): Promise<CompressFontNodeOutput>
+  compress(input: CompressImageNodeInput): Promise<CompressImageNodeOutput>
+  compress(input: CompressVideoNodeInput): Promise<CompressVideoNodeOutput>
 
   convert(input: ConvertArchiveNodeInput): Promise<ConvertArchiveNodeOutput>
   convert(input: ConvertDataNodeInput): Promise<ConvertDataNodeOutput>
@@ -190,7 +267,11 @@ export interface TaskSurface {
 
   download(input: DownloadHuggingFaceNodeInput): Promise<DownloadHuggingFaceNodeOutput>
 
+  dump(input: DumpFontNodeInput): Promise<DumpFontNodeOutput>
+
   encrypt(input: EncryptFileNodeInput): Promise<EncryptFileNodeOutput>
+
+  flip(input: FlipImageNodeInput): Promise<FlipImageNodeOutput>
 
   format(input: FormatAssemblyNodeInput): Promise<FormatAssemblyNodeOutput>
   format(input: FormatCodeWithClangFormatNodeInput): Promise<FormatCodeWithClangFormatNodeOutput>
@@ -199,13 +280,32 @@ export interface TaskSurface {
   format(input: FormatRustNodeInput): Promise<FormatRustNodeOutput>
   format(input: FormatSwiftNodeInput): Promise<FormatSwiftNodeOutput>
 
+  normalize(input: NormalizeAudioNodeInput): Promise<NormalizeAudioNodeOutput>
+
   remove(input: RemoveExifNodeInput): Promise<RemoveExifNodeOutput>
   remove(input: RemovePasswordNodeInput): Promise<RemovePasswordNodeOutput>
   remove(input: RemoveProfileNodeInput): Promise<RemoveProfileNodeOutput>
   remove(input: RemoveSubtitlesNodeInput): Promise<RemoveSubtitlesNodeOutput>
   remove(input: RemoveTransparencyNodeInput): Promise<RemoveTransparencyNodeOutput>
 
+  render(input: RenderFontNodeInput): Promise<RenderFontNodeOutput>
+
+  rotate(input: RotateImageNodeInput): Promise<RotateImageNodeOutput>
+  rotate(input: RotateVideoNodeInput): Promise<RotateVideoNodeOutput>
+
   sanitize(input: SanitizeHtmlNodeInput): Promise<SanitizeHtmlNodeOutput>
+
+  shape(input: ShapeFontNodeInput): Promise<ShapeFontNodeOutput>
+
+  subset(input: SubsetFontNodeInput): Promise<SubsetFontNodeOutput>
+
+  trim(input: TrimAudioNodeInput): Promise<TrimAudioNodeOutput>
+  trim(input: TrimImageNodeInput): Promise<TrimImageNodeOutput>
+  trim(input: TrimVideoNodeInput): Promise<TrimVideoNodeOutput>
+
+  update(input: UpdateFontNodeInput): Promise<UpdateFontNodeOutput>
+  update(input: UpdateImageNodeInput): Promise<UpdateImageNodeOutput>
+  update(input: UpdateVideoNodeInput): Promise<UpdateVideoNodeOutput>
 }
 
 export type CompileNodeInput =
@@ -220,6 +320,17 @@ export type CompileNodeOutput =
   | CompileRustNodeOutput
   | CompileSwiftNodeOutput
   | CompileWastNodeOutput
+
+export type CompressNodeInput =
+  | CompressAudioNodeInput
+  | CompressFontNodeInput
+  | CompressImageNodeInput
+  | CompressVideoNodeInput
+export type CompressNodeOutput =
+  | CompressAudioNodeOutput
+  | CompressFontNodeOutput
+  | CompressImageNodeOutput
+  | CompressVideoNodeOutput
 
 export type ConvertNodeInput =
   | ConvertArchiveNodeInput
@@ -281,10 +392,20 @@ export type DownloadNodeInput =
 export type DownloadNodeOutput =
   | DownloadHuggingFaceNodeOutput
 
+export type DumpNodeInput =
+  | DumpFontNodeInput
+export type DumpNodeOutput =
+  | DumpFontNodeOutput
+
 export type EncryptNodeInput =
   | EncryptFileNodeInput
 export type EncryptNodeOutput =
   | EncryptFileNodeOutput
+
+export type FlipNodeInput =
+  | FlipImageNodeInput
+export type FlipNodeOutput =
+  | FlipImageNodeOutput
 
 export type FormatNodeInput =
   | FormatAssemblyNodeInput
@@ -301,6 +422,11 @@ export type FormatNodeOutput =
   | FormatRustNodeOutput
   | FormatSwiftNodeOutput
 
+export type NormalizeNodeInput =
+  | NormalizeAudioNodeInput
+export type NormalizeNodeOutput =
+  | NormalizeAudioNodeOutput
+
 export type RemoveNodeInput =
   | RemoveExifNodeInput
   | RemovePasswordNodeInput
@@ -314,7 +440,47 @@ export type RemoveNodeOutput =
   | RemoveSubtitlesNodeOutput
   | RemoveTransparencyNodeOutput
 
+export type RenderNodeInput =
+  | RenderFontNodeInput
+export type RenderNodeOutput =
+  | RenderFontNodeOutput
+
+export type RotateNodeInput =
+  | RotateImageNodeInput
+  | RotateVideoNodeInput
+export type RotateNodeOutput =
+  | RotateImageNodeOutput
+  | RotateVideoNodeOutput
+
 export type SanitizeNodeInput =
   | SanitizeHtmlNodeInput
 export type SanitizeNodeOutput =
   | SanitizeHtmlNodeOutput
+
+export type ShapeNodeInput =
+  | ShapeFontNodeInput
+export type ShapeNodeOutput =
+  | ShapeFontNodeOutput
+
+export type SubsetNodeInput =
+  | SubsetFontNodeInput
+export type SubsetNodeOutput =
+  | SubsetFontNodeOutput
+
+export type TrimNodeInput =
+  | TrimAudioNodeInput
+  | TrimImageNodeInput
+  | TrimVideoNodeInput
+export type TrimNodeOutput =
+  | TrimAudioNodeOutput
+  | TrimImageNodeOutput
+  | TrimVideoNodeOutput
+
+export type UpdateNodeInput =
+  | UpdateFontNodeInput
+  | UpdateImageNodeInput
+  | UpdateVideoNodeInput
+export type UpdateNodeOutput =
+  | UpdateFontNodeOutput
+  | UpdateImageNodeOutput
+  | UpdateVideoNodeOutput

@@ -4,7 +4,7 @@ Per-ecosystem builds of the `@cluesurf/task` native-toolchain
 metapackage.
 
 ```
-load/
+make/deck/
   shared/          metadata + template renderer (used by all)
   linux/           per-distro: deb, rpm, arch, alpine, gentoo, opensuse
   windows/         per-manager: winget, scoop, choco

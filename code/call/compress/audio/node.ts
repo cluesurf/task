@@ -1,31 +1,42 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { ensureParentDir } from '~/code/tool/node/file'
+import type { CompressAudioNodeLocalInput } from '~/code/form/action/compress/audio/node'
 import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
+  CompressAudioNodeInputParser,
+  CompressAudioNodeLocalInputParser,
+  CompressAudioNodeOutputParser,
+} from '~/code/form/action/compress/audio/node/take'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
 import { runCommandSequence } from '~/code/tool/node/command'
+import { buildCommandToCompressAudio } from './command'
 
-export type CompressAudioNodeInput = {
-  input: { file: { path: string } }
-  output: { file: { path: string } }
-  bitrate?: string
-}
-
-export async function compressAudioNode(source: CompressAudioNodeInput) {
-  const outputPath = source.output.file.path
+async function runLocal(input: CompressAudioNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
-
-  const cmd = getCommand('ffmpeg')
-  cmd.link.push(
-    '-y',
-    '-i',
-    source.input.file.path,
-    '-b:a',
-    source.bitrate ?? '128k',
+  const sequence = buildCommandToCompressAudio({
+    inputPath,
     outputPath,
-  )
-  await runCommandSequence(buildCommandSequence(cmd))
+    bitrate: input.bitrate,
+  })
+  await runCommandSequence(sequence)
   return { file: { path: outputPath } }
 }
+
+const [compressAudioNode, testCompressAudioNode] = createNodeHandler({
+  parsers: {
+    input: CompressAudioNodeInputParser,
+    local: CompressAudioNodeLocalInputParser,
+    output: CompressAudioNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export { compressAudioNode, testCompressAudioNode }

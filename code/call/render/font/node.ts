@@ -1,36 +1,52 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
+/**
+ * `task render font` -- rasterize a text sample through a font
+ * via HarfBuzz's `hb-view`. Output format is inferred from the
+ * output extension (png, svg, pdf).
+ */
+
+import type { RenderFontNodeLocalInput } from '~/code/form/action/render/font/node'
+import {
+  RenderFontNodeInputParser,
+  RenderFontNodeLocalInputParser,
+  RenderFontNodeOutputParser,
+} from '~/code/form/action/render/font/node/take'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
 import { runCommandSequence } from '~/code/tool/node/command'
 import { buildRenderFontCommand } from './command'
-import { ensureParentDir } from '~/code/tool/node/file'
 
-export type RenderFontNodeInput = {
-  input: { file: { path: string } }
-  output: { file: { path: string } }
-  text: string
-  fontSize?: number
-  features?: string
-}
-
-export type RenderFontNodeOutput = {
-  file: { path: string }
-}
-
-export async function renderFontNode(
-  source: RenderFontNodeInput,
-): Promise<RenderFontNodeOutput> {
-  const outputPath = source.output.file.path
+async function runLocal(input: RenderFontNodeLocalInput) {
+  const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
 
   await runCommandSequence(
     buildRenderFontCommand({
-      input: source.input.file.path,
+      input: input.input.file.path,
       output: outputPath,
-      text: source.text,
-      fontSize: source.fontSize,
-      features: source.features,
+      text: input.text,
+      fontSize: input.fontSize,
+      features: input.features,
     }),
   )
 
   return { file: { path: outputPath } }
 }
+
+const [renderFontNode, testRenderFontNode] = createNodeHandler({
+  parsers: {
+    input: RenderFontNodeInputParser,
+    local: RenderFontNodeLocalInputParser,
+    output: RenderFontNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export { renderFontNode, testRenderFontNode }

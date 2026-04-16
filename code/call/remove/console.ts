@@ -8,6 +8,7 @@ import { removePasswordConsole } from './password/console'
 import { removeProfileConsole } from './profile/console'
 import { removeTransparencyConsole } from './transparency/console'
 import { removeExifConsole } from './exif/console'
+import { removeSshHostConsole } from './ssh-host/console'
 import { removeSshKeyConsole } from './ssh-key/console'
 
 registerGroupHelp({
@@ -37,6 +38,7 @@ registerGroupHelp({
       name: 'invisible',
       describe: 'Strip zero-width / BOM / invisible chars',
     },
+    { name: 'ssh-host', describe: 'Remove a Host entry from ~/.ssh/config' },
     { name: 'ssh-key', describe: 'Remove an SSH key entry' },
   ],
 })
@@ -54,6 +56,7 @@ export const removeConsole: CommandModule = {
       .command(removeProfileConsole)
       .command(removeTransparencyConsole)
       .command(removeInvisibleConsole)
+      .command(removeSshHostConsole)
       .command(removeSshKeyConsole)
       .demandCommand(1, 'Specify what to remove'),
   handler: () => {},

@@ -1,31 +1,29 @@
+/**
+ * `task subset font` -- reduces a font to only the glyphs needed
+ * for the given text or codepoint ranges via `pyftsubset`.
+ */
+
 import fs from 'node:fs/promises'
-import path from 'node:path'
+import type { SubsetFontNodeLocalInput } from '~/code/form/action/subset/font/node'
+import {
+  SubsetFontNodeInputParser,
+  SubsetFontNodeLocalInputParser,
+  SubsetFontNodeOutputParser,
+} from '~/code/form/action/subset/font/node/take'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
 import { runCommandSequence } from '~/code/tool/node/command'
 import { buildSubsetFontCommand } from './command'
-import { ensureParentDir } from '~/code/tool/node/file'
 
-export type SubsetFontNodeInput = {
-  input: { file: { path: string } }
-  output: { file: { path: string } }
-  text?: string
-  unicodes?: string
-  layoutFeatures?: string
-  flavor?: string
-}
+async function runLocal(input: SubsetFontNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output.file.path
 
-export type SubsetFontNodeOutput = {
-  file: { path: string }
-  sizeBefore: number
-  sizeAfter: number
-}
-
-export async function subsetFontNode(
-  source: SubsetFontNodeInput,
-): Promise<SubsetFontNodeOutput> {
-  const inputPath = source.input.file.path
-  const outputPath = source.output.file.path
-
-  if (!source.text && !source.unicodes) {
+  if (!input.text && !input.unicodes) {
     throw new Error(
       'subset font: pass at least one of --text or --unicodes',
     )
@@ -38,13 +36,28 @@ export async function subsetFontNode(
     buildSubsetFontCommand({
       input: inputPath,
       output: outputPath,
-      text: source.text,
-      unicodes: source.unicodes,
-      layoutFeatures: source.layoutFeatures,
-      flavor: source.flavor,
+      text: input.text,
+      unicodes: input.unicodes,
+      layoutFeatures: input.layoutFeatures,
+      flavor: input.flavor,
     }),
   )
 
   const { size: sizeAfter } = await fs.stat(outputPath)
   return { file: { path: outputPath }, sizeBefore, sizeAfter }
 }
+
+const [subsetFontNode, testSubsetFontNode] = createNodeHandler({
+  parsers: {
+    input: SubsetFontNodeInputParser,
+    local: SubsetFontNodeLocalInputParser,
+    output: SubsetFontNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export { subsetFontNode, testSubsetFontNode }

@@ -1,35 +1,32 @@
 /**
- * `task dump font` — shell out to `ttx` (fontTools). Direction is
+ * `task dump font` -- shell out to `ttx` (fontTools). Direction is
  * inferred from the input extension:
  *
- *   .ttf / .otf → .ttx   (dump)
- *   .ttx        → .ttf   (compile)
+ *   .ttf / .otf -> .ttx   (dump)
+ *   .ttx        -> .ttf   (compile)
  *
  * When no output path is passed, we pick the canonical sibling:
- * `foo.ttf` → `foo.ttx`, `foo.ttx` → `foo.ttf`.
+ * `foo.ttf` -> `foo.ttx`, `foo.ttx` -> `foo.ttf`.
  */
 
-import fs from 'node:fs/promises'
 import path from 'node:path'
+import type { DumpFontNodeLocalInput } from '~/code/form/action/dump/font/node'
+import {
+  DumpFontNodeInputParser,
+  DumpFontNodeLocalInputParser,
+  DumpFontNodeOutputParser,
+} from '~/code/form/action/dump/font/node/take'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
 import { runCommandSequence } from '~/code/tool/node/command'
 import { buildDumpFontCommand } from './command'
-import { ensureParentDir } from '~/code/tool/node/file'
 
-export type DumpFontNodeInput = {
-  input: { file: { path: string } }
-  output?: { file?: { path?: string } }
-  tables?: string
-}
-
-export type DumpFontNodeOutput = {
-  file: { path: string }
-  direction: 'dump' | 'compile'
-}
-
-export async function dumpFontNode(
-  source: DumpFontNodeInput,
-): Promise<DumpFontNodeOutput> {
-  const inputPath = source.input.file.path
+async function runLocal(input: DumpFontNodeLocalInput) {
+  const inputPath = input.input.file.path
   const inputExt = path.extname(inputPath).toLowerCase()
 
   let direction: 'dump' | 'compile'
@@ -47,18 +44,36 @@ export async function dumpFontNode(
     )
   }
 
-  const outputPath = source.output?.file?.path ?? defaultOut
+  const outputPath = input.output?.file?.path ?? defaultOut
   await ensureParentDir(outputPath)
 
   await runCommandSequence(
     buildDumpFontCommand({
       input: inputPath,
       output: outputPath,
-      tables: source.tables
-        ? source.tables.split(',').map(s => s.trim()).filter(Boolean)
+      tables: input.tables
+        ? input.tables
+            .split(',')
+            .map(s => s.trim())
+            .filter(Boolean)
         : undefined,
     }),
   )
 
   return { file: { path: outputPath }, direction }
 }
+
+const [dumpFontNode, testDumpFontNode] = createNodeHandler({
+  parsers: {
+    input: DumpFontNodeInputParser,
+    local: DumpFontNodeLocalInputParser,
+    output: DumpFontNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export { dumpFontNode, testDumpFontNode }

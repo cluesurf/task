@@ -1,33 +1,42 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { ensureParentDir } from '~/code/tool/node/file'
+import type { TrimVideoNodeLocalInput } from '~/code/form/action/trim/video/node'
 import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
+  TrimVideoNodeInputParser,
+  TrimVideoNodeLocalInputParser,
+  TrimVideoNodeOutputParser,
+} from '~/code/form/action/trim/video/node/take'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import { resolveExternalInput, resolveInternalInput } from '~/code/tool/node/resolve'
 import { runCommandSequence } from '~/code/tool/node/command'
+import { buildCommandToTrimVideo } from './command'
 
-export type TrimVideoNodeInput = {
-  input: { file: { path: string } }
-  output: { file: { path: string } }
-  start?: string
-  end?: string
-  duration?: string
-  reencode?: boolean
-}
-
-export async function trimVideoNode(source: TrimVideoNodeInput) {
-  const outputPath = source.output.file.path
+async function runLocal(input: TrimVideoNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
-
-  const cmd = getCommand('ffmpeg')
-  cmd.link.push('-y', '-i', source.input.file.path)
-  if (source.start) cmd.link.push('-ss', source.start)
-  if (source.end) cmd.link.push('-to', source.end)
-  if (source.duration && !source.end) cmd.link.push('-t', source.duration)
-  if (!source.reencode) cmd.link.push('-c', 'copy')
-  cmd.link.push(outputPath)
-
-  await runCommandSequence(buildCommandSequence(cmd))
+  const sequence = buildCommandToTrimVideo({
+    inputPath,
+    outputPath,
+    start: input.start,
+    end: input.end,
+    duration: input.duration,
+    reencode: input.reencode,
+  })
+  await runCommandSequence(sequence)
   return { file: { path: outputPath } }
 }
+
+const [trimVideoNode, testTrimVideoNode] = createNodeHandler({
+  parsers: {
+    input: TrimVideoNodeInputParser,
+    local: TrimVideoNodeLocalInputParser,
+    output: TrimVideoNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export { trimVideoNode, testTrimVideoNode }

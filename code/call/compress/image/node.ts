@@ -1,30 +1,42 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { ensureParentDir } from '~/code/tool/node/file'
+import type { CompressImageNodeLocalInput } from '~/code/form/action/compress/image/node'
 import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
+  CompressImageNodeInputParser,
+  CompressImageNodeLocalInputParser,
+  CompressImageNodeOutputParser,
+} from '~/code/form/action/compress/image/node/take'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
 import { runCommandSequence } from '~/code/tool/node/command'
+import { buildCommandToCompressImage } from './command'
 
-export type CompressImageNodeInput = {
-  input: { file: { path: string } }
-  output?: { file?: { path?: string } }
-  quality?: string
-}
-
-export async function compressImageNode(source: CompressImageNodeInput) {
-  const inputPath = source.input.file.path
-  const outputPath = source.output?.file?.path ?? inputPath
+async function runLocal(input: CompressImageNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
-
-  const cmd = getCommand('convert')
-  cmd.link.push(
+  const sequence = buildCommandToCompressImage({
     inputPath,
-    '-quality',
-    source.quality ?? '80',
     outputPath,
-  )
-  await runCommandSequence(buildCommandSequence(cmd))
+    quality: input.quality,
+  })
+  await runCommandSequence(sequence)
   return { file: { path: outputPath } }
 }
+
+const [compressImageNode, testCompressImageNode] = createNodeHandler({
+  parsers: {
+    input: CompressImageNodeInputParser,
+    local: CompressImageNodeLocalInputParser,
+    output: CompressImageNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export { compressImageNode, testCompressImageNode }

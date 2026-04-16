@@ -21,6 +21,22 @@ import type {
   CompileWastBrowserOutput,
 } from '~/code/form/action/compile/code/wast/browser'
 import type {
+  CompressAudioBrowserInput,
+  CompressAudioBrowserOutput,
+} from '~/code/form/action/compress/audio/browser'
+import type {
+  CompressFontBrowserInput,
+  CompressFontBrowserOutput,
+} from '~/code/form/action/compress/font/browser'
+import type {
+  CompressImageBrowserInput,
+  CompressImageBrowserOutput,
+} from '~/code/form/action/compress/image/browser'
+import type {
+  CompressVideoBrowserInput,
+  CompressVideoBrowserOutput,
+} from '~/code/form/action/compress/video/browser'
+import type {
   ConvertArchiveBrowserInput,
   ConvertArchiveBrowserOutput,
 } from '~/code/form/action/convert/archive/browser'
@@ -109,9 +125,17 @@ import type {
   DisassembleWasmBrowserOutput,
 } from '~/code/form/action/disassemble/wasm/browser'
 import type {
+  DumpFontBrowserInput,
+  DumpFontBrowserOutput,
+} from '~/code/form/action/dump/font/browser'
+import type {
   EncryptFileBrowserInput,
   EncryptFileBrowserOutput,
 } from '~/code/form/action/encrypt/file/browser'
+import type {
+  FlipImageBrowserInput,
+  FlipImageBrowserOutput,
+} from '~/code/form/action/flip/image/browser'
 import type {
   FormatAssemblyBrowserInput,
   FormatAssemblyBrowserOutput,
@@ -126,6 +150,10 @@ import type {
   FormatSwiftBrowserInput,
   FormatSwiftBrowserOutput,
 } from '~/code/form/action/format/code/browser'
+import type {
+  NormalizeAudioBrowserInput,
+  NormalizeAudioBrowserOutput,
+} from '~/code/form/action/normalize/audio/browser'
 import type {
   RemoveExifBrowserInput,
   RemoveExifBrowserOutput,
@@ -147,9 +175,53 @@ import type {
   RemoveTransparencyBrowserOutput,
 } from '~/code/form/action/remove/transparency/browser'
 import type {
+  RenderFontBrowserInput,
+  RenderFontBrowserOutput,
+} from '~/code/form/action/render/font/browser'
+import type {
+  RotateImageBrowserInput,
+  RotateImageBrowserOutput,
+} from '~/code/form/action/rotate/image/browser'
+import type {
+  RotateVideoBrowserInput,
+  RotateVideoBrowserOutput,
+} from '~/code/form/action/rotate/video/browser'
+import type {
   SanitizeHtmlBrowserInput,
   SanitizeHtmlBrowserOutput,
 } from '~/code/form/action/sanitize/code/browser'
+import type {
+  ShapeFontBrowserInput,
+  ShapeFontBrowserOutput,
+} from '~/code/form/action/shape/font/browser'
+import type {
+  SubsetFontBrowserInput,
+  SubsetFontBrowserOutput,
+} from '~/code/form/action/subset/font/browser'
+import type {
+  TrimAudioBrowserInput,
+  TrimAudioBrowserOutput,
+} from '~/code/form/action/trim/audio/browser'
+import type {
+  TrimImageBrowserInput,
+  TrimImageBrowserOutput,
+} from '~/code/form/action/trim/image/browser'
+import type {
+  TrimVideoBrowserInput,
+  TrimVideoBrowserOutput,
+} from '~/code/form/action/trim/video/browser'
+import type {
+  UpdateFontBrowserInput,
+  UpdateFontBrowserOutput,
+} from '~/code/form/action/update/font/browser'
+import type {
+  UpdateImageBrowserInput,
+  UpdateImageBrowserOutput,
+} from '~/code/form/action/update/image/browser'
+import type {
+  UpdateVideoBrowserInput,
+  UpdateVideoBrowserOutput,
+} from '~/code/form/action/update/video/browser'
 
 export interface TaskSurface {
   compile(input: CompileCBrowserInput): Promise<CompileCBrowserOutput>
@@ -157,6 +229,11 @@ export interface TaskSurface {
   compile(input: CompileRustBrowserInput): Promise<CompileRustBrowserOutput>
   compile(input: CompileSwiftBrowserInput): Promise<CompileSwiftBrowserOutput>
   compile(input: CompileWastBrowserInput): Promise<CompileWastBrowserOutput>
+
+  compress(input: CompressAudioBrowserInput): Promise<CompressAudioBrowserOutput>
+  compress(input: CompressFontBrowserInput): Promise<CompressFontBrowserOutput>
+  compress(input: CompressImageBrowserInput): Promise<CompressImageBrowserOutput>
+  compress(input: CompressVideoBrowserInput): Promise<CompressVideoBrowserOutput>
 
   convert(input: ConvertArchiveBrowserInput): Promise<ConvertArchiveBrowserOutput>
   convert(input: ConvertDataBrowserInput): Promise<ConvertDataBrowserOutput>
@@ -184,7 +261,11 @@ export interface TaskSurface {
   disassemble(input: DisassembleRadareBrowserInput): Promise<DisassembleRadareBrowserOutput>
   disassemble(input: DisassembleWasmBrowserInput): Promise<DisassembleWasmBrowserOutput>
 
+  dump(input: DumpFontBrowserInput): Promise<DumpFontBrowserOutput>
+
   encrypt(input: EncryptFileBrowserInput): Promise<EncryptFileBrowserOutput>
+
+  flip(input: FlipImageBrowserInput): Promise<FlipImageBrowserOutput>
 
   format(input: FormatAssemblyBrowserInput): Promise<FormatAssemblyBrowserOutput>
   format(input: FormatCodeWithClangFormatBrowserInput): Promise<FormatCodeWithClangFormatBrowserOutput>
@@ -193,13 +274,32 @@ export interface TaskSurface {
   format(input: FormatRustBrowserInput): Promise<FormatRustBrowserOutput>
   format(input: FormatSwiftBrowserInput): Promise<FormatSwiftBrowserOutput>
 
+  normalize(input: NormalizeAudioBrowserInput): Promise<NormalizeAudioBrowserOutput>
+
   remove(input: RemoveExifBrowserInput): Promise<RemoveExifBrowserOutput>
   remove(input: RemovePasswordBrowserInput): Promise<RemovePasswordBrowserOutput>
   remove(input: RemoveProfileBrowserInput): Promise<RemoveProfileBrowserOutput>
   remove(input: RemoveSubtitlesBrowserInput): Promise<RemoveSubtitlesBrowserOutput>
   remove(input: RemoveTransparencyBrowserInput): Promise<RemoveTransparencyBrowserOutput>
 
+  render(input: RenderFontBrowserInput): Promise<RenderFontBrowserOutput>
+
+  rotate(input: RotateImageBrowserInput): Promise<RotateImageBrowserOutput>
+  rotate(input: RotateVideoBrowserInput): Promise<RotateVideoBrowserOutput>
+
   sanitize(input: SanitizeHtmlBrowserInput): Promise<SanitizeHtmlBrowserOutput>
+
+  shape(input: ShapeFontBrowserInput): Promise<ShapeFontBrowserOutput>
+
+  subset(input: SubsetFontBrowserInput): Promise<SubsetFontBrowserOutput>
+
+  trim(input: TrimAudioBrowserInput): Promise<TrimAudioBrowserOutput>
+  trim(input: TrimImageBrowserInput): Promise<TrimImageBrowserOutput>
+  trim(input: TrimVideoBrowserInput): Promise<TrimVideoBrowserOutput>
+
+  update(input: UpdateFontBrowserInput): Promise<UpdateFontBrowserOutput>
+  update(input: UpdateImageBrowserInput): Promise<UpdateImageBrowserOutput>
+  update(input: UpdateVideoBrowserInput): Promise<UpdateVideoBrowserOutput>
 }
 
 export type CompileBrowserInput =
@@ -214,6 +314,17 @@ export type CompileBrowserOutput =
   | CompileRustBrowserOutput
   | CompileSwiftBrowserOutput
   | CompileWastBrowserOutput
+
+export type CompressBrowserInput =
+  | CompressAudioBrowserInput
+  | CompressFontBrowserInput
+  | CompressImageBrowserInput
+  | CompressVideoBrowserInput
+export type CompressBrowserOutput =
+  | CompressAudioBrowserOutput
+  | CompressFontBrowserOutput
+  | CompressImageBrowserOutput
+  | CompressVideoBrowserOutput
 
 export type ConvertBrowserInput =
   | ConvertArchiveBrowserInput
@@ -270,10 +381,20 @@ export type DisassembleBrowserOutput =
   | DisassembleRadareBrowserOutput
   | DisassembleWasmBrowserOutput
 
+export type DumpBrowserInput =
+  | DumpFontBrowserInput
+export type DumpBrowserOutput =
+  | DumpFontBrowserOutput
+
 export type EncryptBrowserInput =
   | EncryptFileBrowserInput
 export type EncryptBrowserOutput =
   | EncryptFileBrowserOutput
+
+export type FlipBrowserInput =
+  | FlipImageBrowserInput
+export type FlipBrowserOutput =
+  | FlipImageBrowserOutput
 
 export type FormatBrowserInput =
   | FormatAssemblyBrowserInput
@@ -290,6 +411,11 @@ export type FormatBrowserOutput =
   | FormatRustBrowserOutput
   | FormatSwiftBrowserOutput
 
+export type NormalizeBrowserInput =
+  | NormalizeAudioBrowserInput
+export type NormalizeBrowserOutput =
+  | NormalizeAudioBrowserOutput
+
 export type RemoveBrowserInput =
   | RemoveExifBrowserInput
   | RemovePasswordBrowserInput
@@ -303,7 +429,47 @@ export type RemoveBrowserOutput =
   | RemoveSubtitlesBrowserOutput
   | RemoveTransparencyBrowserOutput
 
+export type RenderBrowserInput =
+  | RenderFontBrowserInput
+export type RenderBrowserOutput =
+  | RenderFontBrowserOutput
+
+export type RotateBrowserInput =
+  | RotateImageBrowserInput
+  | RotateVideoBrowserInput
+export type RotateBrowserOutput =
+  | RotateImageBrowserOutput
+  | RotateVideoBrowserOutput
+
 export type SanitizeBrowserInput =
   | SanitizeHtmlBrowserInput
 export type SanitizeBrowserOutput =
   | SanitizeHtmlBrowserOutput
+
+export type ShapeBrowserInput =
+  | ShapeFontBrowserInput
+export type ShapeBrowserOutput =
+  | ShapeFontBrowserOutput
+
+export type SubsetBrowserInput =
+  | SubsetFontBrowserInput
+export type SubsetBrowserOutput =
+  | SubsetFontBrowserOutput
+
+export type TrimBrowserInput =
+  | TrimAudioBrowserInput
+  | TrimImageBrowserInput
+  | TrimVideoBrowserInput
+export type TrimBrowserOutput =
+  | TrimAudioBrowserOutput
+  | TrimImageBrowserOutput
+  | TrimVideoBrowserOutput
+
+export type UpdateBrowserInput =
+  | UpdateFontBrowserInput
+  | UpdateImageBrowserInput
+  | UpdateVideoBrowserInput
+export type UpdateBrowserOutput =
+  | UpdateFontBrowserOutput
+  | UpdateImageBrowserOutput
+  | UpdateVideoBrowserOutput

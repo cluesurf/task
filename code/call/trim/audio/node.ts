@@ -1,33 +1,41 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { ensureParentDir } from '~/code/tool/node/file'
+import type { TrimAudioNodeLocalInput } from '~/code/form/action/trim/audio/node'
 import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
+  TrimAudioNodeInputParser,
+  TrimAudioNodeLocalInputParser,
+  TrimAudioNodeOutputParser,
+} from '~/code/form/action/trim/audio/node/take'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import { resolveExternalInput, resolveInternalInput } from '~/code/tool/node/resolve'
 import { runCommandSequence } from '~/code/tool/node/command'
+import { buildCommandToTrimAudio } from './command'
 
-export type TrimAudioNodeInput = {
-  input: { file: { path: string } }
-  output: { file: { path: string } }
-  start?: string
-  end?: string
-  duration?: string
-}
-
-export async function trimAudioNode(source: TrimAudioNodeInput) {
-  const outputPath = source.output.file.path
+async function runLocal(input: TrimAudioNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
-
-  const cmd = getCommand('ffmpeg')
-  cmd.link.push('-y', '-i', source.input.file.path)
-  if (source.start) cmd.link.push('-ss', source.start)
-  if (source.end) cmd.link.push('-to', source.end)
-  if (source.duration && !source.end) cmd.link.push('-t', source.duration)
-  // Copy codec when the output container can hold the input codec —
-  // otherwise ffmpeg re-encodes from the output extension.
-  cmd.link.push('-c', 'copy', outputPath)
-
-  await runCommandSequence(buildCommandSequence(cmd))
+  const sequence = buildCommandToTrimAudio({
+    inputPath,
+    outputPath,
+    start: input.start,
+    end: input.end,
+    duration: input.duration,
+  })
+  await runCommandSequence(sequence)
   return { file: { path: outputPath } }
 }
+
+const [trimAudioNode, testTrimAudioNode] = createNodeHandler({
+  parsers: {
+    input: TrimAudioNodeInputParser,
+    local: TrimAudioNodeLocalInputParser,
+    output: TrimAudioNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export { trimAudioNode, testTrimAudioNode }

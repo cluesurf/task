@@ -1,33 +1,51 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { ensureParentDir } from '~/code/tool/node/file'
+import type { TrimImageNodeLocalInput } from '~/code/form/action/trim/image/node'
 import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
+  TrimImageNodeInputParser,
+  TrimImageNodeLocalInputParser,
+  TrimImageNodeOutputParser,
+} from '~/code/form/action/trim/image/node/take'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import { resolveExternalInput, resolveInternalInput } from '~/code/tool/node/resolve'
 import { runCommandSequence } from '~/code/tool/node/command'
+import { buildCommandToTrimImage } from './command'
 
-export type TrimImageNodeInput = {
-  input: { file: { path: string } }
-  output: { file: { path: string } }
-  crop: string
-}
-
-export async function trimImageNode(source: TrimImageNodeInput) {
-  const parts = source.crop.split(',').map(s => s.trim())
+function parseCropGeometry(crop: string): string {
+  const parts = crop.split(',').map(s => s.trim())
   if (parts.length !== 4 || parts.some(p => !/^\d+$/.test(p))) {
     throw new Error(
-      `trim image: --crop must be "x,y,w,h" (got "${source.crop}")`,
+      `trim image: --crop must be "x,y,w,h" (got "${crop}")`,
     )
   }
   const [x, y, w, h] = parts
-  const geometry = `${w}x${h}+${x}+${y}`
+  return `${w}x${h}+${x}+${y}`
+}
 
-  const outputPath = source.output.file.path
+async function runLocal(input: TrimImageNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output.file.path
+  const geometry = parseCropGeometry(input.crop)
   await ensureParentDir(outputPath)
-
-  const cmd = getCommand('convert')
-  cmd.link.push(source.input.file.path, '-crop', geometry, outputPath)
-  await runCommandSequence(buildCommandSequence(cmd))
+  const sequence = buildCommandToTrimImage({
+    inputPath,
+    outputPath,
+    geometry,
+  })
+  await runCommandSequence(sequence)
   return { file: { path: outputPath } }
 }
+
+const [trimImageNode, testTrimImageNode] = createNodeHandler({
+  parsers: {
+    input: TrimImageNodeInputParser,
+    local: TrimImageNodeLocalInputParser,
+    output: TrimImageNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
+
+export { trimImageNode, testTrimImageNode }

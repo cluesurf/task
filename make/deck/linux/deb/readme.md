@@ -3,7 +3,7 @@
 Metapackage that pulls in every native tool `@cluesurf/task` shells out
 to (ffmpeg, imagemagick, pandoc, libreoffice, ...). Mirrors the macOS
 cask at `deck/homebrew-code/Casks/task.rb` and the Chocolatey nuspec at
-`load/choco/task.nuspec`.
+`make/deck/windows/choco/template/task.nuspec.in`.
 
 Package name: `cluesurf-task`.
 

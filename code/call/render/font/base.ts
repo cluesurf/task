@@ -1,29 +1,15 @@
-import { Form } from '@cluesurf/form'
+import { buildSingleFileForms } from '~/code/tool/shared/base'
 
 /**
- * Action input for `task render font` — rasterize a text sample
+ * Action input for `task render font` -- rasterize a text sample
  * through a font via HarfBuzz's `hb-view`. Output format is
  * inferred from the output extension (png, svg, pdf).
  */
 
-export const render_font: Form = {
-  form: 'form',
+const forms = buildSingleFileForms({
+  name: 'render_font',
   save: '~/code/form/action/render/font',
-  link: {
-    input: {
-      link: {
-        file: {
-          link: { path: { like: 'string', name: { mark: 'i' } } },
-        },
-      },
-    },
-    output: {
-      link: {
-        file: {
-          link: { path: { like: 'string', name: { mark: 'o' } } },
-        },
-      },
-    },
+  common: {
     text: {
       like: 'string',
       need: true,
@@ -41,4 +27,23 @@ export const render_font: Form = {
       note: 'OpenType features, e.g. "+liga,-kern"',
     },
   },
-}
+})
+
+export const render_font_node_input = forms.node_input
+export const render_font_node_remote_input = forms.node_remote_input
+export const render_font_node_external_input =
+  forms.node_external_input
+export const render_font_node_client_input = forms.node_client_input
+export const render_font_node_local_external_input =
+  forms.node_local_external_input
+export const render_font_node_local_internal_input =
+  forms.node_local_internal_input
+export const render_font_node_local_input = forms.node_local_input
+export const render_font_node_output = forms.node_output
+export const render_font_command_input = forms.command_input
+export const render_font_browser_input = forms.browser_input
+export const render_font_browser_remote_input =
+  forms.browser_remote_input
+export const render_font_browser_local_input =
+  forms.browser_local_input
+export const render_font_browser_output = forms.browser_output

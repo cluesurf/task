@@ -1,64 +1,63 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { ensureParentDir } from '~/code/tool/node/file'
+/**
+ * `task update image` -- quick color / tonal tweaks via
+ * ImageMagick: grayscale, brightness / contrast / saturation.
+ */
+
+import type { UpdateImageNodeLocalInput } from '~/code/form/action/update/image/node'
 import {
-  buildCommandSequence,
-  getCommand,
-} from '~/code/tool/shared/command'
+  UpdateImageNodeInputParser,
+  UpdateImageNodeLocalInputParser,
+  UpdateImageNodeOutputParser,
+} from '~/code/form/action/update/image/node/take'
+import { ensureParentDir } from '~/code/tool/node/file'
+import { createNodeHandler } from '~/code/tool/node/handler'
+import {
+  resolveExternalInput,
+  resolveInternalInput,
+} from '~/code/tool/node/resolve'
 import { runCommandSequence } from '~/code/tool/node/command'
+import { buildUpdateImageCommand } from './command'
 
-export type UpdateImageNodeInput = {
-  input: { file: { path: string } }
-  output?: { file?: { path?: string } }
-  grayscale?: boolean
-  brightness?: string
-  contrast?: string
-  saturation?: string
-}
+async function runLocal(input: UpdateImageNodeLocalInput) {
+  const inputPath = input.input.file.path
+  const outputPath = input.output?.file?.path ?? inputPath
 
-export async function updateImageNode(source: UpdateImageNodeInput) {
-  const inputPath = source.input.file.path
-  const outputPath = source.output?.file?.path ?? inputPath
-
-  const ops: string[] = []
-  if (source.grayscale) ops.push('-colorspace', 'Gray')
-  // ImageMagick's `-brightness-contrast` takes `brightness,contrast`
-  // as signed percentages; `-modulate` takes brightness-saturation-
-  // hue as absolute percents. Map the friendlier signed flags to
-  // `-brightness-contrast` and saturation to `-modulate`.
-  if (source.brightness || source.contrast) {
-    const b = normalizeSigned(source.brightness)
-    const c = normalizeSigned(source.contrast)
-    ops.push('-brightness-contrast', `${b},${c}`)
-  }
-  if (source.saturation) {
-    const s = 100 + parseSigned(source.saturation)
-    ops.push('-modulate', `100,${s},100`)
-  }
-
-  if (ops.length === 0) {
+  if (
+    !input.grayscale &&
+    !input.brightness &&
+    !input.contrast &&
+    !input.saturation
+  ) {
     throw new Error(
       'update image: pass at least one of --grayscale / --brightness / --contrast / --saturation',
     )
   }
 
   await ensureParentDir(outputPath)
-  const cmd = getCommand('convert')
-  cmd.link.push(inputPath, ...ops, outputPath)
-  await runCommandSequence(buildCommandSequence(cmd))
+  await runCommandSequence(
+    buildUpdateImageCommand({
+      inputPath,
+      outputPath,
+      grayscale: input.grayscale,
+      brightness: input.brightness,
+      contrast: input.contrast,
+      saturation: input.saturation,
+    }),
+  )
   return { file: { path: outputPath } }
 }
 
-function parseSigned(value?: string): number {
-  if (!value) return 0
-  const n = Number(value)
-  if (!Number.isFinite(n)) {
-    throw new Error(`update image: expected a signed number (e.g. "+10"), got "${value}"`)
-  }
-  return n
-}
+const [updateImageNode, testUpdateImageNode] = createNodeHandler({
+  parsers: {
+    input: UpdateImageNodeInputParser,
+    local: UpdateImageNodeLocalInputParser,
+    output: UpdateImageNodeOutputParser,
+  },
+  resolvers: {
+    external: resolveExternalInput,
+    internal: resolveInternalInput,
+  },
+  runLocal,
+})
 
-function normalizeSigned(value?: string): string {
-  const n = parseSigned(value)
-  return String(n)
-}
+export { updateImageNode, testUpdateImageNode }
