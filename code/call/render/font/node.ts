@@ -16,22 +16,23 @@ import {
   resolveExternalInput,
   resolveInternalInput,
 } from '~/code/tool/node/resolve'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import { buildRenderFontCommand } from './command'
 
 async function runLocal(input: RenderFontNodeLocalInput) {
   const outputPath = input.output.file.path
   await ensureParentDir(outputPath)
 
-  await runCommandSequence(
-    buildRenderFontCommand({
-      input: input.input.file.path,
-      output: outputPath,
-      text: input.text,
-      fontSize: input.fontSize,
-      features: input.features,
-    }),
-  )
+  const sequence = buildRenderFontCommand({
+    input: input.input.file.path,
+    output: outputPath,
+    text: input.text,
+    fontSize: input.fontSize,
+    features: input.features,
+  })
+  for (const cmd of sequence.call) {
+    await spawnAndWait({ verb: 'render', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  }
 
   return { file: { path: outputPath } }
 }

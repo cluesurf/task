@@ -6,8 +6,9 @@ import {
 } from '~/code/form/object/imagemagick'
 import { buildCommandToVerifyImageWithImageMagick } from './command'
 import { testVerifyImageWithImageMagick } from './shared'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndCapture } from '~/code/tool/node/spawn'
 import { getConfig } from '~/code/tool/shared/config'
+import snakeCase from 'lodash/snakeCase'
 
 const IMAGEMAGICK_FORMAT_VARIANT_NAME: Record<string, Array<string>> = {
   jpeg: ['jpg'],
@@ -18,8 +19,12 @@ async function verifyImageWithImageMagickNode(
   input: VerifyImageWithImageMagick,
 ) {
   const sequence = buildCommandToVerifyImageWithImageMagick(input)
-  const data = (await runCommandSequence(sequence)) as unknown as {
-    format: ImageMagickFormat
+  const cmd = sequence.call[0]!
+  const stdout = await spawnAndCapture({ verb: 'verify', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  const pattern = /^([^\s]+)\s+(\w+)/i
+  stdout.match(pattern)
+  const data = {
+    format: snakeCase(RegExp.$2) as ImageMagickFormat,
   }
   const IMAGE_MAGICK_FORMAT = getConfig('image_magick_format')
   if (

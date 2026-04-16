@@ -11,7 +11,7 @@ import {
   ConvertDocumentWithLibreOfficeNodeOutputParser,
 } from '~/code/form/action/convert/libre-office/node/take'
 import { buildCommandToConvertDocumentWithLibreOffice } from '../command'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import {
   resolveInputForConvertLocalExternalNode,
   resolveInputForConvertLocalInternalNode,
@@ -102,7 +102,8 @@ async function convertDocumentWithLibreOfficeNodeLocal(
   const sequence =
     await buildCommandToConvertDocumentWithLibreOffice(localInput)
 
-  await runCommandSequence(sequence)
+  const cmd = sequence.call[0]!
+  await spawnAndWait({ verb: 'convert', bin: cmd.link[0]!, args: cmd.link.slice(1) })
 
   return ConvertDocumentWithLibreOfficeNodeOutputParser.parse({
     file: {

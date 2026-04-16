@@ -11,7 +11,7 @@ import {
   ConvertImageWithInkscapeNodeOutputParser,
 } from '~/code/form/action/convert/inkscape/node/take'
 import { buildCommandToConvertImageWithInkscape } from '../command'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import {
   resolveInputForConvertLocalExternalNode,
   resolveInputForConvertLocalInternalNode,
@@ -91,7 +91,9 @@ async function convertImageWithInkscapeNodeLocal(
   const sequence =
     await buildCommandToConvertImageWithInkscape(localInput)
 
-  await runCommandSequence(sequence)
+  for (const cmd of sequence.call) {
+    await spawnAndWait({ verb: 'convert', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  }
 
   return ConvertImageWithInkscapeNodeOutputParser.parse({
     file: {

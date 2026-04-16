@@ -8,6 +8,6 @@ export function buildCommandToVerifyImageWithImageMagick(
   input: VerifyImageWithImageMagick,
 ) {
   const cmd = getCommand(`identify`)
-  cmd.link.push(`"${input.file.path}"`)
+  cmd.link.push(input.file.path)
   return buildCommandSequence(cmd)
 }

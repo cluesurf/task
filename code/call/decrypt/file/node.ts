@@ -15,7 +15,6 @@ import {
   resolveInternalInput,
 } from '~/code/tool/node/resolve'
 import { spawnAndWait } from '~/code/tool/node/spawn'
-import { exec } from '~/code/tool/node/process'
 import {
   pickDecryptTool,
   buildAgeDecryptCommand,
@@ -47,7 +46,7 @@ async function runLocal(input: DecryptFileNodeLocalInput) {
           pipe: true,
         })
       } else {
-        await exec([cmd.bin, ...cmd.args])
+        await spawnAndWait({ verb: 'decrypt file', bin: cmd.bin, args: cmd.args })
       }
       return { file: { path: outputPath } }
     }
@@ -61,7 +60,7 @@ async function runLocal(input: DecryptFileNodeLocalInput) {
         passphrase: input.passphrase,
         cipher: input.cipher,
       })
-      await exec([cmd.bin, ...cmd.args])
+      await spawnAndWait({ verb: 'decrypt file', bin: cmd.bin, args: cmd.args })
       return { file: { path: outputPath } }
     }
     case 'gpg': {
@@ -70,7 +69,7 @@ async function runLocal(input: DecryptFileNodeLocalInput) {
         outputPath,
         passphrase: input.passphrase,
       })
-      await exec([cmd.bin, ...cmd.args])
+      await spawnAndWait({ verb: 'decrypt file', bin: cmd.bin, args: cmd.args })
       return { file: { path: outputPath } }
     }
   }

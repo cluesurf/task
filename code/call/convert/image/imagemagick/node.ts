@@ -12,7 +12,7 @@ import {
 } from '~/code/form/action/convert/imagemagick/node/take'
 import { testConvertImageWithImageMagick } from './shared'
 import { buildCommandToConvertImageWithImageMagick } from '../command'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import {
   resolveInputForConvertLocalExternalNode,
   resolveInputForConvertLocalInternalNode,
@@ -90,7 +90,9 @@ async function convertImageWithImageMagickNodeLocal(
 
   const sequence = buildCommandToConvertImageWithImageMagick(localInput)
 
-  await runCommandSequence(sequence)
+  for (const cmd of sequence.call) {
+    await spawnAndWait({ verb: 'convert', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  }
 
   return ConvertImageWithImageMagickNodeOutputParser.parse({
     file: {

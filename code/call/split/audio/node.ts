@@ -25,8 +25,7 @@ import {
   resolveExternalInput,
   resolveInternalInput,
 } from '~/code/tool/node/resolve'
-import { exec } from '~/code/tool/node/process'
-import { spawnAndWait } from '~/code/tool/node/spawn'
+import { spawnAndWait, spawnAndCaptureStderr } from '~/code/tool/node/spawn'
 import {
   buildSilenceDetectCommand,
   buildSplitAudioFixedCommand,
@@ -105,17 +104,13 @@ async function detectSilenceRanges(input: {
   minDuration: string
 }): Promise<SilenceRange[]> {
   const command = buildSilenceDetectCommand(input)
-  // ffmpeg writes silencedetect events to stderr, so we need
-  // `exec` which captures both stdout and stderr.
-  const { stderr } = await exec([command.bin, ...command.args]).catch(
-    err => {
-      if ('data' in (err as object)) {
-        const d = (err as { data: { stderr?: string } }).data
-        return { stdout: '', stderr: d.stderr ?? '' }
-      }
-      throw err
-    },
-  )
+  // ffmpeg writes silencedetect events to stderr. Use
+  // spawnAndCaptureStderr which tolerates non-zero exit.
+  const stderr = await spawnAndCaptureStderr({
+    verb: 'split audio',
+    bin: command.bin,
+    args: command.args,
+  })
 
   const silences: Array<{ start: number; end?: number }> = []
   let duration = 0

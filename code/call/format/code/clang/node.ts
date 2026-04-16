@@ -13,7 +13,7 @@ import fsp from 'fs/promises'
 import YAML from 'yaml'
 import { buildCommandToFormatCodeWithClangFormat } from '../command'
 import { buildRequestToFormat } from '../shared'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import { generateTemporaryFilePath } from '~/code/tool/node/file'
 import { NativeOptions } from '~/code/tool/shared/request'
 import {
@@ -102,7 +102,9 @@ async function formatCodeWithClangFormatNodeLocal(
   }
 
   const sequence = buildCommandToFormatCodeWithClangFormat(commandInput)
-  await runCommandSequence(sequence)
+  for (const cmd of sequence.call) {
+    await spawnAndWait({ verb: 'format clang', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  }
 
   await fsp.unlink(stylePath)
 

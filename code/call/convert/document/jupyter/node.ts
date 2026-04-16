@@ -11,7 +11,7 @@ import {
   ConvertDocumentWithJupyterNodeOutputParser,
 } from '~/code/form/action/convert/jupyter/node/take'
 import { buildCommandToConvertDocumentWithJupyter } from '../command'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import {
   resolveInputForConvertLocalExternalNode,
   resolveInputForConvertLocalInternalNode,
@@ -91,7 +91,8 @@ async function convertDocumentWithJupyterNodeLocal(
   const sequence =
     await buildCommandToConvertDocumentWithJupyter(localInput)
 
-  await runCommandSequence(sequence)
+  const cmd = sequence.call[0]!
+  await spawnAndWait({ verb: 'convert', bin: cmd.link[0]!, args: cmd.link.slice(1) })
 
   return ConvertDocumentWithJupyterNodeOutputParser.parse({
     file: {

@@ -1,13 +1,19 @@
+import type { List } from '@cluesurf/form'
 import { buildSingleFileForms } from '~/code/tool/shared/base'
+
+export const encrypt_file_tool: List = {
+  form: 'list',
+  save: '~/code/form/action/encrypt/file/shared',
+  list: ['age', 'openssl', 'gpg'],
+}
 
 const forms = buildSingleFileForms({
   name: 'encrypt_file',
   save: '~/code/form/action/encrypt/file',
   common: {
     tool: {
-      like: 'string',
+      like: 'encrypt_file_tool',
       need: false,
-      take: ['age', 'openssl', 'gpg'],
       note: 'Backend (default: inferred from output extension)',
     },
     passphrase: { like: 'string', need: false },

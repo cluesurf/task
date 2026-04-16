@@ -11,7 +11,7 @@ import {
   ConvertDocumentWithEnscriptNodeOutputParser,
 } from '~/code/form/action/convert/enscript/node/take'
 import { buildCommandToConvertDocumentWithEnscript } from '../command'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import {
   resolveInputForConvertLocalExternalNode,
   resolveInputForConvertLocalInternalNode,
@@ -91,7 +91,8 @@ async function convertDocumentWithEnscriptNodeLocal(
   const sequence =
     await buildCommandToConvertDocumentWithEnscript(localInput)
 
-  await runCommandSequence(sequence)
+  const cmd = sequence.call[0]!
+  await spawnAndWait({ verb: 'convert', bin: cmd.link[0]!, args: cmd.link.slice(1) })
 
   return ConvertDocumentWithEnscriptNodeOutputParser.parse({
     file: {

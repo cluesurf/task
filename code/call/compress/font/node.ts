@@ -21,14 +21,17 @@ import {
   resolveExternalInput,
   resolveInternalInput,
 } from '~/code/tool/node/resolve'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import { buildCompressFontCommand } from './command'
 
 async function runLocal(input: CompressFontNodeLocalInput) {
   const inputPath = input.input.file.path
   const { size: sizeBefore } = await fs.stat(inputPath)
 
-  await runCommandSequence(buildCompressFontCommand({ input: inputPath }))
+  const sequence = buildCompressFontCommand({ input: inputPath })
+  for (const cmd of sequence.call) {
+    await spawnAndWait({ verb: 'compress', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  }
 
   const defaultOut =
     inputPath.replace(/\.(ttf|otf)$/i, '') + '.woff2'

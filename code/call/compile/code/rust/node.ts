@@ -10,7 +10,7 @@ import {
   CompileRustNodeLocalInputParser,
 } from '~/code/form/action/compile/code/rust/node/take'
 import { buildCommandToCompileRust } from '../command'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import {
   resolveInputForCompileLocalExternalNode,
   resolveInputForCompileLocalInternalNode,
@@ -80,7 +80,13 @@ async function compileRustNodeLocal(
 
   const sequence = await buildCommandToCompileRust(localInput)
 
-  await runCommandSequence(sequence)
+  for (const cmd of sequence.call) {
+    await spawnAndWait({
+      verb: 'compile rust',
+      bin: cmd.link[0]!,
+      args: cmd.link.slice(1),
+    })
+  }
 
   return {
     file: {

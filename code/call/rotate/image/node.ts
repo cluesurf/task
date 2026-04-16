@@ -7,7 +7,7 @@ import {
 import { ensureParentDir } from '~/code/tool/node/file'
 import { createNodeHandler } from '~/code/tool/node/handler'
 import { resolveExternalInput, resolveInternalInput } from '~/code/tool/node/resolve'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import { buildCommandToRotateImage } from './command'
 
 async function runLocal(input: RotateImageNodeLocalInput) {
@@ -19,7 +19,9 @@ async function runLocal(input: RotateImageNodeLocalInput) {
     outputPath,
     degree: input.degree,
   })
-  await runCommandSequence(sequence)
+  for (const cmd of sequence.call) {
+    await spawnAndWait({ verb: 'rotate', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  }
   return { file: { path: outputPath } }
 }
 

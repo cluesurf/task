@@ -15,7 +15,7 @@ import {
   resolveExternalInput,
   resolveInternalInput,
 } from '~/code/tool/node/resolve'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import { buildUpdateImageCommand } from './command'
 
 async function runLocal(input: UpdateImageNodeLocalInput) {
@@ -34,16 +34,17 @@ async function runLocal(input: UpdateImageNodeLocalInput) {
   }
 
   await ensureParentDir(outputPath)
-  await runCommandSequence(
-    buildUpdateImageCommand({
-      inputPath,
-      outputPath,
-      grayscale: input.grayscale,
-      brightness: input.brightness,
-      contrast: input.contrast,
-      saturation: input.saturation,
-    }),
-  )
+  const sequence = buildUpdateImageCommand({
+    inputPath,
+    outputPath,
+    grayscale: input.grayscale,
+    brightness: input.brightness,
+    contrast: input.contrast,
+    saturation: input.saturation,
+  })
+  for (const cmd of sequence.call) {
+    await spawnAndWait({ verb: 'update', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  }
   return { file: { path: outputPath } }
 }
 

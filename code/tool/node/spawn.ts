@@ -141,6 +141,33 @@ export async function spawnAndCapture(
   })
 }
 
+/**
+ * Capture stderr instead of stdout. Tolerates non-zero exit
+ * (returns the stderr text regardless). Used for tools like
+ * ffmpeg silencedetect that write diagnostic output to stderr
+ * and may exit non-zero even on success.
+ */
+
+export async function spawnAndCaptureStderr(
+  input: SpawnAndCaptureInput,
+): Promise<string> {
+  const { bin, args } = input
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = []
+    const child = spawn(bin, args, {
+      env: input.env,
+      stdio: ['ignore', 'ignore', 'pipe'],
+    })
+    child.stderr!.on('data', (b: Buffer) => chunks.push(b))
+    child.on('error', err => {
+      reject(spawnError({ ...input, err }))
+    })
+    child.on('exit', () => {
+      resolve(Buffer.concat(chunks).toString('utf8'))
+    })
+  })
+}
+
 function spawnError(input: {
   verb: string
   bin: string

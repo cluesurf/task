@@ -22,7 +22,7 @@ import {
   resolveExternalInput,
   resolveInternalInput,
 } from '~/code/tool/node/resolve'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import { buildDumpFontCommand } from './command'
 
 async function runLocal(input: DumpFontNodeLocalInput) {
@@ -47,18 +47,19 @@ async function runLocal(input: DumpFontNodeLocalInput) {
   const outputPath = input.output?.file?.path ?? defaultOut
   await ensureParentDir(outputPath)
 
-  await runCommandSequence(
-    buildDumpFontCommand({
-      input: inputPath,
-      output: outputPath,
-      tables: input.tables
-        ? input.tables
-            .split(',')
-            .map(s => s.trim())
-            .filter(Boolean)
-        : undefined,
-    }),
-  )
+  const sequence = buildDumpFontCommand({
+    input: inputPath,
+    output: outputPath,
+    tables: input.tables
+      ? input.tables
+          .split(',')
+          .map(s => s.trim())
+          .filter(Boolean)
+      : undefined,
+  })
+  for (const cmd of sequence.call) {
+    await spawnAndWait({ verb: 'dump', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  }
 
   return { file: { path: outputPath }, direction }
 }

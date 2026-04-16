@@ -10,7 +10,7 @@ export function buildCommandToInspectMetadataFromImage(
   input: InspectMetadataFromImage,
 ) {
   const cmd = getCommand('exiftool')
-  cmd.link.push(`"${input.input.file.path}"`)
+  cmd.link.push(input.input.file.path)
   return buildCommandSequence(cmd)
 }
 

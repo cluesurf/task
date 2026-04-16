@@ -11,7 +11,7 @@ import {
   CompileCppNodeOutputParser,
 } from '~/code/form/action/compile/code/cpp/node/take'
 import { buildCommandToCompileCpp } from '../command'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import {
   resolveInputForCompileLocalExternalNode,
   resolveInputForCompileLocalInternalNode,
@@ -81,7 +81,13 @@ async function compileCppNodeLocal(
 
   const sequence = await buildCommandToCompileCpp(localInput)
 
-  await runCommandSequence(sequence)
+  for (const cmd of sequence.call) {
+    await spawnAndWait({
+      verb: 'compile cpp',
+      bin: cmd.link[0]!,
+      args: cmd.link.slice(1),
+    })
+  }
 
   return {
     file: {

@@ -10,7 +10,7 @@ import {
   CompileCNodeRemoteInput,
 } from '~/code/form/action/compile/code/c/node/index'
 import { buildCommandToCompileC } from '../command'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import {
   resolveInputForCompileLocalExternalNode,
   resolveInputForCompileLocalInternalNode,
@@ -77,7 +77,13 @@ async function compileCNodeLocal(input, native?: NativeOptions) {
 
   const sequence = await buildCommandToCompileC(localInput)
 
-  await runCommandSequence(sequence)
+  for (const cmd of sequence.call) {
+    await spawnAndWait({
+      verb: 'compile c',
+      bin: cmd.link[0]!,
+      args: cmd.link.slice(1),
+    })
+  }
 
   return {
     file: {

@@ -15,7 +15,7 @@ import {
   resolveExternalInput,
   resolveInternalInput,
 } from '~/code/tool/node/resolve'
-import { exec } from '~/code/tool/node/process'
+import { spawnAndCapture } from '~/code/tool/node/spawn'
 import { getLoggingStyle } from '~/code/tool/node/log'
 import { buildShapeFontCommand } from './command'
 
@@ -29,7 +29,11 @@ async function runLocal(input: ShapeFontNodeLocalInput) {
     direction: input.direction,
   })
   const cmd = sequence.call[0]!
-  const { stdout } = await exec(cmd.link)
+  const stdout = await spawnAndCapture({
+    verb: 'shape font',
+    bin: cmd.link[0]!,
+    args: cmd.link.slice(1),
+  })
   const glyphs = stdout.trim()
 
   if (

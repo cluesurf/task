@@ -11,7 +11,7 @@ import {
   ConvertVideoWithFfmpegNodeOutputParser,
 } from '~/code/form/action/convert/ffmpeg/node/take'
 import { buildCommandToConvertVideoWithFfmpeg } from '../command'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import {
   resolveInputForConvertLocalExternalNode,
   resolveInputForConvertLocalInternalNode,
@@ -91,7 +91,8 @@ async function convertVideoWithFfmpegNodeLocal(
   const sequence =
     await buildCommandToConvertVideoWithFfmpeg(localInput)
 
-  await runCommandSequence(sequence)
+  const cmd = sequence.call[0]!
+  await spawnAndWait({ verb: 'convert', bin: cmd.link[0]!, args: cmd.link.slice(1) })
 
   return ConvertVideoWithFfmpegNodeOutputParser.parse({
     file: {

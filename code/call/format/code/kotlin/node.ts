@@ -11,7 +11,7 @@ import {
 } from '~/code/form/action/format/code/node/take'
 import { buildCommandToFormatKotlin } from '../command'
 import { buildRequestToFormat } from '../shared'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import { NativeOptions } from '~/code/tool/shared/request'
 import {
   resolveInputForFormatLocalExternalNode,
@@ -79,7 +79,9 @@ async function formatKotlinNodeLocal(
   const input = FormatKotlinNodeLocalInputParser.parse(source)
 
   const sequence = buildCommandToFormatKotlin(input)
-  await runCommandSequence(sequence)
+  for (const cmd of sequence.call) {
+    await spawnAndWait({ verb: 'format kotlin', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  }
 
   return {
     file: {

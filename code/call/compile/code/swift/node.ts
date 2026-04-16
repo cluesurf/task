@@ -10,7 +10,7 @@ import {
   CompileSwiftNodeLocalInputParser,
 } from '~/code/form/action/compile/code/swift/node/take'
 import { buildCommandToCompileSwift } from '../command'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import {
   resolveInputForCompileLocalExternalNode,
   resolveInputForCompileLocalInternalNode,
@@ -80,7 +80,13 @@ async function compileSwiftNodeLocal(
 
   const sequence = await buildCommandToCompileSwift(localInput)
 
-  await runCommandSequence(sequence)
+  for (const cmd of sequence.call) {
+    await spawnAndWait({
+      verb: 'compile swift',
+      bin: cmd.link[0]!,
+      args: cmd.link.slice(1),
+    })
+  }
 
   return {
     file: {

@@ -14,7 +14,7 @@ import {
   buildCommandToConvertFontWithFontForge,
   testConvertFontWithFontForge,
 } from './shared'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import {
   resolveInputForConvertLocalExternalNode,
   resolveInputForConvertLocalInternalNode,
@@ -93,7 +93,9 @@ async function convertFontWithFontForgeNodeLocal(
   const sequence =
     await buildCommandToConvertFontWithFontForge(localInput)
 
-  await runCommandSequence(sequence)
+  for (const cmd of sequence.call) {
+    await spawnAndWait({ verb: 'convert', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  }
 
   return ConvertFontWithFontForgeNodeOutputParser.parse({
     file: {

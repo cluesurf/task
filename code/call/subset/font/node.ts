@@ -16,7 +16,7 @@ import {
   resolveExternalInput,
   resolveInternalInput,
 } from '~/code/tool/node/resolve'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import { buildSubsetFontCommand } from './command'
 
 async function runLocal(input: SubsetFontNodeLocalInput) {
@@ -32,16 +32,17 @@ async function runLocal(input: SubsetFontNodeLocalInput) {
   await ensureParentDir(outputPath)
   const { size: sizeBefore } = await fs.stat(inputPath)
 
-  await runCommandSequence(
-    buildSubsetFontCommand({
-      input: inputPath,
-      output: outputPath,
-      text: input.text,
-      unicodes: input.unicodes,
-      layoutFeatures: input.layoutFeatures,
-      flavor: input.flavor,
-    }),
-  )
+  const sequence = buildSubsetFontCommand({
+    input: inputPath,
+    output: outputPath,
+    text: input.text,
+    unicodes: input.unicodes,
+    layoutFeatures: input.layoutFeatures,
+    flavor: input.flavor,
+  })
+  for (const cmd of sequence.call) {
+    await spawnAndWait({ verb: 'subset', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  }
 
   const { size: sizeAfter } = await fs.stat(outputPath)
   return { file: { path: outputPath }, sizeBefore, sizeAfter }

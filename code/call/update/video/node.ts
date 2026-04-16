@@ -17,7 +17,7 @@ import {
   resolveExternalInput,
   resolveInternalInput,
 } from '~/code/tool/node/resolve'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import { buildUpdateVideoCommand } from './command'
 
 async function runLocal(input: UpdateVideoNodeLocalInput) {
@@ -34,13 +34,14 @@ async function runLocal(input: UpdateVideoNodeLocalInput) {
   }
   await ensureParentDir(outputPath)
 
-  await runCommandSequence(
-    buildUpdateVideoCommand({
-      inputPath,
-      outputPath,
-      subtitles: input.subtitles,
-    }),
-  )
+  const sequence = buildUpdateVideoCommand({
+    inputPath,
+    outputPath,
+    subtitles: input.subtitles,
+  })
+  for (const cmd of sequence.call) {
+    await spawnAndWait({ verb: 'update', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  }
   return { file: { path: outputPath } }
 }
 

@@ -11,7 +11,7 @@ import {
 } from '~/code/form/action/format/code/node/take'
 import { buildCommandToFormatSwift } from '../command'
 import { buildRequestToFormat } from '../shared'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import { NativeOptions } from '~/code/tool/shared/request'
 import {
   resolveInputForFormatLocalExternalNode,
@@ -82,7 +82,9 @@ async function formatSwiftNodeLocal(
   const input = FormatSwiftNodeLocalInputParser.parse(source)
 
   const sequence = buildCommandToFormatSwift(input)
-  await runCommandSequence(sequence)
+  for (const cmd of sequence.call) {
+    await spawnAndWait({ verb: 'format swift', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  }
 
   return {
     file: {

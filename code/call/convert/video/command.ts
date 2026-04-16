@@ -127,14 +127,14 @@ export async function buildCommandToConvertVideoWithFfmpeg(
 
   if (scaleWidth) {
     if (scaleHeight) {
-      cmd.link.push(`-filter:v`, `"scale=${scaleWidth}:${scaleHeight}"`)
+      cmd.link.push(`-filter:v`, `scale=${scaleWidth}:${scaleHeight}`)
     } else {
-      cmd.link.push(`-filter:v`, `"scale=${scaleWidth}:-1"`)
+      cmd.link.push(`-filter:v`, `scale=${scaleWidth}:-1`)
     }
   } else if (scaleHeight) {
-    cmd.link.push(`-filter:v`, `"scale=-1:${scaleHeight}"`)
+    cmd.link.push(`-filter:v`, `scale=-1:${scaleHeight}`)
   } else if (rotation) {
-    cmd.link.push(`-filter:v`, `"rotate=${rotation}`)
+    cmd.link.push(`-filter:v`, `rotate=${rotation}`)
   }
 
   if (audioBitRate) {

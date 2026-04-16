@@ -13,7 +13,7 @@
  * Override by passing `tool: 'atool' | 'patool' | ...` on the input.
  */
 
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import type { Archive } from '~/code/form/action/archive'
 
 type ArchiveInput = Archive & { tool?: ArchiveTool }
@@ -48,7 +48,9 @@ const DEFAULT_TOOL_BY_FORMAT: Record<string, ArchiveTool> = {
 async function archiveNode(source: ArchiveInput): Promise<void> {
   const tool = pickTool(source)
   const sequence = await buildSequence({ tool, source })
-  await runCommandSequence(sequence)
+  for (const cmd of sequence.call) {
+    await spawnAndWait({ verb: 'archive', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  }
 }
 
 function pickTool(source: ArchiveInput): ArchiveTool {

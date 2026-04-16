@@ -39,7 +39,7 @@ export function buildCommandToConvertImageWithImageMagick(
 
   const inputPath = ip.match(/\.cr2$/i) ? `cr2:${ip}` : ip
 
-  cmd.link.push(`"${inputPath}"`)
+  cmd.link.push(inputPath)
 
   if (input.compare) {
     cmd.link.push(`-compare`)
@@ -48,9 +48,9 @@ export function buildCommandToConvertImageWithImageMagick(
   if (input.colorMatrix) {
     cmd.link.push(
       `-color-matrix`,
-      `"${input.colorMatrix.row}x${
+      `${input.colorMatrix.row}x${
         input.colorMatrix.column
-      }: ${input.colorMatrix.value.join(' ')}"`,
+      }: ${input.colorMatrix.value.join(' ')}`,
     )
   }
 
@@ -86,7 +86,7 @@ export function buildCommandToConvertImageWithImageMagick(
     cmd.link.push(`-quality`, String(input.quality))
   }
 
-  cmd.link.push(`"${op}"`)
+  cmd.link.push(op)
 
   // const cmd = [
   //   `magick`,

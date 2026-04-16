@@ -74,28 +74,39 @@ RUN apt-get -y install potrace
 # so we run `./autogen.sh` (which wraps autoreconf + friends)
 # as part of the build. Everything runs in a single `RUN` so
 # the intermediate tree does not bloat the image layer.
+# ── autotrace from source (not in Ubuntu apt) ─────────────────────
+# Split into cached layers so tweaking configure flags doesn't
+# re-download build deps.
 ENV AUTOTRACE_VERSION=0.31.10
-RUN set -eux; \
-    apt-get -y install --no-install-recommends \
+
+# 1. build deps (rarely changes → stays cached)
+RUN apt-get -y install --no-install-recommends \
       build-essential pkg-config autoconf automake libtool libtool-bin \
       intltool gettext autopoint \
       libpng-dev libexif-dev libtiff-dev libjpeg-dev \
       libmagickcore-dev libmagickwand-dev \
-      pstoedit libpstoedit-dev \
-      ca-certificates curl; \
-    tmp="$(mktemp -d)"; \
-    cd "$tmp"; \
-    curl -fsSL -o autotrace.tar.gz \
-      "https://github.com/autotrace/autotrace/archive/refs/tags/${AUTOTRACE_VERSION}.tar.gz"; \
-    tar -xzf autotrace.tar.gz; \
-    cd "autotrace-${AUTOTRACE_VERSION}"; \
-    ./autogen.sh; \
-    ./configure --prefix=/usr/local; \
-    make -j"$(nproc)"; \
-    make install; \
-    ldconfig; \
-    cd /; \
-    rm -rf "$tmp"
+      ca-certificates curl
+
+# 2. download + unpack
+RUN mkdir -p /tmp/autotrace-build \
+  && curl -fsSL -o /tmp/autotrace-build/autotrace.tar.gz \
+       "https://github.com/autotrace/autotrace/archive/refs/tags/${AUTOTRACE_VERSION}.tar.gz" \
+  && tar -xzf /tmp/autotrace-build/autotrace.tar.gz -C /tmp/autotrace-build
+
+# 3. configure (--without-pstoedit: pstoedit.h is C++ and can't
+#    compile under gcc; we only need SVG/EPS output anyway)
+RUN cd /tmp/autotrace-build/autotrace-${AUTOTRACE_VERSION} \
+  && ./autogen.sh \
+  && ./configure --prefix=/usr/local --without-pstoedit
+
+# 4. compile + install
+RUN cd /tmp/autotrace-build/autotrace-${AUTOTRACE_VERSION} \
+  && make -j"$(nproc)" \
+  && make install \
+  && ldconfig
+
+# 5. cleanup
+RUN rm -rf /tmp/autotrace-build
 
 RUN apt-get -y install librsvg2-bin
 # RAW pipelines (dcraw + darktable-cli). rawtherapee-cli lands as

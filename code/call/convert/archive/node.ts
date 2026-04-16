@@ -18,7 +18,6 @@ import {
 import {
   ExtractWithUnarchiverParser,
 } from '~/code/form/action/extract/archive/shared/take'
-import { runCommandSequence } from '~/code/tool/node/command'
 import {
   resolveInputForConvertLocalExternalNode,
   resolveInputForConvertLocalInternalNode,
@@ -133,7 +132,13 @@ async function convertArchiveNodeLocal(
     case 'rar': {
       const archiveSequence =
         await buildCommandToArchiveWithRar(archiveInput)
-      await runCommandSequence(archiveSequence)
+      for (const cmd of archiveSequence.call) {
+        await spawnAndWait({
+          verb: 'convert archive',
+          bin: cmd.link[0]!,
+          args: cmd.link.slice(1),
+        })
+      }
       break
     }
     default:

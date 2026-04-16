@@ -10,7 +10,7 @@ import {
   resolveExternalInput,
   resolveInternalInput,
 } from '~/code/tool/node/resolve'
-import { runCommandSequence } from '~/code/tool/node/command'
+import { spawnAndWait } from '~/code/tool/node/spawn'
 import { buildCommandToCompressImage } from './command'
 
 async function runLocal(input: CompressImageNodeLocalInput) {
@@ -22,7 +22,9 @@ async function runLocal(input: CompressImageNodeLocalInput) {
     outputPath,
     quality: input.quality,
   })
-  await runCommandSequence(sequence)
+  for (const cmd of sequence.call) {
+    await spawnAndWait({ verb: 'compress', bin: cmd.link[0]!, args: cmd.link.slice(1) })
+  }
   return { file: { path: outputPath } }
 }
 
