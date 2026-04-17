@@ -190,14 +190,20 @@ RUN apt-get -y install rustfmt
 # packages with the ocaml meta-package, so the install is
 # best-effort. zig fmt ships inside the zig binary — install hint
 # covers it for hosts that don't bundle zig.
-RUN apt-get -y install google-java-format
+# google-java-format isn't in Ubuntu apt. Download the all-deps
+# JAR and wrap it in a shell launcher.
+RUN curl -fsSL -o /usr/local/lib/google-java-format.jar \
+      "https://github.com/google/google-java-format/releases/download/v1.25.2/google-java-format-1.25.2-all-deps.jar" \
+  && printf '#!/bin/sh\nexec java -jar /usr/local/lib/google-java-format.jar "$@"\n' \
+      > /usr/local/bin/google-java-format \
+  && chmod +x /usr/local/bin/google-java-format
 RUN apt-get -y install ormolu
 RUN apt-get -y install ocamlformat || true
 # clang-tidy ships with llvm; symlink the versioned binary so the
 # unversioned name resolves.
 RUN ln -sf /usr/bin/clang-tidy-17 /usr/bin/clang-tidy 2>/dev/null || true
-# Prettier + sql-formatter ship via npm — light JS deps.
-RUN npm install -g prettier sql-formatter
+# Prettier + sql-formatter are installed via npm after Node lands
+# (see the `npm install -g` block below the NodeSource install).
 RUN apt-get -y install wget
 RUN apt-get -y install gnupg
 RUN apt-get -y install unoconv
@@ -237,6 +243,9 @@ RUN npm install -g pnpm
 RUN npm install -g typescript
 # marp-cli for slide conversion (md → html/pdf/pptx).
 RUN npm install -g @marp-team/marp-cli
+# Formatters that ship via npm (moved here from the formatters
+# section above so Node is on PATH).
+RUN npm install -g prettier sql-formatter
 # wrangler for Cloudflare R2 + Workers ops (task {inspect,list} worker / bucket).
 RUN npm install -g wrangler
 
@@ -392,11 +401,13 @@ RUN ln -sf /home/python/venv/bin/eyeD3 /usr/bin/eyeD3
 RUN apt-get install apt-transport-https
 RUN wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/dart.gpg
 RUN echo 'deb [signed-by=/usr/share/keyrings/dart.gpg arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main' | tee /etc/apt/sources.list.d/dart_stable.list
-RUN apt-get update -y -q
+# Allow partial mirror failures — Ubuntu mirrors occasionally
+# mid-sync and return mismatched sizes. `|| true` lets the build
+# continue with whatever index DID download successfully.
+RUN apt-get update -y -q || true
 RUN apt-get -y install dart
 
-RUN apt-get update -y -q
-RUN apt-get upgrade -y -q
+RUN apt-get update -y -q || true
 RUN apt-get -y install curl
 
 RUN apt-get -y install php-cli
@@ -417,14 +428,21 @@ RUN apt-get -y install unzip
 RUN apt-get -y install libcurl4-openssl-dev
 RUN apt-get -y install enscript
 
-RUN apt-get update \
-  && apt-get install -y wget gnupg \
-  && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-  && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
-  && apt-get update \
-  && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
-    --no-install-recommends \
-  && rm -rf /var/lib/apt/lists/*
+# Google Chrome for Puppeteer / marp-cli PDF export. Uses the
+# modern signed-by keyring (apt-key is deprecated on noble).
+RUN curl -fsSL https://dl.google.com/linux/linux_signing_key.pub \
+      | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg
+RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" \
+      > /etc/apt/sources.list.d/google-chrome.list
+RUN apt-get update -y -q || true
+RUN apt-get install -y --no-install-recommends google-chrome-stable
+RUN apt-get install -y --no-install-recommends fonts-ipafont-gothic
+RUN apt-get install -y --no-install-recommends fonts-wqy-zenhei
+RUN apt-get install -y --no-install-recommends fonts-thai-tlwg
+RUN apt-get install -y --no-install-recommends fonts-kacst
+RUN apt-get install -y --no-install-recommends fonts-freefont-ttf
+RUN apt-get install -y --no-install-recommends libxss1
+RUN rm -rf /var/lib/apt/lists/*
 
 # Install DuckDB CLI (for parquet <-> jsonl conversion)
 RUN curl -L -o /tmp/duckdb.zip https://github.com/duckdb/duckdb/releases/download/v1.1.3/duckdb_cli-linux-amd64.zip \
