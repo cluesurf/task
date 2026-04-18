@@ -338,6 +338,127 @@ Long-running watch with thresholds + alerts.
 - `task monitor http <url> --every 30s --slack <hook>` — synthetic
   monitoring; ping, fail to slack/discord/webhook.
 
+### dns (new verb family)
+
+Kill the "why won't this resolve" dance. Wrap one tool per
+verb so the flags stop being the bottleneck.
+
+- `task dns lookup <host>` — one-shot resolver probe. Mac:
+  `dscacheutil -q host -a name <host>`. Linux: `getent hosts`
+  or `resolvectl query`. Windows: `Resolve-DnsName`. Prints A
+  / AAAA / CNAME + which resolver answered.
+- `task dns trace <host>` — parsed `dig +trace` (root → TLD →
+  authoritative → cached answer), with timing per hop.
+- `task dns flush` — clear the OS resolver cache. Mac:
+  `sudo dscacheutil -flushcache && sudo killall -HUP
+  mDNSResponder`. Linux: `resolvectl flush-caches`. Windows:
+  `ipconfig /flushdns`.
+- `task dns inspect` — dump the active resolver chain:
+  `/etc/resolv.conf`, `scutil --dns` per zone, `/etc/resolver/*`
+  scoping, which process owns :53.
+- `task dns serve wildcard <zone> --to 127.0.0.1` — install a
+  dnsmasq / dnscrypt-proxy cloaking rule so `*.<zone>` stays
+  local. Portable mirror of `mesh/task/dns-setup.sh`.
+- `task dns serve private --upstream doh` — swap the local
+  resolver to DoH-only (cloudflare / quad9 / google) via
+  dnscrypt-proxy. Mirror of `mesh/task/dnscrypt-proxy-setup.sh`.
+  Adds `require_dnssec` / `require_nolog` / `require_nofilter`.
+- `task dns compare <host> --via cloudflare,google,quad9` —
+  fan out queries, diff the answers. Catches split-horizon or
+  poisoned resolvers fast.
+- `task dns test doh <url>` — confirm a DoH endpoint returns
+  valid wire-format / JSON, measure latency.
+- `task dns propagate <record>` — poll N public resolvers on
+  an interval until a new A / AAAA / NS record propagates after
+  a registrar change.
+- `task dns revert` — undo the most recent `dns serve` install
+  (stops dnscrypt-proxy, restores dnsmasq, or removes
+  `/etc/resolver/*` files). Same shape as the `--revert` flag
+  in `mesh/task/dnscrypt-proxy-setup.sh`.
+
+### tls (new verb family)
+
+Local HTTPS without hand-wrestling `mkcert` / `step` /
+`openssl` flags every time. Models the Caddy-based workflow
+in `mesh/task/caddy-setup.sh`.
+
+- `task tls issue <host> --from local-ca` — mint a cert signed
+  by a locally-trusted CA. Wraps `caddy` internal CA, `mkcert`,
+  or `step-ca`.
+- `task tls trust <ca-path>` — install a CA into the OS trust
+  store. Mac: `security add-trusted-cert -d -r trustRoot -k
+  /Library/Keychains/System.keychain`. Linux: copy to
+  `/usr/local/share/ca-certificates/` + `update-ca-certificates`.
+  Windows: `certutil -addstore ROOT`.
+- `task tls untrust <ca-sha>` — delete a stale CA by SHA-1.
+  Fixes the "multiple Caddy CAs confuse Safari" case.
+- `task tls inspect <host>` — fetch served chain, print
+  subject / issuer / SAN / NotAfter per cert, validate chain
+  against the local trust store.
+- `task tls verify <host>` — end-to-end probe. Confirms
+  `tls issue` + `tls trust` actually propagated to the OS and
+  to the browser.
+- `task tls serve <dir> --port 443 --for <host>` — thin wrapper
+  over `caddy file-server` or `http-server --ssl`, auto-issuing
+  a cert from the local CA.
+- `task tls proxy <host> --to <upstream>` — Caddy reverse
+  proxy on :443 with internal TLS. One-command local HTTPS for
+  an existing dev server. Supports wildcard host regex for
+  `*.<zone>` routing, same as the Caddy `on_demand` + `header_regexp
+  Host` pattern.
+- `task tls rotate --ca local` — rotate the local CA, reissue
+  every host cert, clean stale CAs out of the trust store. The
+  rotation sequence already lives in `mesh/task/caddy-setup.sh`;
+  package it as one command.
+
+### audit (new verb family)
+
+Dev-machine posture check in one command. Mirror of
+`mesh/task/security-check.sh`.
+
+- `task audit dev` — full check. DNS resolver
+  (dnscrypt-proxy up / dnsmasq down / loopback-bound / DoH
+  configured / DNSSEC on / no-log on). `/etc/resolver` scoping
+  (no broad zone hijack). Keychain CA count (exactly one
+  current Caddy CA, no stale duplicates). Reverse-proxy
+  exposure (admin API off, only :80 / :443 open). Process
+  privilege (loopback daemons as root only where required).
+  Exits 0 on green, 1 on any failure.
+- `task audit resolver` — just the DNS / `/etc/resolver` slice.
+- `task audit trust-store` — enumerate every non-Apple /
+  non-system root; flag unknown ones for review.
+- `task audit ports` — every listening socket with process +
+  user + loopback-vs-lan-vs-any binding.
+- `task audit secrets` — `gitleaks` / `trufflehog` over the
+  working tree + recent history.
+- `task audit startup` — launchd / systemd units installed by
+  third-party installers, with install date.
+
+### Reference: existing mesh scripts
+
+These are the source material. They solve the problem once
+for this repo. The verbs above generalize them so other
+projects reuse without copy-paste.
+
+- `mesh/task/dns-setup.sh` — dnsmasq wildcard for
+  `*.surf.host` → 127.0.0.1 plus `/etc/resolver` install.
+  Ends with the canonical cache-flush recipe:
+  `sudo dscacheutil -flushcache && sudo killall -HUP
+  mDNSResponder`, and the probe
+  `dscacheutil -q host -a name word.surf.host`.
+- `mesh/task/dnscrypt-proxy-setup.sh` — DoH-only upstream with
+  `*.surf.host` cloaking. Keeps Chrome's "Use secure DNS" ON
+  while local names stay local. Idempotent. Supports
+  `--revert`.
+- `mesh/task/caddy-setup.sh` — local HTTPS for `*.surf.host`
+  via Caddy's internal CA. Covers trust-store install,
+  stale-CA cleanup, chain verification, and arbitrary-depth
+  subdomains via `header_regexp Host` + `tls internal
+  on_demand`.
+- `mesh/task/security-check.sh` — the five-section audit
+  (resolver / scoping / keychain / caddy exposure / process
+  privilege) that `task audit dev` is modeled on.
+
 ### debug (new verb)
 
 - `task debug attach <pid>` — start lldb / gdb / delve / py-spy

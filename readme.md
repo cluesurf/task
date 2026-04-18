@@ -55,6 +55,12 @@ Prebuilt container with everything baked in:
 FROM --platform=linux/amd64 ghcr.io/cluesurf/task:latest
 ```
 
+Smaller per-workload images (image, font, pdf, document, tex, video,
+embed, email, mutate, binary, cloud, code) are published alongside
+the kitchen sink. See
+[make/deck/docker/readme.md](./make/deck/docker/readme.md) for the
+full image catalog and when to pick which.
+
 ## Use
 
 ```ts

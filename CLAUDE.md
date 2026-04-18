@@ -307,9 +307,14 @@ every concrete sub-thing of that action.
   `exports` field in `package.json`** with `node` + `browser` +
   `default` pointing at the compiled `host/code/call/<path>.js`.
 - **External tools live in two install manifests**:
-  - `deck/task/Dockerfile` installs everything the scripts shell
-    out to (ffmpeg, pandoc, imagemagick, duckdb, hf CLI, etc.)
-    so the containerized version of task can run every action.
+  - `make/deck/docker/Dockerfile` installs everything the scripts
+    shell out to (ffmpeg, pandoc, imagemagick, duckdb, hf CLI, etc.)
+    so the containerized kitchen-sink image can run every action.
+    Per-workload images under `make/deck/docker/<workload>/Dockerfile`
+    carry narrower tool sets — if an action needs a tool in a
+    specific workload (image, font, pdf, document, tex, video,
+    embed, email, mutate, binary, cloud, code), add it to that
+    Dockerfile too. See `make/deck/docker/readme.md`.
   - `deck/homebrew-code/Tool/task/` + `deck/homebrew-code/Casks/task.rb`
     do the same for macOS
     developer installs via `brew install cluesurf/code/task`.
