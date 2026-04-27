@@ -85,10 +85,15 @@ describe('task.format', () => {
     const filePath = path.join(OUT, 'messy.py')
     await fs.writeFile(filePath, 'x = 1\n')
     await expect(async () =>
-      task.format({
-        input: { file: { path: filePath } },
-        output: { file: { path: filePath } },
-      }),
+      task.format(
+        // @ts-expect-error — `language` is required. Verify both the
+        // type rejects the missing-discriminator shape and the
+        // runtime dispatcher throws the contracted error message.
+        {
+          input: { file: { path: filePath } },
+          output: { file: { path: filePath } },
+        },
+      ),
     ).rejects.toThrow(/language/)
   })
 })

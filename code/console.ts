@@ -372,6 +372,12 @@ async function main() {
     .command(verifyConsole)
     .command(useConsole)
     .command(watchConsole)
+    .completion(
+      'autocomplete',
+      'Print a shell-completion script. Append the output to your ' +
+        'shell rc file (zsh / bash / fish), e.g. ' +
+        '`task autocomplete >> ~/.zshrc && exec zsh`.',
+    )
     .demandCommand(1, 'Specify an action')
     .strict()
     .version()

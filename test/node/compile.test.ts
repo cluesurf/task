@@ -75,6 +75,8 @@ describe('task.compile', () => {
     await fs.writeFile(input, 'nope')
     await expect(async () =>
       task.compile({
+        // @ts-expect-error — 'xyz' is not a supported compile format. We
+        // verify both the type rejects it AND the runtime dispatcher does.
         input: { format: 'xyz', file: { path: input } },
         output: { format: 'binary', file: { path: path.join(OUT, 'bogus') } },
       }),

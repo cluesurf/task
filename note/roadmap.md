@@ -152,9 +152,71 @@ Done items are folded into the action table at the top of
 - Music-source separation (`demucs`, `spleeter`).
 - MIDI ↔ audio (`fluidsynth`, `basic-pitch`).
 
-**text / data**
-- Add: `csv ↔ tsv ↔ json ↔ yaml ↔ toml ↔ xml ↔ arrow ↔ avro ↔ orc`.
+**text / data** — extraction + transformation
+
+The driving idea: every time a developer reaches for an ad-hoc
+`jq` or `yq` one-liner, a Python script with `csv`, `pandas`,
+`BeautifulSoup`, or a regex-and-pray, there should be a single
+typed `task convert data` (read-only structural conversion) or
+`task extract data` (lossy/inferring extraction) or
+`task transform data` (mapping / reshaping) call.
+
+Tabular ↔ tree pairs to ship:
+
+- `csv ↔ json` / `csv ↔ jsonl` / `csv ↔ ndjson`
+- `tsv ↔ csv` / `tsv ↔ json`
+- `xlsx ↔ csv` / `xlsx ↔ json` / `xlsx ↔ parquet`
+- `json ↔ yaml` / `json ↔ toml` / `yaml ↔ toml`
+- `json ↔ xml` (configurable element / attribute mapping)
+- `xml ↔ csv` (per-row XPath selector)
+- `html ↔ json` — pull `<table>` / `<ul>` / `<dl>` /
+  `[itemprop]` / opengraph / json-ld out of arbitrary pages.
+  Backends: `cheerio` for selectors, `linkedom` for parser,
+  `htmlq` for the CLI fallback.
+- `html ↔ markdown` (`turndown`)
+- `markdown ↔ html` / `markdown ↔ json` (AST via `remark`)
+- `pdf ↔ json` — text + tables + bbox per page (`pdfjs-dist`,
+  `tabula-java`, `camelot-py`).
+- `pdf ↔ csv` — `--tables` mode (pull tabular regions only).
+- `arrow ↔ parquet ↔ csv ↔ jsonl` (DuckDB or `parquet-tools`).
+- `avro ↔ json` (`avsc`), `orc ↔ csv` (DuckDB).
+- `protobuf ↔ json` (`.proto` + buffer in, json out — and back).
+- `msgpack ↔ json` / `cbor ↔ json` / `bencode ↔ json`.
+- `srt ↔ vtt ↔ ass` (already in subtitle plan).
+- `dotenv ↔ json` / `ini ↔ json` / `properties ↔ json`.
+- `csv ↔ sql-insert` — emit `INSERT INTO ...` statements with
+  the right escaping per dialect.
+- `csv ↔ ddl` — infer a table schema and print `CREATE TABLE`.
+
+Extraction and transformation verbs (separate from convert
+because they're lossy or interpret):
+
+- `task extract table <pdf|html|docx>` — pull tables out of a
+  document, emit CSV / JSON.
+- `task extract entity <text>` — names / urls / emails / phone /
+  ip / cc / ssn (regex-based, no ML).
+- `task extract link <html|md>` — every href + alt text + rel.
+- `task extract image <pdf|docx|html>` — dump embedded images.
+- `task transform data <in> --map config.yml` — rename columns,
+  flatten nested keys, project subsets, type-coerce, all from a
+  declarative config (one config = repeatable transform).
+- `task transform data <in> --jq '.users[] | {id,email}'` — let
+  jq be the transform language when a config feels heavy.
+- `task transform data <in> --sql 'SELECT ... FROM in'` — same
+  idea via DuckDB; reuses `task query sql` infrastructure.
+
+Dialect / schema:
+
 - SQL dialect translate (`sqlglot`).
+- JSON-Schema infer from sample (already noted under "schema
+  infer" browser section; should ship CLI too).
+- TypeScript type infer from JSON sample (`quicktype`).
+- Zod / Yup / Joi infer from JSON sample.
+
+Implementation note: most of the above are pure-JS and can ship
+to the browser entrypoint at the same time as the Node one. Use
+the four-branch dispatch (per `note/action-pattern.md`) so the
+remote and external paths come along for free.
 
 **code**
 - Source-to-source: `babel`, `@swc/core`, `tsc`, `ts-node`.
@@ -255,6 +317,17 @@ Done items are folded into the action table at the top of
 - Done: dump + restore for pg / mysql / sqlite / mongo.
 - Add: schema diff (`migra`, `dbmate diff`, `prisma migrate diff`),
   data sample / anonymize, query export, fixture loader.
+- Add: `task dump schema pg <url>` — schema-only dump, no owners,
+  no privileges. Wraps:
+  ```sh
+  pg_dump "<url>" \
+    --schema=public \
+    --schema-only \
+    --no-owner \
+    --no-privileges \
+    > schema.sql
+  ```
+  Equivalent MySQL / SQLite / Mongo variants follow the same shape.
 
 ### network / host-inspect
 

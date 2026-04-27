@@ -46,31 +46,37 @@ is the defining principle.
 
 ## Adding a new action
 
-1. Declare the form in `code/call/<action>/<thing>/base.ts` using
-   `@cluesurf/form` primitives (usually via `buildConvertForms` or a
-   sibling helper).
-2. Run `pnpm make:type` — that emits types + parsers under
-   `code/form/action/<action>/<thing>/`.
-3. Write the handler at
-   `code/call/<action>/<thing>/node.ts` (and `browser.ts` if the
-   action is browser-reachable). Follow the three-mode handler
-   pattern (`remote` / `local-external` / `local-internal`) — see
-   `code/call/compile/code/c/node.ts` as the canonical reference.
-4. If the handler shells out to a tool, assemble argv in
-   `code/call/<action>/<thing>/command.ts` (pure functions, no exec),
-   and run it with `runCommandSequence` from
-   `code/tool/node/command.ts`.
-5. Add a route entry in `code/form/export/action/<action>/node.ts` so
-   `task.<action>(...)` resolves to your handler via the two-level
-   lazy-load probe (`loadBase` → format match → `loadCall`).
-6. Add a subcommand at `code/call/<action>/<thing>/console.ts`
-   (wraps the handler with `buildActionCommand`) and re-export it
-   from `code/call/<action>/console.ts`.
-7. Wire a per-action subpath in `package.json` `exports` so
-   consumers can `import { ... } from '@cluesurf/task/<action>/<thing>'`.
-8. If the handler needs a new binary installed, add it to the
-   `Dockerfile` and to the homebrew cask so the managed installs stay
-   in sync.
+The full step-by-step lives in [`action-pattern.md`](./action-pattern.md).
+That doc covers the canonical four-branch dispatch (remote /
+local-external / local-internal converging on a shared local
+worker), the per-backend subdir layout for multi-tool things,
+the three layers of CLI console wiring (verb-group → thing →
+optional per-backend), and how the `Task` class in
+`code/node.ts` lazy-imports each handler.
+
+The TL;DR loop:
+
+1. Declare the schema in `code/call/<verb>/<thing>/base.ts`.
+2. Register it in `code/base.ts` (`export * from ...`).
+3. `pnpm make:type` → generated types and parsers land under
+   `code/form/action/<verb>/<thing>/`.
+4. Write `command.ts` (pure argv builder, no I/O).
+5. Write `node.ts` with four-branch dispatch (or the
+   lightweight pattern if the work is intrinsically local).
+6. Write `console.ts` with `buildActionCommand` + the generated
+   `console/options`.
+7. Wire console up: `code/call/<verb>/console.ts` (group) →
+   `code/console.ts` (root binary).
+8. Add a method to `Task` in `code/node.ts`.
+9. Register the binary in `code/tool/shared/install-hint.ts`
+   plus the Docker / Homebrew manifests.
+10. Add the per-action `package.json` export.
+11. Drop a vitest under `test/node/` and a bash suite under
+    `test/console/`.
+
+Read `action-pattern.md` before writing anything new — the
+file layout and dispatch contract is load-bearing for the
+remote worker, codegen, and bundler tree-shaking.
 
 ## Tests
 
