@@ -8,8 +8,6 @@ generated `TaskSurface`.
 
 ## Construct
 
-Node:
-
 ```ts
 import Task from '@cluesurf/task'
 
@@ -17,8 +15,6 @@ const task = new Task()
 // with a remote backend + API key
 const remote = new Task({ host: 'https://task.surf', code: 'API-KEY' })
 ```
-
-Bash:
 
 ```sh
 # Install
@@ -29,8 +25,6 @@ task autocomplete >> ~/.zshrc && exec zsh
 ```
 
 ## Modes (every verb)
-
-Node:
 
 ```ts
 // explain: print the resolved native command, don't execute
@@ -50,16 +44,12 @@ await task.wait(work)
 const out = await task.resolve(work)
 ```
 
-Bash:
-
 ```sh
 task convert image -I png -O jpg -i a.png -o a.jpg --explain
 task convert image -I png -O jpg -i a.png -o a.jpg --remote --work
 ```
 
 ## convert
-
-Node:
 
 ```ts
 // png → jpg (imagemagick picked automatically)
@@ -94,8 +84,6 @@ await task.convert({
 })
 ```
 
-Bash:
-
 ```sh
 task convert a.png a.jpg
 task convert image -I png -O jpg -i a.png -o a.jpg
@@ -106,8 +94,6 @@ task convert data -I json -O yaml -i data/ -o data.yaml/
 ```
 
 ## compress / trim / resize / rotate / flip / normalize
-
-Node:
 
 ```ts
 await task.compress({
@@ -141,8 +127,6 @@ await task.normalize({
 })
 ```
 
-Bash:
-
 ```sh
 task compress pic.jpg -o pic.small.jpg --quality 60
 task trim clip.mp4 -s 0 -e 10 -o cut.mp4
@@ -153,8 +137,6 @@ task normalize song.mp3 -o song.norm.mp3
 ```
 
 ## compile / format
-
-Node:
 
 ```ts
 // compile dispatches by `input.format`
@@ -171,8 +153,6 @@ await task.format({
 })
 ```
 
-Bash:
-
 ```sh
 task compile rust src/main.rs -o build/main
 task compile c hello.c -o hello
@@ -183,8 +163,6 @@ task format c hello.c             # routes to clang-format
 ```
 
 ## inspect (file / tls / dns)
-
-Node:
 
 ```ts
 // file: default — type, size, codec / dimensions / metadata table
@@ -207,8 +185,6 @@ await task.inspect({
 })
 ```
 
-Bash:
-
 ```sh
 task inspect file report.pdf
 task inspect tls clue.surf
@@ -221,8 +197,6 @@ task inspect dns example.com --tool cloudflare       # zone records
 ```
 
 ## query (sql / db)
-
-Node:
 
 ```ts
 // DuckDB over a CSV / Parquet / JSONL file
@@ -247,8 +221,6 @@ await task.query({
 })
 ```
 
-Bash:
-
 ```sh
 task query sql duckdb --from data/users.csv --limit 10
 task query sql duckdb --sql "SELECT * FROM read_parquet('logs/*.parquet')"
@@ -258,8 +230,6 @@ task query db mydb 'SELECT now()' --format json
 ```
 
 ## parse (entity / link / table / code / html)
-
-Node:
 
 ```ts
 // entity: emails / urls / ips / phones / cc / ssn / mac / bitcoin / uuid
@@ -289,8 +259,6 @@ await task.parse({
 })
 ```
 
-Bash:
-
 ```sh
 task parse entity logs/page.html
 task parse entity --text 'reach a@x.com or https://x.com'
@@ -303,8 +271,6 @@ task parse table invoice.pdf            # text-position layout heuristic
 ```
 
 ## isolate (image)
-
-Node:
 
 ```ts
 // pdf: pdfimages (poppler) — native encoding preserved
@@ -326,8 +292,6 @@ await task.isolate({
 })
 ```
 
-Bash:
-
 ```sh
 task isolate image report.pdf -o ./images
 task isolate image report.pdf -o ./images --mode png   # re-encode to PNG
@@ -336,8 +300,6 @@ task isolate image page.html -o ./images --prefix fig
 ```
 
 ## transform (data)
-
-Node:
 
 ```ts
 // --map: declarative rename / pick / drop / coerce / default
@@ -368,8 +330,6 @@ await task.transform({
 })
 ```
 
-Bash:
-
 ```sh
 task transform data users.csv --map mapping.yml -o users.json
 task transform data logs.jsonl --jq '.[] | select(.level=="error")'
@@ -395,8 +355,6 @@ strictly limits the output keys regardless of what `default` adds.
 
 ## scan (env)
 
-Node:
-
 ```ts
 await task.scan({
   thing:  'env',
@@ -408,8 +366,6 @@ await task.scan({
 })
 ```
 
-Bash:
-
 ```sh
 task scan env                                       # working tree
 task scan env ./services --history                  # + git history
@@ -418,8 +374,6 @@ task scan env --report leaks.json --report-format sarif
 ```
 
 ## profile (cpu)
-
-Node:
 
 ```ts
 // auto-picks samply for native binaries, 0x for `node` commands
@@ -442,8 +396,6 @@ await task.profile({
 })
 ```
 
-Bash:
-
 ```sh
 task profile cpu --command "./target/release/parse"
 task profile cpu --command "node server.js" --tool clinic
@@ -452,8 +404,6 @@ task profile cpu --command "node app.js" --tool clinic --tool-mode bubbleprof
 ```
 
 ## trace (process)
-
-Node:
 
 ```ts
 // auto-picks per OS — strace (linux) / dtruss (mac) / procmon (win)
@@ -471,8 +421,6 @@ await task.trace({
 })
 ```
 
-Bash:
-
 ```sh
 task trace process --pid 42 --summary
 task trace process --command "ls /tmp" --follow
@@ -481,8 +429,6 @@ task trace process --pid 42 --tool dtruss             # force backend
 ```
 
 ## download (video — yt-dlp + others)
-
-Node:
 
 ```ts
 // any yt-dlp-supported site (1500+: YouTube, TikTok, Vimeo, Twitch, …)
@@ -520,8 +466,6 @@ await task.download({
 })
 ```
 
-Bash:
-
 ```sh
 task download video https://youtu.be/abc
 task download video https://youtu.be/abc --audio-only --audio-format mp3
@@ -534,8 +478,6 @@ task download hugging-face --repo-id meta-llama/Llama-3-8B
 ```
 
 ## combine (image + audio → video)
-
-Node:
 
 ```ts
 // Loop a still image for the audio's duration; h264/aac defaults
@@ -558,8 +500,6 @@ await task.combine({
 })
 ```
 
-Bash:
-
 ```sh
 task combine -i cover.png --audio song.mp3 -o song-with-cover.mp4
 task combine -i cover.png --audio song.flac -o out.mkv \
@@ -567,8 +507,6 @@ task combine -i cover.png --audio song.flac -o out.mkv \
 ```
 
 ## merge (concatenate same-format media)
-
-Node:
 
 ```ts
 // Concatenate three mp4 clips end-to-end (ffmpeg concat demuxer)
@@ -582,15 +520,11 @@ await task.merge({
 })
 ```
 
-Bash:
-
 ```sh
 task merge a.mp4 b.mp4 c.mp4 -o whole.mp4
 ```
 
 ## split (slice media at timestamps)
-
-Node:
 
 ```ts
 // Split a long video into 30-second chunks
@@ -601,15 +535,11 @@ await task.split({
 })
 ```
 
-Bash:
-
 ```sh
 task split long.mp4 --segment 30 -o chunks/
 ```
 
 ## pad (extend / silence-pad audio or video)
-
-Node:
 
 ```ts
 // Pad an audio file out to a target duration with silence
@@ -620,16 +550,12 @@ await task.pad({
 })
 ```
 
-Bash:
-
 ```sh
 task pad short.mp3 --to 3:00.000 -o padded.mp3
 task pad short.mp3 --to 3:00.000              # in-place (positional shorthand)
 ```
 
 ## archive / unpack
-
-Node:
 
 ```ts
 await task.archive({
@@ -643,8 +569,6 @@ await task.unpack({
 })
 ```
 
-Bash:
-
 ```sh
 task archive folder/ -o folder.zip
 task archive folder/ -O tar.gz -o folder.tar.gz
@@ -652,8 +576,6 @@ task unpack folder.zip -o folder/
 ```
 
 ## fetch / sync
-
-Node:
 
 ```ts
 await task.fetch({
@@ -670,8 +592,6 @@ await task.sync({
 })
 ```
 
-Bash:
-
 ```sh
 task fetch https://example.com/api/data -o data.json --retry 3
 task fetch https://example.com -o page.html --mirror
@@ -680,8 +600,6 @@ task sync ./src/ ./dst/ --dry-run
 ```
 
 ## set (eol / encoding / metadata)
-
-Node:
 
 ```ts
 // EOL: lf ↔ crlf
@@ -699,8 +617,6 @@ await task.set({
 })
 ```
 
-Bash:
-
 ```sh
 task set eol crlf.txt --eol lf
 task set encoding latin1.txt --encoding utf-8
@@ -709,22 +625,16 @@ task set metadata song.mp3 --title "The Title" --artist "The Artist"
 
 ## detect
 
-Node:
-
 ```ts
 // detect bidirectional / RTL hazards in mixed-language text
 await task.detect({ file: 'cookies.txt' })
 ```
-
-Bash:
 
 ```sh
 task detect bidi cookies.txt
 ```
 
 ## fonts (subset / shape / render / dump)
-
-Node:
 
 ```ts
 // subset to the glyphs needed for a given string
@@ -756,8 +666,6 @@ await task.dump({
 })
 ```
 
-Bash:
-
 ```sh
 task subset big.ttf -o small.ttf --text "Hello world"
 task shape  fnt.ttf --text office
@@ -766,8 +674,6 @@ task dump   fnt.ttf -o fnt.ttx
 ```
 
 ## highlight
-
-Node:
 
 ```ts
 // PDF text highlight
@@ -778,15 +684,11 @@ await task.highlight({
 })
 ```
 
-Bash:
-
 ```sh
 task highlight doc.pdf -o doc.hl.pdf --text critical
 ```
 
 ## verify
-
-Node:
 
 ```ts
 // integrity / structural validation per format
@@ -795,15 +697,11 @@ await task.verify({
 })
 ```
 
-Bash:
-
 ```sh
 task verify pic.jpg
 ```
 
 ## disassemble
-
-Node:
 
 ```ts
 // dispatch by extension: .wasm / .class / .jar / .dll / .exe / else radare
@@ -823,8 +721,6 @@ await task.disassemble({
 })
 ```
 
-Bash:
-
 ```sh
 task disassemble a.wasm -o a.wat
 task disassemble app.class -o app.javap
@@ -832,8 +728,6 @@ task disassemble elf-bin -o elf-bin.asm
 ```
 
 ## remove
-
-Node:
 
 ```ts
 // metadata strip (default)
@@ -860,8 +754,6 @@ await task.remove({
 })
 ```
 
-Bash:
-
 ```sh
 task remove metadata pic.jpg
 task remove password secret.pdf -o open.pdf --password p
@@ -880,8 +772,6 @@ await task.inspect({ thing: 'port', port: 3000 })
 // process detail by PID
 await task.inspect({ thing: 'process', pid: 4242 })
 ```
-
-Bash:
 
 ```sh
 task inspect port 3000

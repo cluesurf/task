@@ -3,7 +3,7 @@ import { getConfig } from './config'
 import Kink from '@termsurf/kink'
 import { wait } from './timer'
 
-export type RequestBody = FormData | object
+export type RequestBody = FormData | object | string
 
 export type NativeOptions = {
   signal?: AbortSignal
