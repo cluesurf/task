@@ -43,12 +43,10 @@ Node module (CLI + library):
 pnpm add -g @cluesurf/task
 ```
 
-Wire it up and check it out:
+Check it out:
 
 ```bash
 task --help
-# connect autocomplete if you'd like
-task autocomplete >> ~/.zshrc && exec zsh
 ```
 
 Or just as a JS/TS dep:
