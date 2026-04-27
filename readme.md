@@ -37,15 +37,23 @@ on.
 
 ## Install
 
-```sh
-# node module (CLI + library)
-pnpm add -g @cluesurf/task
-
-task --help
-```
+Node module (CLI + library):
 
 ```bash
-# or inside a project
+pnpm add -g @cluesurf/task
+```
+
+Wire it up and check it out:
+
+```bash
+task --help
+# connect autocomplete if you'd like
+task autocomplete >> ~/.zshrc && exec zsh
+```
+
+Or just as a JS/TS dep:
+
+```bash
 pnpm add @cluesurf/task
 ```
 
