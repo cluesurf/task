@@ -6,8 +6,10 @@
     "outDir": "host",
     "rootDir": ".",
     "sourceMap": true,
-    "declaration": true,
+    "declaration": false,
+    "noEmit": true,
     "moduleResolution": "Node",
+    "ignoreDeprecations": "6.0",
     "strictNullChecks": true,
     "strict": true,
     "esModuleInterop": true,
@@ -25,7 +27,15 @@
       "~/code/*": ["./code/*"]
     }
   },
-  "include": ["co/browser.ts", "*.d.ts"],
+  "include": [
+    "code/browser.ts",
+    "code/**/browser.ts",
+    "code/**/shared.ts",
+    "code/tool/**/*.ts",
+    "code/form/**/*.ts",
+    "test/browser/page.entry.ts",
+    "*.d.ts"
+  ],
   "exclude": [
     "node_modules",
     "host",

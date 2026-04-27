@@ -63,11 +63,20 @@ import type {
 
 import type { Archive } from '~/code/form/action/archive/index'
 import type { Highlight } from '~/code/form/action/highlight/index'
-import type { CombineNodeInput, CombineNodeOutput } from '~/code/call/combine/node'
+import type {
+  CombineNodeInput,
+  CombineNodeOutput,
+} from '~/code/call/combine/node'
 import type { MergeNodeInput } from '~/code/call/merge/node'
 import type { SearchNodeInput } from '~/code/call/search/node'
-import type { FetchNodeInput, FetchNodeOutput } from '~/code/call/fetch/shared'
-import type { SyncNodeInput, SyncNodeOutput } from '~/code/call/sync/shared'
+import type {
+  FetchNodeInput,
+  FetchNodeOutput,
+} from '~/code/call/fetch/shared'
+import type {
+  SyncNodeInput,
+  SyncNodeOutput,
+} from '~/code/call/sync/shared'
 import type { DetectBidiNodeInput } from '~/code/call/detect/bidi/node'
 import type { ResizeVideoNodeInput } from '~/code/call/resize/video/node'
 import type {
@@ -95,31 +104,70 @@ export type MediaKind =
   | 'dotnet'
 
 const KIND_BY_EXT: Record<string, MediaKind> = {
-  png: 'image', jpg: 'image', jpeg: 'image', gif: 'image', webp: 'image',
-  bmp: 'image', tiff: 'image', tif: 'image', heic: 'image', avif: 'image',
+  png: 'image',
+  jpg: 'image',
+  jpeg: 'image',
+  gif: 'image',
+  webp: 'image',
+  bmp: 'image',
+  tiff: 'image',
+  tif: 'image',
+  heic: 'image',
+  avif: 'image',
   svg: 'image',
 
-  mp3: 'audio', wav: 'audio', flac: 'audio', ogg: 'audio',
-  opus: 'audio', m4a: 'audio', aac: 'audio',
+  mp3: 'audio',
+  wav: 'audio',
+  flac: 'audio',
+  ogg: 'audio',
+  opus: 'audio',
+  m4a: 'audio',
+  aac: 'audio',
 
-  mp4: 'video', mov: 'video', mkv: 'video', webm: 'video',
-  avi: 'video', m4v: 'video',
+  mp4: 'video',
+  mov: 'video',
+  mkv: 'video',
+  webm: 'video',
+  avi: 'video',
+  m4v: 'video',
 
-  ttf: 'font', otf: 'font', woff: 'font', woff2: 'font',
-  eot: 'font', ttx: 'font',
+  ttf: 'font',
+  otf: 'font',
+  woff: 'font',
+  woff2: 'font',
+  eot: 'font',
+  ttx: 'font',
 
-  pdf: 'document', docx: 'document', odt: 'document', epub: 'document',
+  pdf: 'document',
+  docx: 'document',
+  odt: 'document',
+  epub: 'document',
 
-  zip: 'archive', tar: 'archive', gz: 'archive', tgz: 'archive',
-  '7z': 'archive', rar: 'archive', xz: 'archive', zst: 'archive',
+  zip: 'archive',
+  tar: 'archive',
+  gz: 'archive',
+  tgz: 'archive',
+  '7z': 'archive',
+  rar: 'archive',
+  xz: 'archive',
+  zst: 'archive',
 
-  csv: 'data', tsv: 'data', json: 'data', jsonl: 'data',
-  yaml: 'data', yml: 'data', toml: 'data', xml: 'data',
-  parquet: 'data', avro: 'data',
+  csv: 'data',
+  tsv: 'data',
+  json: 'data',
+  jsonl: 'data',
+  yaml: 'data',
+  yml: 'data',
+  toml: 'data',
+  xml: 'data',
+  parquet: 'data',
+  avro: 'data',
 
   wasm: 'wasm',
-  class: 'jvm', jar: 'jvm',
-  dll: 'dotnet', exe: 'dotnet',
+  class: 'jvm',
+  jar: 'jvm',
+  dll: 'dotnet',
+  exe: 'dotnet',
 }
 
 function extFromPath(p: string): string {
@@ -129,7 +177,10 @@ function extFromPath(p: string): string {
 
 function pathOf(input: unknown): string {
   const i = input as
-    | { input?: { file?: { path?: unknown } }; file?: { path?: unknown } }
+    | {
+        input?: { file?: { path?: unknown } }
+        file?: { path?: unknown }
+      }
     | null
     | undefined
   const p = i?.input?.file?.path ?? i?.file?.path
@@ -147,8 +198,16 @@ function kindOf(input: unknown): MediaKind | undefined {
 
 // ── Set / Detect input shapes (no generated union) ─────────────
 
-export type SetEolInput = { eol: 'lf' | 'crlf'; file: string; output?: string }
-export type SetEncodingInput = { encoding: string; file: string; output?: string }
+export type SetEolInput = {
+  eol: 'lf' | 'crlf'
+  file: string
+  output?: string
+}
+export type SetEncodingInput = {
+  encoding: string
+  file: string
+  output?: string
+}
 export type SetMetadataInput = {
   input: { file: { path: string } }
   output?: { file?: { path: string } }
@@ -304,7 +363,9 @@ export default class Task {
   // ── Query dispatch ─────────────────────────────────
 
   query(input: QueryInput): Promise<string> {
-    const tool = String((input as { tool?: string }).tool ?? 'duckdb').toLowerCase()
+    const tool = String(
+      (input as { tool?: string }).tool ?? 'duckdb',
+    ).toLowerCase()
     if (tool === 'duckdb') {
       return this.call(
         '~/code/call/query/sql/duckdb/node',
@@ -325,43 +386,37 @@ export default class Task {
   // ── Kind-dispatched verbs ──────────────────────────
 
   compress(i: CompressNodeInput): Promise<CompressNodeOutput> {
-    return this.byKind(i, {
-      audio: '~/code/call/compress/audio/node',
-      video: '~/code/call/compress/video/node',
-      font: '~/code/call/compress/font/node',
-    }, '~/code/call/compress/image/node')
+    return this.byKind(
+      i,
+      COMPRESS_BY_KIND,
+      '~/code/call/compress/image/node',
+    )
   }
 
   trim(i: TrimNodeInput): Promise<TrimNodeOutput> {
-    return this.byKind(i, {
-      audio: '~/code/call/trim/audio/node',
-      video: '~/code/call/trim/video/node',
-    }, '~/code/call/trim/image/node')
+    return this.byKind(i, TRIM_BY_KIND, '~/code/call/trim/image/node')
   }
 
   resize(i: ResizeVideoNodeInput): Promise<unknown> {
-    return this.byKind(i, {
-      video: '~/code/call/resize/video/node',
-    }, '~/code/call/resize/image/node')
+    return this.byKind(i, RESIZE_BY_KIND, '~/code/call/resize/image/node')
   }
 
   rotate(i: RotateNodeInput): Promise<RotateNodeOutput> {
-    return this.byKind(i, {
-      video: '~/code/call/rotate/video/node',
-    }, '~/code/call/rotate/image/node')
+    return this.byKind(i, ROTATE_BY_KIND, '~/code/call/rotate/image/node')
   }
 
   update(i: UpdateNodeInput): Promise<UpdateNodeOutput> {
-    return this.byKind(i, {
-      font: '~/code/call/update/font/node',
-      video: '~/code/call/update/video/node',
-    }, '~/code/call/update/image/node')
+    return this.byKind(i, UPDATE_BY_KIND, '~/code/call/update/image/node')
   }
 
-  optimize(i: OptimizeVideoNodeInput): Promise<OptimizeVideoNodeOutput> {
-    return this.byKind(i, {
-      video: '~/code/call/optimize/video/node',
-    }, '~/code/call/optimize/image/local/node')
+  optimize(
+    i: OptimizeVideoNodeInput,
+  ): Promise<OptimizeVideoNodeOutput> {
+    return this.byKind(
+      i,
+      OPTIMIZE_BY_KIND,
+      '~/code/call/optimize/image/local/node',
+    )
   }
 
   disassemble(i: DisassembleNodeInput): Promise<DisassembleNodeOutput> {
@@ -369,14 +424,18 @@ export default class Task {
       ghidraHome?: string
       profile?: string
     }
-    if (fields.ghidraHome || fields.profile === 'imports' || fields.profile === 'exports') {
+    if (
+      fields.ghidraHome ||
+      fields.profile === 'imports' ||
+      fields.profile === 'exports'
+    ) {
       return this.run('~/code/call/disassemble/ghidra/node', i)
     }
-    return this.byKind(i, {
-      wasm: '~/code/call/disassemble/wasm/node',
-      jvm: '~/code/call/disassemble/jvm/node',
-      dotnet: '~/code/call/disassemble/dotnet/node',
-    }, '~/code/call/disassemble/radare/node')
+    return this.byKind(
+      i,
+      DISASSEMBLE_BY_KIND,
+      '~/code/call/disassemble/radare/node',
+    )
   }
 
   // ── Language-dispatched verbs ──────────────────────
@@ -427,9 +486,12 @@ export default class Task {
       password?: unknown
       background?: unknown
     }
-    if (i.tag || i.preset) return this.run('~/code/call/remove/exif/node', input)
-    if (i.password !== undefined) return this.run('~/code/call/remove/password/node', input)
-    if (i.background) return this.run('~/code/call/remove/transparency/node', input)
+    if (i.tag || i.preset)
+      return this.run('~/code/call/remove/exif/node', input)
+    if (i.password !== undefined)
+      return this.run('~/code/call/remove/password/node', input)
+    if (i.background)
+      return this.run('~/code/call/remove/transparency/node', input)
     return this.run('~/code/call/remove/metadata/node', input)
   }
 
@@ -439,13 +501,19 @@ export default class Task {
    * metadata fields.
    */
   set(input: SetInput): Promise<unknown> {
-    const i = input as Partial<SetEolInput & SetEncodingInput & SetMetadataInput>
+    const i = input as Partial<
+      SetEolInput & SetEncodingInput & SetMetadataInput
+    >
     if (i.encoding) {
-      return this.call('~/code/call/set/encoding/node', 'setEncodingNode', {
-        target: i.encoding,
-        file: i.file!,
-        output: i.output as string | undefined,
-      })
+      return this.call(
+        '~/code/call/set/encoding/node',
+        'setEncodingNode',
+        {
+          target: i.encoding,
+          file: i.file!,
+          output: i.output as string | undefined,
+        },
+      )
     }
     if (i.eol) {
       return this.call('~/code/call/set/eol/node', 'setEolNode', {
@@ -461,8 +529,46 @@ export default class Task {
   }
 
   detect(input: DetectBidiNodeInput): Promise<unknown> {
-    return this.call('~/code/call/detect/bidi/node', 'detectBidiNode', input)
+    return this.call(
+      '~/code/call/detect/bidi/node',
+      'detectBidiNode',
+      input,
+    )
   }
+}
+
+const COMPRESS_BY_KIND: Partial<Record<MediaKind, string>> = {
+  audio: '~/code/call/compress/audio/node',
+  video: '~/code/call/compress/video/node',
+  font: '~/code/call/compress/font/node',
+}
+
+const TRIM_BY_KIND: Partial<Record<MediaKind, string>> = {
+  audio: '~/code/call/trim/audio/node',
+  video: '~/code/call/trim/video/node',
+}
+
+const RESIZE_BY_KIND: Partial<Record<MediaKind, string>> = {
+  video: '~/code/call/resize/video/node',
+}
+
+const ROTATE_BY_KIND: Partial<Record<MediaKind, string>> = {
+  video: '~/code/call/rotate/video/node',
+}
+
+const UPDATE_BY_KIND: Partial<Record<MediaKind, string>> = {
+  font: '~/code/call/update/font/node',
+  video: '~/code/call/update/video/node',
+}
+
+const OPTIMIZE_BY_KIND: Partial<Record<MediaKind, string>> = {
+  video: '~/code/call/optimize/video/node',
+}
+
+const DISASSEMBLE_BY_KIND: Partial<Record<MediaKind, string>> = {
+  wasm: '~/code/call/disassemble/wasm/node',
+  jvm: '~/code/call/disassemble/jvm/node',
+  dotnet: '~/code/call/disassemble/dotnet/node',
 }
 
 const COMPILE_BY_LANG: Record<string, string> = {

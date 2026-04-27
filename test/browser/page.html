@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>task browser test harness</title>
+  </head>
+  <body>
+    <pre id="status">loading...</pre>
+    <script src="/host/test.browser.js"></script>
+    <script>
+      // The webpack UMD build attaches the bundle as window.task.
+      // Spec uses window.Task to mint instances; expose default
+      // class explicitly so playwright can call:
+      //   await page.evaluate(() => new window.Task({ host: '...' }).convert(...))
+      window.Task = (window.task && window.task.default) || window.Task
+      document.getElementById('status').textContent = 'ready'
+    </script>
+  </body>
+</html>

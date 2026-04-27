@@ -16,6 +16,18 @@ import {
   convertJsonlFileToParquet,
   convertParquetFileToJsonl,
 } from './duckdb/node'
+import {
+  convertCsvFileToJson,
+  convertCsvFileToJsonl,
+  convertCsvFileToXlsx,
+  convertJsonFileToCsv,
+  convertJsonFileToXlsx,
+  convertJsonFileToYaml,
+  convertJsonlFileToCsv,
+  convertXlsxFileToCsv,
+  convertXlsxFileToJson,
+  convertYamlFileToJson,
+} from './transform/node'
 import type {
   ConvertDataNodeLocalInternalInput,
   ConvertDataNodeOutput,
@@ -34,6 +46,7 @@ type DataConvertRoute = {
 }
 
 const DATA_CONVERT_ROUTES: ReadonlyArray<DataConvertRoute> = [
+  // Parquet ↔ JSONL via DuckDB.
   {
     input: 'parquet',
     output: 'jsonl',
@@ -46,6 +59,96 @@ const DATA_CONVERT_ROUTES: ReadonlyArray<DataConvertRoute> = [
     output: 'parquet',
     run: ({ source, destination }) =>
       convertJsonlFileToParquet({ input: source, output: destination }),
+  },
+
+  // CSV / TSV ↔ JSON / JSONL (pure JS via csv-parse).
+  {
+    input: 'csv',
+    output: 'json',
+    run: ({ source, destination }) =>
+      convertCsvFileToJson({ source, destination }).then(() => undefined),
+  },
+  {
+    input: 'csv',
+    output: 'jsonl',
+    run: ({ source, destination }) =>
+      convertCsvFileToJsonl({ source, destination }).then(() => undefined),
+  },
+  {
+    input: 'tsv',
+    output: 'json',
+    run: ({ source, destination }) =>
+      convertCsvFileToJson({ source, destination, delimiter: '\t' }).then(() => undefined),
+  },
+  {
+    input: 'tsv',
+    output: 'jsonl',
+    run: ({ source, destination }) =>
+      convertCsvFileToJsonl({ source, destination, delimiter: '\t' }).then(() => undefined),
+  },
+  {
+    input: 'json',
+    output: 'csv',
+    run: ({ source, destination }) =>
+      convertJsonFileToCsv({ source, destination }).then(() => undefined),
+  },
+  {
+    input: 'json',
+    output: 'tsv',
+    run: ({ source, destination }) =>
+      convertJsonFileToCsv({ source, destination, delimiter: '\t' }).then(() => undefined),
+  },
+  {
+    input: 'jsonl',
+    output: 'csv',
+    run: ({ source, destination }) =>
+      convertJsonlFileToCsv({ source, destination }).then(() => undefined),
+  },
+
+  // JSON ↔ YAML (pure JS via the `yaml` package).
+  {
+    input: 'json',
+    output: 'yaml',
+    run: ({ source, destination }) =>
+      convertJsonFileToYaml({ source, destination }).then(() => undefined),
+  },
+  {
+    input: 'yaml',
+    output: 'json',
+    run: ({ source, destination }) =>
+      convertYamlFileToJson({ source, destination }).then(() => undefined),
+  },
+  {
+    input: 'yml',
+    output: 'json',
+    run: ({ source, destination }) =>
+      convertYamlFileToJson({ source, destination }).then(() => undefined),
+  },
+
+  // XLSX ↔ CSV / JSON (sheetjs).
+  {
+    input: 'xlsx',
+    output: 'csv',
+    run: ({ source, destination }) =>
+      convertXlsxFileToCsv({ source, destination }).then(() => undefined),
+  },
+  {
+    input: 'xlsx',
+    output: 'json',
+    run: ({ source, destination }) =>
+      convertXlsxFileToJson({ source, destination }).then(() => undefined),
+  },
+  {
+    input: 'csv',
+    output: 'xlsx',
+    run: ({ source, destination }) =>
+      convertCsvFileToXlsx({ source, destination }).then(() => undefined),
+  },
+  {
+    input: 'json',
+    output: 'xlsx',
+    run: ({ source, destination }) =>
+      convertJsonFileToXlsx({ source, destination }).then(() => undefined),
   },
 ]
 

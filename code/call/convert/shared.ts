@@ -16,7 +16,7 @@ export async function convertArchive(source) {
 export function buildRequestToConvert(input: ConvertApi) {
   return buildRemoteRequest(
     'POST',
-    `/convert/${input.input.format}/${input.output.format}`,
+    `/convert!/${input.input.format}/${input.output.format}`,
     omitNested(input, [
       ['handle'],
       ['input', 'format'],
@@ -36,7 +36,7 @@ export function buildFormDataRequestToConvert(input: ConvertApi) {
 
   return buildRemoteRequest(
     'POST',
-    `/convert/${input.input.format}/${input.output.format}`,
+    `/convert!/${input.input.format}/${input.output.format}`,
     formData,
   )
 }

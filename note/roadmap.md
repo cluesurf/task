@@ -139,14 +139,14 @@ Done items are folded into the action table at the top of
 - Music-source separation (`demucs`, `spleeter`).
 - MIDI ↔ audio (`fluidsynth`, `basic-pitch`).
 
-**text / data** — extraction + transformation
+**text / data** — parsing + transformation
 
 The driving idea: every time a developer reaches for an ad-hoc
 `jq` or `yq` one-liner, a Python script with `csv`, `pandas`,
 `BeautifulSoup`, or a regex-and-pray, there should be a single
 typed `task convert data` (read-only structural conversion) or
-`task extract data` (lossy/inferring extraction) or
-`task transform data` (mapping / reshaping) call.
+`task parse data` (lossy / inferring parse into structured
+records) or `task transform data` (mapping / reshaping) call.
 
 Tabular ↔ tree pairs to ship:
 
@@ -175,15 +175,17 @@ Tabular ↔ tree pairs to ship:
   the right escaping per dialect.
 - `csv ↔ ddl` — infer a table schema and print `CREATE TABLE`.
 
-Extraction and transformation verbs (separate from convert
+Parsing and transformation verbs (separate from convert
 because they're lossy or interpret):
 
-- `task extract table <pdf|html|docx>` — pull tables out of a
+- `task parse table <pdf|html|docx>` — pull tables out of a
   document, emit CSV / JSON.
-- `task extract entity <text>` — names / urls / emails / phone /
-  ip / cc / ssn (regex-based, no ML).
-- `task extract link <html|md>` — every href + alt text + rel.
-- `task extract image <pdf|docx|html>` — dump embedded images.
+- `task parse entity <text>` — emails / urls / ips / phone /
+  cc / ssn / mac / bitcoin / uuid (regex-based, no ML).
+  **Shipped.**
+- `task parse link <html|md>` — every href + alt text + rel.
+- `task parse image <pdf|docx|html>` — dump embedded images
+  (file-carving variant of the existing `extract` verb family).
 - `task transform data <in> --map config.yml` — rename columns,
   flatten nested keys, project subsets, type-coerce, all from a
   declarative config (one config = repeatable transform).

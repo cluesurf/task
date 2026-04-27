@@ -3,9 +3,7 @@ import {
   ConvertImageWithImageMagickBrowserLocalInput,
   ConvertImageWithImageMagickBrowserRemoteInput,
 } from '~/code/form/action/convert/imagemagick/browser'
-import {
-  ConvertImageWithImageMagickBrowserInputParser,
-} from '~/code/form/action/convert/imagemagick/browser/take'
+import { ConvertImageWithImageMagickBrowserInputParser } from '~/code/form/action/convert/imagemagick/browser/take'
 import { buildFormDataRequestToConvert } from '../../shared'
 import kink from '~/code/tool/shared/kink'
 import { testConvertImageWithImageMagick } from './shared'
@@ -13,10 +11,10 @@ import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
 import { NativeOptions } from '~/code/tool/shared/request'
 import { WorkFileAsBlob } from '~/code/tool/shared/work'
 
-export async function convertImageWithImageMagickBrowser(
+async function convertImageWithImageMagickBrowser(
   source: ConvertImageWithImageMagickBrowserInput,
   native?: NativeOptions,
-) {
+): Promise<WorkFileAsBlob> {
   const input =
     ConvertImageWithImageMagickBrowserInputParser.parse(source)
 
@@ -34,15 +32,15 @@ export async function convertImageWithImageMagickBrowser(
   }
 }
 
-export async function convertImageWithImageMagickBrowserRemote(
+async function convertImageWithImageMagickBrowserRemote(
   input: ConvertImageWithImageMagickBrowserRemoteInput,
   native?: NativeOptions,
-) {
+): Promise<WorkFileAsBlob> {
   const request = buildFormDataRequestToConvert(input)
-  return await resolveWorkFileAsBlob(request)
+  return await resolveWorkFileAsBlob(request, native)
 }
 
-export async function convertImageWithImageMagickBrowserLocal(
+async function convertImageWithImageMagickBrowserLocal(
   input: ConvertImageWithImageMagickBrowserLocalInput,
   native?: NativeOptions,
 ): Promise<WorkFileAsBlob> {
@@ -56,3 +54,6 @@ export function testConvertImageWithImageMagickBrowser(
 ): input is ConvertImageWithImageMagickBrowserInput {
   return testConvertImageWithImageMagick(input)
 }
+
+export default convertImageWithImageMagickBrowser
+export { convertImageWithImageMagickBrowser }

@@ -1,6 +1,7 @@
 import type { CommandModule } from 'yargs'
 import { registerGroupHelp } from '~/code/tool/node/log/registry'
 import { parseCodeConsole } from './code/console'
+import { parseEntityConsole } from './entity/console'
 import { parseHtmlConsole } from './html/console'
 
 registerGroupHelp({
@@ -8,7 +9,8 @@ registerGroupHelp({
   describe: 'Parse source / data / pages into a structured form',
   commands: [
     { name: 'code', describe: 'Parse source code into an AST' },
-    { name: 'html', describe: 'Extract tables / links / images / text from a URL or HTML file' },
+    { name: 'entity', describe: 'Pull emails / urls / ips / phone / cc / ssn / mac / bitcoin / uuid out of text' },
+    { name: 'html', describe: 'Pull tables / links / images / text from a URL or HTML file' },
   ],
 })
 
@@ -17,6 +19,7 @@ export const parseConsole: CommandModule = {
   describe: 'Parse source / data / pages into a structured form',
   builder: y => y
     .command(parseCodeConsole)
+    .command(parseEntityConsole)
     .command(parseHtmlConsole)
     .demandCommand(1, 'Specify what to parse'),
   handler: () => {},

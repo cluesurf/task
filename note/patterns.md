@@ -439,16 +439,196 @@ their verb is called.
 
 ## 6. Browser entrypoint (`browser.ts`) — optional
 
-Same dispatch shape, but only `remote` and `local` branches
-(no external paths in the browser sandbox). The `local`
-implementation usually uses a WASM build of the underlying
-binary; the `remote` branch uses
-`buildFormDataRequestToConvert` + `resolveWorkFileAsBlob`.
+The browser handler mirrors the Node four-branch shape, but
+collapses to **two branches** since the browser sandbox has
+no host filesystem and therefore no `external` distinction.
+The dispatch is `remote` (send to a task-compatible REST
+server) or `local` (run a WASM build of the underlying
+binary in-page).
 
-Many browsers throw `task_not_implemented` from the local
-branch — a deliberate placeholder until the WASM port lands.
-That's still useful: the remote branch (sending the file to
-task.surf) works the moment the schema generates.
+```ts
+// code/call/<verb>/<thing>/[<backend>/]browser.ts
+
+import {
+  Convert<Thing>With<Tool>BrowserInput,
+  Convert<Thing>With<Tool>BrowserLocalInput,
+  Convert<Thing>With<Tool>BrowserRemoteInput,
+} from '~/code/form/action/convert/<tool>/browser'
+import {
+  Convert<Thing>With<Tool>BrowserInputParser,
+} from '~/code/form/action/convert/<tool>/browser/take'
+import { buildFormDataRequestToConvert } from '../../shared'
+import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'
+import { NativeOptions } from '~/code/tool/shared/request'
+import { WorkFileAsBlob } from '~/code/tool/shared/work'
+import { testConvertImageWithImageMagick } from './shared'
+import kink from '~/code/tool/shared/kink'
+
+async function convertImageWithImageMagickBrowser(
+  source: ConvertImageWithImageMagickBrowserInput,
+  native?: NativeOptions,
+): Promise<WorkFileAsBlob> {
+  const input =
+    ConvertImageWithImageMagickBrowserInputParser.parse(source)
+
+  switch (input.handle) {
+    case 'remote':
+      return await convertImageWithImageMagickBrowserRemote(
+        input,
+        native,
+      )
+    default:
+      return await convertImageWithImageMagickBrowserLocal(
+        input,
+        native,
+      )
+  }
+}
+
+async function convertImageWithImageMagickBrowserRemote(
+  input: ConvertImageWithImageMagickBrowserRemoteInput,
+  native?: NativeOptions,
+): Promise<WorkFileAsBlob> {
+  const request = buildFormDataRequestToConvert(input)
+  return await resolveWorkFileAsBlob(request, native)
+}
+
+async function convertImageWithImageMagickBrowserLocal(
+  input: ConvertImageWithImageMagickBrowserLocalInput,
+  native?: NativeOptions,
+): Promise<WorkFileAsBlob> {
+  throw kink('task_not_implemented', {
+    task: 'convertImageWithImageMagickBrowserLocal',
+  })
+}
+
+export function testConvertImageWithImageMagickBrowser(
+  input: any,
+): input is ConvertImageWithImageMagickBrowserInput {
+  return testConvertImageWithImageMagick(input)
+}
+
+export default convertImageWithImageMagickBrowser
+export { convertImageWithImageMagickBrowser }
+```
+
+### What each branch is for
+
+- **`remote`** — the canonical browser path until WASM lands.
+  Inputs are real `Blob` / `File` references; the handler
+  serializes them with `buildFormDataRequestToConvert`
+  (multipart, including the file content + the rest of the
+  form), POSTs to `/<verb>!/<inputFormat>/<outputFormat>` on
+  whatever host the `Task` was constructed with, polls
+  `/work/:id`, then `fetch`-es the result and returns a
+  `WorkFileAsBlob`. Any host that exposes the same REST
+  surface (the production `task.surf`, the test fastify
+  server, or a self-hosted worker) handles the request.
+
+  **Verb URLs end in `!`.** Action endpoints (`/convert!/...`,
+  `/extract!/...`, `/compile!/...`) are visually distinct
+  from the noun reads (`/work/:id`, `/files/:id`) so logs,
+  request traces, and route tables make the side-effecting
+  calls obvious. The `!` lives on the verb itself, before
+  any path params.
+- **`local`** — runs a WASM build of the underlying binary
+  inside the page. Most browsers throw
+  `kink('task_not_implemented')` from this branch as a
+  deliberate placeholder; flip it on once the WASM port
+  lands. Until then the `remote` branch is the working path
+  and the `local` placeholder lets the schema generate the
+  full union without breaking type checking.
+
+The `testXxx<Backend>Browser` type-guard mirrors the node
+counterpart so the parent verb's `<thing>/browser.ts` (or
+the convert format-pair router) can dispatch by pair without
+parsing.
+
+### What's intentionally absent
+
+- **No `external` branch.** Browsers cannot reach into a host
+  filesystem; the `local` branch already operates on
+  in-memory `Blob` content.
+- **No `command.ts`.** WASM bindings expose direct function
+  calls, not argv. When you wire a `local` WASM
+  implementation, put the call directly in the
+  `<verb>BrowserLocal` worker (or in a per-backend module
+  next to it).
+- **No `node:fs`, `node:path`, `child_process`, or
+  `~/code/tool/node/*` imports.** If you need it in
+  `browser.ts`, it belongs in `shared.ts` or a new
+  `~/code/tool/browser/*` helper.
+
+### Per-action package export
+
+Add a `browser` condition next to `node` in
+`package.json` `exports` so `import { ... } from
+'@cluesurf/task/<verb>/<thing>'` resolves to `browser.ts`
+when bundled for the web:
+
+```jsonc
+"./convert/image": {
+  "node":    "./host/code/call/convert/image/imagemagick/node.js",
+  "browser": "./host/code/call/convert/image/imagemagick/browser.js",
+  "default": "./host/code/call/convert/image/imagemagick/node.js"
+}
+```
+
+### Browser `Task` class
+
+`code/browser.ts` is the public programmatic surface for the
+browser, mirroring `code/node.ts`. Same lazy-import
+discipline (`await import('~/code/call/<verb>/<thing>/browser')`)
+so `new Task()` boot cost stays at the type-stripped
+entrypoint. The one behavioral difference: `Task` injects
+`handle: 'remote'` rather than `handle: 'internal'`, since
+the browser default is to forward to a server.
+
+```ts
+// code/browser.ts (sketch)
+export default class Task {
+  constructor(options: { host?: string } = {}) {
+    configure('remote', options.host ?? DEFAULT_REMOTE_TASK_PATH)
+    configure('environment', 'browser')
+  }
+
+  convert(i: ConvertBrowserInput): Promise<ConvertBrowserOutput> {
+    return this.run('~/code/call/convert/node/browser', i)
+  }
+  // ...one method per verb, same shape as code/node.ts
+}
+```
+
+`Task` calls `configure('remote', host)` once on construct
+so every downstream `buildRemoteRequest` / `getRemote` /
+`postRemote` picks up the right base URL.
+
+### Tests — REST round-trip via a task-compatible server
+
+Browser tests live under `test/browser/`. They drive the
+`Task` browser API in a real Chromium page (Playwright)
+against a stripped-down REST server that wraps the same Node
+verb the production `task.surf` host runs:
+
+```
+test/browser/
+  server.ts                 fastify server: POST /v2/convert/:in/:out runs the Node verb
+  playwright.config.ts      starts server.ts as webServer, points baseURL at it
+  page.html                 minimal page that loads the bundled browser surface
+  page.entry.ts             webpack/vite entry that exposes Task on window
+  fixture/                  small input files (png, wav, ...)
+  convert.spec.ts           drives task.convert from inside the browser
+```
+
+The fastify server is intentionally thin: it accepts the
+multipart upload the browser handler emits, hands the file
+to the Node implementation
+(`convertImageWithImageMagickNode`, etc.), stores the result
+in a tmp dir, and exposes
+`GET /v2/work/:id` + `GET /v2/files/:id` so
+`resolveWorkFileAsBlob`'s polling loop completes the
+round-trip. Anyone deploying their own `task.surf`-style
+host implements the same three endpoints.
 
 ---
 

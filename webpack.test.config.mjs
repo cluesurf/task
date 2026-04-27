@@ -17,11 +17,11 @@ export default {
     ],
   },
   entry: {
-    'test.browser': './te/browser.ts',
+    'test.browser': './test/browser/page.entry.ts',
   },
   plugins: [
     new webpack.ProvidePlugin({
-      process: 'proce/browser',
+      process: 'process/browser',
     }),
   ],
   output: {
@@ -40,7 +40,7 @@ export default {
     extensions: ['', '.ts', '.js'],
     fallback: {
       path: 'path-browserify',
-      process: path.resolve('proce/browser'),
+      process: path.resolve('process/browser'),
       stream: 'stream-browserify',
     },
   },
@@ -59,6 +59,16 @@ export default {
             loader: 'ts-loader',
             options: {
               configFile: 'tsconfig.standalone.json',
+              transpileOnly: true,
+              onlyCompileBundledFiles: true,
+              compilerOptions: {
+                noEmit: false,
+                rootDir: path.resolve('.'),
+                outDir: path.resolve('./host'),
+                declaration: false,
+                ignoreDeprecations: '6.0',
+              },
+              ignoreDiagnostics: [5011, 5101, 5107],
             },
           },
         ],
