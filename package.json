@@ -21,6 +21,10 @@
       "browser": "./host/code/call/check/file/browser.js",
       "default": "./host/code/call/check/file/node.js"
     },
+    "./check/secret": {
+      "node": "./host/code/call/check/secret/node.js",
+      "default": "./host/code/call/check/secret/node.js"
+    },
     "./compile/c": {
       "node": "./host/code/call/compile/code/c/node.js",
       "browser": "./host/code/call/compile/code/c/browser.js",
@@ -344,6 +348,10 @@
       "node": "./host/code/call/resize/image/node.js",
       "browser": "./host/code/call/resize/image/browser.js",
       "default": "./host/code/call/resize/image/node.js"
+    },
+    "./rotate/secret": {
+      "node": "./host/code/call/rotate/secret/node.js",
+      "default": "./host/code/call/rotate/secret/node.js"
     },
     "./sanitize/code": {
       "node": "./host/code/call/sanitize/code/node.js",

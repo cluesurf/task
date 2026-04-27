@@ -487,12 +487,12 @@ type ImplicitConfig = {
 
 const IMPLICIT_DEFAULTS: Record<string, ImplicitConfig> = {
   inspect:   { subs: ['analytics', 'ast', 'bot', 'bucket', 'cache', 'cluster', 'color', 'db', 'dns', 'figma', 'file', 'firewall', 'machine', 'metadata', 'network', 'pod', 'port', 'process', 'request', 'security', 'service', 'system', 'table', 'traffic', 'usage', 'waf', 'webpage', 'worker', 'zone'], default: 'file' },
-  check:     { subs: ['file'], default: 'file' },
+  check:     { subs: ['domain', 'file', 'secret'], default: 'file' },
   compile:   { subs: ['c', 'cpp', 'rust', 'swift', 'wast'] },
   compress:  { subs: ['audio', 'font', 'image', 'video'] },
   format:    { subs: ['assembly', 'clang', 'kotlin', 'python', 'ruby', 'rust', 'swift'] },
   trim:      { subs: ['audio', 'image', 'video'] },
-  rotate:    { subs: ['image', 'video'] },
+  rotate:    { subs: ['image', 'secret', 'video'] },
   flip:      { subs: ['image'] },
   normalize: { subs: ['audio'] },
   resize:    { subs: ['image', 'video'] },

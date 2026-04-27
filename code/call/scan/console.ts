@@ -5,13 +5,13 @@ import { scanSshConsole } from './ssh/console'
 
 registerGroupHelp({
   command: 'task scan',
-  describe: 'Security scans — CVE / SBOM / secrets / network',
+  describe: 'Security scans — CVE / SBOM / secret / network',
   commands: [
     { name: 'image',      describe: 'Container image CVE scan (trivy / grype)' },
     { name: 'filesystem', describe: 'Source-code / lockfile CVE scan (trivy / osv)' },
     { name: 'host',       describe: 'Local OS package CVE scan (trivy rootfs)' },
-    { name: 'secrets',    describe: 'Leaked credentials in a repo (gitleaks / trufflehog)' },
-    { name: 'env',        describe: 'Leaked secrets in env files / source / git history' },
+    { name: 'secret',     describe: 'Leaked credentials in a repo (gitleaks / trufflehog)' },
+    { name: 'env',         describe: 'Leaked secret in env files / source / git history' },
     { name: 'sbom',       describe: 'Generate a software bill of materials (syft / trivy)' },
     { name: 'network',    describe: 'Port + service scan (nmap, private subnets only by default)' },
     { name: 'ssh',        describe: 'SSH host-key fingerprint probe (ssh-keyscan)' },
@@ -57,12 +57,12 @@ registerHelp({
 })
 
 registerHelp({
-  command: 'task scan secrets',
+  command: 'task scan secret',
   describe: 'Find leaked credentials',
   options: COMMON,
   examples: [
-    { comment: 'gitleaks',    command: 'task scan secrets .' },
-    { comment: 'trufflehog',  command: 'task scan secrets . --tool trufflehog' },
+    { comment: 'gitleaks',    command: 'task scan secret .' },
+    { comment: 'trufflehog',  command: 'task scan secret . --tool trufflehog' },
   ],
 })
 
@@ -144,8 +144,8 @@ const hostCmd: CommandModule = {
   },
 }
 
-const secretsCmd: CommandModule = {
-  command: 'secrets <path>',
+const secretCmd: CommandModule = {
+  command: 'secret <path>',
   describe: 'Find leaked credentials',
   builder: y => y.positional('path', { type: 'string' })
     .option('tool', { type: 'string', choices: ['gitleaks', 'trufflehog'] as const })
@@ -217,7 +217,7 @@ export const scanConsole: CommandModule = {
     .command(imageCmd)
     .command(fsCmd)
     .command(hostCmd)
-    .command(secretsCmd)
+    .command(secretCmd)
     .command(sbomCmd)
     .command(networkCmd)
     .command(scanEnvConsole)

@@ -120,19 +120,34 @@ Done items are folded into the action table at the top of
 
 ### convert
 
-**image**
-- Raster ↔ vector: `potrace`, `autotrace`, `rsvg-convert`, `inkscape`.
-- RAW pipelines (`dcraw`, `darktable-cli`, `rawtherapee-cli`).
-- HDR / Radiance `.hdr` ↔ `exr`.
-- Animated: `gif` ↔ `apng` ↔ `webp` ↔ `mp4`.
+**image** — all open items shipped:
+- Raster ↔ vector: `potrace`, `autotrace`, `rsvg-convert`, `inkscape`. **Done.**
+- RAW pipelines: `dcraw`, `darktable-cli`, `rawtherapee-cli`. **Done.**
+- HDR / Radiance `.hdr` ↔ `exr` via `radiance` + `pfstools`. **Done.**
+- Animated: `gif` ↔ `apng` ↔ `webp` ↔ `mp4` via `gifsicle` /
+  `apngasm` / `img2webp` / `ffmpeg`. **Done.**
 
 **document**
-- Ebook: `epub` ↔ `mobi` ↔ `azw3` ↔ `fb2` (`calibre`).
-- Notebooks: `ipynb` ↔ `py`/`md`/`html` (`jupyter nbconvert`).
-- Slides: `pptx` ↔ `pdf`, `md` ↔ reveal.js / marp.
+
+Shipped:
+- Ebook: `epub` ↔ `mobi` ↔ `azw3` ↔ `fb2` via `calibre`.
+- Notebooks: `ipynb` ↔ `py` / `md` / `html` via `jupyter`.
+- Slides: `md` → `pptx` / reveal.js via `marp` / `revealjs`.
+- LibreOffice / pandoc / pdflatex / puppeteer / enscript
+  backends per pair.
+
+Open:
+- `pptx ↔ pdf` round-trip beyond the LibreOffice path.
 
 **audio / video**
-- First-class bitrate / VBR / channel flags.
+
+Shipped (ffmpeg-backed):
+- core convert / trim / resize / rotate / flip / normalize / pad
+  / split / combine / merge across the common formats.
+
+Open:
+- First-class bitrate / VBR / channel flags surfaced as typed
+  fields on the schemas.
 - HLS / DASH packaging (`shaka-packager`, ffmpeg HLS muxer).
 - Frame-extraction + thumbnail-sheet generation.
 - Subtitle ↔ format (`srt` ↔ `vtt` ↔ `ass`).
@@ -148,12 +163,18 @@ typed `task convert data` (read-only structural conversion) or
 `task parse data` (lossy / inferring parse into structured
 records) or `task transform data` (mapping / reshaping) call.
 
-Tabular ↔ tree pairs to ship:
+Tabular ↔ tree pairs:
 
-- `csv ↔ json` / `csv ↔ jsonl` / `csv ↔ ndjson`
-- `tsv ↔ csv` / `tsv ↔ json`
-- `xlsx ↔ csv` / `xlsx ↔ json` / `xlsx ↔ parquet`
-- `json ↔ yaml` / `json ↔ toml` / `yaml ↔ toml`
+Shipped:
+- `csv ↔ json` / `csv ↔ jsonl`
+- `tsv ↔ csv` / `tsv ↔ json` / `tsv ↔ jsonl`
+- `xlsx ↔ csv` / `xlsx ↔ json` (sheetjs / exceljs)
+- `xlsx → parquet` via the existing parquet route
+- `json ↔ yaml` / `yml → json`
+- `parquet ↔ jsonl` (DuckDB)
+
+Open:
+- `json ↔ toml` / `yaml ↔ toml`
 - `json ↔ xml` (configurable element / attribute mapping)
 - `xml ↔ csv` (per-row XPath selector)
 - `html ↔ json` — pull `<table>` / `<ul>` / `<dl>` /
@@ -175,24 +196,22 @@ Tabular ↔ tree pairs to ship:
   the right escaping per dialect.
 - `csv ↔ ddl` — infer a table schema and print `CREATE TABLE`.
 
-Parsing and transformation verbs (separate from convert
-because they're lossy or interpret):
+Parsing and transformation verbs (separate from convert because
+they're lossy or interpret):
 
+Shipped:
+- `task parse entity <text>` — emails / urls / ips / phone / cc /
+  ssn / mac / bitcoin / uuid (linkify-it / ip-regex /
+  libphonenumber-js / validator).
+- `task parse link <html|md>` — every href + alt text + rel
+  (cheerio + linkify-it).
 - `task parse table <pdf|html|docx>` — pull tables out of a
-  document, emit CSV / JSON.
-- `task parse entity <text>` — emails / urls / ips / phone /
-  cc / ssn / mac / bitcoin / uuid (regex-based, no ML).
-  **Shipped.**
-- `task parse link <html|md>` — every href + alt text + rel.
-- `task parse image <pdf|docx|html>` — dump embedded images
-  (file-carving variant of the existing `extract` verb family).
-- `task transform data <in> --map config.yml` — rename columns,
-  flatten nested keys, project subsets, type-coerce, all from a
-  declarative config (one config = repeatable transform).
-- `task transform data <in> --jq '.users[] | {id,email}'` — let
-  jq be the transform language when a config feels heavy.
-- `task transform data <in> --sql 'SELECT ... FROM in'` — same
-  idea via DuckDB; reuses `task query sql` infrastructure.
+  document, emit CSV / JSON (cheerio / mammoth / pdfjs-dist).
+- `task isolate image <pdf|docx|html>` — dump embedded images
+  (pdfimages / mammoth / cheerio).
+- `task transform data <in> --map / --jq / --sql` — declarative
+  rename / pick / drop / coerce / default; jq-wasm pipelines;
+  DuckDB SQL with `in` bound as the source.
 
 Dialect / schema:
 
@@ -240,10 +259,19 @@ remote and external paths come along for free.
 
 ### inspect
 
-- Add: entropy / randomness score, image color profile, PDF
-  outline + page count, font metrics, binary headers (`readelf`,
-  `otool`, `dumpbin`), WASM imports/exports, archive manifest
-  without extracting.
+Shipped:
+- `inspect file` (per-format pretty table — pdf / image / audio
+  / video / font / generic), `inspect metadata`, `inspect color`,
+  `inspect process`, `inspect port`, `inspect tls` (openssl
+  s_client + Node `X509Certificate`), `inspect dns` (system
+  resolver + Cloudflare zone-records mode), plus the Cloudflare
+  / Postgres / k8s family.
+
+Open:
+- entropy / randomness score, image color profile, PDF outline
+  + page count, font metrics, binary headers (`readelf`,
+  `otool`, `dumpbin`), WASM imports / exports, archive
+  manifest without extracting.
 
 ### compare
 
@@ -282,12 +310,22 @@ remote and external paths come along for free.
 
 ### merge / split
 
-- Video concat (ffmpeg concat demuxer), image → pdf /
-  contact-sheet, folder merge, csv / jsonl split by row count or
-  column value.
+Shipped:
+- Video concat via ffmpeg concat demuxer.
+- Time-range trim / split + segment-based split.
+
+Open:
+- image → pdf / contact-sheet, folder merge, csv / jsonl split
+  by row count or column value.
 
 ### download / upload
 
+Shipped:
+- HuggingFace, S3 (incl. R2 via `--endpoint`), GCS, Azure, FTP,
+  SFTP, WebDAV, IPFS, torrent. Plus `download video` (yt-dlp,
+  1500+ sites).
+
+Open:
 - OAuth device flow, service-account auth helpers, signed-URL
   upload, integrity check (`--checksum`).
 
@@ -576,13 +614,22 @@ Spin up tiny local servers without remembering tool names.
 - `task env load <provider>` — pull from 1Password / Doppler /
   AWS Secrets Manager / Vault into a one-shot env block.
 
-### secret (new verb)
+### secret
 
-- `task secret rotate <key>` — generate a new value, push to all
-  configured stores, rotate dependent services.
-- `task secret scan <repo>` — `trufflehog` / `gitleaks` walk.
-- `task secret expire-check` — every key in the chosen store with
-  expiry / TTL info.
+Shipped:
+- `task rotate secret <key>` — generate a fresh random value,
+  write it to a configured store (dotenv today), optionally
+  fire a `--restart` follow-up command. **Done.**
+- `task scan secret <repo>` — gitleaks / trufflehog walk over
+  a working tree or git history. **Done.**
+- `task check secret` — list every key in the chosen store with
+  last-set / expiry info (dotenv today; cloud stores plug in
+  via `--store <name>`). **Done.**
+
+Open: cloud-store drivers (1Password, Doppler, AWS Secrets
+Manager, HashiCorp Vault) under `code/call/{rotate,check}/secret/
+<store>/`. The schemas already accommodate `--store` — only the
+per-store driver work remains.
 
 ### snapshot (new verb)
 

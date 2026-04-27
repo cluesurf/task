@@ -191,6 +191,16 @@ every concrete sub-thing of that action.
 
 ## Principles
 
+- **All CLI command names are singular.** `task scan secret` (not
+  `secrets`), `task list process` (not `processes`), `task inspect
+  port` (not `ports`). The verb already implies "one or many" —
+  the noun stays singular. The same rule applies to `code/call/
+  <verb>/<thing>/` directory names: `secret/`, `process/`,
+  `port/`. When you find a leftover plural (`scan/secrets/`,
+  `inspect/ports/`), rename to singular and update every
+  call-site, help blurb, and example. Plural forms in prose are
+  fine ("Leaked credentials in a repo") — just not in command
+  paths or thing directory names.
 - **Prefer named functions over anonymous lambdas.** When passing
   a function as a config value (e.g. `runLocal`, `resolveExternal`),
   declare it as a named `function` or `const` above the call site,

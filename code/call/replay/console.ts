@@ -3,18 +3,19 @@ import { registerHelp } from '~/code/tool/node/log/registry'
 
 registerHelp({
   command: 'task replay',
-  describe: 'Replay an asciinema .cast',
+  describe: 'Replay an asciinema .cast (terminal playback, gif, mp4, or autoplay HTML)',
   options: [
-    { long: 'output',     short: 'o', describe: 'Render to .gif / .mp4 (default: terminal playback)' },
+    { long: 'output',     short: 'o', describe: 'Render to .gif / .mp4 / .html (default: terminal playback)' },
     { long: 'speed',      short: 's', describe: 'Playback speed multiplier (e.g. 2 for 2x)' },
     { long: 'idle-limit',             describe: 'Compress idle pauses to N seconds during playback' },
-    { long: 'format',                 describe: 'play (default) | gif | mp4 — overrides output extension' },
+    { long: 'format',                 describe: 'play (default) | gif | mp4 | html — overrides output extension' },
   ],
   examples: [
-    { comment: 'play in terminal',   command: 'task replay demo.cast' },
-    { comment: '2x speed',           command: 'task replay demo.cast -s 2' },
-    { comment: 'render to gif',      command: 'task replay demo.cast -o demo.gif' },
-    { comment: 'render to mp4',      command: 'task replay demo.cast -o demo.mp4' },
+    { comment: 'play in terminal',     command: 'task replay demo.cast' },
+    { comment: '2x speed',             command: 'task replay demo.cast -s 2' },
+    { comment: 'render to gif',        command: 'task replay demo.cast -o demo.gif' },
+    { comment: 'render to mp4',        command: 'task replay demo.cast -o demo.mp4' },
+    { comment: 'autoplay HTML embed',  command: 'task replay demo.cast -o demo.html' },
   ],
 })
 
@@ -26,7 +27,7 @@ export const replayConsole: CommandModule = {
     .option('output',     { alias: 'o', type: 'string' })
     .option('speed',      { alias: 's', type: 'number' })
     .option('idle-limit', { type: 'number' })
-    .option('format',     { type: 'string', choices: ['play', 'gif', 'mp4'] as const }),
+    .option('format',     { type: 'string', choices: ['play', 'gif', 'mp4', 'html'] as const }),
   handler: async argv => {
     const { runReplay } = await import('~/code/tool/node/record/make')
     const { runAction } = await import('~/code/tool/node/log')
@@ -35,7 +36,7 @@ export const replayConsole: CommandModule = {
       output: argv.output as string | undefined,
       speed: argv.speed as number | undefined,
       idleLimit: argv['idle-limit'] as number | undefined,
-      format: argv.format as 'play' | 'gif' | 'mp4' | undefined,
+      format: argv.format as 'play' | 'gif' | 'mp4' | 'html' | undefined,
     }
     await runAction({
       action: 'replay',

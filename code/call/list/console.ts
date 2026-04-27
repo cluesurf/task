@@ -12,6 +12,7 @@ import { listPortConsole } from './port/console'
 import { listProcessConsole } from './process/console'
 import { listRecordConsole } from './record/console'
 import { listSshConsole } from './ssh/console'
+import { listWindowConsole } from './window/console'
 import { listWorkerConsole } from './worker/console'
 import { listZoneConsole } from './zone/console'
 
@@ -31,6 +32,7 @@ registerGroupHelp({
     { name: 'process',  describe: 'Running processes with filter / sort / group / tree' },
     { name: 'record',   describe: 'Cloudflare DNS records for the active zone' },
     { name: 'ssh',      describe: 'Every Host entry in ~/.ssh/config' },
+    { name: 'window',   describe: 'Visible top-level windows (with ids `record window` accepts)' },
     { name: 'worker',   describe: 'Cloudflare Workers scripts' },
     { name: 'zone',     describe: 'Cloudflare zones' },
   ],
@@ -53,6 +55,7 @@ export const listConsole: CommandModule = {
       .command(listProcessConsole)
       .command(listRecordConsole)
       .command(listSshConsole)
+      .command(listWindowConsole)
       .command(listWorkerConsole)
       .command(listZoneConsole)
       .demandCommand(1, 'Specify what to list'),
