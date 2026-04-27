@@ -253,7 +253,7 @@ Bash:
 task query sql duckdb --from data/users.csv --limit 10
 task query sql duckdb --sql "SELECT * FROM read_parquet('logs/*.parquet')"
 task query sql duckdb --from logs.jsonl --select 'level, count(*)' \
-                     --where "level='error'" --format json
+                     --where "level='error'" --render json
 task query db mydb 'SELECT now()' --format json
 ```
 

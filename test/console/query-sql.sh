@@ -47,22 +47,22 @@ printf 'id,name\n1,a\n2,b\n3,c\n' > "$CSV"
 
 step "counts rows via --from"
 expect_contains "row count = 3" \
-  "task query sql duckdb --from \"$CSV\" --select 'count(*) as n' --format csv 2>&1" \
+  "task query sql duckdb --from \"$CSV\" --select 'count(*) as n' --render csv 2>&1" \
   "3"
 
 step "honors --where"
 expect_contains "filtered count = 1" \
-  "task query sql duckdb --from \"$CSV\" --select 'count(*) as n' --where \"name='a'\" --format csv 2>&1" \
+  "task query sql duckdb --from \"$CSV\" --select 'count(*) as n' --where \"name='a'\" --render csv 2>&1" \
   "1"
 
 step "raw --sql passes through unchanged"
 expect_contains "raw sql works" \
-  "task query sql duckdb --sql \"SELECT 1+1 AS sum\" --format csv 2>&1" \
+  "task query sql duckdb --sql \"SELECT 1+1 AS sum\" --render csv 2>&1" \
   "2"
 
 step "json output mode"
 expect_contains "json key present" \
-  "task query sql duckdb --from \"$CSV\" --limit 1 --format json 2>&1" \
+  "task query sql duckdb --from \"$CSV\" --limit 1 --render json 2>&1" \
   '"id"'
 
 summary

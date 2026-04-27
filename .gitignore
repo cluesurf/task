@@ -42,4 +42,4 @@ next-env.d.ts
 !/code/object/log
 !/code/call/build
 
-test-results/
+/test-results
