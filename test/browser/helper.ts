@@ -22,6 +22,7 @@
 
 import { Page } from '@playwright/test'
 import path from 'node:path'
+import type Task from '~/code/browser'
 
 export const FIXTURES_ROOT = path.resolve(
   __dirname,
@@ -60,8 +61,24 @@ export type VerbResult = {
   text?: string
 }
 
+/**
+ * Proxy surface: every public method on the real `Task`
+ * class becomes `(input) => Promise<VerbResult>` so specs
+ * type-check without `task.<verb>` being treated as
+ * possibly undefined under `noUncheckedIndexedAccess`.
+ *
+ * We deliberately re-type the inputs as `unknown` and the
+ * outputs as `VerbResult` (a `{size, mime, text}` envelope)
+ * because the proxy ships everything through `page.evaluate`
+ * — the real per-verb input/output types live in node-side
+ * code and aren't reachable from here.
+ */
+type TaskMethodNames = {
+  [K in keyof Task]: Task[K] extends (...args: never[]) => unknown ? K : never
+}[keyof Task]
+
 export type BrowserTaskProxy = {
-  [verb: string]: (input: unknown) => Promise<VerbResult>
+  [K in TaskMethodNames]: (input: unknown) => Promise<VerbResult>
 }
 
 /**

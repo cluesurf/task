@@ -526,7 +526,7 @@ Bash:
 task download video https://youtu.be/abc
 task download video https://youtu.be/abc --audio-only --audio-format mp3
 task download video https://youtu.be/abc \
-  -f "bv*+ba/b[height<=1080]" --remux mp4 --embed-metadata --embed-thumbnail
+  --video-format "bv*+ba/b[height<=1080]" --remux mp4 --embed-metadata --embed-thumbnail
 task download video https://www.youtube.com/playlist?list=XYZ --playlist-end 5
 
 task download s3 --bucket my-bucket --key foo/a.jpg -o a.jpg
