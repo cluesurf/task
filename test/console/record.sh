@@ -87,10 +87,11 @@ expect_contains "html mentions player" "cat '$HTML'" "asciinema-player"
 expect_contains "html references cast" "cat '$HTML'" "demo.cast"
 expect_contains "html autoplay enabled" "cat '$HTML'" "autoPlay: true"
 
-step "task replay --format html"
-HTML2="$OUT/demo2.html"
+step "task replay --format html (explicit override)"
+HTML2="$OUT/demo2.bin"
 task replay "$CAST" -o "$HTML2" --format html >/dev/null 2>&1
 expect_file "$HTML2"
+expect_contains "explicit-format html mentions player" "cat '$HTML2'" "asciinema-player"
 
 summary
 
