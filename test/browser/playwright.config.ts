@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test'
 import path from 'node:path'
 
-const PORT = Number(process.env.PORT ?? 4010)
+const PORT = Number(process.env.PORT ?? 5010)
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..')
 
 export default defineConfig({

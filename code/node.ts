@@ -86,6 +86,41 @@ import type {
 import type { QuerySqlDuckdbNodeInput } from '~/code/call/query/sql/duckdb/node'
 import type { QueryDbNodeInput } from '~/code/call/query/db/node'
 
+// Verbs added in the recent batch — typed but not yet on the
+// `Task` class until we wire the discriminated dispatch below.
+import type {
+  InspectTlsNodeInput,
+  InspectTlsNodeOutput,
+} from '~/code/call/inspect/tls/node'
+import type {
+  InspectDnsNodeInput,
+  InspectDnsNodeOutput,
+} from '~/code/call/inspect/dns/node'
+import type { InspectFileNodeLocalInput } from '~/code/form/action/inspect/file/node'
+import type {
+  ParseEntityNodeInput,
+  ParseEntityNodeOutput,
+} from '~/code/call/parse/entity/node'
+import type {
+  ParseLinkNodeInput,
+  ParseLinkNodeOutput,
+} from '~/code/call/parse/link/node'
+import type {
+  ParseTableNodeInput,
+  ParseTableNodeOutput,
+} from '~/code/call/parse/table/node'
+import type {
+  TransformDataNodeInput,
+  TransformDataNodeOutput,
+} from '~/code/call/transform/data/node'
+import type { ScanEnvNodeInput } from '~/code/call/scan/env/node'
+import type { ProfileCpuSamplyNodeInput } from '~/code/call/profile/cpu/samply/node'
+import type { ProfileCpuZeroxNodeInput } from '~/code/call/profile/cpu/zerox/node'
+import type { ProfileCpuClinicNodeInput } from '~/code/call/profile/cpu/clinic/node'
+import type { TraceProcessStraceNodeInput } from '~/code/call/trace/process/strace/node'
+import type { TraceProcessDtrussNodeInput } from '~/code/call/trace/process/dtruss/node'
+import type { TraceProcessProcmonNodeInput } from '~/code/call/trace/process/procmon/node'
+
 export type TaskOptions = {
   host?: string
   code?: string
@@ -221,6 +256,61 @@ export type QueryInput =
   | (QuerySqlDuckdbNodeInput & { tool?: 'duckdb' })
   | (QueryDbNodeInput & { tool: 'psql' | 'postgres' | 'pg' })
 
+/**
+ * Discriminated `task.parse(...)` input — `thing` selects the
+ * sub-handler. The `entity` / `link` / `table` variants get full
+ * IDE autocomplete on their respective option fields.
+ */
+export type ParseInput =
+  | (ParseEntityNodeInput & { thing: 'entity' })
+  | (ParseLinkNodeInput & { thing: 'link' })
+  | (ParseTableNodeInput & { thing: 'table' })
+
+export type ParseOutput =
+  | ParseEntityNodeOutput
+  | ParseLinkNodeOutput
+  | ParseTableNodeOutput
+
+/** Discriminated `task.transform(...)` — only `data` for now. */
+export type TransformInput = TransformDataNodeInput & { thing: 'data' }
+export type TransformOutput = TransformDataNodeOutput
+
+/** Discriminated `task.scan(...)` — only `env` ships through Task today. */
+export type ScanInput = ScanEnvNodeInput & { thing: 'env' }
+
+/**
+ * `task.profile(...)` input. Today only `cpu` is wired; the
+ * `tool` field picks samply (default), 0x, or clinic.
+ */
+export type ProfileInput =
+  | (ProfileCpuSamplyNodeInput & { thing: 'cpu'; tool?: 'samply' })
+  | (ProfileCpuZeroxNodeInput & { thing: 'cpu'; tool: '0x' })
+  | (ProfileCpuClinicNodeInput & { thing: 'cpu'; tool: 'clinic' })
+
+/**
+ * `task.trace(...)` input. Auto-picks per-OS backend; override
+ * with `tool` for explicit dispatch.
+ */
+export type TraceInput =
+  | (TraceProcessStraceNodeInput & { thing: 'process'; tool?: 'strace' })
+  | (TraceProcessDtrussNodeInput & { thing: 'process'; tool: 'dtruss' })
+  | (TraceProcessProcmonNodeInput & { thing: 'process'; tool: 'procmon' })
+
+/**
+ * `task.inspect(...)` extended with the new tls / dns variants.
+ * Defaulting to file-inspection keeps the prior behavior — pass
+ * `thing: 'tls'` or `thing: 'dns'` to route to the new verbs.
+ */
+export type InspectInput =
+  | (InspectFileNodeLocalInput & { thing?: 'file' })
+  | (InspectTlsNodeInput & { thing: 'tls' })
+  | (InspectDnsNodeInput & { thing: 'dns' })
+
+export type InspectOutput =
+  | InspectNodeOutput
+  | InspectTlsNodeOutput
+  | InspectDnsNodeOutput
+
 /** Pull the format / language discriminator off `FormatNodeInput`. */
 export type FormatLanguage = FormatNodeInput extends { format: infer F }
   ? F
@@ -320,8 +410,28 @@ export default class Task {
   highlight(i: Highlight): Promise<{ file: { path: string } }> {
     return this.run('~/code/call/highlight/node', i)
   }
-  inspect(i: InspectNodeInput): Promise<InspectNodeOutput> {
-    return this.run('~/code/call/inspect/file/node', i)
+  /**
+   * Inspect a file (default), a TLS chain, or a DNS lookup. The
+   * `thing` discriminator routes; omit it for backward compat
+   * with the prior file-only signature.
+   */
+  inspect(input: InspectInput): Promise<InspectOutput> {
+    const thing = (input as { thing?: string }).thing ?? 'file'
+    if (thing === 'tls') {
+      return this.call(
+        '~/code/call/inspect/tls/node',
+        'inspectTlsNode',
+        stripThing(input),
+      )
+    }
+    if (thing === 'dns') {
+      return this.call(
+        '~/code/call/inspect/dns/node',
+        'inspectDnsNode',
+        stripThing(input),
+      )
+    }
+    return this.run('~/code/call/inspect/file/node', stripThing(input))
   }
   merge(i: MergeNodeInput): Promise<{ file: { path: string } }> {
     return this.run('~/code/call/merge/node', i)
@@ -381,6 +491,105 @@ export default class Task {
       )
     }
     throw new Error(`query: unsupported tool "${tool}"`)
+  }
+
+  // ── Thing-dispatched verbs added in the recent batch ──
+
+  /**
+   * Pull entities / links / tables out of text or markup. The
+   * `thing` discriminator picks the sub-handler; each variant
+   * gives full IDE autocomplete on its own option fields.
+   */
+  parse(input: ParseInput): Promise<ParseOutput> {
+    const thing = (input as { thing: string }).thing
+    switch (thing) {
+      case 'entity':
+        return this.call('~/code/call/parse/entity/node', 'parseEntityNode', stripThing(input))
+      case 'link':
+        return this.call('~/code/call/parse/link/node', 'parseLinkNode', stripThing(input))
+      case 'table':
+        return this.call('~/code/call/parse/table/node', 'parseTableNode', stripThing(input))
+      default:
+        throw new Error(`parse: unsupported thing "${thing}"`)
+    }
+  }
+
+  /**
+   * Reshape a structured-data file via a config map / jq
+   * expression / SQL query.
+   */
+  transform(input: TransformInput): Promise<TransformOutput> {
+    return this.call(
+      '~/code/call/transform/data/node',
+      'transformDataNode',
+      stripThing(input),
+    )
+  }
+
+  /**
+   * Pull embedded images out of pdf / docx / html. The `format`
+   * field (or input.file extension) picks the parser.
+   */
+  isolate(input: IsolateImageInput): Promise<IsolateImageOutput> {
+    return this.call(
+      '~/code/call/isolate/image/node',
+      'isolateImageNode',
+      input,
+    )
+  }
+
+  /**
+   * Scan a path for leaked secrets. Today only `thing: 'env'`
+   * is wired through Task; other scan variants stay CLI-only
+   * because they take richer input shapes.
+   */
+  scan(input: ScanInput): Promise<unknown> {
+    const thing = (input as { thing: string }).thing
+    if (thing === 'env') {
+      return this.call('~/code/call/scan/env/node', 'scanEnvNode', stripThing(input))
+    }
+    throw new Error(`scan: unsupported thing "${thing}" via Task class — use the CLI`)
+  }
+
+  /**
+   * Sample a process / fresh command into a flamegraph. The
+   * `tool` field picks the backend; otherwise we sniff the
+   * command head — `node` / `npx` / `tsx` → 0x, anything else
+   * → samply.
+   */
+  profile(input: ProfileInput): Promise<unknown> {
+    const tool =
+      (input as { tool?: string }).tool ?? defaultProfileTool(input)
+    switch (tool) {
+      case 'samply':
+        return this.call('~/code/call/profile/cpu/samply/node', 'profileCpuSamplyNode', stripMeta(input))
+      case '0x':
+        return this.call('~/code/call/profile/cpu/zerox/node', 'profileCpuZeroxNode', stripMeta(input))
+      case 'clinic':
+        return this.call('~/code/call/profile/cpu/clinic/node', 'profileCpuClinicNode', stripMeta(input))
+      default:
+        throw new Error(`profile: unsupported tool "${tool}"`)
+    }
+  }
+
+  /**
+   * Trace a process via strace (linux) / dtruss (macOS) /
+   * procmon (windows). Auto-picks per `os.platform()`; force
+   * with `tool`.
+   */
+  trace(input: TraceInput): Promise<unknown> {
+    const tool =
+      (input as { tool?: string }).tool ?? defaultTraceTool()
+    switch (tool) {
+      case 'strace':
+        return this.call('~/code/call/trace/process/strace/node', 'traceProcessStraceNode', stripMeta(input))
+      case 'dtruss':
+        return this.call('~/code/call/trace/process/dtruss/node', 'traceProcessDtrussNode', stripMeta(input))
+      case 'procmon':
+        return this.call('~/code/call/trace/process/procmon/node', 'traceProcessProcmonNode', stripMeta(input))
+      default:
+        throw new Error(`trace: unsupported tool "${tool}"`)
+    }
   }
 
   // ── Kind-dispatched verbs ──────────────────────────
@@ -638,6 +847,57 @@ const FORMAT_BY_LANG: Record<string, string> = {
   terraform: '~/code/call/format/code/terraform/node',
   assembly: '~/code/call/format/code/assembly/node',
   asm: '~/code/call/format/code/assembly/node',
+}
+
+/* ── Helpers for the thing-dispatched methods above ──────────── */
+
+function stripThing<T extends { thing?: string }>(input: T): Omit<T, 'thing'> {
+  const { thing: _ignored, ...rest } = input
+  void _ignored
+  return rest
+}
+
+function stripMeta<T extends { thing?: string; tool?: string }>(
+  input: T,
+): Omit<T, 'thing' | 'tool'> {
+  const { thing: _t, tool: _u, ...rest } = input
+  void _t
+  void _u
+  return rest
+}
+
+function defaultProfileTool(input: unknown): 'samply' | '0x' | 'clinic' {
+  const cmd =
+    (input as { command?: unknown[] }).command?.[0] ?? ''
+  if (typeof cmd === 'string' && /^(node|nodejs|npx|tsx|ts-node)$/i.test(cmd)) {
+    return '0x'
+  }
+  return 'samply'
+}
+
+function defaultTraceTool(): 'strace' | 'dtruss' | 'procmon' {
+  const platform = process.platform
+  if (platform === 'linux') return 'strace'
+  if (platform === 'darwin') return 'dtruss'
+  if (platform === 'win32') return 'procmon'
+  throw new Error(`trace: no default backend for platform "${platform}"`)
+}
+
+/* ── Isolate (extract embedded images) ───────────────────────── */
+
+export type IsolateImageInput = {
+  input: {
+    file: { path: string }
+    /** Override format detection. Otherwise picked from extension. */
+    format?: 'pdf' | 'docx' | 'html'
+  }
+  output: { directory: { path: string } }
+  /** Filename prefix for the emitted images (default `image`). */
+  prefix?: string
+}
+
+export type IsolateImageOutput = {
+  files: Array<{ path: string; bytes: number; mime?: string }>
 }
 
 export { Task, kindOf, extFromPath }

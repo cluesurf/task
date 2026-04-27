@@ -58,6 +58,7 @@ import { haltConsole } from '~/code/call/halt/console'
 import { highlightConsole } from '~/code/call/highlight/console'
 import { inspectConsole } from '~/code/call/inspect/console'
 import { installConsole } from '~/code/call/install/console'
+import { isolateConsole } from '~/code/call/isolate/console'
 import { lintConsole } from '~/code/call/lint/console'
 import { listConsole } from '~/code/call/list/console'
 import { loadConsole } from '~/code/call/load/console'
@@ -326,6 +327,7 @@ async function main() {
     .command(highlightConsole)
     .command(inspectConsole)
     .command(installConsole)
+    .command(isolateConsole)
     .command(lintConsole)
     .command(listConsole)
     .command(loadConsole)

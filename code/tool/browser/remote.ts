@@ -43,8 +43,19 @@ export type VerbRequestOptions = {
 }
 
 /**
- * Build a `POST /<verb>!/<...segments>` request whose body
- * is multipart FormData over the input minus omitted fields.
+ * Build a `POST /<verb>!/<...segments>` request body for the
+ * generic verb dispatcher.
+ *
+ *   - If the input carries any `Blob` / `File` content, the
+ *     body is `FormData` with one `payload` field (JSON of
+ *     the input minus blobs and the omit list) plus one
+ *     `__file__:<dotted-path>` field per blob.
+ *   - Otherwise the body is plain JSON.
+ *
+ * `FormData` would mangle every non-string field on the way
+ * across (booleans, numbers, nested objects) — keeping the
+ * scalar shape inside JSON sidesteps that and matches the
+ * "FormData only for files" rule.
  */
 export function buildFormDataRequestForVerb({
   verb,
@@ -52,9 +63,23 @@ export function buildFormDataRequestForVerb({
   input,
   omit = [['handle']],
 }: VerbRequestOptions): Request {
-  const stripped = omitNested(input, [...omit] as string[][])
-  const formData = serializeToFormData(stripped)
-  return buildRemoteRequest('POST', verbPath(verb, segments), formData)
+  const stripped = omitNested(input, [...omit] as string[][]) as Record<
+    string,
+    unknown
+  >
+  const blobs = collectBlobs(stripped)
+  const path = verbPath(verb, segments)
+
+  if (blobs.length === 0) {
+    return buildRemoteRequest('POST', path, JSON.stringify(stripped))
+  }
+
+  const formData = new FormData()
+  formData.append('payload', JSON.stringify(stripped))
+  for (const { dottedPath, blob } of blobs) {
+    formData.append(`__file__:${dottedPath}`, blob)
+  }
+  return buildRemoteRequest('POST', path, formData)
 }
 
 /**
@@ -79,4 +104,35 @@ function verbPath(
 ): string {
   const tail = segments.filter(s => s !== undefined && s !== '').join('/')
   return tail ? `/${verb}!/${tail}` : `/${verb}!`
+}
+
+type BlobEntry = { dottedPath: string; blob: Blob }
+
+/**
+ * Walk the input, replacing every Blob / File leaf with
+ * `null` and recording its dotted path so the server can
+ * splice it back in after reading the multipart upload.
+ */
+function collectBlobs(
+  root: Record<string, unknown>,
+): BlobEntry[] {
+  const blobs: BlobEntry[] = []
+  walk(root, [])
+  return blobs
+
+  function walk(node: unknown, trail: string[]): void {
+    if (!node || typeof node !== 'object') return
+    if (typeof Blob !== 'undefined' && node instanceof Blob) {
+      // Replace in-parent — done by the caller via mutation below.
+      return
+    }
+    for (const [k, v] of Object.entries(node as Record<string, unknown>)) {
+      if (typeof Blob !== 'undefined' && v instanceof Blob) {
+        blobs.push({ dottedPath: [...trail, k].join('.'), blob: v })
+        ;(node as Record<string, unknown>)[k] = null
+      } else if (v && typeof v === 'object') {
+        walk(v, [...trail, k])
+      }
+    }
+  }
 }

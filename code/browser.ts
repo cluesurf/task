@@ -2,32 +2,28 @@
  * Programmatic browser API for `@cluesurf/task`. Usage:
  *
  *   import Task from '@cluesurf/task/browser'
- *   const task = new Task({ host: 'http://localhost:4000/v2' })
+ *   const task = new Task({ host: 'http://localhost:5010/v2' })
  *   const out = await task.convert({
- *     input: {
- *       format: 'png',
- *       file: { sha256, content: blobOrFile },
- *     },
+ *     input:  { format: 'png', file: { content: blob, sha256 } },
  *     output: { format: 'jpg' },
  *   })
  *   // out.file.content is a Blob
  *
- * Mirrors `code/node.ts` but defaults `handle` to `'remote'`
- * and configures the shared `remote` base URL on construction
- * so every `<verb>BrowserRemote` call routes to the host the
- * caller passed in.
+ * Mirrors `code/node.ts`. Defaults `handle` to `'remote'`
+ * and configures the shared `remote` base URL on
+ * construction so every per-verb browser handler routes to
+ * the host the caller passed in.
  *
- * Each method lazy-imports its handler on first call so cold
- * boot only pays for type-stripped routing — the per-verb
- * browser modules (which may bundle WASM later) load when
- * their verb runs.
+ * Each method lazy-imports its handler on first call so
+ * cold boot only pays for type-stripped routing — the
+ * per-verb browser modules (which may bundle WASM later)
+ * load when their verb runs.
  */
 
-import { configure, DEFAULT_REMOTE_TASK_PATH } from '~/code/tool/shared/config'
-import type {
-  ConvertBrowserInput,
-  ConvertBrowserOutput,
-} from '~/code/form/export/browser'
+import {
+  configure,
+  DEFAULT_REMOTE_TASK_PATH,
+} from '~/code/tool/shared/config'
 import type { WorkFileAsBlob } from '~/code/tool/shared/work'
 import type { NativeOptions } from '~/code/tool/shared/request'
 
@@ -35,80 +31,14 @@ export type TaskOptions = {
   host?: string
 }
 
-export type MediaKind =
-  | 'image'
-  | 'audio'
-  | 'video'
-  | 'font'
-  | 'document'
-  | 'archive'
-  | 'data'
+type BrowserVerb<I = unknown, O = WorkFileAsBlob> = (
+  input: I,
+  native?: NativeOptions,
+) => Promise<O>
 
-const KIND_BY_EXT: Record<string, MediaKind> = {
-  png: 'image',
-  jpg: 'image',
-  jpeg: 'image',
-  gif: 'image',
-  webp: 'image',
-  bmp: 'image',
-  tiff: 'image',
-  tif: 'image',
-  heic: 'image',
-  avif: 'image',
-  svg: 'image',
-
-  mp3: 'audio',
-  wav: 'audio',
-  flac: 'audio',
-  ogg: 'audio',
-  opus: 'audio',
-  m4a: 'audio',
-  aac: 'audio',
-
-  mp4: 'video',
-  mov: 'video',
-  mkv: 'video',
-  webm: 'video',
-  avi: 'video',
-  m4v: 'video',
-
-  ttf: 'font',
-  otf: 'font',
-  woff: 'font',
-  woff2: 'font',
-  eot: 'font',
-
-  pdf: 'document',
-  docx: 'document',
-  odt: 'document',
-  epub: 'document',
-  md: 'document',
-  html: 'document',
-  txt: 'document',
-
-  zip: 'archive',
-  tar: 'archive',
-  gz: 'archive',
-  tgz: 'archive',
-  '7z': 'archive',
-  rar: 'archive',
-
-  csv: 'data',
-  tsv: 'data',
-  json: 'data',
-  parquet: 'data',
-}
-
-function kindOfFormat(fmt: string | undefined): MediaKind | undefined {
-  if (!fmt) return undefined
-  return KIND_BY_EXT[fmt.toLowerCase()]
-}
-
-function readFormat(input: unknown): string | undefined {
-  const i = input as { input?: { format?: unknown } } | null | undefined
-  const fmt = i?.input?.format
-  return typeof fmt === 'string' ? fmt : undefined
-}
+type BrowserLoader<I = unknown, O = WorkFileAsBlob> = () => Promise<{
+  default: BrowserVerb<I, O>
+}>
 
 export default class Task {
   private host: string
@@ -127,67 +57,162 @@ export default class Task {
     return input
   }
 
-  /** Resolve a static loader and call the loaded module's default export. */
-  private async run<I, O>(
-    loader: () => Promise<{ default: (i: I) => Promise<O> }>,
+  /** Lazy-import a verb module and call its default export. */
+  private async run<I, O = WorkFileAsBlob>(
+    loader: BrowserLoader<I, O>,
     input: I,
+    native?: NativeOptions,
   ): Promise<O> {
     const m = await loader()
-    return m.default(this.remote(input))
+    return m.default(this.remote(input), native)
   }
 
-  /** Pick a handler loader by media kind, with optional fallback. */
-  private byKind<I, O>(
-    input: I,
-    routes: Partial<Record<MediaKind, BrowserLoader<I, O>>>,
-    fallback?: BrowserLoader<I, O>,
-  ): Promise<O> {
-    const kind = kindOfFormat(readFormat(input))
-    const loader = (kind && routes[kind]) ?? fallback
-    if (!loader) {
-      throw new Error(
-        `task: no browser handler for kind "${kind ?? 'unknown'}"`,
-      )
-    }
-    return this.run<I, O>(loader, input)
+  // ── Single-handler verbs ───────────────────────────
+
+  archive(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.archive, i, native)
   }
-
-  // ── Format-pair dispatch ───────────────────────────
-
-  /**
-   * Convert between formats. The browser dispatches to the
-   * per-thing remote handler by media kind — the actual
-   * tool is picked by the server based on the format pair.
-   */
-  convert(
-    i: ConvertBrowserInput,
-    native?: NativeOptions,
-  ): Promise<ConvertBrowserOutput | WorkFileAsBlob> {
-    return this.byKind<typeof i, ConvertBrowserOutput | WorkFileAsBlob>(
-      i,
-      CONVERT_BROWSER_BY_KIND,
-    )
+  combine(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.combine, i, native)
+  }
+  compile(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.compile, i, native)
+  }
+  compress(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.compress, i, native)
+  }
+  convert(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.convert, i, native)
+  }
+  crop(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.crop, i, native)
+  }
+  decrypt(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.decrypt, i, native)
+  }
+  detect(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.detect, i, native)
+  }
+  disassemble(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.disassemble, i, native)
+  }
+  dump(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.dump, i, native)
+  }
+  encrypt(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.encrypt, i, native)
+  }
+  fetch(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.fetch, i, native)
+  }
+  flip(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.flip, i, native)
+  }
+  format(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.format, i, native)
+  }
+  highlight(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.highlight, i, native)
+  }
+  inspect(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.inspect, i, native)
+  }
+  merge(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.merge, i, native)
+  }
+  normalize(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.normalize, i, native)
+  }
+  optimize(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.optimize, i, native)
+  }
+  pad(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.pad, i, native)
+  }
+  query(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.query, i, native)
+  }
+  remove(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.remove, i, native)
+  }
+  render(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.render, i, native)
+  }
+  resize(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.resize, i, native)
+  }
+  rotate(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.rotate, i, native)
+  }
+  sanitize(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.sanitize, i, native)
+  }
+  search(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.search, i, native)
+  }
+  set(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.set, i, native)
+  }
+  shape(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.shape, i, native)
+  }
+  split(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.split, i, native)
+  }
+  subset(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.subset, i, native)
+  }
+  trim(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.trim, i, native)
+  }
+  update(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.update, i, native)
+  }
+  verify(i: unknown, native?: NativeOptions) {
+    return this.run(LOAD.verify, i, native)
   }
 }
 
-type BrowserLoader<I, O> = () => Promise<{
-  default: (input: I) => Promise<O>
-}>
+/**
+ * Static loader table — webpack needs literal `import(...)`
+ * targets to bundle the chunks. Update this when adding a
+ * new verb's top-level browser module.
+ */
+const LOAD = {
+  archive: () => import('~/code/call/archive/browser') as never,
+  combine: () => import('~/code/call/combine/browser') as never,
+  compile: () => import('~/code/call/compile/browser') as never,
+  compress: () => import('~/code/call/compress/browser') as never,
+  convert: () => import('~/code/call/convert/browser') as never,
+  crop: () => import('~/code/call/crop/browser') as never,
+  decrypt: () => import('~/code/call/decrypt/browser') as never,
+  detect: () => import('~/code/call/detect/browser') as never,
+  disassemble: () => import('~/code/call/disassemble/browser') as never,
+  dump: () => import('~/code/call/dump/browser') as never,
+  encrypt: () => import('~/code/call/encrypt/browser') as never,
+  fetch: () => import('~/code/call/fetch/browser') as never,
+  flip: () => import('~/code/call/flip/browser') as never,
+  format: () => import('~/code/call/format/browser') as never,
+  highlight: () => import('~/code/call/highlight/browser') as never,
+  inspect: () => import('~/code/call/inspect/browser') as never,
+  merge: () => import('~/code/call/merge/browser') as never,
+  normalize: () => import('~/code/call/normalize/browser') as never,
+  optimize: () => import('~/code/call/optimize/browser') as never,
+  pad: () => import('~/code/call/pad/browser') as never,
+  query: () => import('~/code/call/query/browser') as never,
+  remove: () => import('~/code/call/remove/browser') as never,
+  render: () => import('~/code/call/render/browser') as never,
+  resize: () => import('~/code/call/resize/browser') as never,
+  rotate: () => import('~/code/call/rotate/browser') as never,
+  sanitize: () => import('~/code/call/sanitize/browser') as never,
+  search: () => import('~/code/call/search/browser') as never,
+  set: () => import('~/code/call/set/browser') as never,
+  shape: () => import('~/code/call/shape/browser') as never,
+  split: () => import('~/code/call/split/browser') as never,
+  subset: () => import('~/code/call/subset/browser') as never,
+  trim: () => import('~/code/call/trim/browser') as never,
+  update: () => import('~/code/call/update/browser') as never,
+  verify: () => import('~/code/call/verify/browser') as never,
+} satisfies Record<string, BrowserLoader>
 
-const CONVERT_BROWSER_BY_KIND: Partial<
-  Record<
-    MediaKind,
-    BrowserLoader<ConvertBrowserInput, ConvertBrowserOutput | WorkFileAsBlob>
-  >
-> = {
-  image: () =>
-    import('~/code/call/convert/image/imagemagick/browser') as never,
-  archive: () => import('~/code/call/convert/archive/browser') as never,
-  font: () => import('~/code/call/convert/font/browser') as never,
-  document: () =>
-    import('~/code/call/convert/document/browser') as never,
-  video: () =>
-    import('~/code/call/convert/video/ffmpeg/browser') as never,
-}
-
-export { Task, kindOfFormat }
+export { Task }

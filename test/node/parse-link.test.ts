@@ -22,7 +22,9 @@ describe('parse link', () => {
     const hrefs = r.links.map(l => l.href)
     expect(hrefs).toContain('https://example.com/canon')
     expect(hrefs).toContain('https://example.com/main.css')
-    expect(hrefs).toContain('https://example.com')
+    // `new URL('https://example.com')` normalizes to a trailing
+    // slash — the resolver propagates that.
+    expect(hrefs).toContain('https://example.com/')
     expect(hrefs).toContain('https://example.com/relative')
     expect(hrefs).toContain('https://example.com/cat.png')
     expect(hrefs).toContain('https://cdn.example.com/og.png')

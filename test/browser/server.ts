@@ -109,6 +109,11 @@ export async function buildServer(): Promise<FastifyInstance> {
     prefix: '/host/',
     decorateReply: false,
   })
+  await app.register(staticPlugin, {
+    root: path.resolve(ROOT, '..', 'seed-base', 'base'),
+    prefix: '/fixture/',
+    decorateReply: false,
+  })
 
   app.get('/', async (_req, reply) => {
     const html = await fs.readFile(PAGE, 'utf8')
@@ -152,15 +157,13 @@ async function dispatchVerb(
   const hook = VERB_HOOKS[verb] ?? {}
   const method = hook.method ?? verb
 
-  const { fields, filePath } = await drainMultipart(req)
-  const input: Record<string, unknown> = { ...fields }
+  const input = await readInput(req)
   hook.prepare?.(input, segments)
 
-  if (filePath) {
-    ensureObject(ensureObject(input, 'input'), 'file').path = filePath
-  }
-
-  const ext = hook.outputExt?.(input, segments) ?? 'bin'
+  const ext =
+    hook.outputExt?.(input, segments) ??
+    pickOutputFormat(input) ??
+    'bin'
   const outPath = path.join(WORK_DIR, `${randomUUID()}.${ext}`)
   ensureObject(ensureObject(input, 'output'), 'file').path = outPath
 
@@ -200,16 +203,32 @@ async function dispatchVerb(
   reply.send(work)
 }
 
-async function drainMultipart(req: FastifyRequest): Promise<{
-  fields: Record<string, unknown>
-  filePath?: string
-}> {
-  const fields: Record<string, unknown> = {}
-  let filePath: string | undefined
+/**
+ * Two wire formats live behind one route:
+ *
+ *   1. JSON body — used for verbs without file uploads. The
+ *      whole input is the request body.
+ *   2. Multipart — `payload` field carries JSON; one
+ *      `__file__:<dotted-path>` field per Blob, each
+ *      written to a tmp path that's then spliced into the
+ *      input at the recorded dotted location.
+ */
+async function readInput(req: FastifyRequest): Promise<Record<string, unknown>> {
+  const ct = (req.headers['content-type'] ?? '').toLowerCase()
+  if (!ct.startsWith('multipart/')) {
+    return (req.body as Record<string, unknown>) ?? {}
+  }
+
+  let payload: Record<string, unknown> = {}
+  const fileFields: Array<{ dottedPath: string; tmpPath: string }> = []
 
   for await (const part of req.parts()) {
     if ((part as MultipartFile).file) {
       const file = part as MultipartFile
+      const fieldname = file.fieldname
+      const dottedPath = fieldname.startsWith('__file__:')
+        ? fieldname.slice('__file__:'.length)
+        : 'input.file.content'
       const dest = path.join(
         WORK_DIR,
         `${randomUUID()}-${path.basename(file.filename ?? 'upload')}`,
@@ -221,39 +240,53 @@ async function drainMultipart(req: FastifyRequest): Promise<{
         file.file.on('error', rej)
         out.on('error', rej)
       })
-      filePath = dest
+      fileFields.push({ dottedPath, tmpPath: dest })
     } else {
       const f = part as { fieldname: string; value: string }
-      assignNested(fields, f.fieldname, f.value)
+      if (f.fieldname === 'payload') {
+        try {
+          payload = JSON.parse(f.value) as Record<string, unknown>
+        } catch {
+          payload = {}
+        }
+      }
     }
   }
 
-  // The browser's `input[file][content]` becomes the uploaded file —
-  // strip the placeholder so the file path field doesn't get clobbered.
-  if (filePath) {
-    const inp = fields.input as Record<string, unknown> | undefined
-    if (inp && typeof inp === 'object' && 'file' in inp) {
-      const file = inp.file as Record<string, unknown> | undefined
-      if (file && typeof file === 'object') delete file.content
-    }
+  // Splice each uploaded file's tmp path back into the input at the
+  // dotted location. The browser sends `input.file.content` as the
+  // dotted path; replace that leaf's `null` placeholder with
+  // `{ path: tmpPath }` (or rewrite `input.file` directly when the
+  // dotted path ends in `.content`, since the Node handlers expect
+  // a `file.path` key, not `file.content`).
+  for (const { dottedPath, tmpPath } of fileFields) {
+    splicePath(payload, dottedPath, tmpPath)
   }
-  return { fields, filePath }
+  return payload
 }
 
-/** object-to-formdata uses bracket notation: `input[file][sha256]`. Reconstruct the nested object. */
-function assignNested(
-  target: Record<string, unknown>,
-  key: string,
-  value: string,
-) {
-  const segments = key.replace(/\]/g, '').split('[').filter(Boolean)
-  let cur: Record<string, unknown> = target
-  for (let i = 0; i < segments.length - 1; i++) {
-    const k = segments[i]!
+/** Walk dotted path; if leaf key is `content`, replace parent with `{ path }`. Otherwise set `<leaf>.path`. */
+function splicePath(
+  root: Record<string, unknown>,
+  dotted: string,
+  tmpPath: string,
+): void {
+  const parts = dotted.split('.').filter(Boolean)
+  if (parts.length === 0) return
+  let cur: Record<string, unknown> = root
+  for (let i = 0; i < parts.length - 1; i++) {
+    const k = parts[i]!
     if (typeof cur[k] !== 'object' || cur[k] === null) cur[k] = {}
     cur = cur[k] as Record<string, unknown>
   }
-  cur[segments[segments.length - 1]!] = value
+  const leaf = parts[parts.length - 1]!
+  if (leaf === 'content') {
+    // Replace the file leaf wholesale: `{ sha256, content }` → `{ sha256, path }`.
+    delete cur.content
+    cur.path = tmpPath
+  } else {
+    cur[leaf] = { path: tmpPath }
+  }
 }
 
 function ensureObject(
@@ -265,6 +298,14 @@ function ensureObject(
   const next: Record<string, unknown> = {}
   target[key] = next
   return next
+}
+
+function pickOutputFormat(input: Record<string, unknown>): string | undefined {
+  const o = input.output as { format?: unknown } | undefined
+  const i = input.input as { format?: unknown } | undefined
+  const fmt = (typeof o?.format === 'string' && o.format) ||
+    (typeof i?.format === 'string' && i.format)
+  return fmt || undefined
 }
 
 function pickPath(result: unknown): string | undefined {
@@ -284,7 +325,7 @@ async function exists(p: string): Promise<boolean> {
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const port = Number(process.env.PORT ?? 4010)
+  const port = Number(process.env.PORT ?? 5010)
   buildServer()
     .then(app => app.listen({ port, host: '127.0.0.1' }))
     .then(addr => {

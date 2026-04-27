@@ -155,6 +155,9 @@ function transformRecord(
 ): Record<string, unknown> {
   let out: Record<string, unknown> = { ...record }
 
+  // Order: rename → drop → coerce → default → pick.
+  // `pick` runs LAST so it strictly limits the output to the
+  // requested keys, regardless of what `default` may have added.
   if (config.rename) {
     for (const [from, to] of Object.entries(config.rename)) {
       if (from in out) {
@@ -166,14 +169,6 @@ function transformRecord(
 
   if (config.drop) {
     for (const k of config.drop) delete out[k]
-  }
-
-  if (config.pick) {
-    const picked: Record<string, unknown> = {}
-    for (const k of config.pick) {
-      if (k in out) picked[k] = out[k]
-    }
-    out = picked
   }
 
   if (config.coerce) {
@@ -188,6 +183,14 @@ function transformRecord(
         out[k] = v
       }
     }
+  }
+
+  if (config.pick) {
+    const picked: Record<string, unknown> = {}
+    for (const k of config.pick) {
+      if (k in out) picked[k] = out[k]
+    }
+    out = picked
   }
 
   return out
