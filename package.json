@@ -1,7 +1,7 @@
 {
   "name": "@cluesurf/task",
-  "version": "0.6.0",
-  "chocoVersion": "0.6.0",
+  "version": "0.6.2",
+  "chocoVersion": "0.6.2",
   "bin": {
     "task": "./host/code/console.js"
   },
@@ -385,7 +385,7 @@
     "docker:kill": "docker kill task",
     "docker:rm": "docker rm task",
     "docker:size": "source ./hook.sh && print_bytes $(docker inspect -f \"{{ .Size }}\" cluesurf/task)",
-    "make": "tsc && tsc-alias",
+    "make": "tsc && tsc-alias && pnpm tsx make/sync.ts",
     "make:type": "pnpm tsx make",
     "move": "pnpm make && git add . && git commit -am 'save' && npm version patch && pnpm host && git push",
     "scan": "concurrently --kill-others \"tsc -w\" \"tsc-alias -w\"",

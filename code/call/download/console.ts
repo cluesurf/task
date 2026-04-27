@@ -21,7 +21,7 @@ import { downloadVideoConsole } from './video/console'
 
 registerGroupHelp({
   command: 'task download',
-  describe: 'Download from HF / S3 / GCS / Azure / FTP / SFTP / WebDAV / IPFS / torrent',
+  describe: 'Download from cloud, network, or peer',
   commands: [
     { name: 'hugging-face', describe: 'Download a Hugging Face model or dataset' },
     { name: 's3',           describe: 'S3 (also Cloudflare R2 via --endpoint)' },

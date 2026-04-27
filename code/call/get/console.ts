@@ -13,7 +13,7 @@ import { getSshKeyConsole } from './ssh-key/console'
 
 registerGroupHelp({
   command: 'task get',
-  describe: 'Read a single property or entry (duration, env, ssh, ssh-key, ...)',
+  describe: 'Read a single property or entry',
   commands: [
     { name: 'duration', describe: 'Read the duration of an audio or video file' },
     { name: 'environment', describe: 'Read an environment variable' },
@@ -24,7 +24,7 @@ registerGroupHelp({
 
 export const getConsole: CommandModule = {
   command: 'get <thing>',
-  describe: 'Read a single property or entry (duration, env, ssh, ssh-key, ...)',
+  describe: 'Read a single property or entry',
   builder: y =>
     y
       .command(getDurationConsole)

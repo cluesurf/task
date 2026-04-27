@@ -5,7 +5,7 @@ import { scanSshConsole } from './ssh/console'
 
 registerGroupHelp({
   command: 'task scan',
-  describe: 'CVE / SBOM / secret / network / SSH probes (trivy, grype, osv, gitleaks, syft, nmap, ssh-keyscan)',
+  describe: 'Security scans — CVE / SBOM / secrets / network',
   commands: [
     { name: 'image',      describe: 'Container image CVE scan (trivy / grype)' },
     { name: 'filesystem', describe: 'Source-code / lockfile CVE scan (trivy / osv)' },

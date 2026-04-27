@@ -5,7 +5,7 @@ import { testCodeConsole } from './code/console'
 
 registerGroupHelp({
   command: 'task test',
-  describe: 'Run a project test suite, or test reachability / connectivity',
+  describe: 'Run tests or check reachability',
   commands: [
     { name: 'code', describe: 'Project mode — infer ecosystem and run its test suite' },
     { name: 'ssh',  describe: 'Check that an SSH Host entry is reachable' },
@@ -14,7 +14,7 @@ registerGroupHelp({
 
 export const testConsole: CommandModule = {
   command: 'test <thing>',
-  describe: 'Run a project test suite, or test reachability / connectivity',
+  describe: 'Run tests or check reachability',
   builder: y =>
     y
       .command(testCodeConsole)

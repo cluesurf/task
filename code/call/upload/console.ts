@@ -15,7 +15,7 @@ import { uploadIpfsConsole } from './ipfs/console'
 
 registerGroupHelp({
   command: 'task upload',
-  describe: 'Upload to S3 / GCS / Azure / FTP / SFTP / WebDAV / IPFS',
+  describe: 'Upload to cloud',
   commands: [
     { name: 's3',     describe: 'S3 (also Cloudflare R2 via --endpoint)' },
     { name: 'gcs',    describe: 'Google Cloud Storage (gsutil)' },

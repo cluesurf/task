@@ -3,7 +3,7 @@ import { options } from '~/code/form/action/search/console/options'
 
 export const searchConsole = buildActionCommand({
   command: 'search',
-  describe: 'Search file contents (ripgrep) or filenames (fd) under a path',
+  describe: 'Search file contents or filenames',
   options,
   loadHandler: () => import('./node'),
   examples: [

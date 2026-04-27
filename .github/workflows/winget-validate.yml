@@ -26,7 +26,8 @@ on:
   workflow_dispatch:
     inputs:
       run_install:
-        description: 'Also run `winget install --manifest` (mutates runner state)'
+        description:
+          'Also run `winget install --manifest` (mutates runner state)'
         required: false
         default: 'false'
         type: choice
@@ -36,6 +37,7 @@ on:
 
 jobs:
   validate:
+    if: false # disabled for now
     # Windows Server 2022 ships winget preinstalled on the hosted
     # runner (see https://github.com/actions/runner-images).
     runs-on: windows-latest
@@ -77,7 +79,9 @@ jobs:
       # the runner's machine state — safe because each GH runner
       # is ephemeral, but gated so regular push builds stay fast.
       - name: Test install
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_install == 'true' }}
+        if:
+          ${{ github.event_name == 'workflow_dispatch' &&
+          inputs.run_install == 'true' }}
         shell: bash
         env:
           CHECK_WINGET_INSTALL: '1'

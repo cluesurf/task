@@ -6,7 +6,7 @@ import { updateVideoConsole } from './video/console'
 
 registerGroupHelp({
   command: 'task update',
-  describe: 'Apply an edit to a file (compile FEA, tonal tweaks, add subtitles, ...)',
+  describe: 'Apply an edit to a file',
   commands: [
     { name: 'font', describe: 'Compile a .fea file into a font\'s GSUB/GPOS tables' },
     { name: 'image', describe: 'Apply color / tonal tweaks to an image' },
@@ -16,7 +16,7 @@ registerGroupHelp({
 
 export const updateConsole: CommandModule = {
   command: 'update <thing>',
-  describe: 'Apply an edit to a file (compile FEA, tonal tweaks, add subtitles, ...)',
+  describe: 'Apply an edit to a file',
   builder: y =>
     y
       .command(updateFontConsole)

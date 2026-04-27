@@ -3,7 +3,7 @@ import { registerHelp } from '~/code/tool/node/log/registry'
 
 registerHelp({
   command: 'task replay',
-  describe: 'Replay an asciinema .cast (terminal playback or render to gif/mp4)',
+  describe: 'Replay an asciinema .cast',
   options: [
     { long: 'output',     short: 'o', describe: 'Render to .gif / .mp4 (default: terminal playback)' },
     { long: 'speed',      short: 's', describe: 'Playback speed multiplier (e.g. 2 for 2x)' },

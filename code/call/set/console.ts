@@ -16,7 +16,7 @@ import { setSshConsole } from './ssh/console'
 
 registerGroupHelp({
   command: 'task set',
-  describe: 'Write a property onto a target (metadata, encoding, eol, ssh, ...)',
+  describe: 'Write a property onto a target',
   commands: [
     { name: 'encoding', describe: 'Re-encode a text file to a target character encoding' },
     { name: 'environment', describe: 'Upsert a KEY=VALUE entry in a .env-style file' },
@@ -29,7 +29,7 @@ registerGroupHelp({
 
 export const setConsole: CommandModule = {
   command: 'set <thing>',
-  describe: 'Write a property onto a target (metadata, encoding, eol, ssh, ...)',
+  describe: 'Write a property onto a target',
   builder: y =>
     y
       .command(setEncodingConsole)

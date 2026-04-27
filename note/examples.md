@@ -6,6 +6,54 @@ you can pick whichever surface fits the moment. Signatures expand
 as more backends land — check `code/form/export/node.ts` for the
 generated `TaskSurface`.
 
+## Quick start
+
+Four copy-pasteable commands you can run today — same set the bare
+`task` / `task --help` screen prints:
+
+```sh
+# compress an image for the web
+task compress photo.jpg -o photo.small.jpg --quality 70
+
+# convert a font to woff2 for the web
+task convert font -I ttf -O woff2 -i font.ttf -o font.woff2
+
+# download a YouTube video
+task download video https://youtu.be/Y7JG63IuaWs
+
+# split a PDF into one file per page
+task split document.pdf -o pages/
+```
+
+```ts
+import Task from '@cluesurf/task'
+const task = new Task()
+
+await task.compress({
+  input:  { file: { path: 'photo.jpg' } },
+  output: { file: { path: 'photo.small.jpg' } },
+  quality: '70',
+})
+
+await task.convert({
+  input:  { format: 'ttf',   file: { path: 'font.ttf' } },
+  output: { format: 'woff2', file: { path: 'font.woff2' } },
+})
+
+await task.download({
+  thing: 'video',
+  url:   'https://youtu.be/Y7JG63IuaWs',
+})
+
+await task.split({
+  input:  { file: { path: 'document.pdf' } },
+  output: { directory: { path: 'pages/' } },
+})
+```
+
+The structured CLI catalog (every example below, machine-readable)
+also lives at [`./examples.json`](./examples.json).
+
 ## Construct
 
 ```ts

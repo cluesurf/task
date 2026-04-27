@@ -4,7 +4,7 @@ import { lintCodeConsole } from './code/console'
 
 registerGroupHelp({
   command: 'task lint',
-  describe: 'Lint the project (zero-config — clippy / golangci-lint / ruff / eslint / ...)',
+  describe: 'Lint the project',
   commands: [
     { name: 'code', describe: 'Project mode — infer ecosystem and run its linter' },
   ],

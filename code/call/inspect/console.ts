@@ -31,7 +31,7 @@ import { inspectZoneConsole } from './zone/console'
 
 registerGroupHelp({
   command: 'task inspect',
-  describe: 'Inspect a file, process, network state, cloud resource, or analytics surface',
+  describe: 'Inspect a file, process, or network',
   commands: [
     { name: 'analytics', describe: 'Cloudflare combined analytics' },
     { name: 'bot', describe: 'Cloudflare Bot Management events' },
@@ -66,7 +66,7 @@ registerGroupHelp({
 
 export const inspectConsole: CommandModule = {
   command: 'inspect <thing>',
-  describe: 'Inspect a file, process, network state, cloud resource, or analytics surface',
+  describe: 'Inspect a file, process, or network',
   builder: y =>
     y
       .command(inspectAnalyticsConsole)

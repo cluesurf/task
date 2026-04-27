@@ -1,0 +1,477 @@
+[
+  {
+    "tag": "image",
+    "comment": "Compress an image for web delivery",
+    "command": "task compress photo.jpg -o photo.small.jpg --quality 70"
+  },
+  {
+    "tag": "font",
+    "comment": "Convert a TTF font to web-ready WOFF2",
+    "command": "task convert font -I ttf -O woff2 -i font.ttf -o font.woff2"
+  },
+  {
+    "tag": "video",
+    "comment": "Download a YouTube video",
+    "command": "task download video https://youtu.be/Y7JG63IuaWs"
+  },
+  {
+    "tag": "pdf",
+    "comment": "Split a PDF into one file per page",
+    "command": "task split document.pdf -o pages/"
+  },
+  {
+    "tag": "image",
+    "comment": "Print the native command without running it",
+    "command": "task convert image -I png -O jpg -i a.png -o a.jpg --explain"
+  },
+  {
+    "tag": "image",
+    "comment": "Run a conversion on the remote task.surf worker",
+    "command": "task convert image -I png -O jpg -i a.png -o a.jpg --remote --work"
+  },
+  {
+    "tag": "png",
+    "comment": "Convert a PNG to JPG (extension-routed)",
+    "command": "task convert a.png a.jpg"
+  },
+  {
+    "tag": "image",
+    "comment": "Convert a PNG to JPG with explicit verb + flags",
+    "command": "task convert image -I png -O jpg -i a.png -o a.jpg"
+  },
+  {
+    "tag": "document",
+    "comment": "Convert a Word doc to PDF via LibreOffice",
+    "command": "task convert document -I docx -O pdf --tool libre-office -i a.docx -o a.pdf"
+  },
+  {
+    "tag": "data",
+    "comment": "Batch-convert a folder of CSVs to JSON",
+    "command": "task convert data -I csv -O json -i records/ -o records.json/"
+  },
+  {
+    "tag": "data",
+    "comment": "Batch-convert a folder of XLSX files to CSV",
+    "command": "task convert data -I xlsx -O csv -i sheets/ -o sheets.csv/"
+  },
+  {
+    "tag": "data",
+    "comment": "Batch-convert JSON files to YAML",
+    "command": "task convert data -I json -O yaml -i data/ -o data.yaml/"
+  },
+  {
+    "tag": "image",
+    "comment": "Compress a JPG with quality 60",
+    "command": "task compress pic.jpg -o pic.small.jpg --quality 60"
+  },
+  {
+    "tag": "video",
+    "comment": "Cut the first 10 seconds out of a video",
+    "command": "task trim clip.mp4 -s 0 -e 10 -o cut.mp4"
+  },
+  {
+    "tag": "video",
+    "comment": "Resize a video to a 320×180 thumbnail",
+    "command": "task resize clip.mp4 --width 320 --height 180 -o clip.thumb.mp4"
+  },
+  {
+    "tag": "image",
+    "comment": "Rotate a GIF 90 degrees",
+    "command": "task rotate fire.gif --degree 90 -o fire.rot.gif"
+  },
+  {
+    "tag": "image",
+    "comment": "Flip a GIF horizontally",
+    "command": "task flip fire.gif --horizontal -o fire.flip.gif"
+  },
+  {
+    "tag": "audio",
+    "comment": "Normalize MP3 loudness to broadcast level",
+    "command": "task normalize song.mp3 -o song.norm.mp3"
+  },
+  {
+    "tag": "c",
+    "comment": "Compile a C source file to a binary",
+    "command": "task compile c hello.c -o hello"
+  },
+  {
+    "tag": "rust",
+    "comment": "Format a Rust file with rustfmt",
+    "command": "task format rust src/main.rs"
+  },
+  {
+    "tag": "file",
+    "comment": "Print a key/value table for a file",
+    "command": "task inspect file report.pdf"
+  },
+  {
+    "tag": "tls",
+    "comment": "Show the served TLS chain for a host",
+    "command": "task inspect tls clue.surf"
+  },
+  {
+    "tag": "tls",
+    "comment": "Inspect a TLS chain on a custom port",
+    "command": "task inspect tls api.example.com -p 8443"
+  },
+  {
+    "tag": "tls",
+    "comment": "Inspect TLS over a STARTTLS-upgraded SMTP",
+    "command": "task inspect tls smtp.example.com -p 587 --starttls smtp"
+  },
+  {
+    "tag": "dns",
+    "comment": "Resolve every DNS record type for a host",
+    "command": "task inspect dns cloudflare.com"
+  },
+  {
+    "tag": "dns",
+    "comment": "Look up just MX records for a host",
+    "command": "task inspect dns cloudflare.com -t MX"
+  },
+  {
+    "tag": "dns",
+    "comment": "Resolve DNS via a specific upstream resolver",
+    "command": "task inspect dns example.com --resolver 1.1.1.1"
+  },
+  {
+    "tag": "sql",
+    "comment": "Preview the first 10 rows of a CSV via DuckDB",
+    "command": "task query sql duckdb --from data/users.csv --limit 10"
+  },
+  {
+    "tag": "sql",
+    "comment": "Run analytical SQL across a Parquet glob",
+    "command": "task query sql duckdb --sql \"SELECT * FROM read_parquet('logs/*.parquet')\""
+  },
+  {
+    "tag": "sql",
+    "comment": "Group-by error level over JSONL logs",
+    "command": "task query sql duckdb --from logs.jsonl --select 'level, count(*)' --where \"level='error'\" --render json"
+  },
+  {
+    "tag": "db",
+    "comment": "Run SQL against a Postgres database",
+    "command": "task query db mydb 'SELECT now()' --format json"
+  },
+  {
+    "tag": "entity",
+    "comment": "Pull emails / URLs / IPs out of an HTML page",
+    "command": "task parse entity logs/page.html"
+  },
+  {
+    "tag": "entity",
+    "comment": "Parse entities from inline text",
+    "command": "task parse entity --text 'reach a@x.com or https://x.com'"
+  },
+  {
+    "tag": "entity",
+    "comment": "Pull only emails and URLs from a markdown file",
+    "command": "task parse entity README.md -k email,url"
+  },
+  {
+    "tag": "link",
+    "comment": "Extract every link from an HTML page",
+    "command": "task parse link page.html --base https://example.com"
+  },
+  {
+    "tag": "link",
+    "comment": "Extract URLs from a markdown file",
+    "command": "task parse link readme.md --mode text"
+  },
+  {
+    "tag": "table",
+    "comment": "Extract tables from a Word document as JSON",
+    "command": "task parse table report.docx -o tables.json"
+  },
+  {
+    "tag": "table",
+    "comment": "Pull the first table out of an HTML page",
+    "command": "task parse table page.html -i 0"
+  },
+  {
+    "tag": "table",
+    "comment": "Recover tables out of a PDF invoice",
+    "command": "task parse table invoice.pdf"
+  },
+  {
+    "tag": "image",
+    "comment": "Pull every embedded image out of a PDF",
+    "command": "task isolate image report.pdf -o ./images"
+  },
+  {
+    "tag": "image",
+    "comment": "Extract PDF images and re-encode to PNG",
+    "command": "task isolate image report.pdf -o ./images --mode png"
+  },
+  {
+    "tag": "image",
+    "comment": "Pull every embedded image out of a Word doc",
+    "command": "task isolate image notes.docx -o ./images"
+  },
+  {
+    "tag": "data",
+    "comment": "Reshape a CSV via a YAML mapping config",
+    "command": "task transform data users.csv --map mapping.yml -o users.json"
+  },
+  {
+    "tag": "data",
+    "comment": "Filter JSONL logs to errors only via jq",
+    "command": "task transform data logs.jsonl --jq '.[] | select(.level==\"error\")'"
+  },
+  {
+    "tag": "data",
+    "comment": "Project columns from a CSV via DuckDB SQL",
+    "command": "task transform data data.csv --sql \"SELECT id,email FROM in WHERE active\""
+  },
+  {
+    "tag": "env",
+    "comment": "Scan the working tree for leaked secrets",
+    "command": "task scan env"
+  },
+  {
+    "tag": "env",
+    "comment": "Scan a folder + git history for leaked secrets",
+    "command": "task scan env ./services --history"
+  },
+  {
+    "tag": "env",
+    "comment": "Scan for secrets using trufflehog",
+    "command": "task scan env --tool trufflehog"
+  },
+  {
+    "tag": "cpu",
+    "comment": "Profile a native binary's CPU usage",
+    "command": "task profile cpu --command \"./target/release/parse\""
+  },
+  {
+    "tag": "cpu",
+    "comment": "Profile a Node server with Clinic.js",
+    "command": "task profile cpu --command \"node server.js\" --tool clinic"
+  },
+  {
+    "tag": "cpu",
+    "comment": "Attach a sampling profiler to a running process",
+    "command": "task profile cpu --pid 4242"
+  },
+  {
+    "tag": "process",
+    "comment": "Get a syscall summary for a running PID",
+    "command": "task trace process --pid 42 --summary"
+  },
+  {
+    "tag": "process",
+    "comment": "Trace syscalls for a fresh command",
+    "command": "task trace process --command \"ls /tmp\" --follow"
+  },
+  {
+    "tag": "process",
+    "comment": "Trace only specific syscalls for a command",
+    "command": "task trace process --command \"ls /tmp\" --syscalls open,read,write"
+  },
+  {
+    "tag": "video",
+    "comment": "Download a video via yt-dlp",
+    "command": "task download video https://youtu.be/Y7JG63IuaWs"
+  },
+  {
+    "tag": "video",
+    "comment": "Download audio-only as MP3",
+    "command": "task download video https://youtu.be/Y7JG63IuaWs --audio-only --audio-format mp3"
+  },
+  {
+    "tag": "s3",
+    "comment": "Download a single object from S3",
+    "command": "task download s3 --bucket my-bucket --key foo/a.jpg -o a.jpg"
+  },
+  {
+    "tag": "hugging-face",
+    "comment": "Download a model from Hugging Face",
+    "command": "task download hugging-face --repo-id meta-llama/Llama-3-8B"
+  },
+  {
+    "tag": "video",
+    "comment": "Combine an image + audio into an MP4",
+    "command": "task combine -i cover.png --audio song.mp3 -o song-with-cover.mp4"
+  },
+  {
+    "tag": "video",
+    "comment": "Combine cover art + FLAC into an HEVC MKV",
+    "command": "task combine -i cover.png --audio song.flac -o out.mkv --video-codec libx265 --audio-bitrate 320k"
+  },
+  {
+    "tag": "video",
+    "comment": "Concatenate three MP4 clips end-to-end",
+    "command": "task merge a.mp4 b.mp4 c.mp4 -o whole.mp4"
+  },
+  {
+    "tag": "video",
+    "comment": "Split a long video into 30-second chunks",
+    "command": "task split long.mp4 --segment 30 -o chunks/"
+  },
+  {
+    "tag": "audio",
+    "comment": "Pad an audio file to 3 minutes with silence",
+    "command": "task pad short.mp3 --to 3:00.000 -o padded.mp3"
+  },
+  {
+    "tag": "audio",
+    "comment": "Pad an audio file in place to a target length",
+    "command": "task pad short.mp3 --to 3:00.000"
+  },
+  {
+    "tag": "archive",
+    "comment": "Zip a folder",
+    "command": "task archive folder/ -o folder.zip"
+  },
+  {
+    "tag": "archive",
+    "comment": "Tar+gzip a folder",
+    "command": "task archive folder/ -O tar.gz -o folder.tar.gz"
+  },
+  {
+    "tag": "archive",
+    "comment": "Extract a zip into a folder",
+    "command": "task unpack folder.zip -o folder/"
+  },
+  {
+    "tag": "url",
+    "comment": "Download a URL with retries",
+    "command": "task fetch https://example.com/api/data -o data.json --retry 3"
+  },
+  {
+    "tag": "url",
+    "comment": "Mirror a website locally",
+    "command": "task fetch https://example.com -o page.html --mirror"
+  },
+  {
+    "tag": "archive",
+    "comment": "Rsync a folder to a remote host with --delete",
+    "command": "task sync ./src/ user@host:/srv/app/ --delete --exclude node_modules --exclude .git"
+  },
+  {
+    "tag": "archive",
+    "comment": "Preview a sync without copying anything",
+    "command": "task sync ./src/ ./dst/ --dry-run"
+  },
+  {
+    "tag": "text",
+    "comment": "Convert CRLF line endings to LF",
+    "command": "task set eol crlf.txt --eol lf"
+  },
+  {
+    "tag": "text",
+    "comment": "Convert a file's character encoding",
+    "command": "task set encoding latin1.txt --encoding utf-8"
+  },
+  {
+    "tag": "audio",
+    "comment": "Write ID3 metadata into an MP3",
+    "command": "task set metadata song.mp3 --title \"The Title\" --artist \"The Artist\""
+  },
+  {
+    "tag": "text",
+    "comment": "Flag bidirectional / RTL hazards in mixed-language text",
+    "command": "task detect bidi cookies.txt"
+  },
+  {
+    "tag": "font",
+    "comment": "Subset a font to only the glyphs in a string",
+    "command": "task subset big.ttf -o small.ttf --text \"Hello world\""
+  },
+  {
+    "tag": "font",
+    "comment": "Show how HarfBuzz lays out text in a font",
+    "command": "task shape fnt.ttf --text office"
+  },
+  {
+    "tag": "font",
+    "comment": "Render a font preview to PNG at a chosen size",
+    "command": "task render fnt.ttf -o preview.png --text \"Hello world\" --size 72"
+  },
+  {
+    "tag": "font",
+    "comment": "Dump a font to editable TTX form",
+    "command": "task dump fnt.ttf -o fnt.ttx"
+  },
+  {
+    "tag": "pdf",
+    "comment": "Highlight a search term across a PDF",
+    "command": "task highlight doc.pdf -o doc.hl.pdf --text critical"
+  },
+  {
+    "tag": "image",
+    "comment": "Verify the structural integrity of an image",
+    "command": "task verify pic.jpg"
+  },
+  {
+    "tag": "wasm",
+    "comment": "Disassemble a WebAssembly module to WAT",
+    "command": "task disassemble a.wasm -o a.wat"
+  },
+  {
+    "tag": "jvm",
+    "comment": "Disassemble a Java class file with javap",
+    "command": "task disassemble app.class -o app.javap"
+  },
+  {
+    "tag": "binary",
+    "comment": "Disassemble an ELF binary with radare",
+    "command": "task disassemble elf-bin -o elf-bin.asm"
+  },
+  {
+    "tag": "image",
+    "comment": "Strip metadata from an image",
+    "command": "task remove metadata pic.jpg"
+  },
+  {
+    "tag": "pdf",
+    "comment": "Strip the password from a PDF",
+    "command": "task remove password secret.pdf -o open.pdf --password p"
+  },
+  {
+    "tag": "image",
+    "comment": "Flatten transparency onto a solid background",
+    "command": "task remove transparency a.png -o a.flat.png --background \"#ffffff\""
+  },
+  {
+    "tag": "image",
+    "comment": "Strip a single EXIF tag (e.g. GPS location)",
+    "command": "task remove exif pic.jpg --tag GPSLatitude"
+  },
+  {
+    "tag": "port",
+    "comment": "Show which process owns a TCP port",
+    "command": "task inspect port 3000"
+  },
+  {
+    "tag": "port",
+    "comment": "Show port owner with full process details",
+    "command": "task inspect port 3000 --show process"
+  },
+  {
+    "tag": "process",
+    "comment": "Inspect a running process by PID",
+    "command": "task inspect process 4242"
+  },
+  {
+    "tag": "process",
+    "comment": "List processes as a tree, sorted by memory",
+    "command": "task list process --top memory --layout tree"
+  },
+  {
+    "tag": "process",
+    "comment": "Watch the top-CPU processes refresh live",
+    "command": "task watch process --interval 1000 --top cpu"
+  },
+  {
+    "tag": "audio",
+    "comment": "Re-encode a WAV recording to MP3",
+    "command": "task compress song.wav -o song.mp3"
+  },
+  {
+    "tag": "video",
+    "comment": "Cut a 10–30s segment out of a video",
+    "command": "task trim clip.mp4 -s 10 -e 30 -o cut.mp4"
+  }
+]

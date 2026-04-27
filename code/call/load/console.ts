@@ -11,7 +11,7 @@ import { loadKubeconfigConsole } from './kubeconfig/console'
 
 registerGroupHelp({
   command: 'task load',
-  describe: 'Load values into long-lived state (.env files, kubeconfig, ...)',
+  describe: 'Load values into long-lived state',
   commands: [
     { name: 'environment', describe: 'Upsert a key=value into a .env file' },
     { name: 'kubeconfig', describe: 'Merge a DOKS cluster config into ~/.kube/config' },
@@ -20,7 +20,7 @@ registerGroupHelp({
 
 export const loadConsole: CommandModule = {
   command: 'load <thing>',
-  describe: 'Load values into long-lived state (.env files, kubeconfig, ...)',
+  describe: 'Load values into long-lived state',
   builder: y =>
     y
       .command(loadEnvironmentConsole)

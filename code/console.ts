@@ -128,7 +128,7 @@ registerGroupHelp({
     { name: 'compile',     describe: 'Compile source code to a binary or bytecode' },
     { name: 'compress',    describe: 'Compress for web delivery or smaller size' },
     { name: 'configure',   describe: 'Bootstrap a fresh dev machine from a manifest / preset' },
-    { name: 'container',   describe: 'Container lifecycle: build / scan / size / shell / clean' },
+    { name: 'container',   describe: 'Container lifecycle (build / scan / shell)' },
     { name: 'convert',     describe: 'Convert between formats' },
     { name: 'copy',        describe: 'Copy an artifact to the clipboard' },
     { name: 'crop',        describe: 'Crop a document or image' },
@@ -146,7 +146,7 @@ registerGroupHelp({
     { name: 'highlight',   describe: 'Stamp a highlight + note on a PDF' },
     { name: 'inspect',     describe: 'Inspect a file, process, network, or system' },
     { name: 'install',     describe: 'Install project dependencies (zero-config)' },
-    { name: 'lint',        describe: 'Lint the project (zero-config — clippy / golangci-lint / ruff / ...)' },
+    { name: 'lint',        describe: 'Lint the project' },
     { name: 'list',        describe: 'List running resources or stored entries' },
     { name: 'make',        describe: 'Create a new artifact (SSH key, ...)' },
     { name: 'measure',     describe: 'Measure HTTP latency to a URL' },
@@ -161,7 +161,7 @@ registerGroupHelp({
     { name: 'record',      describe: 'Record screen / terminal sessions' },
     { name: 'remove',      describe: 'Remove content, metadata, or a stored entry' },
     { name: 'render',      describe: 'Render a visual artifact (font sample, ...)' },
-    { name: 'replay',      describe: 'Replay an asciinema .cast (terminal or render to gif/mp4)' },
+    { name: 'replay',      describe: 'Replay an asciinema .cast' },
     { name: 'resize',      describe: 'Resize an image or video' },
     { name: 'restore',     describe: 'Restore a database from a dump' },
     { name: 'rotate',      describe: 'Rotate an image or video by a given angle' },
@@ -178,10 +178,16 @@ registerGroupHelp({
     { name: 'trace',       describe: 'Trace the path a packet takes to a host' },
     { name: 'trim',        describe: 'Cut a section out of a media file' },
     { name: 'update',      describe: 'Apply an edit to a file' },
-    { name: 'upload',      describe: 'Upload to S3 / GCS / Azure / FTP / SFTP / WebDAV / IPFS' },
+    { name: 'upload',      describe: 'Upload to cloud' },
     { name: 'validate',    describe: 'Validate a document or other artifact' },
     { name: 'verify',      describe: 'Verify the integrity or content of an asset' },
     { name: 'watch',       describe: 'Live-update a listing as state changes' },
+  ],
+  examples: [
+    { comment: 'compress an image for the web',          command: 'task compress photo.jpg -o photo.small.jpg --quality 70' },
+    { comment: 'convert a font to woff2 for the web',    command: 'task convert font -I ttf -O woff2 -i font.ttf -o font.woff2' },
+    { comment: 'download a YouTube video',               command: 'task download video https://youtu.be/Y7JG63IuaWs' },
+    { comment: 'split a PDF into one file per page',     command: 'task split document.pdf -o pages/' },
   ],
 })
 
@@ -197,6 +203,21 @@ async function main() {
   // wins first. Peeling help off up-front sidesteps that entirely
   // and renders the custom layout for any registered command path.
   const raw = process.argv.slice(2)
+  // Bare `task` with no args — render the top-level help. Avoids
+  // yargs's stock `Specify an action` error when the user just
+  // wants to see what's available.
+  if (raw.length === 0) {
+    setLoggingStyle(resolveLoggingStyle('pretty'))
+    const out = renderHelpFor({
+      commandPath: [],
+      fallback: '',
+      color: true,
+    })
+    if (out.trim()) {
+      process.stdout.write(out + '\n')
+      return
+    }
+  }
   // Both `--help` and `-h` short-circuit to the custom renderer.
   // When the path isn't registered (`task show ip --help`, typos,
   // unknown verbs), fall back to the top-level `task` entry so

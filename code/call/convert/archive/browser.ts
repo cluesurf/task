@@ -3,9 +3,7 @@ import {
   ConvertArchiveBrowserLocalInput,
   ConvertArchiveBrowserRemoteInput,
 } from '~/code/form/action/convert/archive/browser'
-import {
-  ConvertArchiveBrowserInputParser,
-} from '~/code/form/action/convert/archive/browser/take'
+import { ConvertArchiveBrowserInputParser } from '~/code/form/action/convert/archive/browser/take'
 import { buildFormDataRequestToConvert } from '../shared'
 import kink from '~/code/tool/shared/kink'
 import { resolveWorkFileAsBlob } from '~/code/tool/browser/work'

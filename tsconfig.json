@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
+    "module": "CommonJS",
     "target": "ES2020",
     "lib": ["es2020", "dom"],
     "outDir": "host",
@@ -25,5 +25,13 @@
     }
   },
   "include": ["*.ts", "./**/*.ts", "*.d.ts"],
-  "exclude": ["node_modules", "host", "tmp"]
+  "exclude": [
+    "node_modules",
+    "host",
+    "tmp",
+    "eslint.config.ts",
+    "test/browser",
+    "vitest.config.ts",
+    "webpack.*.config.*"
+  ]
 }
