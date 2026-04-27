@@ -307,6 +307,35 @@ async function main() {
     .fail((msg, err, instance) => {
       if (err) throw err
       const path = process.argv.slice(2).filter(a => !a.startsWith('-'))
+      // "Not enough non-option arguments" / "Specify what to X" /
+      // "Specify an action" — yargs fires these when a parent
+      // verb is invoked without its required subcommand. Render
+      // help for the partial path instead of dumping an error;
+      // a brand-new user has no idea what to type otherwise.
+      const isMissingSubcommand =
+        !!msg &&
+        (/Not enough non-option arguments/i.test(msg) ||
+          /^Specify (an action|what to)/i.test(msg))
+      if (isMissingSubcommand) {
+        setLoggingStyle(resolveLoggingStyle('pretty'))
+        let out = renderHelpFor({ commandPath: path, fallback: '', color: true })
+        if (!out.trim() && path.length > 0) {
+          // Fall back to the closest registered ancestor so even
+          // unknown verb groups land in the tinted layout.
+          for (let i = path.length - 1; i >= 0; i--) {
+            out = renderHelpFor({
+              commandPath: path.slice(0, i),
+              fallback: '',
+              color: true,
+            })
+            if (out.trim()) break
+          }
+        }
+        if (out.trim()) {
+          process.stdout.write(out + '\n')
+          process.exit(0)
+        }
+      }
       const parent = path[0]
         ? `run \`task ${path[0]} --help\` to see available commands`
         : 'run `task --help` to see available commands'

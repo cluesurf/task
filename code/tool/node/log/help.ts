@@ -246,19 +246,38 @@ function renderEntry(entry: HelpEntry, color: boolean): string {
     lines.push('')
     lines.push(paint('EXAMPLES', SECTION, color))
     lines.push('')
-    for (const ex of entry.examples) {
+    entry.examples.forEach((ex, i) => {
       if (ex.comment) {
         lines.push('  ' + paint(`# ${ex.comment}`, COMMENT, color))
       }
       lines.push('  ' + tintCommand(ex.command, color))
-      lines.push('')
-    }
+      // One blank between examples, none after the last one — the
+      // outer trailing-blank step adds the single closing line.
+      if (i < entry.examples!.length - 1) lines.push('')
+    })
   }
 
-  // Trailing blank so the prompt that follows the help has air.
-  lines.push('')
+  // Collapse any accidental run of blank lines (e.g. an empty
+  // section that pushed two `''` in a row) so the output has at
+  // most one blank between sections, exactly one leading blank,
+  // and exactly one trailing blank before the next prompt.
+  return collapseBlankRuns(lines).join('\n')
+}
 
-  return lines.join('\n')
+function collapseBlankRuns(lines: string[]): string[] {
+  const out: string[] = []
+  let prevBlank = false
+  for (const line of lines) {
+    const isBlank = line === ''
+    if (isBlank && prevBlank) continue
+    out.push(line)
+    prevBlank = isBlank
+  }
+  // Ensure exactly one leading + one trailing blank line.
+  while (out.length > 1 && out[out.length - 1] !== '') out.push('')
+  if (out.length > 0 && out[out.length - 1] !== '') out.push('')
+  if (out.length === 0 || out[0] !== '') out.unshift('')
+  return out
 }
 
 function renderOption(
@@ -280,17 +299,18 @@ function renderOption(
   const descColumn = TOTAL_WIDTH - prefix.length
   const proseLines = wrapProse(opt.describe ?? '', descColumn)
 
-  // `prefix` contains ANSI color escapes that make `prefix.length`
-  // larger than the visible width — using it for indent produces
-  // too many spaces on continuation lines. Use the stripped width.
-  const visiblePrefixWidth = stripAnsi(prefix).length
+  // Continuation lines indent 2 spaces deeper than where the
+  // flag itself started — i.e. INDENT + required-marker +
+  // short-flag column, then `+2`. That keeps wrapped prose
+  // close to the option name, not aligned with the description
+  // column (which is too far right and hard to scan).
+  const flagStart = stripAnsi(INDENT + requiredCell + shortCell).length
+  const continuationIndent = ' '.repeat(flagStart + 2)
 
   const out: string[] = []
   out.push(prefix + paint(proseLines[0] ?? '', META, color))
   for (let i = 1; i < proseLines.length; i++) {
-    out.push(
-      ' '.repeat(visiblePrefixWidth) + paint(proseLines[i] ?? '', META, color),
-    )
+    out.push(continuationIndent + paint(proseLines[i] ?? '', META, color))
   }
 
   if (opt.choices?.length) {
@@ -298,13 +318,13 @@ function renderOption(
     for (const choice of opt.choices) {
       const isDefault = opt.default === choice
       const pill = choicePill(choice, widest, color)
-      let line = ' '.repeat(visiblePrefixWidth + 2) + pill
+      let line = continuationIndent + pill
       if (isDefault) line += '  ' + defaultPill(color)
       out.push(line)
     }
   } else if (opt.default !== undefined) {
     out.push(
-      ' '.repeat(visiblePrefixWidth + 2) +
+      continuationIndent +
         paint(`(default: ${String(opt.default)})`, COMMENT, color),
     )
   }
