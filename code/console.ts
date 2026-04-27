@@ -99,6 +99,7 @@ import { subsetConsole } from '~/code/call/subset/console'
 import { syncConsole } from '~/code/call/sync/console'
 import { testConsole } from '~/code/call/test/console'
 import { traceConsole } from '~/code/call/trace/console'
+import { transformConsole } from '~/code/call/transform/console'
 import { trimConsole } from '~/code/call/trim/console'
 import { unpackConsole } from '~/code/call/unpack/console'
 import { uploadConsole } from '~/code/call/upload/console'
@@ -366,6 +367,7 @@ async function main() {
     .command(syncConsole)
     .command(testConsole)
     .command(traceConsole)
+    .command(transformConsole)
     .command(trimConsole)
     .command(unpackConsole)
     .command(updateConsole)

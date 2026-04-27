@@ -1,14 +1,15 @@
 /**
  * Hack-it-together fastify host that implements the REST
- * surface the browser handlers expect:
+ * surface every browser handler expects:
  *
- *   POST /v2/<verb>!/<inputFormat>/<outputFormat>
- *     Multipart upload of `input[file][content]` (and any
- *     other form fields the browser handler serialized).
- *     Runs the matching Node implementation, stores the
- *     result in a tmp dir, and returns a Work envelope.
- *     Verbs end in `!` to mark them as actions (vs the
- *     noun-shaped `/work/:id`, `/files/:id` reads).
+ *   POST /v2/<verb>!/<...segments>
+ *     Multipart upload of any nested fields the browser
+ *     handler serialized (e.g. `input[file][content]`,
+ *     `input[file][sha256]`, `output[format]`). Path
+ *     segments come from the per-verb URL convention
+ *     (`/convert!/png/jpg`, `/compile!/c`, `/format!/python`,
+ *     ...) and are merged back into the reconstructed
+ *     input under conventional locations.
  *
  *   GET  /v2/work/:id
  *     Returns the cached Work envelope. Browser handlers
@@ -16,19 +17,23 @@
  *     `output.file.path`.
  *
  *   GET  /v2/files/:id
- *     Streams the converted file back.
+ *     Streams the produced file back.
  *
- * This is the canonical reference for any host that wants
- * to back `task.surf`-style requests. Production deployments
- * implement the same three endpoints; the tests just point
- * the browser `Task` at this fastify instance instead.
+ * Verbs end in `!` to mark them as actions (vs the
+ * noun-shaped `/work/:id`, `/files/:id` reads).
+ *
+ * The dispatcher is fully generic — adding a new browser
+ * verb does NOT require a new route here. The verb name
+ * from the URL maps onto `task[verb]`; the multipart
+ * fields rebuild the input object; an output `file.path`
+ * field, if returned, becomes a fetchable `/v2/files/:id`.
  *
  * Run standalone:    pnpm tsx test/browser/server.ts
  * Run from playwright: configured as `webServer` in
  *                     `test/browser/playwright.config.ts`
  */
 
-import Fastify, { FastifyInstance } from 'fastify'
+import Fastify, { FastifyInstance, FastifyRequest } from 'fastify'
 import multipart, { MultipartFile } from '@fastify/multipart'
 import cors from '@fastify/cors'
 import staticPlugin from '@fastify/static'
@@ -41,11 +46,7 @@ import Task from '~/code/node'
 type Work = {
   id: string
   status: 'queued' | 'complete' | 'error'
-  output?: {
-    file?: { path: string }
-    code?: number
-    note?: string
-  }
+  output?: unknown
 }
 
 const WORK = new Map<string, Work>()
@@ -55,6 +56,44 @@ const WORK_DIR = path.join(os.tmpdir(), `task-browser-test-${process.pid}`)
 const ROOT = path.resolve(__dirname, '..', '..')
 const DIST = path.resolve(ROOT, 'host')
 const PAGE = path.join(__dirname, 'page.html')
+
+/** Each verb says how to merge URL segments into the reconstructed input and what output extension to use. */
+type VerbHook = {
+  /** Inject URL segments into the input object before dispatching. */
+  prepare?: (input: Record<string, unknown>, segments: string[]) => void
+  /** Default extension for the produced output file (used when caller didn't specify). */
+  outputExt?: (input: Record<string, unknown>, segments: string[]) => string
+  /** Method on Task to call. Defaults to the verb name. */
+  method?: string
+}
+
+const VERB_HOOKS: Record<string, VerbHook> = {
+  convert: {
+    prepare: (input, [inFmt, outFmt]) => {
+      ensureObject(input, 'input').format = inFmt
+      ensureObject(input, 'output').format = outFmt
+    },
+    outputExt: (_i, [, outFmt]) => outFmt ?? 'bin',
+  },
+  compile: {
+    prepare: (input, [language]) => {
+      ensureObject(input, 'input').format = language
+    },
+    outputExt: (_i, [language]) => language ?? 'bin',
+  },
+  format: {
+    prepare: (input, [language]) => {
+      ;(input as { format?: string }).format = language
+    },
+    outputExt: (_i, [language]) => language ?? 'txt',
+  },
+  sanitize: {
+    prepare: (input, [language]) => {
+      ;(input as { format?: string }).format = language
+    },
+    outputExt: () => 'html',
+  },
+}
 
 export async function buildServer(): Promise<FastifyInstance> {
   await fs.mkdir(WORK_DIR, { recursive: true })
@@ -76,56 +115,8 @@ export async function buildServer(): Promise<FastifyInstance> {
     reply.type('text/html').send(html)
   })
 
-  app.post('/v2/convert!/:in/:out', async (req, reply) => {
-    const { in: inputFormat, out: outputFormat } = req.params as {
-      in: string
-      out: string
-    }
-
-    const { fields, filePath } = await drainMultipart(req)
-    if (!filePath) {
-      return reply.code(400).send({ error: 'missing file' })
-    }
-
-    const outPath = path.join(
-      WORK_DIR,
-      `${randomUUID()}.${outputFormat}`,
-    )
-
-    const task = new Task()
-    try {
-      await task.convert({
-        ...stripFileFields(fields),
-        input: { format: inputFormat as never, file: { path: filePath } },
-        output: {
-          format: outputFormat as never,
-          file: { path: outPath },
-        },
-      } as never)
-    } catch (err) {
-      const id = randomUUID()
-      const work: Work = {
-        id,
-        status: 'error',
-        output: {
-          code: 500,
-          note: err instanceof Error ? err.message : String(err),
-        },
-      }
-      WORK.set(id, work)
-      return reply.send(work)
-    }
-
-    const id = randomUUID()
-    FILE.set(id, outPath)
-    const work: Work = {
-      id,
-      status: 'complete',
-      output: { file: { path: `/v2/files/${id}` } },
-    }
-    WORK.set(id, work)
-    reply.send(work)
-  })
+  app.post('/v2/:verb/*', dispatchVerb)
+  app.post('/v2/:verb', dispatchVerb)
 
   app.get('/v2/work/:id', async (req, reply) => {
     const { id } = req.params as { id: string }
@@ -148,9 +139,71 @@ export async function buildServer(): Promise<FastifyInstance> {
   return app
 }
 
-async function drainMultipart(req: {
-  parts: () => AsyncIterableIterator<MultipartFile | { type: 'field'; fieldname: string; value: string }>
-}): Promise<{ fields: Record<string, unknown>; filePath?: string }> {
+async function dispatchVerb(
+  req: FastifyRequest<{ Params: { verb: string; '*'?: string } }>,
+  reply: { code: (n: number) => { send: (b: unknown) => void }; send: (b: unknown) => void },
+) {
+  const verbWithBang = req.params.verb
+  if (!verbWithBang.endsWith('!')) {
+    return reply.code(404).send({ error: 'verbs must end in !' })
+  }
+  const verb = verbWithBang.slice(0, -1)
+  const segments = (req.params['*'] ?? '').split('/').filter(Boolean)
+  const hook = VERB_HOOKS[verb] ?? {}
+  const method = hook.method ?? verb
+
+  const { fields, filePath } = await drainMultipart(req)
+  const input: Record<string, unknown> = { ...fields }
+  hook.prepare?.(input, segments)
+
+  if (filePath) {
+    ensureObject(ensureObject(input, 'input'), 'file').path = filePath
+  }
+
+  const ext = hook.outputExt?.(input, segments) ?? 'bin'
+  const outPath = path.join(WORK_DIR, `${randomUUID()}.${ext}`)
+  ensureObject(ensureObject(input, 'output'), 'file').path = outPath
+
+  const task = new Task() as unknown as Record<string, (i: unknown) => Promise<unknown>>
+  if (typeof task[method] !== 'function') {
+    return reply.code(400).send({ error: `unknown verb ${verb}` })
+  }
+
+  let result: unknown
+  try {
+    result = await task[method]!(input)
+  } catch (err) {
+    const id = randomUUID()
+    const work: Work = {
+      id,
+      status: 'error',
+      output: {
+        code: 500,
+        note: err instanceof Error ? err.message : String(err),
+      },
+    }
+    WORK.set(id, work)
+    return reply.send(work)
+  }
+
+  const id = randomUUID()
+  const producedPath =
+    pickPath(result) ?? (await exists(outPath) ? outPath : undefined)
+
+  const output = producedPath
+    ? { file: { path: `/v2/files/${id}` } }
+    : (result as object | undefined) ?? {}
+
+  if (producedPath) FILE.set(id, producedPath)
+  const work: Work = { id, status: 'complete', output }
+  WORK.set(id, work)
+  reply.send(work)
+}
+
+async function drainMultipart(req: FastifyRequest): Promise<{
+  fields: Record<string, unknown>
+  filePath?: string
+}> {
   const fields: Record<string, unknown> = {}
   let filePath: string | undefined
 
@@ -175,6 +228,15 @@ async function drainMultipart(req: {
     }
   }
 
+  // The browser's `input[file][content]` becomes the uploaded file —
+  // strip the placeholder so the file path field doesn't get clobbered.
+  if (filePath) {
+    const inp = fields.input as Record<string, unknown> | undefined
+    if (inp && typeof inp === 'object' && 'file' in inp) {
+      const file = inp.file as Record<string, unknown> | undefined
+      if (file && typeof file === 'object') delete file.content
+    }
+  }
   return { fields, filePath }
 }
 
@@ -184,33 +246,41 @@ function assignNested(
   key: string,
   value: string,
 ) {
-  const path = key
-    .replace(/\]/g, '')
-    .split('[')
-    .filter(Boolean)
+  const segments = key.replace(/\]/g, '').split('[').filter(Boolean)
   let cur: Record<string, unknown> = target
-  for (let i = 0; i < path.length - 1; i++) {
-    const k = path[i]!
+  for (let i = 0; i < segments.length - 1; i++) {
+    const k = segments[i]!
     if (typeof cur[k] !== 'object' || cur[k] === null) cur[k] = {}
     cur = cur[k] as Record<string, unknown>
   }
-  cur[path[path.length - 1]!] = value
+  cur[segments[segments.length - 1]!] = value
 }
 
-/** The browser sends the file content under `input[file][content]`; the Node side wants `input.file.path`. */
-function stripFileFields(fields: Record<string, unknown>): Record<string, unknown> {
-  const out: Record<string, unknown> = { ...fields }
-  if (out.input && typeof out.input === 'object') {
-    const input = { ...(out.input as Record<string, unknown>) }
-    delete input.file
-    out.input = input
+function ensureObject(
+  target: Record<string, unknown>,
+  key: string,
+): Record<string, unknown> {
+  const cur = target[key]
+  if (cur && typeof cur === 'object') return cur as Record<string, unknown>
+  const next: Record<string, unknown> = {}
+  target[key] = next
+  return next
+}
+
+function pickPath(result: unknown): string | undefined {
+  if (!result || typeof result !== 'object') return undefined
+  const r = result as { file?: { path?: unknown }; output?: { file?: { path?: unknown } } }
+  const p = r.file?.path ?? r.output?.file?.path
+  return typeof p === 'string' ? p : undefined
+}
+
+async function exists(p: string): Promise<boolean> {
+  try {
+    await fs.access(p)
+    return true
+  } catch {
+    return false
   }
-  if (out.output && typeof out.output === 'object') {
-    const output = { ...(out.output as Record<string, unknown>) }
-    delete output.file
-    out.output = output
-  }
-  return out
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
