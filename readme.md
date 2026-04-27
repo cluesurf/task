@@ -41,6 +41,10 @@ on.
 # node module (CLI + library)
 pnpm add -g @cluesurf/task
 
+task --help
+```
+
+```bash
 # or inside a project
 pnpm add @cluesurf/task
 ```
