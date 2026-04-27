@@ -1,5 +1,6 @@
 {
   "name": "@cluesurf/task",
+  "description": "A function registry",
   "version": "0.6.24",
   "chocoVersion": "0.6.24",
   "bin": {
