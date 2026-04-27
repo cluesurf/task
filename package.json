@@ -259,10 +259,22 @@
       "browser": "./host/code/call/inspect/color/browser.js",
       "default": "./host/code/call/inspect/color/node.js"
     },
+    "./inspect/dns": {
+      "node": "./host/code/call/inspect/dns/node.js",
+      "default": "./host/code/call/inspect/dns/node.js"
+    },
     "./inspect/metadata": {
       "node": "./host/code/call/inspect/metadata/node.js",
       "browser": "./host/code/call/inspect/metadata/browser.js",
       "default": "./host/code/call/inspect/metadata/node.js"
+    },
+    "./inspect/tls": {
+      "node": "./host/code/call/inspect/tls/node.js",
+      "default": "./host/code/call/inspect/tls/node.js"
+    },
+    "./isolate/image": {
+      "node": "./host/code/call/isolate/image/node.js",
+      "default": "./host/code/call/isolate/image/node.js"
     },
     "./optimize/image": {
       "node": "./host/code/call/optimize/image/local/node.js",
@@ -273,6 +285,54 @@
       "node": "./host/code/call/parse/code/node.js",
       "browser": "./host/code/call/parse/code/browser.js",
       "default": "./host/code/call/parse/code/node.js"
+    },
+    "./parse/entity": {
+      "node": "./host/code/call/parse/entity/node.js",
+      "default": "./host/code/call/parse/entity/node.js"
+    },
+    "./parse/link": {
+      "node": "./host/code/call/parse/link/node.js",
+      "default": "./host/code/call/parse/link/node.js"
+    },
+    "./parse/table": {
+      "node": "./host/code/call/parse/table/node.js",
+      "default": "./host/code/call/parse/table/node.js"
+    },
+    "./profile/cpu/samply": {
+      "node": "./host/code/call/profile/cpu/samply/node.js",
+      "default": "./host/code/call/profile/cpu/samply/node.js"
+    },
+    "./profile/cpu/0x": {
+      "node": "./host/code/call/profile/cpu/zerox/node.js",
+      "default": "./host/code/call/profile/cpu/zerox/node.js"
+    },
+    "./profile/cpu/clinic": {
+      "node": "./host/code/call/profile/cpu/clinic/node.js",
+      "default": "./host/code/call/profile/cpu/clinic/node.js"
+    },
+    "./query/sql/duckdb": {
+      "node": "./host/code/call/query/sql/duckdb/node.js",
+      "default": "./host/code/call/query/sql/duckdb/node.js"
+    },
+    "./scan/env": {
+      "node": "./host/code/call/scan/env/node.js",
+      "default": "./host/code/call/scan/env/node.js"
+    },
+    "./trace/process/strace": {
+      "node": "./host/code/call/trace/process/strace/node.js",
+      "default": "./host/code/call/trace/process/strace/node.js"
+    },
+    "./trace/process/dtruss": {
+      "node": "./host/code/call/trace/process/dtruss/node.js",
+      "default": "./host/code/call/trace/process/dtruss/node.js"
+    },
+    "./trace/process/procmon": {
+      "node": "./host/code/call/trace/process/procmon/node.js",
+      "default": "./host/code/call/trace/process/procmon/node.js"
+    },
+    "./transform/data": {
+      "node": "./host/code/call/transform/data/node.js",
+      "default": "./host/code/call/transform/data/node.js"
     },
     "./remove/metadata": {
       "node": "./host/code/call/remove/metadata/node.js",

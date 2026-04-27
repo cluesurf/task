@@ -15,11 +15,17 @@ RUN apt-get update -y -q \
       python3-venv \
   && rm -rf /var/lib/apt/lists/*
 
-# eyeD3 (ID3 tag editor) is a Python package; install into a venv so
-# it doesn't collide with system Python.
-RUN python3 -m venv /home/python/venv \
-  && /home/python/venv/bin/pip install --no-cache-dir eyeD3 \
-  && ln -sf /home/python/venv/bin/eyeD3 /usr/local/bin/eyeD3
+# eyeD3 (ID3 tag editor) and yt-dlp (`task download video`) are
+# Python packages; install both into a venv so they don't
+# collide with system Python. One install per RUN so changing
+# one doesn't bust the other's layer cache.
+RUN python3 -m venv /home/python/venv
+
+RUN /home/python/venv/bin/pip install --no-cache-dir eyeD3
+RUN ln -sf /home/python/venv/bin/eyeD3 /usr/local/bin/eyeD3
+
+RUN /home/python/venv/bin/pip install --no-cache-dir yt-dlp
+RUN ln -sf /home/python/venv/bin/yt-dlp /usr/local/bin/yt-dlp
 
 LABEL org.opencontainers.image.title="Task Video"
 LABEL org.opencontainers.image.description="Video / audio tooling for @cluesurf/task."

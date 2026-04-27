@@ -29,6 +29,7 @@ export const FIXTURES_ROOT = path.resolve(
 )
 
 const FIXTURE_TAG = '__task_fixture__'
+const INLINE_TAG = '__task_inline__'
 
 export type FixtureRef = {
   [FIXTURE_TAG]: true
@@ -36,9 +37,20 @@ export type FixtureRef = {
   mime?: string
 }
 
-/** Marker for a fixture path; resolved to a Blob inside the page. */
+export type InlineRef = {
+  [INLINE_TAG]: true
+  text: string
+  mime?: string
+}
+
+/** Marker for a fixture file path; resolved to a Blob inside the page via `/fixture/<rel>`. */
 export function fixture(rel: string, mime?: string): FixtureRef {
   return { [FIXTURE_TAG]: true, rel, mime }
+}
+
+/** Marker for inline text content; resolved to a `new Blob([text])` inside the page. */
+export function inline(text: string, mime?: string): InlineRef {
+  return { [INLINE_TAG]: true, text, mime }
 }
 
 export type VerbResult = {
@@ -98,10 +110,12 @@ async function runVerb(
       verb,
       serialized,
       fixtureTag,
+      inlineTag,
     }: {
       verb: string
       serialized: string
       fixtureTag: string
+      inlineTag: string
     }) => {
       const reviver = async (value: unknown): Promise<unknown> => {
         if (
@@ -116,6 +130,14 @@ async function runVerb(
           return new Blob([buf], {
             type: ref.mime ?? 'application/octet-stream',
           })
+        }
+        if (
+          value &&
+          typeof value === 'object' &&
+          (value as Record<string, unknown>)[inlineTag]
+        ) {
+          const ref = value as { text: string; mime?: string }
+          return new Blob([ref.text], { type: ref.mime ?? 'text/plain' })
         }
         if (Array.isArray(value)) return Promise.all(value.map(reviver))
         if (value && typeof value === 'object') {
@@ -143,6 +165,11 @@ async function runVerb(
         text,
       }
     },
-    { verb, serialized, fixtureTag: FIXTURE_TAG },
+    {
+      verb,
+      serialized,
+      fixtureTag: FIXTURE_TAG,
+      inlineTag: INLINE_TAG,
+    },
   )
 }

@@ -454,6 +454,12 @@ RUN curl -L -o /tmp/duckdb.zip https://github.com/duckdb/duckdb/releases/downloa
 RUN /home/python/venv/bin/pip install huggingface_hub \
   && ln -sf /home/python/venv/bin/hf /usr/local/bin/hf
 
+# yt-dlp — `task download video` (1500+ sites: YouTube, TikTok,
+# Twitter/X, Vimeo, SoundCloud, Twitch). Pip install keeps the
+# version current; yt-dlp ships releases ~weekly.
+RUN /home/python/venv/bin/pip install yt-dlp
+RUN ln -sf /home/python/venv/bin/yt-dlp /usr/local/bin/yt-dlp
+
 # ── Observability / profiling / dev-loop tools ────────────────────
 # samply: cross-platform Rust sampling profiler (`task profile cpu`)
 RUN cargo install samply || true
@@ -466,7 +472,8 @@ RUN apt-get update -y -q && apt-get -y install strace || true
 # openssl ships in the base image; add explicit dnsutils (dig / host)
 # and bind9-host for `task inspect dns` and the planned `task dns ...`
 # verb family.
-RUN apt-get -y install dnsutils bind9-host || true
+RUN apt-get -y install dnsutils || true
+RUN apt-get -y install bind9-host || true
 
 # ── Secret scanning (`task scan env`, `task scan secrets`) ────────
 RUN curl -fsSL https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_8.21.2_linux_x64.tar.gz \
@@ -480,7 +487,9 @@ RUN curl -fsSL https://raw.githubusercontent.com/trufflesecurity/trufflehog/main
 
 # ── Pentest aggregator coverage (hackingtool integration) ─────────
 # Network / port / service scanners
-RUN apt-get -y install nmap masscan whatweb || true
+RUN apt-get -y install nmap || true
+RUN apt-get -y install masscan || true
+RUN apt-get -y install whatweb || true
 
 # Subdomain / web crawlers
 RUN go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest || true
@@ -489,24 +498,35 @@ RUN go install github.com/projectdiscovery/httpx/cmd/httpx@latest || true
 RUN go install github.com/jaeles-project/gospider@latest || true
 RUN go install github.com/ffuf/ffuf/v2@latest || true
 RUN go install github.com/OJ/gobuster/v3@latest || true
-RUN apt-get -y install dirb wfuzz || true
+RUN apt-get -y install dirb || true
+RUN apt-get -y install wfuzz || true
 
 # Web vulnerability scanners
-RUN apt-get -y install nikto wapiti || true
+RUN apt-get -y install nikto || true
+RUN apt-get -y install wapiti || true
 # wpscan is a Ruby gem
-RUN apt-get -y install ruby-full && gem install wpscan || true
+RUN apt-get -y install ruby-full || true
+RUN gem install wpscan || true
 
 # SQL injection
 RUN apt-get -y install sqlmap || true
 
 # Bruteforce / credential
-RUN apt-get -y install hydra john hashcat crunch cewl || true
+RUN apt-get -y install hydra || true
+RUN apt-get -y install john || true
+RUN apt-get -y install hashcat || true
+RUN apt-get -y install crunch || true
+RUN apt-get -y install cewl || true
 
 # Wireless suite (Linux-only)
-RUN apt-get -y install aircrack-ng reaver pixiewps || true
+RUN apt-get -y install aircrack-ng || true
+RUN apt-get -y install reaver || true
+RUN apt-get -y install pixiewps || true
 
 # Packet capture / replay
-RUN apt-get -y install tshark tcpdump tcpreplay || true
+RUN apt-get -y install tshark || true
+RUN apt-get -y install tcpdump || true
+RUN apt-get -y install tcpreplay || true
 
 # OSINT / recon
 RUN /home/python/venv/bin/pip install theHarvester || true
@@ -520,10 +540,16 @@ RUN /home/python/venv/bin/pip install recon-ng || true
 RUN /home/python/venv/bin/pip install bbot || true
 
 # Forensics / file carving
-RUN apt-get -y install binwalk foremost bulk-extractor sleuthkit yara || true
+RUN apt-get -y install binwalk || true
+RUN apt-get -y install foremost || true
+RUN apt-get -y install bulk-extractor || true
+RUN apt-get -y install sleuthkit || true
+RUN apt-get -y install yara || true
 
 # Steganography
-RUN apt-get -y install steghide stegseek outguess || true
+RUN apt-get -y install steghide || true
+RUN apt-get -y install stegseek || true
+RUN apt-get -y install outguess || true
 RUN gem install zsteg || true
 
 # Memory forensics
@@ -531,10 +557,16 @@ RUN /home/python/venv/bin/pip install volatility3 || true
 RUN ln -sf /home/python/venv/bin/vol /usr/local/bin/vol || true
 
 # MITM / proxies / pivot
-RUN apt-get -y install bettercap ettercap-text-only proxychains4 tor mitmproxy || true
+RUN apt-get -y install bettercap || true
+RUN apt-get -y install ettercap-text-only || true
+RUN apt-get -y install proxychains4 || true
+RUN apt-get -y install tor || true
+RUN apt-get -y install mitmproxy || true
 
 # Posture / hardening checkers (`task audit dev`)
-RUN apt-get -y install lynis chkrootkit rkhunter || true
+RUN apt-get -y install lynis || true
+RUN apt-get -y install chkrootkit || true
+RUN apt-get -y install rkhunter || true
 
 # SSH-side audit (`task scan ssh --tool ssh-audit`)
 RUN /home/python/venv/bin/pip install ssh-audit || true

@@ -160,12 +160,21 @@ async function dispatchVerb(
   const input = await readInput(req)
   hook.prepare?.(input, segments)
 
-  const ext =
-    hook.outputExt?.(input, segments) ??
-    pickOutputFormat(input) ??
-    'bin'
-  const outPath = path.join(WORK_DIR, `${randomUUID()}.${ext}`)
-  ensureObject(ensureObject(input, 'output'), 'file').path = outPath
+  // Only allocate an output file slot when the verb's input
+  // shape says a file is expected (caller-supplied
+  // `output.format` / `output.file` / an uploaded input file).
+  // Verbs like fetch, inspect dns, query etc. return JSON
+  // and have their own output schema we shouldn't clobber.
+  const wantsFileOut = expectsFileOutput(input)
+  let outPath: string | undefined
+  if (wantsFileOut) {
+    const ext =
+      hook.outputExt?.(input, segments) ??
+      pickOutputFormat(input) ??
+      'bin'
+    outPath = path.join(WORK_DIR, `${randomUUID()}.${ext}`)
+    ensureObject(ensureObject(input, 'output'), 'file').path = outPath
+  }
 
   const task = new Task() as unknown as Record<string, (i: unknown) => Promise<unknown>>
   if (typeof task[method] !== 'function') {
@@ -190,17 +199,42 @@ async function dispatchVerb(
   }
 
   const id = randomUUID()
-  const producedPath =
-    pickPath(result) ?? (await exists(outPath) ? outPath : undefined)
+  let producedPath =
+    pickPath(result) ??
+    (outPath && (await exists(outPath)) ? outPath : undefined)
 
-  const output = producedPath
-    ? { file: { path: `/v2/files/${id}` } }
-    : (result as object | undefined) ?? {}
+  // No file came out — wrap the JSON result as a synthetic
+  // application/json blob so the browser's `resolveWorkFileAsBlob`
+  // poll has something to fetch. Specs that care about JSON
+  // output read `out.text` and JSON.parse it themselves.
+  if (!producedPath) {
+    const payload = JSON.stringify(result ?? null)
+    const tmp = path.join(WORK_DIR, `${randomUUID()}.json`)
+    await fs.writeFile(tmp, payload)
+    producedPath = tmp
+  }
 
-  if (producedPath) FILE.set(id, producedPath)
-  const work: Work = { id, status: 'complete', output }
+  FILE.set(id, producedPath)
+  const work: Work = {
+    id,
+    status: 'complete',
+    output: { file: { path: `/v2/files/${id}` } },
+  }
   WORK.set(id, work)
   reply.send(work)
+}
+
+/** Did the caller wire a file-shaped output, or upload input bytes? Then we should allocate a tmp output file. */
+function expectsFileOutput(input: Record<string, unknown>): boolean {
+  const o = input.output as
+    | { file?: unknown; format?: unknown }
+    | undefined
+  if (o && typeof o === 'object') {
+    if ('file' in o || 'format' in o) return true
+  }
+  const i = input.input as { file?: { path?: unknown } } | undefined
+  if (i?.file && (i.file as { path?: unknown }).path) return true
+  return false
 }
 
 /**

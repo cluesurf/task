@@ -51,7 +51,13 @@ export async function handleWorkRequestComplete<T>(
     signal?.throwIfAborted()
 
     if (work.status === 'complete') {
-      res(work.output as T)
+      // Resolve and stop. Without the return, the polling loop
+      // below kept hitting `/work/:id` forever after the work
+      // was already done — silently from the caller's side, but
+      // it leaves a hot in-flight request hanging, which trips
+      // playwright's "execution context destroyed" check on the
+      // next test's navigation.
+      return res(work.output as T)
     } else if (work.status === 'error') {
       return rej(new Kink(work.output as KinkMesh))
     }

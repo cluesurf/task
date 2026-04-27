@@ -17,6 +17,7 @@ import { downloadSftpConsole } from './sftp/console'
 import { downloadWebdavConsole } from './webdav/console'
 import { downloadIpfsConsole } from './ipfs/console'
 import { downloadTorrentConsole } from './torrent/console'
+import { downloadVideoConsole } from './video/console'
 
 registerGroupHelp({
   command: 'task download',
@@ -31,6 +32,7 @@ registerGroupHelp({
     { name: 'webdav',       describe: 'WebDAV endpoint (curl)' },
     { name: 'ipfs',         describe: 'IPFS (kubo)' },
     { name: 'torrent',      describe: 'Magnet / .torrent (aria2c)' },
+    { name: 'video',        describe: 'Video / audio off any yt-dlp-supported site (YouTube, TikTok, Vimeo, …)' },
   ],
 })
 
@@ -48,6 +50,7 @@ export const downloadConsole: CommandModule = {
       .command(downloadWebdavConsole)
       .command(downloadIpfsConsole)
       .command(downloadTorrentConsole)
+      .command(downloadVideoConsole)
       .demandCommand(1, 'Specify what to download'),
   handler: () => {
     /* handled by subcommand */

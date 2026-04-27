@@ -558,6 +558,33 @@ parsing.
   `~/code/tool/node/*` imports.** If you need it in
   `browser.ts`, it belongs in `shared.ts` or a new
   `~/code/tool/browser/*` helper.
+- **Pure client-side is the ideal, server forward is the
+  fallback.** Whenever a verb can be done in-page —
+  DOMPurify for `sanitize html`, fflate / libarchive.js
+  for `archive` / `extract archive`, a WASM port of
+  ffmpeg / imagemagick / fontforge for media verbs, the
+  Web Crypto API for `encrypt` / `decrypt` /
+  `generate hash`, etc. — that's what the `local` branch
+  should do. No network round-trip, no server cost, works
+  offline. Make `local` the default for these verbs and
+  let `remote` be the explicit opt-in.
+
+  Per-tool browser handlers earn their keep only in this
+  case. The node side ships many backend variants
+  (`convert/image/imagemagick/node`,
+  `convert/image/inkscape/node`,
+  `convert/image/dcraw/node`, ...) because each shells out
+  to a different binary. If the matching browser file
+  would just be the same multipart POST + work poll +
+  blob fetch (the generic dispatcher already covers that),
+  do NOT mirror the node tree — keep one top-level
+  `code/call/<verb>/browser.ts` (sometimes one per
+  top-level `<thing>`) and let the server pick the
+  backend. `sanitize/code/html/browser.ts` is the
+  canonical "earned its keep" case: it runs DOMPurify
+  in-page and never touches the network. The decision is
+  "can we do this client-side", not "does node have a
+  file for this tool".
 
 ### Per-action package export
 

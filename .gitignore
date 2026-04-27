@@ -41,3 +41,5 @@ next-env.d.ts
 *.cache
 !/code/object/log
 !/code/call/build
+
+test-results/
