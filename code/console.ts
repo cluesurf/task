@@ -14,6 +14,13 @@
  */
 
 import yargs from 'yargs'
+// Read the version directly from package.json. yargs's auto
+// `.version()` walks up looking for the closest package.json,
+// which is fragile under pnpm-global bins (the bin script lives
+// in a content-addressed `.pnpm/<hash>/...` path so the walk
+// can land on a different package.json than the one we ship).
+// Importing it as JSON puts the literal version into the bundle.
+import pkg from '../package.json'
 
 import {
   setLoggingStyle,
@@ -407,7 +414,7 @@ async function main() {
     )
     .demandCommand(1, 'Specify an action')
     .strict()
-    .version()
+    .version(pkg.version)
     .alias('version', 'v')
     .parseAsync()
 }

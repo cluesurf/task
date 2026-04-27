@@ -1,7 +1,7 @@
 {
   "name": "@cluesurf/task",
-  "version": "0.6.20",
-  "chocoVersion": "0.6.20",
+  "version": "0.6.24",
+  "chocoVersion": "0.6.24",
   "bin": {
     "task": "./host/code/console.js"
   },
