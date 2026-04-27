@@ -6,7 +6,7 @@ registerHelp({
   describe: 'Pull every embedded image out of a pdf / docx / html into a directory',
   options: [
     { long: 'output', short: 'o', describe: 'Output directory (created if missing)' },
-    { long: 'format', short: 'f', describe: 'Override the parser (pdf / docx / html)' },
+    { long: 'type', short: 't', describe: 'Override the parser type (pdf / docx / html)' },
     { long: 'prefix', describe: 'Filename prefix (default `image`)' },
   ],
   examples: [
@@ -23,10 +23,11 @@ export const isolateImageConsole: CommandModule = {
     y
       .positional('path', { type: 'string', demandOption: true })
       .option('output', { alias: 'o', type: 'string', demandOption: true })
-      .option('format', {
-        alias: 'f',
+      .option('type', {
+        alias: 't',
         type: 'string',
         choices: ['pdf', 'docx', 'html'] as const,
+        describe: 'File type override (default: by extension)',
       })
       .option('prefix', { type: 'string', default: 'image' }),
   handler: async argv => {
@@ -34,7 +35,7 @@ export const isolateImageConsole: CommandModule = {
     const result = await isolateImageNode({
       input: {
         file: { path: argv.path as string },
-        format: argv.format as 'pdf' | 'docx' | 'html' | undefined,
+        format: argv.type as 'pdf' | 'docx' | 'html' | undefined,
       },
       output: { directory: { path: argv.output as string } },
       prefix: argv.prefix as string,

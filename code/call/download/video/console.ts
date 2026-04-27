@@ -14,7 +14,7 @@ registerHelp({
   describe: 'Download a video (or audio-only) from any yt-dlp-supported site',
   options: [
     { long: 'output', short: 'o', describe: 'Output path / template' },
-    { long: 'format', short: 'f', describe: 'yt-dlp format selector' },
+    { long: 'video-format', describe: 'yt-dlp format selector (e.g. "bv*+ba/b")' },
     { long: 'remux', describe: 'Remux container: mp4 / mkv / webm / mov' },
     { long: 'audio-only', describe: 'Strip the video stream (audio extraction)' },
     { long: 'audio-format', describe: 'mp3 / m4a / opus / wav / flac / best' },
@@ -52,7 +52,10 @@ export const downloadVideoConsole: CommandModule = {
     y
       .positional('url', { type: 'string', demandOption: true })
       .option('output', { alias: 'o', type: 'string' })
-      .option('format', { alias: 'f', type: 'string' })
+      .option('video-format', {
+        type: 'string',
+        describe: 'yt-dlp format selector (e.g. "bestvideo*+bestaudio/best")',
+      })
       .option('remux', {
         type: 'string',
         choices: ['mp4', 'mkv', 'webm', 'mov'] as const,
@@ -76,7 +79,7 @@ export const downloadVideoConsole: CommandModule = {
     await downloadVideoYtDlpNode({
       url: argv.url as string,
       output: argv.output as string | undefined,
-      format: argv.format as string | undefined,
+      format: argv['video-format'] as string | undefined,
       remux: argv.remux as 'mp4' | 'mkv' | 'webm' | 'mov' | undefined,
       audioOnly: argv['audio-only'] as boolean,
       audioFormat: argv['audio-format'] as

@@ -105,6 +105,20 @@ async function runVerb(
       `runVerb: input did not serialize (verb=${verb}, type=${typeof input})`,
     )
   }
+  // Surface page console errors to the test runner — silent
+  // crashes inside the bundle are otherwise just "execution
+  // context destroyed" with no detail.
+  page.on('pageerror', e => {
+    // eslint-disable-next-line no-console
+    console.error(`[browser pageerror] ${verb}:`, e.message)
+  })
+  page.on('console', m => {
+    if (m.type() === 'error') {
+      // eslint-disable-next-line no-console
+      console.error(`[browser console] ${verb}:`, m.text())
+    }
+  })
+
   return page.evaluate(
     async ({
       verb,

@@ -13,6 +13,19 @@ import {
 import Kink, { KinkMesh } from '@termsurf/kink'
 import kink from '../shared/kink'
 
+function parseXhrResponse(xhr: XMLHttpRequest): unknown {
+  // responseType === 'json' → xhr.response is already parsed.
+  if (xhr.responseType === 'json') return xhr.response
+  const text =
+    typeof xhr.response === 'string' ? xhr.response : xhr.responseText
+  if (!text) return null
+  try {
+    return JSON.parse(text)
+  } catch {
+    return text
+  }
+}
+
 export async function callXhrBrowser(
   request: Request,
   native?: NativeOptions,
@@ -65,7 +78,11 @@ export async function callXhrBrowser(
       signal?.removeEventListener('abort', handleAbort)
       xhr.upload.removeEventListener('progress', handleProgress)
 
-      const data = JSON.parse(xhr.response)
+      // When `xhr.responseType === 'json'`, `xhr.response` is
+      // already the parsed object — JSON.parse on it throws.
+      // For multipart uploads we don't set responseType, so the
+      // body comes back as text and needs parsing.
+      const data = parseXhrResponse(xhr)
 
       if (this.status == 200) {
         onUpdate?.({
@@ -94,7 +111,7 @@ export async function callXhrBrowser(
       signal?.removeEventListener('abort', handleAbort)
       xhr.upload.removeEventListener('progress', handleProgress)
 
-      const data = JSON.parse(xhr.response)
+      const data = parseXhrResponse(xhr)
 
       onUpdate?.({
         ...request,

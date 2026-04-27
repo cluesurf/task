@@ -5,7 +5,7 @@ registerHelp({
   command: 'task parse table',
   describe: 'Pull tables out of HTML / DOCX / PDF as JSON records',
   options: [
-    { long: 'format', short: 'f', describe: 'html / docx / pdf (default: by extension)' },
+    { long: 'type', short: 't', describe: 'File type override: html / docx / pdf (default: by extension)' },
     { long: 'index', short: 'i', describe: 'Emit only the Nth table (0-based)' },
     { long: 'output', short: 'o', describe: 'Write JSON result to this path' },
   ],
@@ -23,10 +23,11 @@ export const parseTableConsole: CommandModule = {
   builder: y =>
     y
       .positional('path', { type: 'string', demandOption: true })
-      .option('format', {
-        alias: 'f',
+      .option('type', {
+        alias: 't',
         type: 'string',
         choices: ['html', 'docx', 'pdf'] as const,
+        describe: 'File type override (default: by extension)',
       })
       .option('index', { alias: 'i', type: 'number' })
       .option('output', { alias: 'o', type: 'string' }),
@@ -37,7 +38,7 @@ export const parseTableConsole: CommandModule = {
       output: argv.output
         ? { file: { path: argv.output as string } }
         : undefined,
-      format: argv.format as 'html' | 'docx' | 'pdf' | undefined,
+      format: argv.type as 'html' | 'docx' | 'pdf' | undefined,
       index: argv.index as number | undefined,
     })
     if (!argv.output) {

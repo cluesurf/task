@@ -12,7 +12,7 @@ registerHelp({
     { long: 'where', describe: 'WHERE clause used with --from' },
     { long: 'limit', describe: 'LIMIT used with --from' },
     { long: 'db', describe: 'Persistent DuckDB file (default in-memory)' },
-    { long: 'format', short: 'f', describe: 'Output renderer (csv|json|box|markdown|line|tsv)' },
+    { long: 'render', short: 'r', describe: 'DuckDB output renderer (csv|json|box|markdown|line|tsv)' },
     { long: 'read-only', describe: 'Open --db read-only' },
   ],
   examples: [
@@ -42,9 +42,10 @@ export const querySqlDuckdbConsole: CommandModule = {
       .option('where', { type: 'string' })
       .option('limit', { type: 'number' })
       .option('db', { type: 'string' })
-      .option('format', {
-        alias: 'f',
+      .option('render', {
+        alias: 'r',
         choices: ['csv', 'json', 'box', 'markdown', 'line', 'tsv'] as const,
+        describe: 'DuckDB output renderer (default: box)',
       })
       .option('read-only', { type: 'boolean', default: false }),
   handler: async argv => {
@@ -56,7 +57,7 @@ export const querySqlDuckdbConsole: CommandModule = {
       where: argv.where as string | undefined,
       limit: argv.limit as number | undefined,
       db: argv.db as string | undefined,
-      format: argv.format as
+      format: argv.render as
         | 'csv' | 'json' | 'box' | 'markdown' | 'line' | 'tsv'
         | undefined,
       readOnly: argv['read-only'] as boolean,
