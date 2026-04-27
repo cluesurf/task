@@ -35,7 +35,7 @@ automatically: ImageMagick for `png:jpg`, ffmpeg for video,
 pandoc for documents, fontTools for fonts, qpdf for PDFs, and so
 on.
 
-## Install
+## Installation
 
 Node module (CLI + library):
 
