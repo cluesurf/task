@@ -61,20 +61,68 @@ the kitchen sink. See
 [make/deck/docker/readme.md](./make/deck/docker/readme.md) for the
 full image catalog and when to pick which.
 
-## Use
+## Getting started
+
+### 1. Shell completion
+
+Tab-complete every verb, sub-thing, and flag in your shell. The CLI
+ships its own zsh / bash / fish completion script — install it once:
+
+```sh
+# zsh (most macOS terminals incl. iTerm2)
+task autocomplete >> ~/.zshrc && exec zsh
+
+# bash
+task autocomplete >> ~/.bashrc && exec bash
+
+# fish
+task autocomplete > ~/.config/fish/completions/task.fish
+```
+
+After installing, `task con<TAB>` expands to `task convert`,
+`task convert <TAB>` lists `image / audio / video / document / …`,
+and so on. Re-run `task autocomplete` after upgrading to pick up
+new verbs.
+
+### 2. Try a verb
+
+```sh
+task convert a.png a.jpg              # extension-routed shorthand
+task compress song.wav -o song.mp3
+task trim clip.mp4 -s 10 -e 30 -o cut.mp4
+task inspect report.pdf               # pretty key/value table
+task query sql --from data.csv --limit 10   # DuckDB over a CSV
+```
+
+### 3. Discover what's available
+
+```sh
+task --help                # tinted overview of every verb
+task <verb> --help         # subcommands + flags for one verb
+task <verb> <thing> --help # the leaf command's full option list
+task <verb> ... --explain  # print the native command without running it
+```
+
+### 4. Use it from Node with full TypeScript autocomplete
 
 ```ts
 import Task from '@cluesurf/task'
 
 const task = new Task()
 
+// `format` is narrowed to the supported set per verb.
+// IDE autocomplete suggests 'png' | 'jpg' | 'webp' | ... here.
 const out = await task.convert({
   input:  { format: 'png', file: { path: 'a.png' } },
   output: { format: 'jpg', file: { path: 'a.jpg' } },
 })
 ```
 
-Remote execution against a hosted task server:
+## Remote execution
+
+For long-running jobs, point a `Task` instance at a hosted task
+server and let it run there. The local process gets a work handle
+back instead of waiting on the binary.
 
 ```ts
 const task = new Task({ host: 'https://example.com', code: '<bearer>' })

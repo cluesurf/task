@@ -1,5 +1,6 @@
 import type { CommandModule } from 'yargs'
 import { registerGroupHelp, registerHelp } from '~/code/tool/node/log/registry'
+import { scanEnvConsole } from './env/console'
 import { scanSshConsole } from './ssh/console'
 
 registerGroupHelp({
@@ -10,6 +11,7 @@ registerGroupHelp({
     { name: 'filesystem', describe: 'Source-code / lockfile CVE scan (trivy / osv)' },
     { name: 'host',       describe: 'Local OS package CVE scan (trivy rootfs)' },
     { name: 'secrets',    describe: 'Leaked credentials in a repo (gitleaks / trufflehog)' },
+    { name: 'env',        describe: 'Leaked secrets in env files / source / git history' },
     { name: 'sbom',       describe: 'Generate a software bill of materials (syft / trivy)' },
     { name: 'network',    describe: 'Port + service scan (nmap, private subnets only by default)' },
     { name: 'ssh',        describe: 'SSH host-key fingerprint probe (ssh-keyscan)' },
@@ -218,6 +220,7 @@ export const scanConsole: CommandModule = {
     .command(secretsCmd)
     .command(sbomCmd)
     .command(networkCmd)
+    .command(scanEnvConsole)
     .command(scanSshConsole)
     .demandCommand(1, 'Specify a scan type'),
   handler: () => {},

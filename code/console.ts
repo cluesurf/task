@@ -70,6 +70,7 @@ import { optimizeConsole } from '~/code/call/optimize/console'
 import { padConsole } from '~/code/call/pad/console'
 import { parseConsole } from '~/code/call/parse/console'
 import { pingConsole } from '~/code/call/ping/console'
+import { profileConsole } from '~/code/call/profile/console'
 // project/ merged into verb-first paths (build/code, test/code, etc.)
 import { pushConsole } from '~/code/call/push/console'
 import { queryConsole } from '~/code/call/query/console'
@@ -336,6 +337,7 @@ async function main() {
     .command(padConsole)
     .command(parseConsole)
     .command(pingConsole)
+    .command(profileConsole)
     // project merged into verb-first (build/code, test/code, etc.)
     .command(pushConsole)
     .command(queryConsole)

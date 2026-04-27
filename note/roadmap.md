@@ -21,50 +21,37 @@ See `note/idea/zero-config-build-runner-roadmap.md` in the
 parent note tree for the full rationale and the per-tool
 "what you learn" framing.
 
-### Top 10, ordered
+### Top 10, ordered (open work only — done items folded into the action table)
 
-1. **`task query sql` via DuckDB** — analytical SQL on CSV /
-   Parquet / JSON becomes a one-liner. Biggest single-tool
-   data-skill multiplier.
-2. **`task find ast` via ast-grep** — syntactic search beats
+1. **`task find ast` via ast-grep** — syntactic search beats
    text grep once you taste it. Also unlocks
    `task refactor rename` (see below).
-3. **`task log follow` + `task log grep`** via `lnav` / `rg` /
+2. **`task log follow` + `task log grep`** via `lnav` / `rg` /
    `jq`. Ends "where did my log go" for good. Composes
    with `task highlight log` already shipped.
-4. **`task inspect process` + `task inspect port`** via
-   `ps` / `lsof` / `ss`. Ends "why is this port busy."
-5. **`task trace process` via strace / dtruss / procmon**.
-   Levels debugging from "guess" to "answer." Per-OS
-   backend subdir: `trace/process/{strace,dtruss,procmon}/`.
-6. **`task profile cpu` via `samply` / `0x` / `clinic`**.
-   Replaces print-timing with real flamegraphs.
-7. **`task fetch http` + `task inspect dns` + `task inspect
-   tls`** via curl / dig / `openssl s_client`. Network
-   literacy in one afternoon.
-8. **`task git bisect auto`** — regression finder that feels
+3. **`task git bisect auto`** — regression finder that feels
    like cheating. Ten lines over `git bisect run <cmd>`.
-9. **`task watch file` via `fswatch` / `entr`**. Re-run on
+4. **`task watch file` via `fswatch` / `entr`**. Re-run on
    change is the core dev loop. Composes with every other
    command.
-10. **`task scan env` via `gitleaks` / `trufflehog`**. Catches
-    the one leak that would otherwise ruin your week.
 
-### Gaps this section surfaces
+### Already shipped from the original Top 10
 
-These are not yet in the existing sections below, or only
-exist under a different name:
+- `task query sql` via DuckDB
+- `task inspect process` + `task inspect port`
+- `task trace process` (strace / dtruss / procmon)
+- `task profile cpu` (samply / 0x / clinic)
+- `task fetch http` (extends existing fetch)
+- `task inspect dns` (system resolver + Cloudflare zone-records mode)
+- `task inspect tls` (openssl s_client + Node `X509Certificate`)
+- `task scan env` (gitleaks / trufflehog)
+- `task autocomplete` (zsh / bash / fish completion)
 
-- **`task query sql` (CLI, duckdb)** — the browser roadmap
-  mentions DuckDB-WASM but the CLI verb does not exist yet.
-  Matters more for the CLI: `task query sql --from *.jsonl`
-  replaces a lot of ad-hoc Python.
+### Adjacent gaps not yet in the rest of the roadmap
+
 - **`task query jq` / `task query yq`** — thin wrappers that
   pre-load the project's data conventions (field renames,
   date parsing). Not just `jq`-with-a-different-name.
-- **`task find ast`** — per-language ast-grep wrapper.
-  Currently `detect` has `dead-code` and similar, but a
-  general "syntactic grep" verb is missing.
 - **`task refactor rename <old> <new>`** — ast-grep-backed,
   lands on top of `task find ast`. Project-wide type-safe
   rename in one command.
@@ -387,15 +374,14 @@ Already partially landed: `parse log`, `aggregate log`,
 
 ### trace (extended)
 
-- `task trace process <pid>` — strace / dtrace / `ktrace` per OS,
-  with summary mode (most-called syscalls + slowest).
+`trace process` (strace / dtruss / procmon) and `profile cpu`
+(samply / 0x / clinic) ship today. Open work:
+
 - `task trace http <url>` — full-fidelity request trace (DNS,
   TCP, TLS, request, response, body) — like `curl --trace-time`
   but parsed.
 - `task trace dns <host>` — every step of the resolution
   (root → TLD → authoritative → cached answer).
-- `task trace flame <command>` — wrap a command with
-  `samply` / `0x` / `pyspy`, drop a flamegraph.
 
 ### monitor (new verb)
 
@@ -416,121 +402,126 @@ Long-running watch with thresholds + alerts.
 Kill the "why won't this resolve" dance. Wrap one tool per
 verb so the flags stop being the bottleneck.
 
-- `task dns lookup <host>` — one-shot resolver probe. Mac:
-  `dscacheutil -q host -a name <host>`. Linux: `getent hosts`
-  or `resolvectl query`. Windows: `Resolve-DnsName`. Prints A
-  / AAAA / CNAME + which resolver answered.
+**Diagnose**
+
+- `task dns lookup <host>` — one-shot resolver probe across the
+  OS-native cache and a configurable upstream. Prints A /
+  AAAA / CNAME plus which resolver answered. (`task inspect dns`
+  already does the read-only side; `task dns lookup` is the
+  more flag-rich diagnostic surface.)
 - `task dns trace <host>` — parsed `dig +trace` (root → TLD →
-  authoritative → cached answer), with timing per hop.
-- `task dns flush` — clear the OS resolver cache. Mac:
-  `sudo dscacheutil -flushcache && sudo killall -HUP
-  mDNSResponder`. Linux: `resolvectl flush-caches`. Windows:
-  `ipconfig /flushdns`.
-- `task dns inspect` — dump the active resolver chain:
-  `/etc/resolv.conf`, `scutil --dns` per zone, `/etc/resolver/*`
-  scoping, which process owns :53.
-- `task dns serve wildcard <zone> --to 127.0.0.1` — install a
-  dnsmasq / dnscrypt-proxy cloaking rule so `*.<zone>` stays
-  local. Portable mirror of `mesh/task/dns-setup.sh`.
-- `task dns serve private --upstream doh` — swap the local
-  resolver to DoH-only (cloudflare / quad9 / google) via
-  dnscrypt-proxy. Mirror of `mesh/task/dnscrypt-proxy-setup.sh`.
-  Adds `require_dnssec` / `require_nolog` / `require_nofilter`.
+  authoritative → cached answer) with per-hop timing.
+- `task dns inspect` — dump the active resolver chain
+  (system resolver config, per-zone scoping files, which
+  process owns :53).
 - `task dns compare <host> --via cloudflare,google,quad9` —
   fan out queries, diff the answers. Catches split-horizon or
   poisoned resolvers fast.
-- `task dns test doh <url>` — confirm a DoH endpoint returns
-  valid wire-format / JSON, measure latency.
 - `task dns propagate <record>` — poll N public resolvers on
   an interval until a new A / AAAA / NS record propagates after
   a registrar change.
+- `task dns test doh <url>` — confirm a DoH endpoint returns
+  valid wire-format / JSON, measure latency.
+
+**Mutate**
+
+- `task dns flush` — clear the OS resolver cache, per-platform.
+- `task dns serve wildcard <zone> --to <addr>` — install a
+  local resolver rule so `*.<zone>` resolves to a fixed
+  address (default `127.0.0.1`). Backed by dnsmasq or
+  dnscrypt-proxy's cloaking rules, plus the per-OS scoping
+  file (e.g. `/etc/resolver/<zone>` on macOS) so the rule
+  applies only to that zone. Idempotent — re-runs are safe.
+- `task dns serve private --upstream doh` — swap the local
+  resolver to DoH-only (cloudflare / quad9 / google) via
+  dnscrypt-proxy. Adds `require_dnssec` / `require_nolog` /
+  `require_nofilter` toggles. Composes with `dns serve
+  wildcard` so private zones stay local while public lookups
+  go encrypted to a chosen provider. Idempotent.
 - `task dns revert` — undo the most recent `dns serve` install
-  (stops dnscrypt-proxy, restores dnsmasq, or removes
-  `/etc/resolver/*` files). Same shape as the `--revert` flag
-  in `mesh/task/dnscrypt-proxy-setup.sh`.
+  (stops the local resolver daemon, restores prior config,
+  removes per-zone scoping files). Same shape as a
+  `--revert` flag on the install commands.
+
+The `serve wildcard` / `serve private` / `revert` triplet
+captures the common dev-machine pattern of "I want a private
+TLD that only my laptop knows about, and I want all my other
+DNS to leave the machine encrypted, both reversibly."
 
 ### tls (new verb family)
 
 Local HTTPS without hand-wrestling `mkcert` / `step` /
-`openssl` flags every time. Models the Caddy-based workflow
-in `mesh/task/caddy-setup.sh`.
+`openssl` flags every time. Models the standard Caddy /
+mkcert / step-ca workflows.
+
+`task inspect tls <host>` ships today and covers the
+read-only side (subject / issuer / SAN / expiry / chain).
+The verbs below add the issue / trust / serve mutate side.
 
 - `task tls issue <host> --from local-ca` — mint a cert signed
   by a locally-trusted CA. Wraps `caddy` internal CA, `mkcert`,
-  or `step-ca`.
+  or `step-ca` behind a single command.
 - `task tls trust <ca-path>` — install a CA into the OS trust
-  store. Mac: `security add-trusted-cert -d -r trustRoot -k
-  /Library/Keychains/System.keychain`. Linux: copy to
-  `/usr/local/share/ca-certificates/` + `update-ca-certificates`.
-  Windows: `certutil -addstore ROOT`.
-- `task tls untrust <ca-sha>` — delete a stale CA by SHA-1.
-  Fixes the "multiple Caddy CAs confuse Safari" case.
-- `task tls inspect <host>` — fetch served chain, print
-  subject / issuer / SAN / NotAfter per cert, validate chain
-  against the local trust store.
+  store, per-platform. Idempotent — installing the same CA
+  twice is a no-op.
+- `task tls untrust <ca-sha>` — delete a stale CA by SHA-1
+  fingerprint. Fixes the "multiple stale CAs confuse the
+  browser" case after rotations.
 - `task tls verify <host>` — end-to-end probe. Confirms
   `tls issue` + `tls trust` actually propagated to the OS and
-  to the browser.
-- `task tls serve <dir> --port 443 --for <host>` — thin wrapper
-  over `caddy file-server` or `http-server --ssl`, auto-issuing
-  a cert from the local CA.
-- `task tls proxy <host> --to <upstream>` — Caddy reverse
-  proxy on :443 with internal TLS. One-command local HTTPS for
-  an existing dev server. Supports wildcard host regex for
-  `*.<zone>` routing, same as the Caddy `on_demand` + `header_regexp
-  Host` pattern.
+  to the browser, against the served chain from `inspect tls`.
+- `task tls serve <dir> --port 443 --for <host>` — thin
+  wrapper over a static-file server with auto-issued cert
+  from the local CA. One command from `cd` to `https://`.
+- `task tls proxy <host> --to <upstream>` — reverse-proxy on
+  :443 with internal TLS. One-command local HTTPS for an
+  existing dev server. Supports wildcard host routing
+  (`*.<zone>`) so a single proxy fronts an arbitrary number
+  of subdomain dev servers.
 - `task tls rotate --ca local` — rotate the local CA, reissue
-  every host cert, clean stale CAs out of the trust store. The
-  rotation sequence already lives in `mesh/task/caddy-setup.sh`;
-  package it as one command.
+  every host cert that depends on it, and clean stale CAs out
+  of the trust store. The "I forgot which CA the browser
+  trusts" reset button.
+
+The `issue` + `trust` + `proxy` + `rotate` quartet is the
+"local HTTPS for `*.dev.example`" recipe collapsed into four
+verbs.
 
 ### audit (new verb family)
 
-Dev-machine posture check in one command. Mirror of
-`mesh/task/security-check.sh`.
+Dev-machine posture check in one command — the inverse of the
+`dns serve` / `tls trust` mutate verbs above. Confirms the
+machine is in the configuration we expect, not slowly
+drifting.
 
-- `task audit dev` — full check. DNS resolver
-  (dnscrypt-proxy up / dnsmasq down / loopback-bound / DoH
-  configured / DNSSEC on / no-log on). `/etc/resolver` scoping
-  (no broad zone hijack). Keychain CA count (exactly one
-  current Caddy CA, no stale duplicates). Reverse-proxy
-  exposure (admin API off, only :80 / :443 open). Process
-  privilege (loopback daemons as root only where required).
-  Exits 0 on green, 1 on any failure.
-- `task audit resolver` — just the DNS / `/etc/resolver` slice.
-- `task audit trust-store` — enumerate every non-Apple /
-  non-system root; flag unknown ones for review.
-- `task audit ports` — every listening socket with process +
-  user + loopback-vs-lan-vs-any binding.
-- `task audit secrets` — `gitleaks` / `trufflehog` over the
-  working tree + recent history.
-- `task audit startup` — launchd / systemd units installed by
-  third-party installers, with install date.
+- `task audit dev` — full check, exits 0 on green and 1 on
+  any failure. Sections:
+  - DNS resolver health (the right local daemon up, the
+    others down, bound to loopback only, DoH /
+    DNSSEC / no-log toggles where applicable).
+  - Per-zone scoping (no broad zone hijack — only the
+    zones we explicitly own redirect locally).
+  - Trust store (exactly one current local CA, no stale
+    duplicates from prior rotations).
+  - Reverse-proxy exposure (admin API off, only :80 / :443
+    open to LAN, everything else loopback-bound).
+  - Process privilege (loopback daemons running as root
+    only where required, not by default).
+- `task audit resolver` — the DNS / per-zone-scoping slice
+  of `audit dev`, runnable on its own.
+- `task audit trust-store` — enumerate every non-system
+  root cert in the trust store; flag unknown ones for review.
+- `task audit ports` — every listening socket with process,
+  user, and loopback-vs-lan-vs-any binding.
+- `task audit secrets` — `task scan env` over the working
+  tree + recent history (already shipped — `audit secrets` is
+  the alias).
+- `task audit startup` — launchd / systemd / Windows service
+  units installed by third-party installers, with install date.
 
-### Reference: existing mesh scripts
-
-These are the source material. They solve the problem once
-for this repo. The verbs above generalize them so other
-projects reuse without copy-paste.
-
-- `mesh/task/dns-setup.sh` — dnsmasq wildcard for
-  `*.surf.host` → 127.0.0.1 plus `/etc/resolver` install.
-  Ends with the canonical cache-flush recipe:
-  `sudo dscacheutil -flushcache && sudo killall -HUP
-  mDNSResponder`, and the probe
-  `dscacheutil -q host -a name word.surf.host`.
-- `mesh/task/dnscrypt-proxy-setup.sh` — DoH-only upstream with
-  `*.surf.host` cloaking. Keeps Chrome's "Use secure DNS" ON
-  while local names stay local. Idempotent. Supports
-  `--revert`.
-- `mesh/task/caddy-setup.sh` — local HTTPS for `*.surf.host`
-  via Caddy's internal CA. Covers trust-store install,
-  stale-CA cleanup, chain verification, and arbitrary-depth
-  subdomains via `header_regexp Host` + `tls internal
-  on_demand`.
-- `mesh/task/security-check.sh` — the five-section audit
-  (resolver / scoping / keychain / caddy exposure / process
-  privilege) that `task audit dev` is modeled on.
+`audit dev` is the "is my laptop still set up the way I left
+it" command — useful as a `task` cron, a CI step on a build
+machine, or a five-second sanity check before a demo.
 
 ### debug (new verb)
 
@@ -1181,3 +1172,350 @@ task convert data enriched.xlsx --to parquet --schema schema.json -o data.parque
 3. text normalization — IPA, scripts, unicode NFC/NFD (`normalize column`)
 4. JSON-in-cell expansion (`expand column`)
 5. XLSX → Parquet pipeline (`convert data --to parquet`)
+
+---
+
+## Security tool aggregator — hackingtool integration
+
+Upstream: <https://github.com/Z4nzu/hackingtool>. A curated
+launcher around ~50 open-source pentesting / forensics tools
+(Anonsurf, Nmap, Sqlmap, theHarvester, Photon, recon-ng,
+WPScan, Metasploit, hashcat, CeWL, Hydra, Tor router, Wireshark
+filters, payload generators, …). The upstream surface is a
+text-menu Python launcher; install steps are mostly Linux-only
+shell scripts that `apt install` and `git clone` per tool.
+
+The integration goal is **not** to vendor hackingtool's code or
+ship its menu UI. It is to:
+
+1. Adopt the verb taxonomy and use-cases as roadmap for `task`.
+2. Wrap the most useful entries as first-class typed `task`
+   commands (single-object input, four-branch dispatch, real
+   help, JSON output) so they compose with the rest of the CLI.
+3. Make every wrap **cross-platform** (or fail with a clear
+   per-OS install hint), where upstream is Linux-first.
+4. Gate destructive / network-touching operations behind an
+   explicit `--i-accept-responsibility` flag (consistent with
+   `task scan network`).
+
+### Verb mapping
+
+Group the upstream tools by verb and ship them under the
+existing namespaces:
+
+- **`task scan network`** (already shipped, nmap-backed) —
+  extend with `--scan-type vuln` NSE coverage already wired,
+  plus add `--tool masscan` for fast port sweeps.
+- **`task scan host`** (already shipped, trivy rootfs) — add
+  a `--tool lynis` backend for the audit / hardening checklist.
+- **`task scan ssh`** (already shipped) — accept `--tool
+  ssh-audit` as an alternative engine.
+- **`task scan webpage`** (new under `scan/`) — `wapiti` /
+  `nikto` / `whatweb` per-tool subdir. Default `whatweb` for
+  fingerprint, opt-in to active scanners.
+- **`task scan wordpress`** (new) — `wpscan` wrap with API
+  token passthrough. Reads vuln DB, writes JSON.
+- **`task scan password-policy`** (new) — `cewl` over a target
+  site, `john` / `hashcat` rule preview, no actual cracking.
+- **`task search osint`** (new top-level under `search/`) —
+  `theharvester` / `recon-ng` / `maigret` per-tool subdir.
+  Output a normalized record set (handle, source, confidence).
+- **`task crawl webpage`** (new) — `photon` / `katana` /
+  `gospider`. Emits a flat URL list + per-URL metadata.
+- **`task fetch tor`** (extension to existing `fetch`) — add
+  `--via tor` flag. Routes through a local Tor SOCKS proxy if
+  one is up; refuses otherwise (no auto-start).
+- **`task generate password-list`** (new under `generate/`) —
+  `crunch` / `cupp` / `cewl` rule sets, output a wordlist.
+- **`task generate phishing-page`** (new) — clone a target
+  page's static assets for **lab-only** use. Default refuses
+  to write under any path matching public TLDs without
+  `--i-accept-responsibility`.
+- **`task generate payload`** — `msfvenom` wrap for
+  authorized red-team work. Same gate.
+- **`task crack hash`** (new top-level) — `hashcat` / `john`.
+  Wordlist + rule input, hash type detection via
+  `name-that-hash`. CPU + GPU modes.
+- **`task crack archive`** (new) — `fcrackzip` / `john --zip`.
+- **`task disassemble binary`** (already shipped, radare /
+  objdump) — add `--tool ghidra-headless` for batch disasm.
+- **`task extract embedded`** (new under `extract/`) —
+  `binwalk` / `foremost`. Carves embedded files out of
+  arbitrary blobs (firmware, disk images, photos with
+  hidden data). Read-only.
+- **`task extract steganography`** (new under `extract/`) —
+  `zsteg` / `stegseek` / `steghide --extract`. Pulls hidden
+  data out of cover media.
+- **`task encrypt steganography`** (new under `encrypt/`) —
+  `steghide --embed`. Hides a payload inside a cover image
+  / audio file. Lab use, gated.
+- **`task inspect memory`** (new under `inspect/`) —
+  `volatility3`. Per-OS profile selection lives in the
+  wrapper; output is JSON.
+- **`task sniff packets`** (new under `sniff/`) — `tshark`
+  wrap. Bounded by interface + duration + filter; refuses
+  to run without an interface explicitly named.
+- **`task replay packets`** (extends existing `replay/`) —
+  `tcpreplay` for pcap files.
+- **`task inspect wifi`** (new under `inspect/`) —
+  `airodump-ng` read-only. No injection / deauth without
+  explicit gate.
+- **`task crack wifi`** (new under `crack/`) —
+  `aircrack-ng` against a captured pcap. Lab use only,
+  gated.
+
+### Cross-platform strategy
+
+The blocker for most of these on macOS / Windows is upstream's
+Linux-first install. For each verb, follow the same pattern:
+
+1. **Native first.** If the binary is available via Homebrew /
+   Chocolatey / Scoop / winget, register it in
+   `code/tool/shared/install-hint.ts` and shell out directly.
+2. **Container fallback.** When the tool is Linux-only or
+   requires kernel features (raw sockets, monitor-mode wifi),
+   ship a per-tool Docker image under
+   `make/deck/docker/security/` and have the wrapper detect
+   `--tool <name>` falling through to `docker run` with a
+   temporary work-dir mount. macOS and Windows users get the
+   verb without a manual install dance.
+3. **Refuse when neither works.** No silent stubs. The verb
+   prints an explicit per-OS install hint via the existing
+   `formatInstallHint` helper.
+
+### Repo placement
+
+The first path segment under `code/call/` is **always a verb**
+(see `note/action-pattern.md`'s placement discipline). No
+noun-first directories — so `forensics/`, `wifi/`, and similar
+groupings live under existing verbs (`extract`, `inspect`,
+`crack`) instead of as their own top level.
+
+```
+code/call/
+  scan/
+    webpage/{whatweb,nikto,wapiti}/
+    wordpress/wpscan/
+    password-policy/{cewl,john,hashcat}/
+  search/
+    osint/{theharvester,recon-ng,maigret}/
+  crawl/
+    webpage/{photon,katana,gospider}/
+  fetch/
+    # existing fetch/ — extend with --via tor branch
+  generate/
+    password-list/{crunch,cupp,cewl}/
+    phishing-page/
+    payload/msfvenom/
+  crack/
+    hash/{hashcat,john}/
+    archive/{fcrackzip,john}/
+    wifi/aircrack/
+  extract/
+    embedded/{binwalk,foremost}/        # carve hidden files
+    steganography/{zsteg,stegseek,steghide}/  # read-only
+  encrypt/
+    steganography/steghide/             # write side
+  inspect/
+    memory/volatility3/
+    wifi/airodump/                      # read-only
+  sniff/
+    packets/tshark/
+  replay/
+    packets/tcpreplay/
+```
+
+Every leaf has the canonical `{base.ts, command.ts, node.ts,
+console.ts}` quartet. Schema declared in `base.ts`, generated
+parsers consumed in `node.ts`, argv built by `command.ts`,
+yargs wiring in `console.ts`. The verb-group `console.ts`
+files (e.g. `code/call/forensics/console.ts`) bundle each
+thing under the verb.
+
+### Node API surface
+
+Each verb gets a method on `Task` in `code/node.ts`,
+auto-typed off the generated form unions:
+
+```ts
+const out = await task.scan({
+  thing: 'webpage',
+  tool: 'whatweb',
+  url: 'https://example.com',
+})
+
+const ports = await task.sniff({
+  thing: 'packets',
+  interface: 'en0',
+  duration: 30,
+  filter: 'tcp port 443',
+})
+```
+
+The `thing` discriminator is the second-level dispatch — same
+shape as `task.query({ tool: 'duckdb', ... })` already does.
+
+### Ethical guardrails
+
+Every active / network-touching / destructive verb defaults to
+refuse on non-private targets unless the caller passes
+`--i-accept-responsibility` (consistent with the existing
+`task scan network` gate). The flag is per-invocation, never a
+config / env default — there is no "always opt-in" mode.
+
+### Phasing
+
+Ship in priority order so each phase is independently useful:
+
+1. **Phase 1 — passive recon**: `scan webpage`, `search osint`,
+   `crawl webpage`, `dns lookup` extensions. All read-only,
+   no install gate, useful immediately.
+2. **Phase 2 — local forensics**: `extract embedded`,
+   `extract steganography`, `crack archive`. CTF / IR
+   workflows. Cross-platform via container fallback.
+3. **Phase 3 — credentials**: `crack hash`, `generate
+   password-list`. GPU mode optional via Docker NVIDIA
+   runtime.
+4. **Phase 4 — active probes (gated)**: `scan wordpress`,
+   `scan password-policy`, `sniff packets`, `replay packets`.
+   Always behind `--i-accept-responsibility`.
+5. **Phase 5 — wifi / wireless**: `inspect wifi`,
+   `crack wifi`. Linux + USB monitor-mode adapter only;
+   documented as such.
+
+The phases don't have to ship sequentially — each verb is
+independent. The order just reflects "smallest blast radius
+first", so the surface stays well-typed and well-tested as
+the catalog grows.
+
+---
+
+## AI orchestration — Pentest-Swarm-AI integration (theory)
+
+Upstream: <https://github.com/Armur-Ai/Pentest-Swarm-AI>. A
+multi-agent LLM orchestrator that plans and runs pentest
+workflows by chaining specialized agents (recon → vuln-scan
+→ exploit → post-exploit → report). The agents call into a
+tool layer; today that tool layer is hard-coded shell
+commands.
+
+The integration in theory: **`task` becomes the tool layer**
+the swarm dispatches into. Three reasons it fits:
+
+1. **Single typed surface.** Every `task` verb takes one
+   object and returns one promise. An LLM agent emitting
+   `task scan webpage --url X --tool whatweb` doesn't need
+   to know the difference between `nmap`, `whatweb`, and
+   `wpscan` flags — the verb name routes, the schema
+   constrains the arguments, the parser rejects malformed
+   plans before they spawn a subprocess.
+2. **Structured output by default.** Every verb already
+   returns JSON when invoked with `--format json`. The agent
+   feeds the output of one step into the planner for the
+   next without a regex-and-pray parsing layer.
+3. **Built-in safety gates.** The same
+   `--i-accept-responsibility` flag the hackingtool
+   integration uses, plus the existing `--explain` mode
+   (prints the native command without executing) is the
+   ideal review checkpoint between "the AI says we should
+   run X" and actually running X.
+
+### Wire shape
+
+```
+┌──────────────┐     plan       ┌─────────────┐
+│ Swarm planner│ ──────────────▶│ Tool router │
+│ (LLM chain)  │                │  (task)     │
+└──────────────┘ ◀──────────────└─────────────┘
+                  structured
+                  results
+```
+
+The planner emits a list of `{ verb, input }` records. Each
+record is validated by the matching `<Verb>NodeInputParser`
+before execution — so a hallucinated flag never reaches the
+shell. Results come back as plain objects matching
+`<Verb>NodeOutput`, which the planner consumes for the next
+step.
+
+### Integration points
+
+- **Programmatic API as the dispatch contract.** The swarm
+  imports `Task` from `@cluesurf/task` directly. No CLI
+  shell-out, no string parsing. Every call is a typed
+  method invocation, and the LLM's plan is validated
+  against the generated zod schemas before execution.
+- **`--explain` as the human-in-loop gate.** Sensitive verbs
+  run with `explain: true` first; the planner reads back the
+  native command, the human (or a policy engine) approves,
+  the planner re-issues without `explain`. Built-in
+  audit trail.
+- **Per-step caching.** The roadmap already calls for
+  content-addressed output caching keyed on
+  `(action, input-hash, tool-versions)`. For an LLM
+  orchestrator this is a free win — repeated identical
+  plan fragments don't re-spawn binaries. Bigger win:
+  the planner can branch a plan, try multiple variants,
+  and see prior results from cache without retracing
+  steps.
+- **Replay log as planner training data.** The existing
+  `task history` (replayable command log under
+  `~/.local/share/task/history.jsonl`) is exactly the
+  format an offline RL fine-tune wants — input plan,
+  action, structured outcome.
+
+### What `task` would add to host the swarm well
+
+Most of these are already on the roadmap; calling them out
+here as the gating set:
+
+- **Plugin / verb registry exposed at runtime.** A
+  `task --list-verbs --format json` that emits every verb
+  + schema URL. The planner pulls this once at boot to
+  ground the LLM in the actual tool surface (no
+  hallucinated verbs).
+- **Per-verb permission policy.** Today verbs use
+  ad-hoc `--i-accept-responsibility` flags. Generalize to
+  a policy file the planner is bound by — "agents may
+  call read-only verbs in the inspect / search / scan
+  prefixes, may not call any crack / generate /
+  forensics verb without a human ACK."
+- **Sandboxing.** Already on the infrastructure list
+  (landlock / sandbox-exec / wasi). Hard requirement
+  before LLM-emitted command lines run unattended.
+- **Streaming progress.** Long-running verbs need to
+  emit progress for the planner to time-budget. The
+  `AsyncIterable<ProgressEvent>` design under
+  Infrastructure covers this — make sure swarm-relevant
+  verbs (scan, crack, forensics) implement it first.
+- **Structured failure taxonomy.** The existing
+  `KinkCode` enum lets the planner switch on failure
+  modes ("missing tool" → install via `task install`,
+  "auth required" → ask human, "rate limited" → back off)
+  rather than regexing error strings.
+
+### Phasing (theory)
+
+1. **Read-only verb subset.** Wire the swarm against the
+   existing inspect / search / list / scan-passive verbs
+   only. Validates the dispatch shape, the schema flow,
+   and the streaming-output contract end-to-end without
+   any destructive risk.
+2. **Add `--explain` interactive review.** Every active
+   verb runs `explain` first; planner shows the native
+   command in its UI for a thumbs-up.
+3. **Policy-bound autonomous mode.** Behind an explicit
+   per-session opt-in, allow the planner to call active
+   verbs that match the loaded policy file (e.g. only
+   on configured lab subnets / fixtures).
+4. **Sandbox + cache + history.** Once the
+   infrastructure pieces (sandbox / output cache /
+   history log) ship, the swarm runs against a stable,
+   auditable substrate — the difference between "an LLM
+   ran a shell" and "an LLM filed a sequence of typed,
+   logged, replayable, sandboxed verb invocations."
+
+This is theory until phase 1 is prototyped — but the verb
+catalog growing under the hackingtool roadmap is the
+prerequisite for the swarm to have anything to dispatch
+into.

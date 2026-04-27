@@ -22,6 +22,7 @@ import { inspectSecurityConsole } from './security/console'
 import { inspectServiceConsole } from './service/console'
 import { inspectSystemConsole } from './system/console'
 import { inspectTableConsole } from './table/console'
+import { inspectTlsConsole } from './tls/console'
 import { inspectTrafficConsole } from './traffic/console'
 import { inspectUsageConsole } from './usage/console'
 import { inspectWafConsole } from './waf/console'
@@ -54,6 +55,7 @@ registerGroupHelp({
     { name: 'service', describe: 'List or inspect system services' },
     { name: 'system', describe: 'System summary: CPU / memory / disk / uptime' },
     { name: 'table', describe: 'Inspect a Postgres table' },
+    { name: 'tls', describe: 'Summarize the TLS chain served by a host' },
     { name: 'traffic', describe: 'Cloudflare traffic (requests + bytes)' },
     { name: 'usage', describe: 'Cloud machine usage over time (chart / table / json)' },
     { name: 'waf', describe: 'Cloudflare WAF events' },
@@ -89,6 +91,7 @@ export const inspectConsole: CommandModule = {
       .command(inspectServiceConsole)
       .command(inspectSystemConsole)
       .command(inspectTableConsole)
+      .command(inspectTlsConsole)
       .command(inspectTrafficConsole)
       .command(inspectUsageConsole)
       .command(inspectWafConsole)

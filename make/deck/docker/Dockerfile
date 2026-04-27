@@ -453,3 +453,106 @@ RUN curl -L -o /tmp/duckdb.zip https://github.com/duckdb/duckdb/releases/downloa
 # Install HuggingFace `hf` CLI (for dataset/model repo download + upload)
 RUN /home/python/venv/bin/pip install huggingface_hub \
   && ln -sf /home/python/venv/bin/hf /usr/local/bin/hf
+
+# ── Observability / profiling / dev-loop tools ────────────────────
+# samply: cross-platform Rust sampling profiler (`task profile cpu`)
+RUN cargo install samply || true
+
+# strace already ships in build-essential's deps; install explicitly
+# so `task trace process` resolves it without a fresh apt query.
+RUN apt-get update -y -q && apt-get -y install strace || true
+
+# ── Network / TLS diagnostics ─────────────────────────────────────
+# openssl ships in the base image; add explicit dnsutils (dig / host)
+# and bind9-host for `task inspect dns` and the planned `task dns ...`
+# verb family.
+RUN apt-get -y install dnsutils bind9-host || true
+
+# ── Secret scanning (`task scan env`, `task scan secrets`) ────────
+RUN curl -fsSL https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_8.21.2_linux_x64.tar.gz \
+      -o /tmp/gitleaks.tar.gz \
+  && tar -xzf /tmp/gitleaks.tar.gz -C /tmp gitleaks \
+  && mv /tmp/gitleaks /usr/local/bin/gitleaks \
+  && rm /tmp/gitleaks.tar.gz
+
+RUN curl -fsSL https://raw.githubusercontent.com/trufflesecurity/trufflehog/main/scripts/install.sh \
+      | sh -s -- -b /usr/local/bin || true
+
+# ── Pentest aggregator coverage (hackingtool integration) ─────────
+# Network / port / service scanners
+RUN apt-get -y install nmap masscan whatweb || true
+
+# Subdomain / web crawlers
+RUN go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest || true
+RUN go install github.com/projectdiscovery/katana/cmd/katana@latest || true
+RUN go install github.com/projectdiscovery/httpx/cmd/httpx@latest || true
+RUN go install github.com/jaeles-project/gospider@latest || true
+RUN go install github.com/ffuf/ffuf/v2@latest || true
+RUN go install github.com/OJ/gobuster/v3@latest || true
+RUN apt-get -y install dirb wfuzz || true
+
+# Web vulnerability scanners
+RUN apt-get -y install nikto wapiti || true
+# wpscan is a Ruby gem
+RUN apt-get -y install ruby-full && gem install wpscan || true
+
+# SQL injection
+RUN apt-get -y install sqlmap || true
+
+# Bruteforce / credential
+RUN apt-get -y install hydra john hashcat crunch cewl || true
+
+# Wireless suite (Linux-only)
+RUN apt-get -y install aircrack-ng reaver pixiewps || true
+
+# Packet capture / replay
+RUN apt-get -y install tshark tcpdump tcpreplay || true
+
+# OSINT / recon
+RUN /home/python/venv/bin/pip install theHarvester || true
+RUN ln -sf /home/python/venv/bin/theHarvester /usr/local/bin/theharvester || true
+RUN /home/python/venv/bin/pip install maigret || true
+RUN ln -sf /home/python/venv/bin/maigret /usr/local/bin/maigret || true
+RUN /home/python/venv/bin/pip install sherlock-project || true
+RUN ln -sf /home/python/venv/bin/sherlock /usr/local/bin/sherlock || true
+RUN /home/python/venv/bin/pip install photon-py || true
+RUN /home/python/venv/bin/pip install recon-ng || true
+RUN /home/python/venv/bin/pip install bbot || true
+
+# Forensics / file carving
+RUN apt-get -y install binwalk foremost bulk-extractor sleuthkit yara || true
+
+# Steganography
+RUN apt-get -y install steghide stegseek outguess || true
+RUN gem install zsteg || true
+
+# Memory forensics
+RUN /home/python/venv/bin/pip install volatility3 || true
+RUN ln -sf /home/python/venv/bin/vol /usr/local/bin/vol || true
+
+# MITM / proxies / pivot
+RUN apt-get -y install bettercap ettercap-text-only proxychains4 tor mitmproxy || true
+
+# Posture / hardening checkers (`task audit dev`)
+RUN apt-get -y install lynis chkrootkit rkhunter || true
+
+# SSH-side audit (`task scan ssh --tool ssh-audit`)
+RUN /home/python/venv/bin/pip install ssh-audit || true
+RUN ln -sf /home/python/venv/bin/ssh-audit /usr/local/bin/ssh-audit || true
+
+# CVE / dependency scanners
+RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \
+      | sh -s -- -b /usr/local/bin || true
+RUN curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh \
+      | sh -s -- -b /usr/local/bin || true
+RUN curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh \
+      | sh -s -- -b /usr/local/bin || true
+RUN curl -sSfL https://github.com/google/osv-scanner/releases/latest/download/osv-scanner_linux_amd64 \
+      -o /usr/local/bin/osv-scanner && chmod +x /usr/local/bin/osv-scanner || true
+
+# Frameworks (heavy — installed `|| true` so a transient package
+# server hiccup doesn't fail the whole image build)
+RUN apt-get -y install metasploit-framework || true
+
+# Make all the Go-installed tools visible on PATH for the runtime.
+ENV PATH=/root/go/bin:$PATH
