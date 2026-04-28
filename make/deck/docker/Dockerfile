@@ -460,6 +460,25 @@ RUN /home/python/venv/bin/pip install huggingface_hub \
 RUN /home/python/venv/bin/pip install yt-dlp
 RUN ln -sf /home/python/venv/bin/yt-dlp /usr/local/bin/yt-dlp
 
+# ── Local TLS / HTTPS workflow ────────────────────────────────────
+# mkcert — `task issue tls`, `task rotate tls`. Single Go binary;
+# pull the GitHub release directly so we're not pinned to an apt
+# version that lags upstream.
+RUN curl -fsSL https://github.com/FiloSottile/mkcert/releases/latest/download/mkcert-v1.4.4-linux-amd64 \
+      -o /usr/local/bin/mkcert
+RUN chmod +x /usr/local/bin/mkcert
+
+# caddy — `task serve tls`, `task proxy tls`. Cloudsmith-hosted
+# apt repo gives us the canonical signed release stream.
+RUN apt-get update -y -q
+RUN apt-get -y install debian-keyring debian-archive-keyring apt-transport-https
+RUN curl -fsSL https://dl.cloudsmith.io/public/caddy/stable/gpg.key \
+      | gpg --dearmor -o /usr/share/keyrings/caddy-stable.gpg
+RUN echo "deb [signed-by=/usr/share/keyrings/caddy-stable.gpg] https://dl.cloudsmith.io/public/caddy/stable/deb/debian any-version main" \
+      > /etc/apt/sources.list.d/caddy-stable.list
+RUN apt-get update -y -q || true
+RUN apt-get -y install caddy || true
+
 # ── Observability / profiling / dev-loop tools ────────────────────
 # samply: cross-platform Rust sampling profiler (`task profile cpu`)
 RUN cargo install samply || true

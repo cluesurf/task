@@ -488,45 +488,6 @@ captures the common dev-machine pattern of "I want a private
 TLD that only my laptop knows about, and I want all my other
 DNS to leave the machine encrypted, both reversibly."
 
-### tls (new verb family)
-
-Local HTTPS without hand-wrestling `mkcert` / `step` /
-`openssl` flags every time. Models the standard Caddy /
-mkcert / step-ca workflows.
-
-`task inspect tls <host>` ships today and covers the
-read-only side (subject / issuer / SAN / expiry / chain).
-The verbs below add the issue / trust / serve mutate side.
-
-- `task tls issue <host> --from local-ca` — mint a cert signed
-  by a locally-trusted CA. Wraps `caddy` internal CA, `mkcert`,
-  or `step-ca` behind a single command.
-- `task tls trust <ca-path>` — install a CA into the OS trust
-  store, per-platform. Idempotent — installing the same CA
-  twice is a no-op.
-- `task tls untrust <ca-sha>` — delete a stale CA by SHA-1
-  fingerprint. Fixes the "multiple stale CAs confuse the
-  browser" case after rotations.
-- `task tls verify <host>` — end-to-end probe. Confirms
-  `tls issue` + `tls trust` actually propagated to the OS and
-  to the browser, against the served chain from `inspect tls`.
-- `task tls serve <dir> --port 443 --for <host>` — thin
-  wrapper over a static-file server with auto-issued cert
-  from the local CA. One command from `cd` to `https://`.
-- `task tls proxy <host> --to <upstream>` — reverse-proxy on
-  :443 with internal TLS. One-command local HTTPS for an
-  existing dev server. Supports wildcard host routing
-  (`*.<zone>`) so a single proxy fronts an arbitrary number
-  of subdomain dev servers.
-- `task tls rotate --ca local` — rotate the local CA, reissue
-  every host cert that depends on it, and clean stale CAs out
-  of the trust store. The "I forgot which CA the browser
-  trusts" reset button.
-
-The `issue` + `trust` + `proxy` + `rotate` quartet is the
-"local HTTPS for `*.dev.example`" recipe collapsed into four
-verbs.
-
 ### audit (new verb family)
 
 Dev-machine posture check in one command — the inverse of the

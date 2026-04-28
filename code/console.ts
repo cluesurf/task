@@ -66,6 +66,7 @@ import { highlightConsole } from '~/code/call/highlight/console'
 import { inspectConsole } from '~/code/call/inspect/console'
 import { installConsole } from '~/code/call/install/console'
 import { isolateConsole } from '~/code/call/isolate/console'
+import { issueConsole } from '~/code/call/issue/console'
 import { lintConsole } from '~/code/call/lint/console'
 import { listConsole } from '~/code/call/list/console'
 import { loadConsole } from '~/code/call/load/console'
@@ -80,6 +81,7 @@ import { parseConsole } from '~/code/call/parse/console'
 import { pingConsole } from '~/code/call/ping/console'
 import { profileConsole } from '~/code/call/profile/console'
 // project/ merged into verb-first paths (build/code, test/code, etc.)
+import { proxyConsole } from '~/code/call/proxy/console'
 import { pushConsole } from '~/code/call/push/console'
 import { queryConsole } from '~/code/call/query/console'
 import { recordConsole } from '~/code/call/record/console'
@@ -97,6 +99,7 @@ import { scaleConsole } from '~/code/call/scale/console'
 import { scanConsole } from '~/code/call/scan/console'
 import { scoutConsole } from '~/code/call/scout/console'
 import { searchConsole } from '~/code/call/search/console'
+import { serveConsole } from '~/code/call/serve/console'
 import { setConsole } from '~/code/call/set/console'
 import { shapeConsole } from '~/code/call/shape/console'
 import { showConsole } from '~/code/call/show/console'
@@ -109,7 +112,9 @@ import { testConsole } from '~/code/call/test/console'
 import { traceConsole } from '~/code/call/trace/console'
 import { transformConsole } from '~/code/call/transform/console'
 import { trimConsole } from '~/code/call/trim/console'
+import { trustConsole } from '~/code/call/trust/console'
 import { unpackConsole } from '~/code/call/unpack/console'
+import { untrustConsole } from '~/code/call/untrust/console'
 import { uploadConsole } from '~/code/call/upload/console'
 import { updateConsole } from '~/code/call/update/console'
 import { validateConsole } from '~/code/call/validate/console'
@@ -153,6 +158,7 @@ registerGroupHelp({
     { name: 'highlight',   describe: 'Stamp a highlight + note on a PDF' },
     { name: 'inspect',     describe: 'Inspect a file, process, network, or system' },
     { name: 'install',     describe: 'Install project dependencies (zero-config)' },
+    { name: 'issue',       describe: 'Mint a new credential, cert, or token' },
     { name: 'lint',        describe: 'Lint the project' },
     { name: 'list',        describe: 'List running resources or stored entries' },
     { name: 'make',        describe: 'Create a new artifact (SSH key, ...)' },
@@ -164,6 +170,8 @@ registerGroupHelp({
     { name: 'pad',         describe: 'Pad an audio file with trailing silence' },
     { name: 'parse',       describe: 'Parse source or data into a structured form' },
     { name: 'ping',        describe: 'ICMP ping a host and report latency / loss' },
+    { name: 'profile',     describe: 'Sample CPU usage and emit a flamegraph' },
+    { name: 'proxy',       describe: 'Reverse-proxy a host (HTTPS / TLS termination)' },
     { name: 'push',        describe: 'Push an artifact to a remote (SSH key → host)' },
     { name: 'record',      describe: 'Record screen / terminal sessions' },
     { name: 'remove',      describe: 'Remove content, metadata, or a stored entry' },
@@ -175,6 +183,7 @@ registerGroupHelp({
     { name: 'sanitize',    describe: 'Sanitize code or other content' },
     { name: 'scan',        describe: 'Probe a remote for fingerprints and keys' },
     { name: 'search',      describe: 'Search file contents or names under a path' },
+    { name: 'serve',       describe: 'Spin up a local server' },
     { name: 'set',         describe: 'Write a property onto a target' },
     { name: 'shape',       describe: 'Run HarfBuzz shaping (text → glyph sequence)' },
     { name: 'slice',       describe: 'Slice a document or other asset' },
@@ -183,7 +192,11 @@ registerGroupHelp({
     { name: 'sync',        describe: 'Mirror / backup (rsync, SMB/NAS, restic/borg/kopia)' },
     { name: 'test',        describe: 'Test reachability or connectivity' },
     { name: 'trace',       describe: 'Trace the path a packet takes to a host' },
+    { name: 'transform',   describe: 'Reshape a data file (map / jq / sql)' },
     { name: 'trim',        describe: 'Cut a section out of a media file' },
+    { name: 'trust',       describe: 'Install a credential or CA into a persistent store' },
+    { name: 'unpack',      describe: 'Extract files from an archive' },
+    { name: 'untrust',     describe: 'Remove a credential or CA from a persistent store' },
     { name: 'update',      describe: 'Apply an edit to a file' },
     { name: 'upload',      describe: 'Upload to cloud' },
     { name: 'validate',    describe: 'Validate a document or other artifact' },
@@ -356,6 +369,7 @@ async function main() {
     .command(inspectConsole)
     .command(installConsole)
     .command(isolateConsole)
+    .command(issueConsole)
     .command(lintConsole)
     .command(listConsole)
     .command(loadConsole)
@@ -370,6 +384,7 @@ async function main() {
     .command(pingConsole)
     .command(profileConsole)
     // project merged into verb-first (build/code, test/code, etc.)
+    .command(proxyConsole)
     .command(pushConsole)
     .command(queryConsole)
     .command(recordConsole)
@@ -387,6 +402,7 @@ async function main() {
     .command(scanConsole)
     .command(scoutConsole)
     .command(searchConsole)
+    .command(serveConsole)
     .command(setConsole)
     .command(shapeConsole)
     .command(showConsole)
@@ -399,7 +415,9 @@ async function main() {
     .command(traceConsole)
     .command(transformConsole)
     .command(trimConsole)
+    .command(trustConsole)
     .command(unpackConsole)
+    .command(untrustConsole)
     .command(updateConsole)
     .command(uploadConsole)
     .command(validateConsole)

@@ -353,6 +353,34 @@
       "node": "./host/code/call/rotate/secret/node.js",
       "default": "./host/code/call/rotate/secret/node.js"
     },
+    "./rotate/tls": {
+      "node": "./host/code/call/rotate/tls/node.js",
+      "default": "./host/code/call/rotate/tls/node.js"
+    },
+    "./issue/tls": {
+      "node": "./host/code/call/issue/tls/node.js",
+      "default": "./host/code/call/issue/tls/node.js"
+    },
+    "./trust/tls": {
+      "node": "./host/code/call/trust/tls/node.js",
+      "default": "./host/code/call/trust/tls/node.js"
+    },
+    "./untrust/tls": {
+      "node": "./host/code/call/untrust/tls/node.js",
+      "default": "./host/code/call/untrust/tls/node.js"
+    },
+    "./serve/tls": {
+      "node": "./host/code/call/serve/tls/node.js",
+      "default": "./host/code/call/serve/tls/node.js"
+    },
+    "./proxy/tls": {
+      "node": "./host/code/call/proxy/tls/node.js",
+      "default": "./host/code/call/proxy/tls/node.js"
+    },
+    "./verify/tls": {
+      "node": "./host/code/call/verify/tls/node.js",
+      "default": "./host/code/call/verify/tls/node.js"
+    },
     "./sanitize/code": {
       "node": "./host/code/call/sanitize/code/node.js",
       "browser": "./host/code/call/sanitize/code/browser.js",
