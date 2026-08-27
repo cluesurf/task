@@ -38,7 +38,7 @@
     "eslint-plugin-sort-exports": "^0.8.0",
     "eslint-plugin-sort-keys": "^2.3.5",
     "eslint-plugin-typescript-sort-keys": "^2.1.0",
-    "postcss": "^8.4.32",
+    "postcss": "^8.5.23",
     "postcss-preset-env": "^9.3.0",
     "prettier": "^2.8.2",
     "tsc-alias": "^1.8.8",
